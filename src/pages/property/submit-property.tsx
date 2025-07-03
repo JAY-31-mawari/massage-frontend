@@ -7,12 +7,29 @@ import FooterTop from '../../components/footer-top';
 import Footer from '../../components/footer';
 
 export default function SubmitProperty() {
-    const [file, setFile] = useState('');
+    const [file, setFile] = useState('')
+    const [profilePicture, setProfilePicture] = useState('')
+    const [governmentId, setGovernmentId] = useState('')
+    const [qualification, setQualification] = useState('')
+    const [treatmentSpace, setTreatmentSpace] = useState('')
+    const [insurance, setInsurance] = useState('')
     const [show, setShow] = useState<boolean>(false)
 
     function handleChange(e: any) {
-        console.log(e.target.files);
-        setFile(URL.createObjectURL(e.target.files[0]));
+        const eventName = e.target.name
+
+        if(eventName === "treatmentSpace"){
+            setTreatmentSpace(e.target.files[0].name)
+        }else if(eventName === "insurance"){
+            setInsurance(e.target.files[0].name)
+        }else if(eventName === "governmentId"){
+            setGovernmentId(e.target.files[0].name)
+        }else if(eventName === "qualification"){
+            setQualification(e.target.files[0].name)
+        }else{
+            setProfilePicture(e.target.files[0].name)
+        }
+        console.log(e.target.files[0]);
     }
 
     const expertise = [
@@ -192,6 +209,7 @@ export default function SubmitProperty() {
                                         >
                                             <input
                                                 type="file"
+                                                name='treatmentSpace'
                                                 onChange={handleChange}
                                                 style={{
                                                     position: 'absolute',
@@ -203,12 +221,12 @@ export default function SubmitProperty() {
                                                 }}
                                             />
 
-                                            {file ? (
+                                            {treatmentSpace ? (
                                                 <div className="dz-image" style={{ zIndex: 1 }}>
                                                     <img
-                                                        src={file}
-                                                        alt="Uploaded"
-                                                        style={{ width: '100px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        src={treatmentSpace}
+                                                        alt={treatmentSpace}
+                                                        style={{ width: '100px', padding:'0px 10px',height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
@@ -243,6 +261,7 @@ export default function SubmitProperty() {
                                         >
                                             <input
                                                 type="file"
+                                                name="insurance"
                                                 onChange={handleChange}
                                                 style={{
                                                     position: 'absolute',
@@ -254,12 +273,12 @@ export default function SubmitProperty() {
                                                 }}
                                             />
 
-                                            {file ? (
+                                            {insurance ? (
                                                 <div className="dz-image" style={{ zIndex: 1 }}>
                                                     <img
-                                                        src={file}
-                                                        alt="Uploaded"
-                                                        style={{ width: '100px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        src={insurance}
+                                                        alt={insurance}
+                                                        style={{ width: '100px',padding:'0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
@@ -294,6 +313,7 @@ export default function SubmitProperty() {
                                         >
                                             <input
                                                 type="file"
+                                                name="governmentId"
                                                 onChange={handleChange}
                                                 style={{
                                                     position: 'absolute',
@@ -305,12 +325,12 @@ export default function SubmitProperty() {
                                                 }}
                                             />
 
-                                            {file ? (
+                                            {governmentId ? (
                                                 <div className="dz-image" style={{ zIndex: 1 }}>
                                                     <img
-                                                        src={file}
-                                                        alt="Uploaded"
-                                                        style={{ width: '100px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        src={governmentId}
+                                                        alt={governmentId}
+                                                        style={{ width: '100px',padding:'0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
@@ -345,6 +365,7 @@ export default function SubmitProperty() {
                                         >
                                             <input
                                                 type="file"
+                                                name="qualification"
                                                 onChange={handleChange}
                                                 style={{
                                                     position: 'absolute',
@@ -356,12 +377,12 @@ export default function SubmitProperty() {
                                                 }}
                                             />
 
-                                            {file ? (
+                                            {qualification ? (
                                                 <div className="dz-image" style={{ zIndex: 1 }}>
                                                     <img
-                                                        src={file}
-                                                        alt="Uploaded"
-                                                        style={{ width: '100px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        src={qualification}
+                                                        alt={qualification}
+                                                        style={{ width: '100px',padding:'0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
@@ -396,6 +417,7 @@ export default function SubmitProperty() {
                                         >
                                             <input
                                                 type="file"
+                                                name="profilePicture"
                                                 onChange={handleChange}
                                                 style={{
                                                     position: 'absolute',
@@ -407,12 +429,12 @@ export default function SubmitProperty() {
                                                 }}
                                             />
 
-                                            {file ? (
+                                            {profilePicture ? (
                                                 <div className="dz-image" style={{ zIndex: 1 }}>
                                                     <img
-                                                        src={file}
-                                                        alt="Uploaded"
-                                                        style={{ width: '100px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        src={profilePicture}
+                                                        alt={profilePicture}
+                                                        style={{ width: '100px',padding:'0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
