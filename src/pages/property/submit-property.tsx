@@ -168,7 +168,7 @@ export default function SubmitProperty() {
 
                                 <div className="form-submit">
                                     <h3>Upload Documents</h3>
-                                    <div className="form-group col-md-12 d-flex align-items-center gap-3">
+                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                                         {/* Label on the left */}
                                         <label className="mb-0" style={{ minWidth: '150px' }}>
                                             Photos of Treatment Space
@@ -212,15 +212,15 @@ export default function SubmitProperty() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
                                         </div>
                                     </div>
 
-                                    <div className="form-group col-md-12 d-flex align-items-center gap-3">
+                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                                         {/* Label on the left */}
                                         <label className="mb-0" style={{ minWidth: '150px' }}>
                                             Insurance
@@ -263,15 +263,15 @@ export default function SubmitProperty() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
                                         </div>
                                     </div>
 
-                                    <div className="form-group col-md-12 d-flex align-items-center gap-3">
+                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                                         {/* Label on the left */}
                                         <label className="mb-0" style={{ minWidth: '150px' }}>
                                             Government issued ID
@@ -314,15 +314,15 @@ export default function SubmitProperty() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
                                         </div>
                                     </div>
 
-                                    <div className="form-group col-md-12 d-flex align-items-center gap-3">
+                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                                         {/* Label on the left */}
                                         <label className="mb-0" style={{ minWidth: '150px' }}>
                                             Proof of Qualification 
@@ -365,15 +365,15 @@ export default function SubmitProperty() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
                                         </div>
                                     </div>
 
-                                    <div className="form-group col-md-12 d-flex align-items-center gap-3">
+                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                                         {/* Label on the left */}
                                         <label className="mb-0" style={{ minWidth: '150px' }}>
                                             Logo or profile picture 
@@ -416,8 +416,8 @@ export default function SubmitProperty() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
