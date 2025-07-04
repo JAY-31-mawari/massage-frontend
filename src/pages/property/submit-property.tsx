@@ -116,13 +116,13 @@ export default function SubmitProperty() {
                                     <div className="submit-section">
                                         <div className="row">
                                             <div className="form-group col-md-12">
-                                                <label className='mb-2'>Business Type</label>
-                                                <Select options={businessType} className="form-control" placeholder="Business Type" />
+                                                <label className='mb-2'>Full Name/Business Name</label>
+                                                <input type="text" className="form-control" placeholder='Full Name/Business Name' />
                                             </div>
 
                                             <div className="form-group col-md-6">
-                                                <label className='mb-2'>Full Name/Business Name</label>
-                                                <input type="text" className="form-control" placeholder='Full Name/Business Name' />
+                                                <label className='mb-2'>Business Type</label>
+                                                <Select options={businessType} className="form-control" placeholder="Business Type" />
                                             </div>
 
                                             <div className="form-group col-md-6">
