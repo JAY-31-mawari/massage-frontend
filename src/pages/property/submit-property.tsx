@@ -7,13 +7,22 @@ import FooterTop from '../../components/footer-top';
 import Footer from '../../components/footer';
 
 export default function SubmitProperty() {
-    const [file, setFile] = useState('')
     const [profilePicture, setProfilePicture] = useState('')
     const [governmentId, setGovernmentId] = useState('')
     const [qualification, setQualification] = useState('')
     const [treatmentSpace, setTreatmentSpace] = useState('')
     const [insurance, setInsurance] = useState('')
     const [show, setShow] = useState<boolean>(false)
+    const [businessName, setBusinessName] = useState('')
+    const [businessType, setBusinessType] = useState<string | undefined>('')
+    const [areaOfExpertise, setAreaOfExpertise] = useState<string | undefined>('')
+    const [license, setLicense] = useState('')
+    const [postalCode, setPostalCode] = useState('')
+    const [bankingDetails, setBankingDetails] = useState('')
+    const [merchantAddress, setMerchantAddress] = useState('')
+    const [merchantCity, setMerchantCity] = useState('')
+    const [merchantState, setMerchantState] = useState('')
+    const [merchantZipCode, setMerchantZipCode] = useState('')
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('')
     const [phone, setPhone] = useState('')
@@ -72,15 +81,31 @@ export default function SubmitProperty() {
         console.log(e.target.files[0]);
     }
 
-    const expertise = [
+    const expertiseList = [
         { value: 'Physiotherapy', label: 'Physiotherapy' },
         { value: 'Chiropractic', label: 'Chiropractic' },
     ];
-    const businessType = [
+    const businessTypeList = [
         { value: 'Individual Practitioner', label: 'Individual Practitioner' },
         { value: 'Clinic', label: 'Clinic' },
         { value: 'Company', label: 'Company' },
     ];
+
+    const handleMerchantFormSubmit = () => {
+        setBusinessName('')
+        setBusinessType('')
+        setEmail('')
+        setPhone('')
+        setAreaOfExpertise('')
+        setLicense('')
+        setPostalCode('')
+        setBankingDetails('')
+        setMerchantAddress('')
+        setMerchantCity('')
+        setMerchantState('')
+        setMerchantZipCode('')
+    }
+    
     return (
         <>
             <Navbar transparent={false} />
@@ -157,12 +182,12 @@ export default function SubmitProperty() {
                                         <div className="row">
                                             <div className="form-group col-md-12">
                                                 <label className='mb-2'>Full Name/Business Name</label>
-                                                <input type="text" className="form-control" placeholder='Full Name/Business Name' />
+                                                <input type="text" className="form-control" placeholder='Full Name/Business Name' value={businessName} onChange={(e) => setBusinessName(e.target.value)}/>
                                             </div>
 
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>Business Type</label>
-                                                <Select options={businessType} className="form-control" placeholder="Business Type" />
+                                                <Select options={businessTypeList} className='form-control' classNamePrefix="react-select" placeholder="Business Type" value={businessTypeList.find((option)=> option.value === businessType)} onChange={(selectedOption)=>setBusinessType(selectedOption?.value)} />
                                             </div>
 
                                             <div className="form-group col-md-6">
@@ -180,22 +205,22 @@ export default function SubmitProperty() {
 
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>Areas of Expertise</label>
-                                                <Select options={expertise} className="form-control" placeholder="Areas of Expertise" />
+                                                <Select options={expertiseList} className="form-control" classNamePrefix="react-select" placeholder="Areas of Expertise" value={expertiseList.find((option) => option.value === areaOfExpertise)} onChange={(selectedOption) => setAreaOfExpertise(selectedOption?.value)} />
                                             </div>
 
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>License/Registration Number</label>
-                                                <input type="text" className="form-control" />
+                                                <input type="text" className="form-control" value={license} onChange={(e)=>setLicense(e.target.value)} />
                                             </div>
 
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>For mobile practitioners - Coverage Postal code</label>
-                                                <input type="text" className="form-control" />
+                                                <input type="text" className="form-control" value={postalCode} onChange={(e)=>setPostalCode(e.target.value)}/>
                                             </div>
 
                                             <div className="form-group col-md-12">
                                                 <label className='mb-2'>Banking Details</label>
-                                                <input type="text" className="form-control" placeholder='Banking Details' />
+                                                <input type="text" className="form-control" placeholder='Banking Details' value={bankingDetails} onChange={(e)=>setBankingDetails(e.target.value)}/>
 
                                             </div>
                                         </div>
@@ -208,19 +233,19 @@ export default function SubmitProperty() {
                                         <div className="row">
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>Address</label>
-                                                <input type="text" className="form-control" />
+                                                <input type="text" className="form-control" value={merchantAddress} onChange={(e)=>setMerchantAddress(e.target.value)}/>
                                             </div>
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>City</label>
-                                                <input type="text" className="form-control" />
+                                                <input type="text" className="form-control" value={merchantCity} onChange={(e)=>setMerchantCity(e.target.value)}/>
                                             </div>
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>State</label>
-                                                <input type="text" className="form-control" />
+                                                <input type="text" className="form-control" value={merchantState} onChange={(e)=>setMerchantState(e.target.value)}/>
                                             </div>
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>Zip Code</label>
-                                                <input type="text" className="form-control" />
+                                                <input type="text" className="form-control" value={merchantZipCode} onChange={(e)=>setMerchantZipCode(e.target.value)}/>
                                             </div>
                                         </div>
                                     </div>
@@ -494,7 +519,7 @@ export default function SubmitProperty() {
 
 
                                 <div className="form-group col-lg-12 col-md-12">
-                                    <button className="btn btn-primary fw-medium px-5" type="button">Submit & Preview</button>
+                                    <button className="btn btn-primary fw-medium px-5" type="button"onClick={handleMerchantFormSubmit}>Submit & Preview</button>
                                 </div>
                             </div>
                         </div>
