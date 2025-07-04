@@ -14,19 +14,59 @@ export default function SubmitProperty() {
     const [treatmentSpace, setTreatmentSpace] = useState('')
     const [insurance, setInsurance] = useState('')
     const [show, setShow] = useState<boolean>(false)
+    const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('')
+    const [phone, setPhone] = useState('')
+    const [phoneNoError, setphoneNoError] = useState('')
 
-    function handleChange(e: any) {
+    const validateEmail = (email: string) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    const validatePhone = (phone: string) => {
+        const regex = /^[1-9]\d{9}$/;
+        return regex.test(phone);
+    };
+
+    const handleEmailChange = (e: any) => {
+        const value = e.target.value
+        setEmail(value)
+
+        if (value === '') {
+            setEmailError('Email is required')
+        } else if (!validateEmail(value)) {
+            setEmailError('Please enter a valid email address')
+        } else {
+            setEmailError('')
+        }
+    }
+
+    const handlePhoneNoChange = (e: any) => {
+        const value = e.target.value;
+        setPhone(value);
+
+        if (value === '') {
+            setphoneNoError('Phone number is required');
+        } else if (!validatePhone(value)) {
+            setphoneNoError('Please enter a valid 10-digit phone number');
+        } else {
+            setphoneNoError('');
+        }
+    };
+
+    function handleFileChange(e: any) {
         const eventName = e.target.name
 
-        if(eventName === "treatmentSpace"){
+        if (eventName === "treatmentSpace") {
             setTreatmentSpace(e.target.files[0].name)
-        }else if(eventName === "insurance"){
+        } else if (eventName === "insurance") {
             setInsurance(e.target.files[0].name)
-        }else if(eventName === "governmentId"){
+        } else if (eventName === "governmentId") {
             setGovernmentId(e.target.files[0].name)
-        }else if(eventName === "qualification"){
+        } else if (eventName === "qualification") {
             setQualification(e.target.files[0].name)
-        }else{
+        } else {
             setProfilePicture(e.target.files[0].name)
         }
         console.log(e.target.files[0]);
@@ -127,12 +167,15 @@ export default function SubmitProperty() {
 
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>Email Address</label>
-                                                <input type="text" className="form-control" placeholder='Email Address' />
+                                                <input type="text" className={`form-control ${emailError ? 'is-invalid' : ''}`} placeholder='Email Address' value={email} onChange={handleEmailChange} />
+                                                {emailError && <div className="invalid-feedback">{emailError}</div>}
                                             </div>
 
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>Phone Number</label>
-                                                <input type="text" className="form-control" placeholder="Phone No" />
+                                                <input type="text" className={`form-control ${phoneNoError ? 'is-invalid' : ''}`} placeholder="Phone No" value={phone} onChange={handlePhoneNoChange} />
+                                                {phoneNoError && <div className="invalid-feedback">{phoneNoError}</div>}
+
                                             </div>
 
                                             <div className="form-group col-md-6">
@@ -210,7 +253,7 @@ export default function SubmitProperty() {
                                             <input
                                                 type="file"
                                                 name='treatmentSpace'
-                                                onChange={handleChange}
+                                                onChange={handleFileChange}
                                                 style={{
                                                     position: 'absolute',
                                                     width: '100%',
@@ -226,12 +269,12 @@ export default function SubmitProperty() {
                                                     <img
                                                         src={treatmentSpace}
                                                         alt={treatmentSpace}
-                                                        style={{ width: '100px', padding:'0px 10px',height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
@@ -262,7 +305,7 @@ export default function SubmitProperty() {
                                             <input
                                                 type="file"
                                                 name="insurance"
-                                                onChange={handleChange}
+                                                onChange={handleFileChange}
                                                 style={{
                                                     position: 'absolute',
                                                     width: '100%',
@@ -278,12 +321,12 @@ export default function SubmitProperty() {
                                                     <img
                                                         src={insurance}
                                                         alt={insurance}
-                                                        style={{ width: '100px',padding:'0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
@@ -314,7 +357,7 @@ export default function SubmitProperty() {
                                             <input
                                                 type="file"
                                                 name="governmentId"
-                                                onChange={handleChange}
+                                                onChange={handleFileChange}
                                                 style={{
                                                     position: 'absolute',
                                                     width: '100%',
@@ -330,12 +373,12 @@ export default function SubmitProperty() {
                                                     <img
                                                         src={governmentId}
                                                         alt={governmentId}
-                                                        style={{ width: '100px',padding:'0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
@@ -345,7 +388,7 @@ export default function SubmitProperty() {
                                     <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                                         {/* Label on the left */}
                                         <label className="mb-0" style={{ minWidth: '150px' }}>
-                                            Proof of Qualification 
+                                            Proof of Qualification
                                         </label>
 
                                         {/* Upload box on the right */}
@@ -366,7 +409,7 @@ export default function SubmitProperty() {
                                             <input
                                                 type="file"
                                                 name="qualification"
-                                                onChange={handleChange}
+                                                onChange={handleFileChange}
                                                 style={{
                                                     position: 'absolute',
                                                     width: '100%',
@@ -382,12 +425,12 @@ export default function SubmitProperty() {
                                                     <img
                                                         src={qualification}
                                                         alt={qualification}
-                                                        style={{ width: '100px',padding:'0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
@@ -397,7 +440,7 @@ export default function SubmitProperty() {
                                     <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
                                         {/* Label on the left */}
                                         <label className="mb-0" style={{ minWidth: '150px' }}>
-                                            Logo or profile picture 
+                                            Logo or profile picture
                                         </label>
 
                                         {/* Upload box on the right */}
@@ -418,7 +461,7 @@ export default function SubmitProperty() {
                                             <input
                                                 type="file"
                                                 name="profilePicture"
-                                                onChange={handleChange}
+                                                onChange={handleFileChange}
                                                 style={{
                                                     position: 'absolute',
                                                     width: '100%',
@@ -434,12 +477,12 @@ export default function SubmitProperty() {
                                                     <img
                                                         src={profilePicture}
                                                         alt={profilePicture}
-                                                        style={{ width: '100px',padding:'0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display:"flex", alignItems:"baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight:'10px' }}></i>
+                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
+                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
                                                     <p className="mb-0 mt-2">Click or Drag to Upload</p>
                                                 </div>
                                             )}
