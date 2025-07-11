@@ -195,7 +195,7 @@ export default function SubmitProperty() {
                 for (const key of Object.keys(tabData)) {
                     const practitioner = tabData[Number(key)];
 
-                    const response = await axios.post("https://message-booking.onrender.com/practitioner", { ...practitioner, businessId: businessResponse?.data?._id });
+                    const response = await axios.post("https://message-booking.onrender.com/practitioner", { ...practitioner, businessId: businessResponse?.data?.data?._id });
                     console.log(`Practitioner ${key} submitted:`, response.data);
                 }
                 setBusinessName("")
