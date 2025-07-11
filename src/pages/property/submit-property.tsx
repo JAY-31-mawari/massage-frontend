@@ -1,12 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import Select from 'react-select';
 
 import Navbar from '../../components/navbar/navbar'
 import FooterTop from '../../components/footer-top';
 import Footer from '../../components/footer';
+import { UploadButton } from '../../utils/uploadthing';
+import axios from 'axios';
+
+interface PractitionerData {
+    practitionerName: string;
+    license: string;
+    areaOfExpertise: string[];
+    treatmentSpace: string;
+    insurance: string;
+    governmentId: string;
+    qualification: string;
+    profilePicture: string;
+}
 
 export default function SubmitProperty() {
+    const navigate = useNavigate();
     const [profilePicture, setProfilePicture] = useState('')
     const [governmentId, setGovernmentId] = useState('')
     const [qualification, setQualification] = useState('')
@@ -15,8 +30,8 @@ export default function SubmitProperty() {
     const [show, setShow] = useState<boolean>(false)
     const [businessName, setBusinessName] = useState('')
     const [businessType, setBusinessType] = useState<string | undefined>('')
-    const [areaOfExpertise, setAreaOfExpertise] = useState<string | undefined>('')
-    const [license, setLicense] = useState('')
+    // const [areaOfExpertise, setAreaOfExpertise] = useState<string | undefined>('')
+    // const [license, setLicense] = useState('')
     const [postalCode, setPostalCode] = useState('')
     const [bankingDetails, setBankingDetails] = useState('')
     const [merchantAddress, setMerchantAddress] = useState('')
@@ -27,6 +42,37 @@ export default function SubmitProperty() {
     const [emailError, setEmailError] = useState('')
     const [phone, setPhone] = useState('')
     const [phoneNoError, setphoneNoError] = useState('')
+    const [description, setDescription] = useState('')
+    const [tabs, setTabs] = useState([{ id: 1 }]);
+    const [activeTab, setActiveTab] = useState(1);
+
+    // Optional: Store data per tab if needed later
+    const [tabData, setTabData] = useState<{ [key: number]: any }>({
+        1: {
+            practitionerName: '',
+            areaOfExpertise: [],
+            license: '',
+            treatmentSpace: '',
+            insurance: '',
+            governmentId: '',
+            qualification: '',
+            profilePicture: '',
+        }
+    });
+
+    const expertiseList = [
+        { value: 'Physiotherapy', label: 'Physiotherapy' },
+        { value: 'Chiropractic Care', label: 'Chiropractic Care' },
+        { value: 'Massage Therapy', label: 'Massage Therapy' },
+        { value: 'Acupuncture', label: 'Acupuncture' }
+    ];
+    const businessTypeList = [
+        { value: 'Clinic-Based Practice', label: 'Clinic-Based Practice' },
+        { value: 'Franchise Clinic', label: 'Franchise Clinic' },
+        { value: 'Home-Based Practice', label: 'Home-Based Practice' },
+        { value: 'Mobile Practitioner', label: 'Mobile Practitioner' },
+        { value: 'Other', label: 'Other' }
+    ];
 
     const validateEmail = (email: string) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,48 +110,125 @@ export default function SubmitProperty() {
         }
     };
 
-    function handleFileChange(e: any) {
-        const eventName = e.target.name
+    const addTab = () => {
+        const nextId = tabs.length + 1;
+        setTabs([...tabs, { id: nextId }]);
+        setTabData((prev) => ({
+            ...prev,
+            [nextId]: {
+                practitionerName: '',
+                areaOfExpertise: [],
+                license: '',
+                treatmentSpace: '',
+                insurance: '',
+                governmentId: '',
+                qualification: '',
+                profilePicture: '',
+            },
+        }));
+        setActiveTab(nextId);
+    };
 
-        if (eventName === "treatmentSpace") {
-            setTreatmentSpace(e.target.files[0].name)
-        } else if (eventName === "insurance") {
-            setInsurance(e.target.files[0].name)
-        } else if (eventName === "governmentId") {
-            setGovernmentId(e.target.files[0].name)
-        } else if (eventName === "qualification") {
-            setQualification(e.target.files[0].name)
-        } else {
-            setProfilePicture(e.target.files[0].name)
+
+    // function handleFileChange(e: any) {
+    //     const eventName = e.target.name
+
+    //     if (eventName === "treatmentSpace") {
+    //         setTreatmentSpace(e.target.files[0].name)
+    //     } else if (eventName === "insurance") {
+    //         setInsurance(e.target.files[0].name)
+    //     } else if (eventName === "governmentId") {
+    //         setGovernmentId(e.target.files[0].name)
+    //     } else if (eventName === "qualification") {
+    //         setQualification(e.target.files[0].name)
+    //     } else {
+    //         setProfilePicture(e.target.files[0].name)
+    //     }
+    //     console.log(e.target.files[0]);
+    // }
+
+    // const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //     const field = e.target.name as keyof PractitionerData;
+    //     const file = e.target.files?.[0];
+    //     if (!file) return;
+
+    //     const fileUrl = URL.createObjectURL(file);
+    //     setTabData((prev) => ({
+    //         ...prev,
+    //         [activeTab]: {
+    //             ...prev[activeTab],
+    //             [field]: fileUrl,
+    //         },
+    //     }));
+    // };
+
+    const handleTabInputChange = (field: keyof PractitionerData, value: string | string[]) => {
+        setTabData((prev) => ({
+            ...prev,
+            [activeTab]: {
+                ...prev[activeTab],
+                [field]: value,
+            },
+        }));
+    };
+
+
+
+    const handleMerchantFormSubmit = async () => {
+        try {
+            const businessPayload = {
+                businessName,
+                businessType,
+                business_email: email,
+                business_phone: phone,
+                bankingDetails,
+                merchantAddress,
+                merchantCity,
+                merchantState,
+                merchantZipCode
+            }
+
+            const businessResponse = await axios.post('https://message-booking.onrender.com/business', businessPayload);
+            if (businessResponse.status === 201 || businessResponse.status === 200) {
+                console.log('Data submitted successfully:', businessResponse.data);
+
+                for (const key of Object.keys(tabData)) {
+                    const practitioner = tabData[Number(key)];
+
+                    const response = await axios.post("https://message-booking.onrender.com/practitioner", { ...practitioner, businessId: businessResponse?.data?._id });
+                    console.log(`Practitioner ${key} submitted:`, response.data);
+                }
+                setBusinessName("")
+                setBusinessType("")
+                setEmail("")
+                setPhone("")
+                setBankingDetails("")
+                setMerchantAddress("")
+                setMerchantCity("")
+                setMerchantState("")
+                setMerchantZipCode("")
+                setTabData({
+                    1: {
+                        practitionerName: '',
+                        areaOfExpertise: [],
+                        license: '',
+                        treatmentSpace: '',
+                        insurance: '',
+                        governmentId: '',
+                        qualification: '',
+                        profilePicture: '',
+                    }
+                })
+                setActiveTab(1)
+                navigate("/")
+            } else {
+                console.error('Unexpected status:', businessResponse.status);
+            }
+        } catch (error) {
+            console.error('Error submitting data:', error);
         }
-        console.log(e.target.files[0]);
     }
 
-    const expertiseList = [
-        { value: 'Physiotherapy', label: 'Physiotherapy' },
-        { value: 'Chiropractic', label: 'Chiropractic' },
-    ];
-    const businessTypeList = [
-        { value: 'Individual Practitioner', label: 'Individual Practitioner' },
-        { value: 'Clinic', label: 'Clinic' },
-        { value: 'Company', label: 'Company' },
-    ];
-
-    const handleMerchantFormSubmit = () => {
-        setBusinessName('')
-        setBusinessType('')
-        setEmail('')
-        setPhone('')
-        setAreaOfExpertise('')
-        setLicense('')
-        setPostalCode('')
-        setBankingDetails('')
-        setMerchantAddress('')
-        setMerchantCity('')
-        setMerchantState('')
-        setMerchantZipCode('')
-    }
-    
     return (
         <>
             <Navbar transparent={false} />
@@ -181,14 +304,27 @@ export default function SubmitProperty() {
                                     <div className="submit-section">
                                         <div className="row">
                                             <div className="form-group col-md-12">
-                                                <label className='mb-2'>Full Name/Business Name</label>
-                                                <input type="text" className="form-control" placeholder='Full Name/Business Name' value={businessName} onChange={(e) => setBusinessName(e.target.value)}/>
+                                                <label className='mb-2'>Business Name</label>
+                                                <input type="text" className="form-control" placeholder='Full Name/Business Name' value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
                                             </div>
 
-                                            <div className="form-group col-md-6">
+                                            <div className="form-group col-md-12">
                                                 <label className='mb-2'>Business Type</label>
-                                                <Select options={businessTypeList} className='form-control' classNamePrefix="react-select" placeholder="Business Type" value={businessTypeList.find((option)=> option.value === businessType)} onChange={(selectedOption)=>setBusinessType(selectedOption?.value)} />
+                                                <Select options={businessTypeList} className='form-control' classNamePrefix="react-select" placeholder="Business Type" value={businessTypeList.find((option) => option.value === businessType)} onChange={(selectedOption) => setBusinessType(selectedOption?.value)} />
                                             </div>
+
+
+                                            {businessType === 'Other' && <div className="form-group col-md-12">
+                                                <label className="mb-7">Description</label>
+                                                <textarea
+                                                    className="form-control h-20"
+                                                    placeholder="Enter a short description (max 40 characters)"
+                                                    rows={4}
+                                                    maxLength={40}
+                                                    value={description}
+                                                    onChange={(e) => setDescription(e.target.value)}
+                                                ></textarea>
+                                            </div>}
 
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>Email Address</label>
@@ -203,12 +339,12 @@ export default function SubmitProperty() {
 
                                             </div>
 
-                                            <div className="form-group col-md-6">
+                                            {/* <div className="form-group col-md-6">
                                                 <label className='mb-2'>Areas of Expertise</label>
                                                 <Select options={expertiseList} className="form-control" classNamePrefix="react-select" placeholder="Areas of Expertise" value={expertiseList.find((option) => option.value === areaOfExpertise)} onChange={(selectedOption) => setAreaOfExpertise(selectedOption?.value)} />
-                                            </div>
+                                            </div> */}
 
-                                            <div className="form-group col-md-6">
+                                            {/* <div className="form-group col-md-6">
                                                 <label className='mb-2'>License/Registration Number</label>
                                                 <input type="text" className="form-control" value={license} onChange={(e)=>setLicense(e.target.value)} />
                                             </div>
@@ -216,11 +352,11 @@ export default function SubmitProperty() {
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>For mobile practitioners - Coverage Postal code</label>
                                                 <input type="text" className="form-control" value={postalCode} onChange={(e)=>setPostalCode(e.target.value)}/>
-                                            </div>
+                                            </div> */}
 
                                             <div className="form-group col-md-12">
                                                 <label className='mb-2'>Banking Details</label>
-                                                <input type="text" className="form-control" placeholder='Banking Details' value={bankingDetails} onChange={(e)=>setBankingDetails(e.target.value)}/>
+                                                <input type="text" className="form-control" placeholder='Banking Details' value={bankingDetails} onChange={(e) => setBankingDetails(e.target.value)} />
 
                                             </div>
                                         </div>
@@ -232,286 +368,176 @@ export default function SubmitProperty() {
                                     <div className="submit-section">
                                         <div className="row">
                                             <div className="form-group col-md-6">
-                                                <label className='mb-2'>Address</label>
-                                                <input type="text" className="form-control" value={merchantAddress} onChange={(e)=>setMerchantAddress(e.target.value)}/>
+                                                <label className='mb-2'>Street Address</label>
+                                                <input type="text" className="form-control" value={merchantAddress} onChange={(e) => setMerchantAddress(e.target.value)} />
                                             </div>
                                             <div className="form-group col-md-6">
                                                 <label className='mb-2'>City</label>
-                                                <input type="text" className="form-control" value={merchantCity} onChange={(e)=>setMerchantCity(e.target.value)}/>
+                                                <input type="text" className="form-control" value={merchantCity} onChange={(e) => setMerchantCity(e.target.value)} />
                                             </div>
                                             <div className="form-group col-md-6">
-                                                <label className='mb-2'>State</label>
-                                                <input type="text" className="form-control" value={merchantState} onChange={(e)=>setMerchantState(e.target.value)}/>
+                                                <label className='mb-2'>Province/State</label>
+                                                <input type="text" className="form-control" value={merchantState} onChange={(e) => setMerchantState(e.target.value)} />
                                             </div>
                                             <div className="form-group col-md-6">
-                                                <label className='mb-2'>Zip Code</label>
-                                                <input type="text" className="form-control" value={merchantZipCode} onChange={(e)=>setMerchantZipCode(e.target.value)}/>
+                                                <label className='mb-2'>Postal Code / Zip Code (For mobile practitioners, this is their main location or office)</label>
+                                                <input type="text" className="form-control" value={merchantZipCode} onChange={(e) => setMerchantZipCode(e.target.value)} />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="form-submit">
-                                    <h3>Upload Documents</h3>
-                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
-                                        {/* Label on the left */}
-                                        <label className="mb-0" style={{ minWidth: '150px' }}>
-                                            Photos of Treatment Space
-                                        </label>
-
-                                        {/* Upload box on the right */}
-                                        <div
-                                            className="dropzone dz-clickable primary-dropzone flex-grow-1"
-                                            style={{
-                                                position: 'relative',
-                                                height: '60px',
-                                                minHeight: '60px',
-                                                border: '2px dashed #ccc',
-                                                borderRadius: '10px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                backgroundColor: '#f9f9f9',
-                                                overflow: 'hidden'
-                                            }}
+                                    <h3>Practitioner Details & Specializations</h3>
+                                    {(businessType !== 'Home-Based Practice' && businessType !== "Mobile Practitioner") && <div className="form-group col-md-12 d-flex justify-content-between align-items-center mb-3">
+                                        <ul className="nav nav-tabs">
+                                            {tabs.map((tab) => (
+                                                <li key={tab.id} className="nav-item">
+                                                    <button
+                                                        className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
+                                                        onClick={() => setActiveTab(tab.id)}
+                                                    >
+                                                        Practitioner {tab.id}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <button
+                                            type="button"
+                                            className="btn btn-sm btn-outline-primary"
+                                            onClick={addTab}
                                         >
-                                            <input
-                                                type="file"
-                                                name='treatmentSpace'
-                                                onChange={handleFileChange}
-                                                style={{
-                                                    position: 'absolute',
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    opacity: 0,
-                                                    cursor: 'pointer',
-                                                    zIndex: 2
-                                                }}
-                                            />
+                                            + Add Practitioner
+                                        </button>
+                                    </div>}
 
-                                            {treatmentSpace ? (
-                                                <div className="dz-image" style={{ zIndex: 1 }}>
-                                                    <img
-                                                        src={treatmentSpace}
-                                                        alt={treatmentSpace}
-                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                    <div>
+                                        <div className="form-group col-md-12">
+                                            <label className='mb-2'>Practitioner Name</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder='Practitioner Name'
+                                                value={tabData[activeTab]?.practitionerName || ''}
+                                                onChange={(e) => handleTabInputChange('practitionerName', e.target.value)}
+                                            />
+                                            <div className='row'>
+                                                <div className="form-group col-md-6">
+                                                    <label className='mb-2'>Areas of Expertise</label>
+                                                    <Select
+                                                        isMulti
+                                                        options={expertiseList}
+                                                        className="form-control"
+                                                        classNamePrefix="react-select"
+                                                        placeholder="Areas of Expertise"
+                                                        value={expertiseList.filter(option =>
+                                                            tabData[activeTab]?.areaOfExpertise?.includes(option.value)
+                                                        )}
+                                                        onChange={(selectedOptions) =>
+                                                            handleTabInputChange(
+                                                                'areaOfExpertise',
+                                                                selectedOptions ? selectedOptions.map(option => option.value) : []
+                                                            )
+                                                        }
+                                                    />
+
+                                                </div>
+                                                <div className="form-group col-md-6">
+                                                    <label className='mb-2'>License/Registration Number</label>
+                                                    <input type="text" className="form-control" placeholder='License No' value={tabData[activeTab]?.license || ''} onChange={(e) => handleTabInputChange('license', e.target.value)}
                                                     />
                                                 </div>
-                                            ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
-                                                    <p className="mb-0 mt-2">Click or Drag to Upload</p>
-                                                </div>
-                                            )}
+                                            </div>
                                         </div>
-                                    </div>
+                                        {(['treatmentSpace', 'insurance', 'governmentId', 'qualification', 'profilePicture'] as (keyof PractitionerData)[]).map((field) => (
+                                            <div
+                                                key={field}
+                                                className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3"
+                                            >
+                                                <label className="mb-0" style={{ minWidth: '180px', textTransform: 'capitalize' }}>
+                                                    {field === 'profilePicture'
+                                                        ? 'Profile Picture'
+                                                        : field === 'governmentId'
+                                                            ? 'Government ID'
+                                                            : field === 'treatmentSpace'
+                                                                ? 'Photos of Treatment Space'
+                                                                : field === 'qualification'
+                                                                    ? 'Proof of Qualification'
+                                                                    : field}
+                                                </label>
 
-                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
-                                        {/* Label on the left */}
-                                        <label className="mb-0" style={{ minWidth: '150px' }}>
-                                            Insurance
-                                        </label>
+                                                <div
+                                                    className="dropzone dz-clickable primary-dropzone flex-grow-1"
+                                                    style={{
+                                                        position: 'relative',
+                                                        height: '60px',
+                                                        minHeight: '60px',
+                                                        border: '2px dashed #ccc',
+                                                        borderRadius: '10px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        backgroundColor: '#f9f9f9',
+                                                    }}
+                                                >
+                                                    <UploadButton
+                                                        endpoint="practitionerMedia" // this must match your backend route key
 
-                                        {/* Upload box on the right */}
-                                        <div
-                                            className="dropzone dz-clickable primary-dropzone flex-grow-1"
-                                            style={{
-                                                position: 'relative',
-                                                height: '60px',
-                                                minHeight: '60px',
-                                                border: '2px dashed #ccc',
-                                                borderRadius: '10px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                backgroundColor: '#f9f9f9'
-                                            }}
-                                        >
-                                            <input
-                                                type="file"
-                                                name="insurance"
-                                                onChange={handleFileChange}
-                                                style={{
-                                                    position: 'absolute',
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    opacity: 0,
-                                                    cursor: 'pointer',
-                                                    zIndex: 2
-                                                }}
-                                            />
-
-                                            {insurance ? (
-                                                <div className="dz-image" style={{ zIndex: 1 }}>
-                                                    <img
-                                                        src={insurance}
-                                                        alt={insurance}
-                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
+                                                        onClientUploadComplete={(res) => {
+                                                            console.log("Upload complete", res);
+                                                            const uploadedUrl = res?.[0]?.ufsUrl;
+                                                            if (uploadedUrl) {
+                                                                setTabData((prev) => ({
+                                                                    ...prev,
+                                                                    [activeTab]: {
+                                                                        ...prev[activeTab],
+                                                                        [field]: uploadedUrl, // or insurance, etc.
+                                                                    },
+                                                                }));
+                                                            }
+                                                        }}
+                                                        onUploadError={(error) => {
+                                                            console.error("Upload failed", error);
+                                                        }}
                                                     />
+
+                                                    {tabData[activeTab]?.[field] ? (
+                                                        <div className="dz-image" style={{ zIndex: 1 }}>
+                                                            <img
+                                                                src={tabData[activeTab][field]}
+                                                                alt={field}
+                                                                style={{
+                                                                    width: '100px',
+                                                                    height: '100px',
+                                                                    borderRadius: '10px',
+                                                                    objectFit: 'cover',
+                                                                    padding: '0 10px',
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    ) : (
+                                                        <div
+                                                            className="dz-default dz-message text-center"
+                                                            style={{
+                                                                display: 'flex',
+                                                                alignItems: 'baseline',
+                                                                zIndex: 1,
+                                                            }}
+                                                        >
+                                                            <i
+                                                                className="fa-solid fa-images"
+                                                                style={{
+                                                                    fontSize: '24px',
+                                                                    color: '#888',
+                                                                    paddingRight: '10px',
+                                                                }}
+                                                            ></i>
+                                                            <p className="mb-0 mt-2">Click or Drag to Upload</p>
+                                                        </div>
+                                                    )}
                                                 </div>
-                                            ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
-                                                    <p className="mb-0 mt-2">Click or Drag to Upload</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
-                                        {/* Label on the left */}
-                                        <label className="mb-0" style={{ minWidth: '150px' }}>
-                                            Government issued ID
-                                        </label>
-
-                                        {/* Upload box on the right */}
-                                        <div
-                                            className="dropzone dz-clickable primary-dropzone flex-grow-1"
-                                            style={{
-                                                position: 'relative',
-                                                height: '60px',
-                                                minHeight: '60px',
-                                                border: '2px dashed #ccc',
-                                                borderRadius: '10px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                backgroundColor: '#f9f9f9'
-                                            }}
-                                        >
-                                            <input
-                                                type="file"
-                                                name="governmentId"
-                                                onChange={handleFileChange}
-                                                style={{
-                                                    position: 'absolute',
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    opacity: 0,
-                                                    cursor: 'pointer',
-                                                    zIndex: 2
-                                                }}
-                                            />
-
-                                            {governmentId ? (
-                                                <div className="dz-image" style={{ zIndex: 1 }}>
-                                                    <img
-                                                        src={governmentId}
-                                                        alt={governmentId}
-                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
-                                                    <p className="mb-0 mt-2">Click or Drag to Upload</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
-                                        {/* Label on the left */}
-                                        <label className="mb-0" style={{ minWidth: '150px' }}>
-                                            Proof of Qualification
-                                        </label>
-
-                                        {/* Upload box on the right */}
-                                        <div
-                                            className="dropzone dz-clickable primary-dropzone flex-grow-1"
-                                            style={{
-                                                position: 'relative',
-                                                height: '60px',
-                                                minHeight: '60px',
-                                                border: '2px dashed #ccc',
-                                                borderRadius: '10px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                backgroundColor: '#f9f9f9'
-                                            }}
-                                        >
-                                            <input
-                                                type="file"
-                                                name="qualification"
-                                                onChange={handleFileChange}
-                                                style={{
-                                                    position: 'absolute',
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    opacity: 0,
-                                                    cursor: 'pointer',
-                                                    zIndex: 2
-                                                }}
-                                            />
-
-                                            {qualification ? (
-                                                <div className="dz-image" style={{ zIndex: 1 }}>
-                                                    <img
-                                                        src={qualification}
-                                                        alt={qualification}
-                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
-                                                    <p className="mb-0 mt-2">Click or Drag to Upload</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
-                                        {/* Label on the left */}
-                                        <label className="mb-0" style={{ minWidth: '150px' }}>
-                                            Logo or profile picture
-                                        </label>
-
-                                        {/* Upload box on the right */}
-                                        <div
-                                            className="dropzone dz-clickable primary-dropzone flex-grow-1"
-                                            style={{
-                                                position: 'relative',
-                                                height: '60px',
-                                                minHeight: '60px',
-                                                border: '2px dashed #ccc',
-                                                borderRadius: '10px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                backgroundColor: '#f9f9f9'
-                                            }}
-                                        >
-                                            <input
-                                                type="file"
-                                                name="profilePicture"
-                                                onChange={handleFileChange}
-                                                style={{
-                                                    position: 'absolute',
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    opacity: 0,
-                                                    cursor: 'pointer',
-                                                    zIndex: 2
-                                                }}
-                                            />
-
-                                            {profilePicture ? (
-                                                <div className="dz-image" style={{ zIndex: 1 }}>
-                                                    <img
-                                                        src={profilePicture}
-                                                        alt={profilePicture}
-                                                        style={{ width: '100px', padding: '0px 10px', height: '100px', borderRadius: '10px', objectFit: 'cover' }}
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <div className="dz-default dz-message text-center" style={{ display: "flex", alignItems: "baseline", zIndex: 1 }}>
-                                                    <i className="fa-solid fa-images" style={{ fontSize: '24px', color: '#888', paddingRight: '10px' }}></i>
-                                                    <p className="mb-0 mt-2">Click or Drag to Upload</p>
-                                                </div>
-                                            )}
-                                        </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
 
@@ -519,7 +545,7 @@ export default function SubmitProperty() {
 
 
                                 <div className="form-group col-lg-12 col-md-12">
-                                    <button className="btn btn-primary fw-medium px-5" type="button"onClick={handleMerchantFormSubmit}>Submit & Preview</button>
+                                    <button className="btn btn-primary fw-medium px-5" type="button" onClick={handleMerchantFormSubmit}>Submit & Preview</button>
                                 </div>
                             </div>
                         </div>

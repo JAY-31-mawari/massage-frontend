@@ -11,6 +11,7 @@ import users from '../../assets/img/svg/users.svg'
 import addImg from '../../assets/img/svg/add.svg'
 import bar from '../../assets/img/svg/bar.svg'
 import loginImg from '../../assets/img/svg/login.svg'
+import axios from 'axios';
 
 export default function Navbar({transparent}:{transparent:any}) {
     const [activeMenu, setActiveMenu] = useState<{[key: string]: { [key: string]: boolean };}>({});
@@ -19,11 +20,49 @@ export default function Navbar({transparent}:{transparent:any}) {
     const [login, setLogin] = useState<boolean>(false);
     const [property, setProperty] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useState<number>(1)
+    const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('')
 
     let[scroll,setScroll] = useState<boolean>(false)
 
     const location = useLocation(); 
     const current = location.pathname
+
+    const validateEmail = (email: string) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    const handleEmailChange = (e: any) => {
+        const value = e.target.value
+        setEmail(value)
+
+        if (value === '') {
+            setEmailError('Email is required')
+        } else if (!validateEmail(value)) {
+            setEmailError('Please enter a valid email address')
+        } else {
+            setEmailError('')
+        }
+    }
+
+    const checkAccountExist = async () => {
+        try {
+
+            const res = await axios.post('https://message-booking.onrender.com/user/exist', {email});
+            console.log("hello:world", res)
+            if (res.status === 201 || res.status === 200) {
+                console.log('Data submitted successfully:', res.data);
+                alert("user account exists")
+                setEmail("")
+            } else {
+                console.error('Unexpected status:', res.status);
+            }
+        } catch (error) {
+            alert("user not found")
+            console.error('Error submitting data:', error);
+        }
+    }
 
     const handleMouseEnter = (menu: string, submenu?: string) => {
         setActiveMenu((prev) => ({
@@ -217,7 +256,7 @@ export default function Navbar({transparent}:{transparent:any}) {
                         <ul className="nav-menu nav-menu-social align-to-right d-none d-lg-inline-flex">
                             
                             <li>
-                                <Link to="#" data-bs-toggle="modal" data-bs-target="#login" className="fw-medium text-muted-2" onClick={()=>setLogin(!login)}>
+                                <Link to="#" className="fw-medium text-muted-2" onClick={() => setLogin(!login)}>
                                     <span className="svg-icon svg-icon-2hx me-1">
                                         <svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.3" d="M16.5 9C16.5 13.125 13.125 16.5 9 16.5C4.875 16.5 1.5 13.125 1.5 9C1.5 4.875 4.875 1.5 9 1.5C13.125 1.5 16.5 4.875 16.5 9Z" fill="currentColor"/>
@@ -279,41 +318,16 @@ export default function Navbar({transparent}:{transparent:any}) {
                                 <form>
                                 
                                     <div className="form-floating mb-3">
-                                        <input type="email" className="form-control" placeholder="name@example.com"/>
-                                        <label>Email address</label>
-                                    </div>
-                                    
-                                    <div className="form-floating mb-3">
-                                        <input type="password" className="form-control" placeholder="Password"/>
-                                        <label>Password</label>
-                                    </div>
-                                    
-                                    <div className="form-group mb-3">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="flex-shrink-0 flex-first">
-                                                <div className="form-check form-check-inline">
-                                                    <input className="form-check-input" type="checkbox" id="save-pass" value="option1"/>
-                                                    <label className="form-check-label" htmlFor="save-pass">Save Password</label>
-                                                </div>	
-                                            </div>
-                                            <div className="flex-shrink-0 flex-first">
-                                                <Link to="#" className="link fw-medium">Forgot Password?</Link>	
-                                            </div>
-                                        </div>
+                                        <input type="text" className={`form-control ${emailError ? 'is-invalid' : ''}`} placeholder='Email Address' value={email} onChange={handleEmailChange} />
+                                        <label>Email</label>
+                                        {emailError && <div className="invalid-feedback">{emailError}</div>}
                                     </div>
                                     
                                     <div className="form-group">
-                                        <button type="button" className="btn btn-lg btn-primary fw-medium full-width rounded-2">LogIn</button>
+                                        <button type="button" className="btn btn-lg btn-primary fw-medium full-width rounded-2" onClick={checkAccountExist}>Submit</button>
                                     </div>
                                 
                                 </form>
-                            </div>
-                            <div className="modal-divider"><span>Or login via</span></div>
-                            <div className="social-login mb-3">
-                                <ul>
-                                    <li><Link to="#" className="btn connect-fb"><TiSocialFacebook className="ti-facebook" style={{width:'25px' , height:'25px'}}/>Facebook</Link></li>
-                                    <li><Link to="#" className="btn connect-google"><TiSocialGooglePlus  className="ti-google" style={{width:'25px' , height:'25px'}}/>Google+</Link></li>
-                                </ul>
                             </div>
                             <div className="text-center">
                                 <p className="mt-4">Have't Any Account? <Link to="/create-account" className="link fw-medium">Acreate An Account</Link></p>
