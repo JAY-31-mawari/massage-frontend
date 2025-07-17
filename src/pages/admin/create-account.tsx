@@ -61,7 +61,7 @@ export default function CreateAccount() {
                 phone
             }
 
-            const res = await axios.post('https://message-booking.onrender.com/user', userPayload);
+            const res = await axios.post(global.config.ROOTURL.prod + '/user', userPayload);
             console.log("hello:world", res)
             
             if (res.status === 201 || res.status === 200) {

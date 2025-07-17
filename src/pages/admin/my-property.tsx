@@ -1,15 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import UserNav from '../../components/navbar/user-nav'
 import AdminSidebar from '../../components/admin-sidebar'
 import Footer from '../../components/footer'
 import FooterTop from '../../components/footer-top'
-
+import axios from 'axios'
+import { getStorageItem } from '../../utils/sessionStorage'
 import { userProperty } from '../../data/property'
+import { useUserStore } from '../../store/userStore'
 
 export default function MyProperty() {
     let [show, setShow] = useState<boolean>(false)
+    const userData = useUserStore((state)=>state.user)
+    // const [userData, setUserData] = useState<any>(JSON.parse(getStorageItem('user-data')))
+    const [uid, setUid] = useState(getStorageItem("uid"))
+    console.log(userData)
+    const [practitioners, setPractitioners] = useState<any>([])
+
+    const fetchPractitionersByBusinessId = async() => {
+        const practitionerRes = await axios.get(global.config.ROOTURL.prod + `/practitioner/${uid}`)
+        setPractitioners(practitionerRes.data.data)
+        console.log(practitionerRes.data.data)
+    }
+
+    useEffect(()=>{
+        if(userData?._id && userData?.businessName){
+            fetchPractitionersByBusinessId()
+        }
+    }, [])
+    
   return (
     <>
         <UserNav/>
@@ -42,27 +62,27 @@ export default function MyProperty() {
                         <div className="dashboard-wraper">
                         
                             <div className="form-submit mb-4">	
-                                <h4>My Property</h4>
+                                <h4>My Practitioners</h4>
                             </div>
                             
                             <div className="row">
-                                {userProperty.map((item,index)=>{
+                                {practitioners.map((item:any)=>{
                                     return(
-                                        <div className="col-md-12 col-sm-12 col-md-12" key={index}>
+                                        <div className="col-md-12 col-sm-12 col-md-12" key={item?._id}>
                                             <div className="singles-dashboard-list">
                                                 <div className="sd-list-left">
-                                                    <img src={item.image} className="img-fluid" alt="" />
+                                                    <img src={item?.profilePicture} className="img-fluid" alt="" />
                                                 </div>
                                                 <div className="sd-list-right">
-                                                    <h4 className="listing_dashboard_title"><Link to="#" className="text-primary">My List property Name</Link></h4>
+                                                    <h4 className="listing_dashboard_title"><Link to="#" className="text-primary">{item?.practitionerName}</Link></h4>
+                                                    {/* <div className="user_dashboard_listed">
+                                                        Price: from $ {item?.areaOfExpertise[0]} month
+                                                    </div> */}
                                                     <div className="user_dashboard_listed">
-                                                        Price: from $ {item.value} month
+                                                        Listed in <Link to="#" className="text-primary"></Link> and <Link to="#" className="text-primary">{userData?.businessName}</Link>
                                                     </div>
                                                     <div className="user_dashboard_listed">
-                                                        Listed in <Link to="#" className="text-primary">Rentals</Link> and <Link to="#" className="text-primary">Apartments</Link>
-                                                    </div>
-                                                    <div className="user_dashboard_listed">
-                                                        City: <Link to="#" className="text-primary">{item.city}</Link> , {item.size}
+                                                        Area of Expertise: <Link to="#" className="text-primary">{item?.areaOfExpertise[0]}</Link>
                                                     </div>
                                                     <div className="action">
                                                         <Link to="#" title="Edit"><i className="fa-solid fa-pen-to-square"></i></Link>

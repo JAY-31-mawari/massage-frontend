@@ -16,6 +16,7 @@ import PropertyDetail from '../../components/property-detail';
 import DetailSidebar from '../../components/detail-sidebar';
 import FooterTop from '../../components/footer-top';
 import Footer from '../../components/footer';
+import { useMerchantStore } from '../../store/merchantStore';
 
 import { propertyData } from '../../data/data';
 
@@ -34,6 +35,8 @@ export default function SinglePropertyOne() {
     let params = useParams()
     let id:any = params.id
     let data = propertyData.find((item:any)=>item.id === parseInt(id))
+
+    const merchant = useMerchantStore((state) => state.merchant)
   return (
     <>
         <Navbar transparent={false}/>   
@@ -57,9 +60,9 @@ export default function SinglePropertyOne() {
                         <div className="property_block_wrap style-2 p-4">
                             <div className="prt-detail-title-desc">
                                 <span className="label text-light bg-success">For Sale</span>
-                                <h3 className='mt-3'>{data?.name ? data?.name : 'Jannat Graynight Mood In Siver Colony, London'}</h3>
-                                <span><i className="lni-map-marker"></i> 778 Country St. Panama City, FL</span>
-                                <h3 className="prt-price-fix text-primary mt-2">$7,600<sub>/month</sub></h3>
+                                <h3 className='mt-3'>{merchant?.businessName ? merchant?.businessName : 'Jannat Graynight Mood In Siver Colony, London'}</h3>
+                                <span><i className="lni-map-marker"></i>{merchant?.business_email}</span>
+                                <h3 className="prt-price-fix text-primary mt-2">{merchant?.business_phone}</h3>
                                 <div className="list-fx-features">
                                     <div className="listing-card-info-icon">
                                         <div className="inc-fleat-icon me-1"><img src={bed} width="13" alt=""/></div>3 Beds

@@ -11,7 +11,10 @@ import users from '../../assets/img/svg/users.svg'
 import addImg from '../../assets/img/svg/add.svg'
 import bar from '../../assets/img/svg/bar.svg'
 import loginImg from '../../assets/img/svg/login.svg'
+import toast from 'react-hot-toast';
 import axios from 'axios';
+import { setStorageItem } from '../../utils/sessionStorage';
+import { useUserStore } from '../../store/userStore';
 
 export default function Navbar({transparent}:{transparent:any}) {
     const [activeMenu, setActiveMenu] = useState<{[key: string]: { [key: string]: boolean };}>({});
@@ -22,6 +25,7 @@ export default function Navbar({transparent}:{transparent:any}) {
     const [activeTab, setActiveTab] = useState<number>(1)
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('')
+    const updateUserDetails = useUserStore((state) => state.fullUpdate)
 
     let[scroll,setScroll] = useState<boolean>(false)
 
@@ -47,13 +51,21 @@ export default function Navbar({transparent}:{transparent:any}) {
     }
 
     const checkAccountExist = async () => {
+        console.log(global.config.ROOTURL.prod)
         try {
-
-            const res = await axios.post('https://message-booking.onrender.com/user/exist', {email});
+            const res = await axios.post(global.config.ROOTURL.prod +'/user/exist', {email});
             console.log("hello:world", res)
             if (res.status === 201 || res.status === 200) {
                 console.log('Data submitted successfully:', res.data);
-                alert("user account exists")
+                setLogin(!login)
+                setStorageItem("uid", res?.data?.data?._id)
+                setStorageItem("fullName", res?.data?.data?.businessName ? res.data.data.businessName : res.data.data?.fullName)
+                setStorageItem("userName", res?.data?.data?.businessName ? res.data.data.businessName : res.data.data?.userName)
+                setStorageItem("email", res?.data?.data?.business_email ? res.data.data?.business_email : res.data.data?.email)
+                setStorageItem("phoneNo", res?.data?.data?.business_phone ? res.data.data.business_phone : res.data.data?.phone) 
+                setStorageItem("user-data", JSON.stringify(res.data.data))
+                updateUserDetails(res.data.data)
+                toast.success("user account exists")
                 setEmail("")
             } else {
                 console.error('Unexpected status:', res.status);
@@ -330,7 +342,7 @@ export default function Navbar({transparent}:{transparent:any}) {
                                 </form>
                             </div>
                             <div className="text-center">
-                                <p className="mt-4">Have't Any Account? <Link to="/create-account" className="link fw-medium">Acreate An Account</Link></p>
+                                <p className="mt-4">Have't Any Account? <Link to="/create-account" className="link fw-medium">create An Account</Link></p>
                             </div>
                         </div>
                     </div>

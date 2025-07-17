@@ -11,6 +11,7 @@ import user1 from '../assets/img/user-1.jpg'
 import user5 from '../assets/img/user-5.jpg'
 import edu from '../assets/img/edu.png'
 import food from '../assets/img/food.png'
+import DateTimeComponent from './date-time-appointment';
 
 import { galleryImg, propertyFeature } from '../data/property'
 
@@ -52,22 +53,7 @@ export default function PropertyDetail() {
   return (
     <>
         <div className="property_block_wrap style-2">
-            <div className="property_block_wrap_header">
-                <Link to="#" onClick={()=>setOpen(!open)} className={open ? '' : 'collapsed'}><h4 className="property_block_title">Detail & Features</h4></Link>
-            </div>
-            <div id="clOne" className={`panel-collapse collapse ${open ? 'show' : ''}`}>
-                <div className="block-body">
-                    <ul className="deatil_features">
-                        {propertyFeature.map((item:any, index:number)=>{
-                            return(
-                                <li key={index}><strong>{item.title}</strong>{item.value}</li>
-                            )
-                        })}
-                        
-                    </ul>
-                </div>
-            </div>
-            
+            <DateTimeComponent />
         </div>
         
         <div className="property_block_wrap style-2">
@@ -82,7 +68,7 @@ export default function PropertyDetail() {
             </div>
         </div>
         
-        <div className="property_block_wrap style-2">
+        {/* <div className="property_block_wrap style-2">
             <div className="property_block_wrap_header">
                 <Link to="#" onClick={()=>setOpen3(!open3)} className={open3 ? '' : 'collapsed'}><h4 className="property_block_title">Ameneties</h4></Link>
             </div>
@@ -104,7 +90,7 @@ export default function PropertyDetail() {
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> */}
         
         <div className="property_block_wrap style-2">
             <div className="property_block_wrap_header">
@@ -234,7 +220,7 @@ export default function PropertyDetail() {
             
         </div>
         
-        <div className="rating-overview">
+        {/* <div className="rating-overview">
             <div className="rating-overview-box">
                 <span className="rating-overview-box-total">4.2</span>
                 <span className="rating-overview-box-percent">out of 5.0</span>
@@ -281,9 +267,9 @@ export default function PropertyDetail() {
                         </span>
                     </div>
             </div>
-        </div>
+        </div> */}
         
-        <div className="property_block_wrap style-2">
+        {/* <div className="property_block_wrap style-2">
             <div className="property_block_wrap_header">
                 <Link to="#" onClick={()=>setOpen8(!open8)} className={open8 ? '' : 'collapsed'}><h4 className="property_block_title">102 Reviews</h4></Link>
             </div>
@@ -334,9 +320,9 @@ export default function PropertyDetail() {
                     <Link to="#" className="reviews-checked text-primary"><i className="fas fa-arrow-alt-circle-down mr-2"></i>See More Reviews</Link>
                 </div>
             </div>
-        </div>
+        </div> */}
         
-        <div className="property_block_wrap style-2">
+        {/* <div className="property_block_wrap style-2">
             <div className="property_block_wrap_header">
                 <Link to="#" onClick={()=>setOpen9(!open9)} className={open9 ? '' : 'collapsed'}><h4 className="property_block_title">Nearby</h4></Link>
             </div>
@@ -451,9 +437,9 @@ export default function PropertyDetail() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> */}
         
-        <div className="property_block_wrap style-2">
+        {/* <div className="property_block_wrap style-2">
             <div className="property_block_wrap_header">
                 <Link to="#" onClick={()=>setOpen10(!open10)} className={open10 ? '' : 'collapsed'}><h4 className="property_block_title">Write a Review</h4></Link>
             </div>
@@ -490,7 +476,7 @@ export default function PropertyDetail() {
                     </form>
                 </div>
             </div>
-        </div>
+        </div> */}
     </>
   )
 }

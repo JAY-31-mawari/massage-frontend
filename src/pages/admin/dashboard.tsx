@@ -5,9 +5,12 @@ import UserNav from '../../components/navbar/user-nav'
 import AdminSidebar from '../../components/admin-sidebar'
 import FooterTop from '../../components/footer-top'
 import Footer from '../../components/footer'
+import { useUserStore } from '../../store/userStore'
 
 export default function Dashboard() {
     let [show, setShow] = useState<boolean>(false)
+    const user = useUserStore((state) => state.user)
+    console.log("hello world jay amwarir here",user)
   return (
     <>
     <UserNav/>
@@ -68,7 +71,7 @@ export default function Dashboard() {
                             </div>	
                         </div>
                         
-                        <div className="col-lg-4 col-md-6 col-sm-12">
+                        {/* <div className="col-lg-4 col-md-6 col-sm-12">
                             <div className="dashboard-stat widget-4">
                                 <div className="dashboard-stat-content"><h4>30</h4> <span>Featured Remaining</span></div>
                                 <div className="dashboard-stat-icon"><i className="fa-solid fa-location-dot"></i></div>
@@ -87,7 +90,7 @@ export default function Dashboard() {
                                 <div className="dashboard-stat-content"><h4>2021-02-26</h4> <span>Ends On</span></div>
                                 <div className="dashboard-stat-icon"><i className="ti-user"></i></div>
                             </div>	
-                        </div>
+                        </div> */}
 
                     </div>
             
@@ -99,31 +102,36 @@ export default function Dashboard() {
                                 <div className="row">
                                 
                                     <div className="form-group col-md-6">
-                                        <label>Your Name</label>
-                                        <input type="text" className="form-control" value="Calvin Carlo"/>
+                                        <label>Full Name</label>
+                                        <input type="text" className="form-control" value={user?.fullName || user?.businessName} readOnly/>
+                                    </div>
+
+                                    <div className="form-group col-md-6">
+                                        <label>User Name</label>
+                                        <input type="text" className="form-control" value={user?.userName || user?.businessName} readOnly/>
                                     </div>
                                     
                                     <div className="form-group col-md-6">
                                         <label>Email</label>
-                                        <input type="email" className="form-control" value="Carlo77@gmail.com"/>
+                                        <input type="email" className="form-control" value={user?.email || user?.business_email} readOnly/>
                                     </div>
                                     
-                                    <div className="form-group col-md-6">
+                                    {/* <div className="form-group col-md-6">
                                         <label>Your Title</label>
                                         <input type="text" className="form-control" value="Web Designer"/>
-                                    </div>
+                                    </div> */}
                                     
                                     <div className="form-group col-md-6">
                                         <label>Phone</label>
-                                        <input type="text" className="form-control" value="123 456 5847"/>
+                                        <input type="text" className="form-control" value={user?.phone || user?.business_phone} readOnly/>
                                     </div>
                                     
-                                    <div className="form-group col-md-6">
+                                    {/* <div className="form-group col-md-6">
                                         <label>Address</label>
                                         <input type="text" className="form-control" value="522, Arizona, Canada"/>
-                                    </div>
+                                    </div> */}
                                     
-                                    <div className="form-group col-md-6">
+                                    {/* <div className="form-group col-md-6">
                                         <label>City</label>
                                         <input type="text" className="form-control" value="Montquebe"/>
                                     </div>
@@ -138,12 +146,12 @@ export default function Dashboard() {
                                     <div className="form-group col-md-12">
                                         <label>About</label>
                                         <textarea className="form-control">Maecenas quis consequat libero, a feugiat eros. Nunc ut lacinia tortor morbi ultricies laoreet ullamcorper phasellus semper</textarea>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
                         
-                        <div className="form-submit">	
+                        {/* <div className="form-submit">	
                             <h4>Social Accounts</h4>
                             <div className="submit-section">
                                 <div className="row">
@@ -171,7 +179,7 @@ export default function Dashboard() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

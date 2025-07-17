@@ -125,9 +125,9 @@ export default function Index() {
             </div>
         </div>
 
-        <section>
+        {/* <section>
             <HowItsWork/>
-        </section>
+        </section> */}
 
         <section className="bg-light">
             <div className="container">
@@ -135,7 +135,7 @@ export default function Index() {
                     <div className="col-xl-6 col-lg-7 col-md-10 text-center">
                         <div className="sec-heading center">
                             <h2>Explore Recent properties</h2>
-                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+                            {/* <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p> */}
                         </div>
                     </div>
                 </div>

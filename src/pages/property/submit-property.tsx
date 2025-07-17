@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import Select from 'react-select';
@@ -21,18 +21,12 @@ interface PractitionerData {
 }
 
 export default function SubmitProperty() {
-    const navigate = useNavigate();
-    const [profilePicture, setProfilePicture] = useState('')
-    const [governmentId, setGovernmentId] = useState('')
-    const [qualification, setQualification] = useState('')
-    const [treatmentSpace, setTreatmentSpace] = useState('')
-    const [insurance, setInsurance] = useState('')
+    const navigate = useNavigate()
     const [show, setShow] = useState<boolean>(false)
     const [businessName, setBusinessName] = useState('')
     const [businessType, setBusinessType] = useState<string | undefined>('')
     // const [areaOfExpertise, setAreaOfExpertise] = useState<string | undefined>('')
     // const [license, setLicense] = useState('')
-    const [postalCode, setPostalCode] = useState('')
     const [bankingDetails, setBankingDetails] = useState('')
     const [merchantAddress, setMerchantAddress] = useState('')
     const [merchantCity, setMerchantCity] = useState('')
@@ -188,14 +182,14 @@ export default function SubmitProperty() {
                 merchantZipCode
             }
 
-            const businessResponse = await axios.post('https://message-booking.onrender.com/business', businessPayload);
+            const businessResponse = await axios.post(global.config.ROOTURL.prod + '/business', businessPayload);
             if (businessResponse.status === 201 || businessResponse.status === 200) {
                 console.log('Data submitted successfully:', businessResponse.data);
 
                 for (const key of Object.keys(tabData)) {
                     const practitioner = tabData[Number(key)];
 
-                    const response = await axios.post("https://message-booking.onrender.com/practitioner", { ...practitioner, businessId: businessResponse?.data?.data?._id });
+                    const response = await axios.post(global.config.ROOTURL.prod + "/practitioner", { ...practitioner, businessId: businessResponse?.data?.data?._id });
                     console.log(`Practitioner ${key} submitted:`, response.data);
                 }
                 setBusinessName("")
