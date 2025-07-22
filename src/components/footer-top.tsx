@@ -10,10 +10,10 @@ export default function FooterTop({bg}:{bg:any}) {
                         
                         <div className="call-to-act">
                             <div className="call-to-act-head">
-                                <h3>Want to Become a Real Estate Agent?</h3>
+                                <h3>Want to Become a Practitioner?</h3>
                                 <span>We'll help you to grow your career and growth.</span>
                             </div>
-                            <Link to="#" className="btn btn-call-to-act">SignUp Today</Link>
+                            <Link to="/submit-property" className="btn btn-call-to-act">SignUp Today</Link>
                         </div>
                         
                     </div>

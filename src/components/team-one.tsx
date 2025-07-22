@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import { teamData } from '../data/data'
 
 export default function TeamOne() {
-  return (
+    return (
         <div className="row justify-content-center g-4">
-            {teamData.map((item,index)=>{
-                return(
+            {teamData.slice(0, 4).map((item, index) => {
+                return (
                     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-12" key={index}>
                         <div className="agents-grid card rounded-3 shadow">
                             <div className="agents-grid-wrap">
@@ -23,18 +23,18 @@ export default function TeamOne() {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div className="fr-grid-info d-flex align-items-center justify-content-between px-4 py-4">
                                 <div className="fr-grid-sder">
                                     <ul className="p-0">
                                         <li><strong>Call:</strong><span className="fw-medium text-primary ms-2">{item.call}</span></li>
                                         <li>
                                             <div className="fr-can-rating">
-                                                <i className="fas fa-star fs-xs text-warning" style={{margin:"0px 2px"}}></i>
-                                                <i className="fas fa-star fs-xs text-warning" style={{margin:"0px 2px"}}></i>
-                                                <i className="fas fa-star fs-xs text-warning" style={{margin:"0px 2px"}}></i>
-                                                <i className="fas fa-star fs-xs text-warning" style={{margin:"0px 2px"}}></i>
-                                                <i className="fas fa-star fs-xs text-muted" style={{margin:"0px 2px"}}></i>
+                                                <i className="fas fa-star fs-xs text-warning" style={{ margin: "0px 2px" }}></i>
+                                                <i className="fas fa-star fs-xs text-warning" style={{ margin: "0px 2px" }}></i>
+                                                <i className="fas fa-star fs-xs text-warning" style={{ margin: "0px 2px" }}></i>
+                                                <i className="fas fa-star fs-xs text-warning" style={{ margin: "0px 2px" }}></i>
+                                                <i className="fas fa-star fs-xs text-muted" style={{ margin: "0px 2px" }}></i>
                                                 <span className="reviews_text fs-sm text-muted-2">({item.review})</span>
                                             </div>
                                         </li>
@@ -44,11 +44,11 @@ export default function TeamOne() {
                                     <div className="agent-email"><Link to="#" className="square--50 rounded text-danger bg-light-danger"><i className="fa-solid fa-envelope-circle-check"></i></Link></div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 )
             })}
         </div>
-  )
+    )
 }
