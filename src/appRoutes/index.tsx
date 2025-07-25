@@ -56,11 +56,16 @@ import CreateAccount from '../pages/admin/create-account';
 import EditAgent from '../pages/agents/edit-agent';
 import Faq from '../pages/faq';
 import SubmitPropertyDashboard from '../pages/admin/submit-property-dashboard';
+import ParlourMap from "../pages/property/mapbox";
+import Service1 from "../pages/services/services1";
+import Service2 from "../pages/services/services2";
+import Service3 from "../pages/services/services3";
+import Service4 from "../pages/services/services4";
 
 export function AppRoutes() {
     return (
         <Routes>
-            <Route path='/' element={<Index />} />
+            <Route path='/' element={<IndexSix />} />
             <Route path='/home-2' element={<IndexTwo />} />
             <Route path='/home-3' element={<IndexThree />} />
             <Route path='/home-4' element={<IndexFour />} />
@@ -73,6 +78,11 @@ export function AppRoutes() {
             <Route path='/home-11' element={<IndexEleven />} />
             <Route path='/video' element={<Video />} />
             <Route path='/map' element={<Map />} />
+
+            <Route path='/service/physiotherapy' element={<Service1 />} />
+            <Route path='/service/chiropractic' element={<Service2 />} />
+            <Route path='/service/massage' element={<Service3 />} />
+            <Route path='/service/acupuncture' element={<Service4 />} />
 
             <Route path='/list-layout-one' element={<ListLayoutOne />} />
             <Route path='/list-layout-two' element={<ListLayoutTwo />} />
@@ -110,6 +120,7 @@ export function AppRoutes() {
             <Route path='/change-password' element={<ChangePassword />} />
             <Route path='/compare-property' element={<CompareProperty />} />
             <Route path='/submit-property' element={<SubmitProperty />} />
+            <Route path='/mapbox' element={<ParlourMap />} />
             <Route path='/blog' element={<Blog />} />
             <Route path='/blog-detail' element={<BlogDetail />} />
             <Route path='/blog-detail/:id' element={<BlogDetail />} />

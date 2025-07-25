@@ -62,7 +62,6 @@ export default function SubmitProperty() {
     ];
     const businessTypeList = [
         { value: 'Clinic-Based Practice', label: 'Clinic-Based Practice' },
-        { value: 'Franchise Clinic', label: 'Franchise Clinic' },
         { value: 'Home-Based Practice', label: 'Home-Based Practice' },
         { value: 'Mobile Practitioner', label: 'Mobile Practitioner' },
         { value: 'Other', label: 'Other' }

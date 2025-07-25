@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import Navbar from '../../components/navbar/navbar'
 import Achievement from '../../components/achievement'
@@ -20,28 +20,11 @@ import oneImg from "../../assets/img/one.webp"
 import twoImg from "../../assets/img/two.webp"
 import threeImg from "../../assets/img/three.webp"
 import reviewsImg from "../../assets/img/reviews.webp"
-
-const services = [
-    {
-        title: "Physiotherapy",
-        image: physiotheraphy,
-    },
-    {
-        title: "Chiropractic Care",
-        image: chiropracticCare,
-    },
-    {
-        title: "Massage Therapy",
-        image: massage,
-    },
-    {
-        title: "Acupuncture",
-        image: acupuncture,
-    },
-];
+import { servicesData } from '../../data/servicesData'
 
 
 export default function IndexSix() {
+    const navigate = useNavigate()
     return (
         <>
             <Navbar transparent={false} />
@@ -72,7 +55,7 @@ export default function IndexSix() {
                                         </div>
                                         <div className="col-lg-3 col-md-3 col-sm-12">
                                             <div className="form-group">
-                                                <button type="button" className="btn btn-dark full-width">Search</button>
+                                                <button type="button" className="btn btn-dark full-width" onClick={()=>navigate("/mapbox")}>Search</button>
                                             </div>
                                         </div>
                                     </div>
@@ -93,8 +76,9 @@ export default function IndexSix() {
                         className="grid grid-cols-2 md:grid-cols-4 gap-5 w-full md:w-3/5"
                         style={{ display: "flex", justifyContent: "center" }}
                     >
-                        {services.map((service, index) => (
+                        {servicesData.map((service, index) => (
                             <div
+                                onClick={()=>navigate(`/service/${service.url}`)}
                                 key={index}
                                 className="bg-white rounded-lg p-4 shadow transition duration-300 ease-in-out hover:shadow-xl hover:brightness-110 text-center"
                             >
