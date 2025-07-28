@@ -321,7 +321,7 @@ export default function Navbar({ transparent }: { transparent: any }) {
                                 </span>
                             </span>
                             <div className="modal-body">
-                                <h4 className="modal-header-title">Log In</h4>
+                                <h4 className="modal-header-title">Sign In</h4>
                                 <div className="d-flex align-items-center justify-content-center mb-3">
                                     <span className="svg-icon text-primary svg-icon-2hx">
                                         <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
