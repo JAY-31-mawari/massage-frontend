@@ -73,7 +73,7 @@ export default function IndexSix() {
                 <div className="flex flex-row md:flex-row items-center justify-between gap-10">
                     {/* Left Side - Horizontal Service Grid */}
                     <div
-                        className="grid grid-cols-2 md:grid-cols-4 gap-5 w-full md:w-3/5"
+                        className="grid grid-cols-2 md:grid-cols-4 gap-5 w-full"
                         style={{ display: "flex", justifyContent: "center" }}
                     >
                         {servicesData.map((service, index) => (
