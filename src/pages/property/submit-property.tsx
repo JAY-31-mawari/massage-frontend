@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import Select from 'react-select';
@@ -9,6 +9,12 @@ import Footer from '../../components/footer';
 import { UploadButton } from '../../utils/uploadthing';
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
+import toast from 'react-hot-toast';
+
+interface LocationState {
+    lat: number | null;
+    lng: number | null;
+}
 
 interface PractitionerData {
     practitionerName: string;
@@ -88,6 +94,69 @@ export default function SubmitProperty() {
         { value: 'Mobile Practitioner', label: 'Mobile Practitioner' },
         { value: 'Other', label: 'Other' }
     ];
+
+
+    const [location, setLocation] = useState<LocationState>({ lat: 0, lng: 0 });
+    const [error, setError] = useState<string | null>(null);
+
+    const checkPermission = () => {
+        if (!navigator.permissions) {
+            toast.error("Permissions API not supported in this browser.");
+            return;
+        }
+
+        navigator.permissions.query({ name: "geolocation" }).then((status) => {
+            if (status.state === "granted") {
+                getLocation()
+                // You can directly call getLocation()
+            } else if (status.state === "prompt") {
+                getLocation()
+                // Next getLocation() will show prompt
+            } else if (status.state === "denied") {
+                console.log("permision denied go to browser url and change the location settings")
+                toast.success("please change the settings, go to url and under location tab, allow us to take you location to provide best services")
+                // Show UI: ask user to enable location in settings
+            }
+        });
+    };
+
+
+    const getLocation = () => {
+        if (!navigator.geolocation) {
+            toast.error("Geolocation is not supported by your browser");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position: GeolocationPosition) => {
+                const { latitude, longitude } = position.coords;
+
+                if (latitude && longitude) {
+                    setLocation({
+                        lat: latitude,
+                        lng: longitude,
+                    });
+                    setError(null);
+                } else {
+                    setError("Location data is incomplete");
+                    toast.error("Failed to retrieve valid latitude and longitude");
+                }
+            },
+            (err: GeolocationPositionError) => {
+                setError(err.message);
+                toast.error(err.message);
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0,
+            }
+        );
+    };
+
+    useEffect(() => {
+        checkPermission()
+    }, [])
 
     const validateEmail = (email: string) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -191,7 +260,7 @@ export default function SubmitProperty() {
 
     const handleMerchantFormSubmit = async () => {
         try {
-            const businessPayload = {
+            const businessPayload:any = {
                 businessName,
                 businessType,
                 business_email: email,
@@ -200,10 +269,15 @@ export default function SubmitProperty() {
                 merchantAddress,
                 merchantCity,
                 merchantState,
-                merchantZipCode
+                merchantZipCode,
+            }
+            
+            if(location.lat && location.lng){
+                businessPayload.location = location
             }
 
             const businessResponse = await axios.post(global.config.ROOTURL.prod + '/business', businessPayload);
+            return;
             if (businessResponse.status === 201 || businessResponse.status === 200) {
                 console.log('Data submitted successfully:', businessResponse.data);
 
