@@ -115,9 +115,6 @@ export default function SubmitProperty() {
                         lng: longitude,
                     });
                     setError(null);
-                } else {
-                    setError("Location data is incomplete");
-                    toast.error("Failed to retrieve valid latitude and longitude");
                 }
             },
             (err: GeolocationPositionError) => {
