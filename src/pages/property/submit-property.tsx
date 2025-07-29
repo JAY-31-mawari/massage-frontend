@@ -8,6 +8,7 @@ import FooterTop from '../../components/footer-top';
 import Footer from '../../components/footer';
 import { UploadButton } from '../../utils/uploadthing';
 import axios from 'axios';
+import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
 interface LocationState {
@@ -59,6 +60,27 @@ export default function SubmitProperty() {
             profilePicture: '',
         }
     });
+
+    const [currentStep, setCurrentStep] = useState(1);
+
+    // validations AFTER all state is declared
+    const isBasicInfoValid =
+        businessName &&
+        businessType &&
+        email &&
+        !emailError &&
+        phone &&
+        !phoneNoError &&
+        bankingDetails &&
+        (businessType !== "Other" || description);
+
+    const isBusinessAddressValid =
+        merchantAddress && merchantCity && merchantState && merchantZipCode;
+
+    const isPractitionerDetailsValid =
+        tabData[activeTab]?.practitionerName &&
+        tabData[activeTab]?.areaOfExpertise?.length > 0 &&
+        tabData[activeTab]?.license;
 
     const expertiseList = [
         { value: 'Physiotherapy', label: 'Physiotherapy' },
@@ -363,52 +385,63 @@ export default function SubmitProperty() {
                     <div className="row">
                         <div className="col-lg-12 col-md-12">
                             <div className="submit-page">
-                                <div className="form-submit">
-                                    <h3>Basic Information</h3>
-                                    <div className="submit-section">
-                                        <div className="row">
-                                            <div className="form-group col-md-12">
-                                                <label className='mb-2'>Business Name</label>
-                                                <input type="text" className="form-control" placeholder='Full Name/Business Name' value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
-                                            </div>
+                                <motion.div layout>
+                                    <AnimatePresence mode="wait">
+                                        {currentStep === 1 && (
+                                            <motion.div
+                                                key="step1"
+                                                initial={{ opacity: 0, x: -50 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: 50 }}
+                                                transition={{ duration: 0.4 }}
+                                                layout
+                                            >
+                                                <div className="form-submit">
+                                                    <h3>Basic Information</h3>
+                                                    <div className="submit-section">
+                                                        <div className="row">
+                                                            <div className="form-group col-md-12">
+                                                                <label className='mb-2'>Business Name</label>
+                                                                <input type="text" className="form-control" placeholder='Full Name/Business Name' value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
+                                                            </div>
 
-                                            <div className="form-group col-md-12">
-                                                <label className='mb-2'>Business Type</label>
-                                                <Select options={businessTypeList} className='form-control' classNamePrefix="react-select" placeholder="Business Type" value={businessTypeList.find((option) => option.value === businessType)} onChange={(selectedOption) => setBusinessType(selectedOption?.value)} />
-                                            </div>
+                                                            <div className="form-group col-md-12">
+                                                                <label className='mb-2'>Business Type</label>
+                                                                <Select options={businessTypeList} className='form-control' classNamePrefix="react-select" placeholder="Business Type" value={businessTypeList.find((option) => option.value === businessType)} onChange={(selectedOption) => setBusinessType(selectedOption?.value)} />
+                                                            </div>
 
 
-                                            {businessType === 'Other' && <div className="form-group col-md-12">
-                                                <label className="mb-7">Description</label>
-                                                <textarea
-                                                    className="form-control h-20"
-                                                    placeholder="Enter a short description (max 40 characters)"
-                                                    rows={4}
-                                                    maxLength={40}
-                                                    value={description}
-                                                    onChange={(e) => setDescription(e.target.value)}
-                                                ></textarea>
-                                            </div>}
+                                                            {businessType === 'Other' && <div className="form-group col-md-12">
+                                                                <label className="mb-7">Description</label>
+                                                                <textarea
+                                                                    className="form-control h-20"
+                                                                    placeholder="Enter a short description (max 40 characters)"
+                                                                    rows={4}
+                                                                    maxLength={40}
+                                                                    value={description}
+                                                                    onChange={(e) => setDescription(e.target.value)}
+                                                                ></textarea>
+                                                            </div>}
 
-                                            <div className="form-group col-md-6">
-                                                <label className='mb-2'>Email Address</label>
-                                                <input type="text" className={`form-control ${emailError ? 'is-invalid' : ''}`} placeholder='Email Address' value={email} onChange={handleEmailChange} />
-                                                {emailError && <div className="invalid-feedback">{emailError}</div>}
-                                            </div>
+                                                            <div className="form-group col-md-6">
+                                                                <label className='mb-2'>Email Address</label>
+                                                                <input type="text" className={`form-control ${emailError ? 'is-invalid' : ''}`} placeholder='Email Address' value={email} onChange={handleEmailChange} />
+                                                                {emailError && <div className="invalid-feedback">{emailError}</div>}
+                                                            </div>
 
-                                            <div className="form-group col-md-6">
-                                                <label className='mb-2'>Phone Number</label>
-                                                <input type="text" className={`form-control ${phoneNoError ? 'is-invalid' : ''}`} placeholder="Phone No" value={phone} onChange={handlePhoneNoChange} />
-                                                {phoneNoError && <div className="invalid-feedback">{phoneNoError}</div>}
+                                                            <div className="form-group col-md-6">
+                                                                <label className='mb-2'>Phone Number</label>
+                                                                <input type="text" className={`form-control ${phoneNoError ? 'is-invalid' : ''}`} placeholder="Phone No" value={phone} onChange={handlePhoneNoChange} />
+                                                                {phoneNoError && <div className="invalid-feedback">{phoneNoError}</div>}
 
-                                            </div>
+                                                            </div>
 
-                                            {/* <div className="form-group col-md-6">
+                                                            {/* <div className="form-group col-md-6">
                                                 <label className='mb-2'>Areas of Expertise</label>
                                                 <Select options={expertiseList} className="form-control" classNamePrefix="react-select" placeholder="Areas of Expertise" value={expertiseList.find((option) => option.value === areaOfExpertise)} onChange={(selectedOption) => setAreaOfExpertise(selectedOption?.value)} />
                                             </div> */}
 
-                                            {/* <div className="form-group col-md-6">
+                                                            {/* <div className="form-group col-md-6">
                                                 <label className='mb-2'>License/Registration Number</label>
                                                 <input type="text" className="form-control" value={license} onChange={(e)=>setLicense(e.target.value)} />
                                             </div>
@@ -418,199 +451,258 @@ export default function SubmitProperty() {
                                                 <input type="text" className="form-control" value={postalCode} onChange={(e)=>setPostalCode(e.target.value)}/>
                                             </div> */}
 
-                                            <div className="form-group col-md-12">
-                                                <label className='mb-2'>Banking Details</label>
-                                                <input type="text" className="form-control" placeholder='Banking Details' value={bankingDetails} onChange={(e) => setBankingDetails(e.target.value)} />
+                                                            <div className="form-group col-md-12">
+                                                                <label className='mb-2'>Banking Details</label>
+                                                                <input type="text" className="form-control" placeholder='Banking Details' value={bankingDetails} onChange={(e) => setBankingDetails(e.target.value)} />
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="form-submit">
-                                    <h3>Business Address</h3>
-                                    <div className="submit-section">
-                                        <div className="row">
-                                            <div className="form-group col-md-6">
-                                                <label className='mb-2'>Street Address</label>
-                                                <input type="text" className="form-control" value={merchantAddress} onChange={(e) => setMerchantAddress(e.target.value)} />
-                                            </div>
-                                            <div className="form-group col-md-6">
-                                                <label className='mb-2'>City</label>
-                                                <input type="text" className="form-control" value={merchantCity} onChange={(e) => setMerchantCity(e.target.value)} />
-                                            </div>
-                                            <div className="form-group col-md-6">
-                                                <label className='mb-2'>Province/State</label>
-                                                <input type="text" className="form-control" value={merchantState} onChange={(e) => setMerchantState(e.target.value)} />
-                                            </div>
-                                            <div className="form-group col-md-6">
-                                                <label className='mb-2'>Postal Code / Zip Code (For mobile practitioners, this is their main location or office)</label>
-                                                <input type="text" className="form-control" value={merchantZipCode} onChange={(e) => setMerchantZipCode(e.target.value)} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="form-submit">
-                                    <h3>Practitioner Details & Specializations</h3>
-                                    {(businessType !== 'Home-Based Practice' && businessType !== "Mobile Practitioner") && <div className="form-group col-md-12 d-flex justify-content-between align-items-center mb-3">
-                                        <ul className="nav nav-tabs">
-                                            {tabs.map((tab) => (
-                                                <li key={tab.id} className="nav-item">
-                                                    <button
-                                                        className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
-                                                        onClick={() => setActiveTab(tab.id)}
-                                                    >
-                                                        Practitioner {tab.id}
-                                                    </button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm btn-outline-primary"
-                                            onClick={addTab}
-                                        >
-                                            + Add Practitioner
-                                        </button>
-                                    </div>}
-
-                                    <div>
-                                        <div className="form-group col-md-12">
-                                            <label className='mb-2'>Practitioner Name</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                placeholder='Practitioner Name'
-                                                value={tabData[activeTab]?.practitionerName || ''}
-                                                onChange={(e) => handleTabInputChange('practitionerName', e.target.value)}
-                                            />
-                                            <div className='row'>
-                                                <div className="form-group col-md-6">
-                                                    <label className='mb-2'>Areas of Expertise</label>
-                                                    <Select
-                                                        isMulti
-                                                        options={expertiseList}
-                                                        className="form-control"
-                                                        classNamePrefix="react-select"
-                                                        placeholder="Areas of Expertise"
-                                                        value={expertiseList.filter(option =>
-                                                            tabData[activeTab]?.areaOfExpertise?.includes(option.value)
-                                                        )}
-                                                        onChange={(selectedOptions) =>
-                                                            handleTabInputChange(
-                                                                'areaOfExpertise',
-                                                                selectedOptions ? selectedOptions.map(option => option.value) : []
-                                                            )
-                                                        }
-                                                    />
-
-                                                </div>
-                                                <div className="form-group col-md-6">
-                                                    <label className='mb-2'>License/Registration Number</label>
-                                                    <input type="text" className="form-control" placeholder='License No' value={tabData[activeTab]?.license || ''} onChange={(e) => handleTabInputChange('license', e.target.value)}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {(['treatmentSpace', 'insurance', 'governmentId', 'qualification', 'profilePicture'] as (keyof PractitionerData)[]).map((field) => (
-                                            <div
-                                                key={field}
-                                                className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3"
-                                            >
-                                                <label className="mb-0" style={{ minWidth: '180px', textTransform: 'capitalize' }}>
-                                                    {field === 'profilePicture'
-                                                        ? 'Profile Picture'
-                                                        : field === 'governmentId'
-                                                            ? 'Government ID'
-                                                            : field === 'treatmentSpace'
-                                                                ? 'Photos of Treatment Space'
-                                                                : field === 'qualification'
-                                                                    ? 'Proof of Qualification'
-                                                                    : field}
-                                                </label>
-
-                                                <div
-                                                    className="dropzone dz-clickable primary-dropzone flex-grow-1"
-                                                    style={{
-                                                        position: 'relative',
-                                                        height: '60px',
-                                                        minHeight: '60px',
-                                                        border: '2px dashed #ccc',
-                                                        borderRadius: '10px',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        backgroundColor: '#f9f9f9',
-                                                    }}
-                                                >
-                                                    <UploadButton
-                                                        endpoint="practitionerMedia" // this must match your backend route key
-
-                                                        onClientUploadComplete={(res) => {
-                                                            console.log("Upload complete", res);
-                                                            const uploadedUrl = res?.[0]?.ufsUrl;
-                                                            if (uploadedUrl) {
-                                                                setTabData((prev) => ({
-                                                                    ...prev,
-                                                                    [activeTab]: {
-                                                                        ...prev[activeTab],
-                                                                        [field]: uploadedUrl, // or insurance, etc.
-                                                                    },
-                                                                }));
-                                                            }
-                                                        }}
-                                                        onUploadError={(error) => {
-                                                            console.error("Upload failed", error);
-                                                        }}
-                                                    />
-
-                                                    {tabData[activeTab]?.[field] ? (
-                                                        <div className="dz-image" style={{ zIndex: 1 }}>
-                                                            <img
-                                                                src={tabData[activeTab][field]}
-                                                                alt={field}
-                                                                style={{
-                                                                    width: '100px',
-                                                                    height: '100px',
-                                                                    borderRadius: '10px',
-                                                                    objectFit: 'cover',
-                                                                    padding: '0 10px',
-                                                                }}
-                                                            />
+                                                            </div>
                                                         </div>
-                                                    ) : (
-                                                        <div
-                                                            className="dz-default dz-message text-center"
-                                                            style={{
-                                                                display: 'flex',
-                                                                alignItems: 'baseline',
-                                                                zIndex: 1,
-                                                            }}
+                                                    </div>
+                                                    <div className="form-group col-lg-12 mt-3">
+                                                        <button
+                                                            className="btn btn-primary fw-medium px-5"
+                                                            type="button"
+                                                            disabled={!isBasicInfoValid}
+                                                            onClick={() => setCurrentStep(2)}
                                                         >
-                                                            <i
-                                                                className="fa-solid fa-images"
-                                                                style={{
-                                                                    fontSize: '24px',
-                                                                    color: '#888',
-                                                                    paddingRight: '10px',
-                                                                }}
-                                                            ></i>
-                                                            <p className="mb-0 mt-2">Click or Drag to Upload</p>
-                                                        </div>
-                                                    )}
+                                                            Next
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                            </motion.div>
+                                        )}
 
+                                        {currentStep === 2 && (
+                                            <motion.div
+                                                key="step2"
+                                                initial={{ opacity: 0, x: -50 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: 50 }}
+                                                transition={{ duration: 0.4 }}
+                                                layout
+                                            >
+                                                <div className="form-submit">
+                                                    <h3>Business Address</h3>
+                                                    <div className="submit-section">
+                                                        <div className="row">
+                                                            <div className="form-group col-md-6">
+                                                                <label className='mb-2'>Street Address</label>
+                                                                <input type="text" className="form-control" value={merchantAddress} onChange={(e) => setMerchantAddress(e.target.value)} />
+                                                            </div>
+                                                            <div className="form-group col-md-6">
+                                                                <label className='mb-2'>City</label>
+                                                                <input type="text" className="form-control" value={merchantCity} onChange={(e) => setMerchantCity(e.target.value)} />
+                                                            </div>
+                                                            <div className="form-group col-md-6">
+                                                                <label className='mb-2'>Province/State</label>
+                                                                <input type="text" className="form-control" value={merchantState} onChange={(e) => setMerchantState(e.target.value)} />
+                                                            </div>
+                                                            <div className="form-group col-md-6">
+                                                                <label className='mb-2'>Postal Code / Zip Code (For mobile practitioners, this is their main location or office)</label>
+                                                                <input type="text" className="form-control" value={merchantZipCode} onChange={(e) => setMerchantZipCode(e.target.value)} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
+                                                        <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(1)}>Back</button>
+                                                        <button
+                                                            className="btn btn-primary fw-medium px-5"
+                                                            type="button"
+                                                            disabled={!isBusinessAddressValid}
+                                                            onClick={() => setCurrentStep(3)}
+                                                        >
+                                                            Next
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        )}
 
+                                        {currentStep === 3 && (
+                                            <motion.div
+                                                key="step3"
+                                                initial={{ opacity: 0, x: -50 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: 50 }}
+                                                transition={{ duration: 0.4 }}
+                                                layout
+                                            >
+                                                <div className="form-submit">
+                                                    <h3>Practitioner Details & Specializations</h3>
+                                                    {(businessType !== 'Home-Based Practice' && businessType !== "Mobile Practitioner") && <div className="form-group col-md-12 d-flex justify-content-between align-items-center mb-3">
+                                                        <ul className="nav nav-tabs">
+                                                            {tabs.map((tab) => (
+                                                                <li key={tab.id} className="nav-item">
+                                                                    <button
+                                                                        className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
+                                                                        onClick={() => setActiveTab(tab.id)}
+                                                                    >
+                                                                        Practitioner {tab.id}
+                                                                    </button>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-sm btn-outline-primary"
+                                                            onClick={addTab}
+                                                        >
+                                                            + Add Practitioner
+                                                        </button>
+                                                    </div>}
 
+                                                    <div>
+                                                        <div className="form-group col-md-12">
+                                                            <label className='mb-2'>Practitioner Name</label>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                placeholder='Practitioner Name'
+                                                                value={tabData[activeTab]?.practitionerName || ''}
+                                                                onChange={(e) => handleTabInputChange('practitionerName', e.target.value)}
+                                                            />
+                                                            <div className='row'>
+                                                                <div className="form-group col-md-6">
+                                                                    <label className='mb-2'>Areas of Expertise</label>
+                                                                    <Select
+                                                                        isMulti
+                                                                        options={expertiseList}
+                                                                        className="form-control"
+                                                                        classNamePrefix="react-select"
+                                                                        placeholder="Areas of Expertise"
+                                                                        value={expertiseList.filter(option =>
+                                                                            tabData[activeTab]?.areaOfExpertise?.includes(option.value)
+                                                                        )}
+                                                                        onChange={(selectedOptions) =>
+                                                                            handleTabInputChange(
+                                                                                'areaOfExpertise',
+                                                                                selectedOptions ? selectedOptions.map(option => option.value) : []
+                                                                            )
+                                                                        }
+                                                                    />
 
-                                <div className="form-group col-lg-12 col-md-12">
+                                                                </div>
+                                                                <div className="form-group col-md-6">
+                                                                    <label className='mb-2'>License/Registration Number</label>
+                                                                    <input type="text" className="form-control" placeholder='License No' value={tabData[activeTab]?.license || ''} onChange={(e) => handleTabInputChange('license', e.target.value)}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {(['treatmentSpace', 'insurance', 'governmentId', 'qualification', 'profilePicture'] as (keyof PractitionerData)[]).map((field) => (
+                                                            <div
+                                                                key={field}
+                                                                className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3"
+                                                            >
+                                                                <label className="mb-0" style={{ minWidth: '180px', textTransform: 'capitalize' }}>
+                                                                    {field === 'profilePicture'
+                                                                        ? 'Profile Picture'
+                                                                        : field === 'governmentId'
+                                                                            ? 'Government ID'
+                                                                            : field === 'treatmentSpace'
+                                                                                ? 'Photos of Treatment Space'
+                                                                                : field === 'qualification'
+                                                                                    ? 'Proof of Qualification'
+                                                                                    : field}
+                                                                </label>
+
+                                                                <div
+                                                                    className="dropzone dz-clickable primary-dropzone flex-grow-1"
+                                                                    style={{
+                                                                        position: 'relative',
+                                                                        padding: '20px',
+                                                                        border: '2px dashed #d0d5dd',
+                                                                        borderRadius: '12px',
+                                                                        backgroundColor: '#fafafa',
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        minHeight: '120px',
+                                                                        transition: 'all 0.3s ease-in-out',
+                                                                    }}
+                                                                >
+                                                                    <UploadButton
+                                                                        endpoint="practitionerMedia"
+                                                                        onClientUploadComplete={(res) => {
+                                                                            const uploadedUrl = res?.[0]?.ufsUrl;
+                                                                            if (uploadedUrl) {
+                                                                                setTabData((prev) => ({
+                                                                                    ...prev,
+                                                                                    [activeTab]: {
+                                                                                        ...prev[activeTab],
+                                                                                        [field]: uploadedUrl,
+                                                                                    },
+                                                                                }));
+                                                                            }
+                                                                        }}
+                                                                        onUploadError={(error) => console.error("Upload failed", error)}
+                                                                    />
+
+                                                                    {tabData[activeTab]?.[field] ? (
+                                                                        <div style={{ zIndex: 1, textAlign: 'center' }}>
+                                                                            <img
+                                                                                src={tabData[activeTab][field]}
+                                                                                alt={field}
+                                                                                style={{
+                                                                                    width: '100px',
+                                                                                    height: '100px',
+                                                                                    borderRadius: '8px',
+                                                                                    objectFit: 'cover',
+                                                                                    marginBottom: '8px',
+                                                                                }}
+                                                                            />
+                                                                            <p style={{ fontSize: '14px', color: '#475467', margin: 0 }}>
+                                                                                Uploaded
+                                                                            </p>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div
+                                                                            className="dz-message"
+                                                                            style={{
+                                                                                display: 'flex',
+                                                                                flexDirection: 'column',
+                                                                                alignItems: 'center',
+                                                                                zIndex: 1,
+                                                                                color: '#667085',
+                                                                            }}
+                                                                        >
+                                                                            <i
+                                                                                className="fa-solid fa-image"
+                                                                                style={{ fontSize: '32px', marginBottom: '8px', color: '#9ca3af' }}
+                                                                            ></i>
+                                                                            <p style={{ margin: 0, fontWeight: 500 }}>
+                                                                                Click or Drag to Upload
+                                                                            </p>
+                                                                            <span style={{ fontSize: '12px', color: '#98a2b3' }}>
+                                                                                Image (max 4MB)
+                                                                            </span>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
+                                                        <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(2)}>Back</button>
+                                                        <button
+                                                            className="btn btn-primary fw-medium px-5"
+                                                            type="button"
+                                                            disabled={!isPractitionerDetailsValid}
+                                                            onClick={handleMerchantFormSubmit}
+                                                        >
+                                                            Submit & Preview
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        )}
+
+                                        {/* <div className="form-group col-lg-12 col-md-12">
                                     <button className="btn btn-primary fw-medium px-5" type="button" onClick={handleMerchantFormSubmit}>Submit & Preview</button>
-                                </div>
+                                </div> */}
+                                    </AnimatePresence>
+                                </motion.div>
                             </div>
                         </div>
                     </div>
