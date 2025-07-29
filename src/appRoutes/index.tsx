@@ -36,7 +36,7 @@ import AgentPage from '../pages/agents/agent-page';
 import Agencies from '../pages/agents/agencies';
 import AgencyPage from '../pages/agents/agency-page';
 import AddAgent from '../pages/agents/add-agent';
-import Dashboard from '../pages/admin/dashboard';
+// import Dashboard from '../pages/admin/dashboard';
 import Payment from '../pages/admin/payment';
 import MyProfile from '../pages/admin/my-profile';
 import MyProperty from '../pages/admin/my-property';
@@ -61,6 +61,7 @@ import Service1 from "../pages/services/services1";
 import Service2 from "../pages/services/services2";
 import Service3 from "../pages/services/services3";
 import Service4 from "../pages/services/services4";
+import AdminMainLayout from "../pages/admin/main";
 
 export function AppRoutes() {
     return (
@@ -112,7 +113,7 @@ export function AppRoutes() {
             <Route path='/agency-page' element={<AgencyPage />} />
             <Route path='/agency-page/:id' element={<AgencyPage />} />
             <Route path='/add-agent' element={<AddAgent />} />
-            <Route path='/dashboard' element={<Dashboard />} />
+            {/* <Route path='/dashboard' element={<Dashboard />} /> */}
             <Route path='/payment' element={<Payment />} />
             <Route path='/my-profile' element={<MyProfile />} />
             <Route path='/my-property' element={<MyProperty />} />
@@ -135,6 +136,7 @@ export function AppRoutes() {
             <Route path='/faq' element={<Faq />} />
             <Route path='/place-search' element={<HalfMapTwo />} />
             <Route path='/submit-property-dashboard' element={<SubmitPropertyDashboard />} />
+            <Route path='/my-account' element={<AdminMainLayout />} />
         </Routes>
     )
 }

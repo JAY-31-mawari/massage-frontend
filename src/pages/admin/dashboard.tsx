@@ -15,7 +15,7 @@ export default function Dashboard() {
     <>
     <UserNav/>
 
-    <div className="page-title">
+    {/* <div className="page-title">
         <div className="container">
             <div className="row">
                 <div className="col-lg-12 col-md-12">
@@ -24,7 +24,7 @@ export default function Dashboard() {
                 </div>
             </div>
         </div>
-    </div>  
+    </div>   */}
     <section className="bg-light">
         <div className="container-fluid">
             <div className="row">
@@ -36,9 +36,9 @@ export default function Dashboard() {
             </div>
                         
             <div className="row">
-                <div className="col-lg-3 col-md-12">
+                {/* <div className="col-lg-3 col-md-12">
                     <AdminSidebar show={show} setShow={setShow}/>
-                </div>
+                </div> */}
                 
                 <div className="col-lg-9 col-md-12">
                     
