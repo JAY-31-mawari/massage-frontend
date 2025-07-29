@@ -1,30 +1,32 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import Navbar from '../../components/navbar/navbar'
-import Achievement from '../../components/achievement'
-import PropertySlider from '../../components/property-slider'
 import SellPropertyOne from '../../components/sell-property-one'
 import TeamOne from '../../components/team-one'
 import ClientOne from '../../components/client-one'
-import PricingOne from '../../components/pricing-one'
 import FooterTop from '../../components/footer-top'
 import Footer from '../../components/footer'
 
 import bg from '../../assets/img/banner-6.png';
-import physiotheraphy from "../../assets/img/physiotherapy.png";
-import chiropracticCare from "../../assets/img/Chiropractic Care.jpeg";
-import massage from "../../assets/img/massage.webp";
-import acupuncture from "../../assets/img/acupuncture.webp";
 import oneImg from "../../assets/img/one.webp"
 import twoImg from "../../assets/img/two.webp"
 import threeImg from "../../assets/img/three.webp"
 import reviewsImg from "../../assets/img/reviews.webp"
 import { servicesData } from '../../data/servicesData'
+import axios from 'axios'
 
 
 export default function IndexSix() {
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        async function getData(){
+            const businessData = await axios.get(global.config.ROOTURL.prod + '/business')
+            console.log("buysinmesdDatat", businessData.data.businesses)
+        }
+        getData()
+    },[])
     return (
         <>
             <Navbar transparent={false} />

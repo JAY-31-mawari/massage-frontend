@@ -137,9 +137,6 @@ export default function SubmitProperty() {
                         lng: longitude,
                     });
                     setError(null);
-                } else {
-                    setError("Location data is incomplete");
-                    toast.error("Failed to retrieve valid latitude and longitude");
                 }
             },
             (err: GeolocationPositionError) => {
@@ -517,11 +514,22 @@ export default function SubmitProperty() {
                                                             Next
                                                         </button>
                                                     </div>
+                                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
+                                                        {/* <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(2)}>Back</button> */}
+                                                        <button
+                                                            className="btn btn-primary fw-medium px-5"
+                                                            type="button"
+                                                            // disabled={!isPractitionerDetailsValid}
+                                                            onClick={handleMerchantFormSubmit}
+                                                        >
+                                                            Submit & Preview
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </motion.div>
                                         )}
 
-                                        {currentStep === 3 && (
+                                        {/* {currentStep === 3 && (
                                             <motion.div
                                                 key="step3"
                                                 initial={{ opacity: 0, x: -50 }}
@@ -699,7 +707,7 @@ export default function SubmitProperty() {
                                                     </div>
                                                 </div>
                                             </motion.div>
-                                        )}
+                                        )} */}
 
                                         {/* <div className="form-group col-lg-12 col-md-12">
                                     <button className="btn btn-primary fw-medium px-5" type="button" onClick={handleMerchantFormSubmit}>Submit & Preview</button>
