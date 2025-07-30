@@ -50,16 +50,17 @@ import { getStorageItem, clearStorage } from '../utils/sessionStorage'
 // }
 
 export default function AdminSidebar({ selectedPage, setSelectedPage }: { selectedPage: string, setSelectedPage: (val: string) => void }) {
+    const navigate = useNavigate();
     return (
         <div className="sidebar-widgets h-full bg-white shadow-lg px-6 py-8">
             <ul className="space-y-1 pl-0">
                 {[
                     // { key: 'dashboard', label: 'Dashboard' },
                     { key: 'my-profile', label: 'My Profile' },
-                    { key: 'bookmark-list', label: 'Bookmarked Listings' },
-                    { key: 'my-property', label: 'My Practitioners' },
-                    { key: 'submit-property-dashboard', label: 'Submit Property' },
-                    { key: 'checkout', label: 'Checkout' },
+                    // { key: 'bookmark-list', label: 'Bookmarked Listings' },
+                    { key: 'my-orders', label: 'My Orders' },
+                    // { key: 'submit-property-dashboard', label: 'Submit Property' },
+                    // { key: 'checkout', label: 'Checkout' },
                     { key: 'payment', label: 'Payment' },
                     { key: 'change-password', label: 'Change Password' },
                 ].map((item) => (
@@ -74,6 +75,9 @@ export default function AdminSidebar({ selectedPage, setSelectedPage }: { select
                         {item.label}
                     </li>
                 ))}
+                <li className='cursor-pointer px-4 py-3 rounded-md font-medium transition-all duration-200 text-sm tracking-wide text-gray-700 hover:bg-gray-100 hover:text-blue-600' onClick={() => navigate("/")}>
+                    Book an Appointment 
+                </li>
             </ul>
         </div>
     );

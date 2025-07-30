@@ -39,7 +39,7 @@ import AddAgent from '../pages/agents/add-agent';
 // import Dashboard from '../pages/admin/dashboard';
 import Payment from '../pages/admin/payment';
 import MyProfile from '../pages/admin/my-profile';
-import MyProperty from '../pages/admin/my-property';
+import MyProperty from '../pages/admin/my-orders';
 import BookmarkList from '../pages/admin/bookmark-list';
 import ChangePassword from '../pages/admin/change-password';
 import CompareProperty from '../pages/property/compare-property';

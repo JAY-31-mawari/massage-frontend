@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import Navbar from '../../components/navbar/navbar'
@@ -19,6 +19,8 @@ import axios from 'axios'
 
 export default function IndexSix() {
     const navigate = useNavigate()
+    const [location, setLocation] = useState('')
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false)
 
     useEffect(()=>{
         async function getData(){
@@ -27,6 +29,75 @@ export default function IndexSix() {
         }
         getData()
     },[])
+
+    // Function to get user's current location
+    const getCurrentLocation = () => {
+        setIsLoadingLocation(true)
+        
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by this browser.')
+            setIsLoadingLocation(false)
+            return
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords
+                
+                try {
+                    // Reverse geocoding using OpenStreetMap Nominatim API
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+                    )
+                    const data = await response.json()
+                    
+                    if (data.display_name) {
+                        // Extract city and state from the full address
+                        const addressParts = data.display_name.split(', ')
+                        const city = addressParts[1] || addressParts[0]
+                        const state = addressParts[2] || ''
+                        const locationString = `${city}, ${state}`.trim()
+                        setLocation(locationString)
+                    } else {
+                        setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`)
+                    }
+                } catch (error) {
+                    console.error('Error reverse geocoding:', error)
+                    setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`)
+                }
+                
+                setIsLoadingLocation(false)
+            },
+            (error) => {
+                console.error('Error getting location:', error)
+                let errorMessage = 'Unable to get your location'
+                
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMessage = 'Location access denied. Please enable location services.'
+                        break
+                    case error.POSITION_UNAVAILABLE:
+                        errorMessage = 'Location information unavailable.'
+                        break
+                    case error.TIMEOUT:
+                        errorMessage = 'Location request timed out.'
+                        break
+                    default:
+                        errorMessage = 'An unknown error occurred.'
+                        break
+                }
+                
+                alert(errorMessage)
+                setIsLoadingLocation(false)
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 60000
+            }
+        )
+    }
+
     return (
         <>
             <Navbar transparent={false} />
@@ -43,7 +114,13 @@ export default function IndexSix() {
                                         <div className="col-lg-9 col-md-9 col-sm-12 elio">
                                             <div className="form-group">
                                                 <div className="position-relative">
-                                                    <input type="text" className="form-control border-0 ps-5" placeholder="Search for a location" />
+                                                    <input 
+                                                        type="text" 
+                                                        className="form-control border-0 ps-5" 
+                                                        placeholder="Search for a location" 
+                                                        value={location}
+                                                        onChange={(e) => setLocation(e.target.value)}
+                                                    />
                                                     <div className="position-absolute top-50 start-0 translate-middle-y ms-2">
                                                         <span className="svg-icon text-primary svg-icon-2hx">
                                                             <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,6 +129,21 @@ export default function IndexSix() {
                                                             </svg>
                                                         </span>
                                                     </div>
+                                                    <button
+                                                        type="button"
+                                                        className="position-absolute top-50 end-0 translate-middle-y me-3 btn btn-sm btn-outline-primary"
+                                                        onClick={getCurrentLocation}
+                                                        disabled={isLoadingLocation}
+                                                        title="Use my current location"
+                                                    >
+                                                        {isLoadingLocation ? (
+                                                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                        ) : (
+                                                            <h6><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+                                                            </svg>Live Location</h6>
+                                                        )}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

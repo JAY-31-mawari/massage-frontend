@@ -6,7 +6,7 @@ import { getStorageItem } from '../../utils/sessionStorage'
 import { userProperty } from '../../data/property'
 import { useUserStore } from '../../store/userStore'
 
-export default function MyProperty() {
+export default function Orders() {
     let [show, setShow] = useState<boolean>(false)
     const userData = useUserStore((state) => state.user)
     // const [userData, setUserData] = useState<any>(JSON.parse(getStorageItem('user-data')))
@@ -38,7 +38,7 @@ export default function MyProperty() {
                             transition={{ duration: 0.4, ease: "easeOut" }}
                         >
                             <div className="form-submit mb-4">
-                                <h4>My Practitioners</h4>
+                                <h4>My Orders</h4>
                             </div>
 
                             <div className="row">

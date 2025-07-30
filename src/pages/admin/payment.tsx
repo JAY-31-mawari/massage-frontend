@@ -1,17 +1,48 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import image1 from '../../assets/img/p-14.jpg'
+import { getStorageItem } from '../../utils/sessionStorage'
+import axios from 'axios'
 
-import Navbar from '../../components/navbar/navbar'
-import FooterTop from '../../components/footer-top'
-import Footer from '../../components/footer'
+interface PaymentCard{
+    id: string
+    cardNumber: string
+    cardHolderName: string
+    expiryDate: string
+    isDefault: boolean
+    cardType: string
+    isActive: boolean
+    lastUsed: Date
+    isExpired: boolean
+}
 
 export default function Payment() {
     let [open, setOpen] = useState<boolean>(true)
     let [open2, setOpen2] = useState<boolean>(false)
     let [open3, setOpen3] = useState<boolean>(true)
     let [open4, setOpen4] = useState<boolean>(false)
+    const [paymentCard, setPaymentCard] = useState<PaymentCard>()
+    const accessToken = getStorageItem("token")
+
+    useEffect(()=>{
+        async function getPayment(){
+            if(!accessToken) return;
+
+            const payment = {
+                method: 'GET',
+                url: global.config.ROOTURL.prod + '/payment/default',
+                headers: {
+                    Authorization: 'Bearer ' + accessToken,
+                    "Content-type": "application/json"
+                },
+
+            }
+            const paymentRes = await axios(payment)
+            setPaymentCard(paymentRes.data.data)
+        }
+        getPayment()
+    },[])
     return (
         <>
             <section className="gray">
@@ -33,15 +64,8 @@ export default function Payment() {
                                         </div>
                                         <div className="col-lg-6 col-md-6 col-sm-12">
                                             <div className="form-group">
-                                                <label>First Name<i className="req">*</i></label>
-                                                <input type="text" className="form-control" value="Calvin" />
-                                            </div>
-                                        </div>
-
-                                        <div className="col-lg-6 col-md-6 col-sm-12">
-                                            <div className="form-group">
-                                                <label>Last Name<i className="req">*</i></label>
-                                                <input type="text" className="form-control" value="Carlo" />
+                                                <label>FullName<i className="req">*</i></label>
+                                                <input type="text" className="form-control" value={ paymentCard?.cardHolderName || "Calvin"} />
                                             </div>
                                         </div>
 
@@ -147,35 +171,28 @@ export default function Payment() {
                                         <div className="col-lg-6 col-md-6 col-sm-12">
                                             <div className="form-group">
                                                 <label>Card Holder Name</label>
-                                                <input type="text" className="form-control" />
+                                                <input type="text" className="form-control" value={paymentCard?.cardHolderName} />
                                             </div>
                                         </div>
 
                                         <div className="col-lg-6 col-md-6 col-sm-12">
                                             <div className="form-group">
                                                 <label>Card Number</label>
-                                                <input type="text" className="form-control" />
+                                                <input type="text" className="form-control" value={paymentCard?.cardNumber} />
                                             </div>
                                         </div>
 
                                         <div className="col-lg-5 col-md-5 col-sm-6">
                                             <div className="form-group">
-                                                <label>Expire Month</label>
-                                                <input type="text" className="form-control" />
-                                            </div>
-                                        </div>
-
-                                        <div className="col-lg-5 col-md-5 col-sm-6">
-                                            <div className="form-group">
-                                                <label>Expire Year</label>
-                                                <input type="text" className="form-control" />
+                                                <label>Expire Date</label>
+                                                <input type="text" className="form-control" value={paymentCard?.expiryDate} />
                                             </div>
                                         </div>
 
                                         <div className="col-lg-2 col-md-2 col-sm-12">
                                             <div className="form-group">
-                                                <label>CVC</label>
-                                                <input type="text" className="form-control" />
+                                                <label>Card Type</label>
+                                                <input type="text" className="form-control" value={paymentCard?.cardType} />
                                             </div>
                                         </div>
 

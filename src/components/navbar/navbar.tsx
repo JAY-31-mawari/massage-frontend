@@ -63,6 +63,7 @@ export default function Navbar({ transparent }: { transparent: any }) {
                 setStorageItem("userName", res?.data?.data?.businessName ? res.data.data.businessName : res.data.data?.userName)
                 setStorageItem("email", res?.data?.data?.business_email ? res.data.data?.business_email : res.data.data?.email)
                 setStorageItem("phoneNo", res?.data?.data?.business_phone ? res.data.data.business_phone : res.data.data?.phone)
+                setStorageItem("token", res.data.token)
                 setStorageItem("user-data", JSON.stringify(res.data.data))
                 updateUserDetails(res.data.data)
                 toast.success("user account exists")
