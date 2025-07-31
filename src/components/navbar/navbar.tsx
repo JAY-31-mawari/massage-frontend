@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { FiChevronDown } from "react-icons/fi";
 import { TiSocialGooglePlus, TiSocialFacebook } from "react-icons/ti";
@@ -25,6 +25,7 @@ export default function Navbar({ transparent }: { transparent: any }) {
     const [activeTab, setActiveTab] = useState<number>(1)
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('')
+    const navigate = useNavigate()
     const updateUserDetails = useUserStore((state) => state.fullUpdate)
 
     let [scroll, setScroll] = useState<boolean>(false)
@@ -51,7 +52,6 @@ export default function Navbar({ transparent }: { transparent: any }) {
     }
 
     const checkAccountExist = async () => {
-        console.log(global.config.ROOTURL.prod)
         try {
             const res = await axios.post(global.config.ROOTURL.prod + '/user/exist', { email });
             console.log("hello:world", res)
@@ -158,6 +158,7 @@ export default function Navbar({ transparent }: { transparent: any }) {
                             <ul className="nav-menu">
 
                                 <li><Link to="/" className={current === '/' ? 'active' : ''}>Home</Link></li>
+                                <li><Link to="/my-account" className={current === '/my-account' ? 'active' : ''}>My Account</Link></li>
 
                                 {/* <li className={`${['/', '/home-2', '/home-3', '/home-4', '/home-5', '/home-6', '/home-7', '/home-8', '/home-8', '/home-9', '/home-10', '/home-11', '/video', '/map'].includes(current) ? 'active' : ''} ${activeMenu['home']?.main ? 'show' : ''}`} onMouseEnter={() => handleMouseEnter('home')} onMouseLeave={() => handleMouseLeave('home')}><Link to="#">Home<FiChevronDown className="submenu-indicator" /></Link>
                                     <ul className="nav-dropdown nav-submenu" style={{ display: activeMenu['home']?.main ? 'block' : 'none', pointerEvents: activeMenu['home']?.main ? 'auto' : 'none', }}>
@@ -273,7 +274,7 @@ export default function Navbar({ transparent }: { transparent: any }) {
                             <ul className="nav-menu nav-menu-social align-to-right d-none d-lg-inline-flex">
 
                                 <li>
-                                    <Link to="#" className="fw-medium text-muted-2" onClick={() => setLogin(!login)}>
+                                    <Link to="/create-account" className="fw-medium text-muted-2">
                                         <span className="svg-icon svg-icon-2hx me-1">
                                             <svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path opacity="0.3" d="M16.5 9C16.5 13.125 13.125 16.5 9 16.5C4.875 16.5 1.5 13.125 1.5 9C1.5 4.875 4.875 1.5 9 1.5C13.125 1.5 16.5 4.875 16.5 9Z" fill="currentColor" />

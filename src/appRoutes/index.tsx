@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Index from '../pages/index';
 import IndexThree from '../pages/index/index-three';
 import IndexFour from '../pages/index/index-four';
 import IndexTwo from '../pages/index/index-two';
@@ -62,6 +61,7 @@ import Service2 from "../pages/services/services2";
 import Service3 from "../pages/services/services3";
 import Service4 from "../pages/services/services4";
 import AdminMainLayout from "../pages/admin/main";
+import RegisterAccount from "../pages/createAccount";
 
 export function AppRoutes() {
     return (
@@ -131,12 +131,13 @@ export function AppRoutes() {
             <Route path='/contact' element={<Contact />} />
             <Route path='/about-us' element={<AboutUs />} />
             <Route path='/checkout' element={<Checkout />} />
-            <Route path='/create-account' element={<CreateAccount />} />
+            <Route path='/create-accot' element={<CreateAccount />} />
             <Route path='/edit-agent' element={<EditAgent />} />
             <Route path='/faq' element={<Faq />} />
             <Route path='/place-search' element={<HalfMapTwo />} />
             <Route path='/submit-property-dashboard' element={<SubmitPropertyDashboard />} />
             <Route path='/my-account' element={<AdminMainLayout />} />
+            <Route path='/create-account' element={<RegisterAccount />} />
         </Routes>
     )
 }
