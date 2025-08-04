@@ -1,14 +1,26 @@
 import { useState, useEffect } from "react"
-// import "bootstrap/dist/css/bootstrap.min.css"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
-export default function DateTimeComponent() {
+interface BookingProps{
+  startTime: number
+  endTime: number
+  selectedDate: Date
+  selectedTimeSlot: string
+  appointmentDateTime: Date
+  setSelectedDate: (date: Date) => void
+  setSelectedTimeSlot: (day: string) => void 
+  setAppointmentDateTime: (date: Date) => void
+  handleBookingAppointment: () => void
+}
+
+export default function DateTimeComponent({startTime, endTime, selectedDate, selectedTimeSlot, appointmentDateTime, setSelectedDate, setSelectedTimeSlot, setAppointmentDateTime, handleBookingAppointment}: BookingProps) {
   const [showCalendar, setShowCalendar] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState("2:00 AM")
-  const [selectedDay, setSelectedDay] = useState(0) // Default to today (first day)
-  const [days, setDays] = useState<Array<{ date: string; waiting: string; fullDate: Date }>>([])
+  const [selectedDay, setSelectedDay] = useState(0)
+   // Default to today (first day)
+  const [days, setDays] = useState<Array<{ date: string; waiting: string; fullDate: Date; isCustom?: boolean }>>([])
 
-  // Generate dynamic dates based on today
+  // Generate dynamic dates based on today (7 days initially)
   useEffect(() => {
     const generateDays = () => {
       const today = new Date()
@@ -17,6 +29,7 @@ export default function DateTimeComponent() {
       const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
       const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
+      // Generate all 7 days initially
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(today)
         currentDate.setDate(today.getDate() + i)
@@ -37,242 +50,160 @@ export default function DateTimeComponent() {
           fullDate: new Date(currentDate),
         })
       }
-
+      
+      setSelectedDate(generatedDays[0].fullDate)
       return generatedDays
     }
-
     setDays(generateDays())
   }, [])
 
-  const timeSlots = [
-    ["5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM"],
-    ["8:30 PM", "9:00 PM", "9:30 PM", "10:00 PM", "10:30 PM", "11:00 PM", "11:30 PM"],
-    ["12:00 AM", "12:30 AM", "1:00 AM", "1:30 AM", "2:00 AM", "2:30 AM", "3:00 AM"],
-    ["3:30 AM", "4:00 AM", "4:30 AM", "5:00 AM", "5:30 AM", "6:00 AM", "6:30 AM"],
-    ["7:00 AM", "7:30 AM", "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM"],
-  ]
+  // Generate time slots from 9:00 AM to 9:00 PM with 30-minute intervals
+  const generateTimeSlots = () => {
+    const slots: Date[] = []
+    const startHour = startTime // 9 AM
+    const endHour = endTime // 9 PM (21:00)
+    const interval = 30 // 30 minutes
+
+    for (let hour = startHour; hour < endHour; hour++) {
+      for (let minute = 0; minute < 60; minute += interval) {
+        const time = new Date()
+        time.setHours(hour, minute, 0, 0)
+        slots.push(new Date(time))
+      }
+    }
+    return slots
+  }
+
+  const timeSlots = generateTimeSlots()
 
   const handleDayClick = (index: number) => {
     setSelectedDay(index)
     setSelectedDate(days[index].fullDate)
+    
+    // Console log the selected date in IST format
+    const selectedDateIST = new Date(days[index].fullDate.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}))
+    setAppointmentDateTime(selectedDateIST)
   }
 
-  const handleTimeSlotClick = (time: string) => {
-    setSelectedTimeSlot(time)
+  const handleTimeSlotClick = (timeSlot: Date) => {
+    const timeString = timeSlot.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
+    setSelectedTimeSlot(timeString)
+    
+    const appointmentTime = new Date(selectedDate)
+    appointmentTime.setHours(timeSlot.getHours(), timeSlot.getMinutes(), 0, 0)   
+    setAppointmentDateTime(appointmentTime)
   }
 
-  const handleCalendarClick = () => {
-    setShowCalendar(true)
-  }
-
-  const handleDateSelect = (date: Date) => {
+  const handleDateSelect = (date: Date | null) => {
+    if (!date) return
+    
     setSelectedDate(date)
     setShowCalendar(false)
 
-    // Check if selected date matches any of the 7 days, if so update selectedDay
-    const matchingDayIndex = days.findIndex((day) => day.fullDate.toDateString() === date.toDateString())
-    if (matchingDayIndex !== -1) {
-      setSelectedDay(matchingDayIndex)
-    }
+    // Console log the selected date from datepicker in IST format
+    const selectedDateIST = new Date(date.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}))
+    setAppointmentDateTime(selectedDateIST)
+    
+    // Add the custom date as a new slot
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    
+    const dayName = dayNames[date.getDay()]
+    const monthName = monthNames[date.getMonth()]
+    const dateNum = date.getDate()
+    
+    // Generate waiting number for the custom date
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6
+    const baseWaiting = isWeekend ? 120 : 80
+    const randomVariation = Math.floor(Math.random() * 50)
+    const waitingCount = baseWaiting + randomVariation
+    
+    setDays(prevDays => {
+      const updatedDays = [...prevDays]
+      // Add the custom date as a new slot at the end
+      updatedDays.push({
+        date: `${dayName}, ${monthName} ${dateNum}`,
+        waiting: `${waitingCount} Waiting`,
+        fullDate: new Date(date),
+        isCustom: true
+      })
+      return updatedDays
+    })
+    
+    // Set the selected day to the new custom date slot (last index)
+    setSelectedDay(days.length)
   }
 
   const CalendarIcon = () => (
-    <button
-      className="btn d-flex align-items-center justify-content-center border-0 rounded-2"
-      style={{
-        width: "48px",
-        height: "48px",
-        backgroundColor: "#2563eb",
-        color: "white",
-        transition: "all 0.15s ease-in-out",
-        boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-      }}
-      onClick={handleCalendarClick}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "#1d4ed8"
-        e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-        e.currentTarget.style.transform = "translateY(-1px)"
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = "#2563eb"
-        e.currentTarget.style.boxShadow = "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-        e.currentTarget.style.transform = "translateY(0)"
-      }}
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-        <line x1="16" y1="2" x2="16" y2="6"></line>
-        <line x1="8" y1="2" x2="8" y2="6"></line>
-        <line x1="3" y1="10" x2="21" y2="10"></line>
-      </svg>
-    </button>
-  )
-
-  const CustomCalendar = () => {
-    const currentDate = new Date()
-    const year = currentDate.getFullYear()
-    const month = currentDate.getMonth()
-
-    const firstDay = new Date(year, month, 1).getDay()
-    const daysInMonth = new Date(year, month + 1, 0).getDate()
-
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ]
-
-    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-
-    const calendarDays = []
-    for (let i = 0; i < firstDay; i++) {
-      calendarDays.push(null)
-    }
-    for (let day = 1; day <= daysInMonth; day++) {
-      calendarDays.push(day)
-    }
-
-    const isToday = (day: number) => {
-      const today = new Date()
-      return day === today.getDate() && month === today.getMonth() && year === today.getFullYear()
-    }
-
-    const isPastDate = (day: number) => {
-      const today = new Date()
-      const checkDate = new Date(year, month, day)
-      return checkDate < new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    }
-
-    return (
-      <div
-        className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.4)",
-          zIndex: 1050,
-          backdropFilter: "blur(4px)",
-        }}
-        onClick={() => setShowCalendar(false)}
-      >
-        <div
-          className="bg-white rounded-3 shadow-lg border-0"
+    <DatePicker
+      selected={selectedDate}
+      onChange={handleDateSelect}
+      open={showCalendar}
+      onInputClick={() => setShowCalendar(true)}
+      onClickOutside={() => setShowCalendar(false)}
+      customInput={
+        <button
+          className="btn d-flex align-items-center justify-content-center border-0 rounded-2"
           style={{
-            width: "380px",
-            maxWidth: "90vw",
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+            width: "48px",
+            height: "48px",
+            backgroundColor: "#2563eb",
+            color: "white",
+            transition: "all 0.15s ease-in-out",
+            boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
           }}
-          onClick={(e) => e.stopPropagation()}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#1d4ed8"
+            e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+            e.currentTarget.style.transform = "translateY(-1px)"
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "#2563eb"
+            e.currentTarget.style.boxShadow = "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
+            e.currentTarget.style.transform = "translateY(0)"
+          }}
         >
-          <div className="p-4 border-bottom">
-            <div className="d-flex justify-content-between align-items-center">
-              <h4 className="mb-0 fw-semibold text-gray-900" style={{ color: "#111827", fontSize: "18px" }}>
-                {monthNames[month]} {year}
-              </h4>
-              <button
-                className="btn-close"
-                onClick={() => setShowCalendar(false)}
-                aria-label="Close"
-                style={{ fontSize: "12px" }}
-              ></button>
-            </div>
-          </div>
-
-          <div className="p-4">
-            <div className="row g-0 mb-3">
-              {dayNames.map((dayName) => (
-                <div key={dayName} className="col text-center">
-                  <div
-                    className="fw-medium text-uppercase"
-                    style={{
-                      fontSize: "11px",
-                      color: "#6b7280",
-                      letterSpacing: "0.05em",
-                    }}
-                  >
-                    {dayName}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="row g-1">
-              {calendarDays.map((day, index) => (
-                <div key={index} className="col">
-                  {day && (
-                    <button
-                      className="btn w-100 border-0 fw-medium"
-                      disabled={isPastDate(day)}
-                      style={{
-                        height: "44px",
-                        backgroundColor:
-                          day === selectedDate.getDate() && month === selectedDate.getMonth()
-                            ? "#2563eb"
-                            : isToday(day)
-                              ? "#dbeafe"
-                              : "transparent",
-                        color:
-                          day === selectedDate.getDate() && month === selectedDate.getMonth()
-                            ? "white"
-                            : isPastDate(day)
-                              ? "#d1d5db"
-                              : isToday(day)
-                                ? "#2563eb"
-                                : "#374151",
-                        fontSize: "14px",
-                        borderRadius: "8px",
-                        transition: "all 0.15s ease-in-out",
-                        cursor: isPastDate(day) ? "not-allowed" : "pointer",
-                      }}
-                      onClick={() => !isPastDate(day) && handleDateSelect(new Date(year, month, day))}
-                      onMouseEnter={(e) => {
-                        if (
-                          !isPastDate(day) &&
-                          !(day === selectedDate.getDate() && month === selectedDate.getMonth())
-                        ) {
-                          e.currentTarget.style.backgroundColor = "#f3f4f6"
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (
-                          !isPastDate(day) &&
-                          !(day === selectedDate.getDate() && month === selectedDate.getMonth())
-                        ) {
-                          e.currentTarget.style.backgroundColor = isToday(day) ? "#dbeafe" : "transparent"
-                        }
-                      }}
-                    >
-                      {day}
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </button>
+      }
+      dateFormat="MMM dd, yyyy"
+      minDate={new Date()}
+      showPopperArrow={false}
+      popperClassName="custom-datepicker-popper"
+      popperPlacement="bottom-start"
+             popperModifiers={[
+         {
+           name: "offset",
+           options: {
+             offset: [0, 8],
+           },
+           fn: ({ x, y }) => ({ x, y }),
+         },
+       ]}
+    />
+  )
 
   const formatSelectedDate = () => {
     if (days.length === 0) return ""
 
     const selected = days[selectedDay]
     const today = new Date()
-    const isToday = selected.fullDate.toDateString() === today.toDateString()
+    const isToday = appointmentDateTime.toDateString() === today.toDateString()
     const isTomorrow =
-      selected.fullDate.toDateString() === new Date(today.getTime() + 24 * 60 * 60 * 1000).toDateString()
+      appointmentDateTime.toDateString() === new Date(today.getTime() + 24 * 60 * 60 * 1000).toDateString()
 
-    if (isToday) return `Today, ${selected.date}`
-    if (isTomorrow) return `Tomorrow, ${selected.date}`
-    return selected.date
+    if (isToday) return `Today, ${appointmentDateTime.toLocaleDateString() }`
+    if (isTomorrow) return `Tomorrow, ${appointmentDateTime.toLocaleDateString()}`
+    return appointmentDateTime.toLocaleDateString()
   }
 
   if (days.length === 0) {
@@ -299,85 +230,94 @@ export default function DateTimeComponent() {
           <h1 className="h3 fw-bold mb-2" style={{ color: "#111827" }}>
             Select Your Appointment
           </h1>
-          <p className="text-muted mb-0" style={{ fontSize: "16px", color: "#6b7280" }}>
-            Choose your preferred date and time slot for the next 7 days
-          </p>
+                     <p className="text-muted mb-0" style={{ fontSize: "16px", color: "#6b7280" }}>
+             Choose your preferred date and time slot for the next 7 days or add a custom date
+           </p>
         </div>
 
         {/* Date Selection */}
         <div className="mb-5">
           <div className="row g-3 align-items-center">
-            {days.map((day, index) => {
-              const isToday = index === 0
-              const isTomorrow = index === 1
+                         {days.map((day, index) => {
+               const isToday = index === 0
+               const isTomorrow = index === 1
+               const isCustomDate = day.isCustom
 
-              return (
-                <div key={index} className="col">
-                  <button
-                    className={`btn w-100 text-start border-0 p-3 rounded-3 position-relative ${selectedDay === index ? "text-white" : ""}`}
-                    style={{
-                      backgroundColor: selectedDay === index ? "#2563eb" : "white",
-                      fontSize: "14px",
-                      fontWeight: "500",
-                      transition: "all 0.15s ease-in-out",
-                      boxShadow:
-                        selectedDay === index
-                          ? "0 10px 15px -3px rgba(37, 99, 235, 0.2), 0 4px 6px -2px rgba(37, 99, 235, 0.1)"
-                          : "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-                      border: selectedDay === index ? "none" : "1px solid #e5e7eb",
-                    }}
-                    onClick={() => handleDayClick(index)}
-                    onMouseEnter={(e) => {
-                      if (selectedDay !== index) {
-                        e.currentTarget.style.backgroundColor = "#f8fafc"
-                        e.currentTarget.style.borderColor = "#d1d5db"
-                        e.currentTarget.style.transform = "translateY(-1px)"
-                        e.currentTarget.style.boxShadow =
-                          "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (selectedDay !== index) {
-                        e.currentTarget.style.backgroundColor = "white"
-                        e.currentTarget.style.borderColor = "#e5e7eb"
-                        e.currentTarget.style.transform = "translateY(0)"
-                        e.currentTarget.style.boxShadow =
-                          "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-                      }
-                    }}
-                  >
-                    {isToday && (
-                      <span
-                        className="position-absolute top-0 end-0 badge bg-success rounded-pill"
-                        style={{ fontSize: "10px", transform: "translate(25%, -25%)" }}
-                      >
-                        Today
-                      </span>
-                    )}
-                    {isTomorrow && (
-                      <span
-                        className="position-absolute top-0 end-0 badge bg-info rounded-pill"
-                        style={{ fontSize: "10px", transform: "translate(25%, -25%)" }}
-                      >
-                        Tomorrow
-                      </span>
-                    )}
-                    <div className="fw-semibold mb-1" style={{ fontSize: "15px" }}>
-                      {day.date}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "12px",
-                        opacity: selectedDay === index ? 0.9 : 0.7,
-                        color: selectedDay === index ? "rgba(255,255,255,0.9)" : "#6b7280",
-                      }}
-                    >
-                      {day.waiting}
-                    </div>
-                  </button>
-                </div>
-              )
-            })}
+               return (
+                 <div key={index} className="col">
+                   <button
+                     className={`btn w-100 text-start border-0 p-3 rounded-3 position-relative ${selectedDay === index ? "text-white" : ""}`}
+                     style={{
+                       backgroundColor: selectedDay === index ? "#2563eb" : isCustomDate ? "#f8fafc" : "white",
+                       fontSize: "14px",
+                       fontWeight: "500",
+                       transition: "all 0.15s ease-in-out",
+                       boxShadow:
+                         selectedDay === index
+                           ? "0 10px 15px -3px rgba(37, 99, 235, 0.2), 0 4px 6px -2px rgba(37, 99, 235, 0.1)"
+                           : "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                       border: selectedDay === index ? "none" : isCustomDate ? "2px dashed #d1d5db" : "1px solid #e5e7eb",
+                     }}
+                     onClick={() => handleDayClick(index)}
+                     onMouseEnter={(e) => {
+                       if (selectedDay !== index) {
+                         e.currentTarget.style.backgroundColor = isCustomDate ? "#f1f5f9" : "#f8fafc"
+                         e.currentTarget.style.borderColor = "#d1d5db"
+                         e.currentTarget.style.transform = "translateY(-1px)"
+                         e.currentTarget.style.boxShadow =
+                           "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+                       }
+                     }}
+                     onMouseLeave={(e) => {
+                       if (selectedDay !== index) {
+                         e.currentTarget.style.backgroundColor = isCustomDate ? "#f8fafc" : "white"
+                         e.currentTarget.style.borderColor = isCustomDate ? "#d1d5db" : "#e5e7eb"
+                         e.currentTarget.style.transform = "translateY(0)"
+                         e.currentTarget.style.boxShadow =
+                           "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
+                       }
+                     }}
+                   >
+                     {isToday && (
+                       <span
+                         className="position-absolute top-0 end-0 badge bg-success rounded-pill"
+                         style={{ fontSize: "10px", transform: "translate(25%, -25%)" }}
+                       >
+                         Today
+                       </span>
+                     )}
+                     {isTomorrow && (
+                       <span
+                         className="position-absolute top-0 end-0 badge bg-info rounded-pill"
+                         style={{ fontSize: "10px", transform: "translate(25%, -25%)" }}
+                       >
+                         Tomorrow
+                       </span>
+                     )}
+                     {isCustomDate && (
+                       <span
+                         className="position-absolute top-0 end-0 badge bg-warning rounded-pill"
+                         style={{ fontSize: "10px", transform: "translate(25%, -25%)" }}
+                       >
+                         Custom
+                       </span>
+                     )}
+                     <div className="fw-semibold mb-1" style={{ fontSize: "15px" }}>
+                       {day.date}
+                     </div>
+                     <div
+                       style={{
+                         fontSize: "12px",
+                         opacity: selectedDay === index ? 0.9 : 0.7,
+                         color: selectedDay === index ? "rgba(255,255,255,0.9)" : "#6b7280",
+                       }}
+                     >
+                       {day.waiting}
+                     </div>
+                   </button>
+                 </div>
+               )
+             })}
 
             <div className="col-auto">
               <CalendarIcon />
@@ -391,58 +331,76 @@ export default function DateTimeComponent() {
             Available Time Slots
           </h2>
 
-          {timeSlots.map((row, rowIndex) => (
-            <div key={rowIndex} className="d-flex flex-wrap gap-3 mb-4">
-              {row.map((time, timeIndex) => (
+          <div className="d-flex flex-wrap gap-3">
+            {timeSlots.map((timeSlot: Date, timeIndex: number) => {
+              const timeString = timeSlot.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+              })
+              
+              // Check if this time slot has passed for today
+              const now = new Date()
+              const isToday = selectedDate.toDateString() === now.toDateString()
+              const hasPassed = isToday && timeSlot.getTime() < now.getTime()
+              
+              return (
                 <button
                   key={timeIndex}
                   className="btn border-0 fw-medium rounded-2"
+                  disabled={hasPassed}
                   style={{
-                    backgroundColor: selectedTimeSlot === time ? "#f59e0b" : "white",
-                    color: selectedTimeSlot === time ? "white" : "#374151",
+                    backgroundColor: selectedTimeSlot === timeString ? "#f59e0b" : hasPassed ? "#f3f4f6" : "white",
+                    color: selectedTimeSlot === timeString ? "white" : hasPassed ? "#9ca3af" : "#374151",
                     fontSize: "14px",
-                    width: "90px",
+                    width: "100px",
                     height: "44px",
                     transition: "all 0.15s ease-in-out",
                     boxShadow:
-                      selectedTimeSlot === time
+                      selectedTimeSlot === timeString
                         ? "0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.1)"
                         : "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
                     border: "1px solid #e5e7eb",
+                    cursor: hasPassed ? "not-allowed" : "pointer",
+                    opacity: hasPassed ? 0.6 : 1,
                   }}
-                  onClick={() => handleTimeSlotClick(time)}
+                  onClick={() => !hasPassed && handleTimeSlotClick(timeSlot)}
                   onMouseEnter={(e) => {
-                    if (selectedTimeSlot !== time) {
-                      e.currentTarget.style.backgroundColor = "#f8fafc"
-                      e.currentTarget.style.borderColor = "#d1d5db"
-                      e.currentTarget.style.transform = "translateY(-1px)"
-                      e.currentTarget.style.boxShadow =
-                        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-                    } else {
-                      e.currentTarget.style.transform = "translateY(-1px)"
-                      e.currentTarget.style.boxShadow =
-                        "0 20px 25px -5px rgba(245, 158, 11, 0.2), 0 10px 10px -5px rgba(245, 158, 11, 0.1)"
+                    if (!hasPassed) {
+                      if (selectedTimeSlot !== timeString) {
+                        e.currentTarget.style.backgroundColor = "#f8fafc"
+                        e.currentTarget.style.borderColor = "#d1d5db"
+                        e.currentTarget.style.transform = "translateY(-1px)"
+                        e.currentTarget.style.boxShadow =
+                          "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+                      } else {
+                        e.currentTarget.style.transform = "translateY(-1px)"
+                        e.currentTarget.style.boxShadow =
+                          "0 20px 25px -5px rgba(245, 158, 11, 0.2), 0 10px 10px -5px rgba(245, 158, 11, 0.1)"
+                      }
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (selectedTimeSlot !== time) {
-                      e.currentTarget.style.backgroundColor = "white"
-                      e.currentTarget.style.borderColor = "#e5e7eb"
-                      e.currentTarget.style.transform = "translateY(0)"
-                      e.currentTarget.style.boxShadow =
-                        "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-                    } else {
-                      e.currentTarget.style.transform = "translateY(0)"
-                      e.currentTarget.style.boxShadow =
-                        "0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.1)"
+                    if (!hasPassed) {
+                      if (selectedTimeSlot !== timeString) {
+                        e.currentTarget.style.backgroundColor = "white"
+                        e.currentTarget.style.borderColor = "#e5e7eb"
+                        e.currentTarget.style.transform = "translateY(0)"
+                        e.currentTarget.style.boxShadow =
+                          "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
+                      } else {
+                        e.currentTarget.style.transform = "translateY(0)"
+                        e.currentTarget.style.boxShadow =
+                          "0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.1)"
+                      }
                     }
                   }}
                 >
-                  {time}
+                  {timeString}
                 </button>
-              ))}
-            </div>
-          ))}
+              )
+            })}
+          </div>
         </div>
 
         {/* Selection Summary */}
@@ -495,6 +453,7 @@ export default function DateTimeComponent() {
                 e.currentTarget.style.backgroundColor = "#2563eb"
                 e.currentTarget.style.borderColor = "#2563eb"
               }}
+              onClick={handleBookingAppointment}
             >
               Confirm Appointment
             </button>
@@ -502,7 +461,68 @@ export default function DateTimeComponent() {
         </div>
       </div>
 
-      {showCalendar && <CustomCalendar />}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .custom-datepicker-popper {
+            z-index: 1050 !important;
+          }
+          
+          .react-datepicker {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+            border: none !important;
+            border-radius: 12px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+          }
+          
+          .react-datepicker__header {
+            background-color: #f8fafc !important;
+            border-bottom: 1px solid #e5e7eb !important;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 16px !important;
+          }
+          
+          .react-datepicker__current-month {
+            color: #111827 !important;
+            font-weight: 600 !important;
+            font-size: 18px !important;
+          }
+          
+          .react-datepicker__day-name {
+            color: #6b7280 !important;
+            font-weight: 500 !important;
+            font-size: 11px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+          }
+          
+          .react-datepicker__day {
+            color: #374151 !important;
+            font-weight: 500 !important;
+            border-radius: 8px !important;
+            transition: all 0.15s ease-in-out !important;
+          }
+          
+          .react-datepicker__day:hover {
+            background-color: #f3f4f6 !important;
+          }
+          
+          .react-datepicker__day--selected {
+            background-color: #2563eb !important;
+            color: white !important;
+          }
+          
+          .react-datepicker__day--today {
+            background-color: #dbeafe !important;
+            color: #2563eb !important;
+            font-weight: 600 !important;
+          }
+          
+          .react-datepicker__day--disabled {
+            color: #d1d5db !important;
+            cursor: not-allowed !important;
+          }
+        `
+      }} />
     </div>
   )
 }

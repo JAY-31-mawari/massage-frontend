@@ -149,7 +149,7 @@ export default function IndexSix() {
                                         </div>
                                         <div className="col-lg-3 col-md-3 col-sm-12">
                                             <div className="form-group">
-                                                <button type="button" className="btn btn-dark full-width" onClick={()=>navigate("/mapbox")}>Search</button>
+                                                <button type="button" className="btn btn-dark full-width" onClick={()=> location ? navigate(`/classical-property?search=${location}`) : navigate(`/classical-property`)}>Search</button>
                                             </div>
                                         </div>
                                     </div>

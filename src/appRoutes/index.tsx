@@ -5,7 +5,7 @@ import IndexThree from '../pages/index/index-three';
 import IndexFour from '../pages/index/index-four';
 import IndexTwo from '../pages/index/index-two';
 import IndexFive from '../pages/index/index-five';
-import IndexSix from '../pages/index/index-six';
+import IndexSix from '../pages/index/home';
 import IndexSeven from '../pages/index/index-seven';
 import IndexEight from '../pages/index/index-eight';
 import IndexNine from '../pages/index/index-nine';

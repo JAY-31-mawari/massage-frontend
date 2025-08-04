@@ -13,7 +13,6 @@ import BookmarkList from './bookmark-list';
 import ChangePassword from './change-password';
 import Checkout from './checkout';
 import SubmitPropertyDashboard from './submit-property-dashboard';
-import { a } from 'framer-motion/dist/types.d-Bq-Qm38R';
 
 export default function AdminMainLayout() {
     const [selectedPage, setSelectedPage] = useState('my-profile');

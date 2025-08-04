@@ -62,6 +62,7 @@ export default function SubmitProperty() {
     });
 
     const [currentStep, setCurrentStep] = useState(1);
+    const [businessPhotos, setBusinessPhotos] = useState<string[]>([]);
 
     // validations AFTER all state is declared
     const isBasicInfoValid =
@@ -76,6 +77,8 @@ export default function SubmitProperty() {
 
     const isBusinessAddressValid =
         merchantAddress && merchantCity && merchantState && merchantZipCode;
+
+    const isBusinessPhotosValid = businessPhotos.length > 0;
 
     const isPractitionerDetailsValid =
         tabData[activeTab]?.practitionerName &&
@@ -267,6 +270,7 @@ export default function SubmitProperty() {
                 merchantCity,
                 merchantState,
                 merchantZipCode,
+                businessPhotos,
             }
             
             if(location.lat && location.lng){
@@ -274,7 +278,6 @@ export default function SubmitProperty() {
             }
 
             const businessResponse = await axios.post(global.config.ROOTURL.prod + '/business', businessPayload);
-            return;
             if (businessResponse.status === 201 || businessResponse.status === 200) {
                 console.log('Data submitted successfully:', businessResponse.data);
 
@@ -282,7 +285,6 @@ export default function SubmitProperty() {
                     const practitioner = tabData[Number(key)];
 
                     const response = await axios.post(global.config.ROOTURL.prod + "/practitioner", { ...practitioner, businessId: businessResponse?.data?.data?._id });
-                    console.log(`Practitioner ${key} submitted:`, response.data);
                 }
                 setBusinessName("")
                 setBusinessType("")
@@ -293,6 +295,7 @@ export default function SubmitProperty() {
                 setMerchantCity("")
                 setMerchantState("")
                 setMerchantZipCode("")
+                setBusinessPhotos([])
                 setTabData({
                     1: {
                         practitionerName: '',
@@ -333,12 +336,6 @@ export default function SubmitProperty() {
             <section className="gray-simple">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-12 col-md-12">
-                            <div className="alert bg-success text-light text-center" role="alert">
-                                Hi Dear, Have you already an account? <Link to="#" className="text-warning" onClick={() => setShow(!show)}>Please Login</Link>
-                            </div>
-                        </div>
-
                         <div className="col-lg-12 col-md-12">
                             <div id="login-frm" className={`collapse mb-5 ${show ? 'show' : ''}`}>
                                 <div className="row">
@@ -462,7 +459,7 @@ export default function SubmitProperty() {
                                                         <button
                                                             className="btn btn-primary fw-medium px-5"
                                                             type="button"
-                                                            disabled={!isBasicInfoValid}
+                                                            // disabled={!isBasicInfoValid}
                                                             onClick={() => setCurrentStep(2)}
                                                         >
                                                             Next
@@ -508,30 +505,151 @@ export default function SubmitProperty() {
                                                         <button
                                                             className="btn btn-primary fw-medium px-5"
                                                             type="button"
-                                                            disabled={!isBusinessAddressValid}
+                                                            // disabled={!isBusinessAddressValid}
                                                             onClick={() => setCurrentStep(3)}
                                                         >
                                                             Next
-                                                        </button>
-                                                    </div>
-                                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
-                                                        {/* <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(2)}>Back</button> */}
-                                                        <button
-                                                            className="btn btn-primary fw-medium px-5"
-                                                            type="button"
-                                                            // disabled={!isPractitionerDetailsValid}
-                                                            onClick={handleMerchantFormSubmit}
-                                                        >
-                                                            Submit & Preview
                                                         </button>
                                                     </div>
                                                 </div>
                                             </motion.div>
                                         )}
 
-                                        {/* {currentStep === 3 && (
+                                        {currentStep === 3 && (
                                             <motion.div
                                                 key="step3"
+                                                initial={{ opacity: 0, x: -50 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: 50 }}
+                                                transition={{ duration: 0.4 }}
+                                                layout
+                                            >
+                                                <div className="form-submit">
+                                                    <h3>Business Photos</h3>
+                                                    <div className="submit-section">
+                                                        <div className="row">
+                                                            <div className="form-group col-md-12">
+                                                                <label className='mb-2'>Upload Business Photos (Maximum 3 photos)</label>
+                                                                <div
+                                                                    className="dropzone dz-clickable primary-dropzone"
+                                                                    style={{
+                                                                        position: 'relative',
+                                                                        padding: '20px',
+                                                                        border: '2px dashed #d0d5dd',
+                                                                        borderRadius: '12px',
+                                                                        backgroundColor: '#fafafa',
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        minHeight: '200px',
+                                                                        transition: 'all 0.3s ease-in-out',
+                                                                    }}
+                                                                >
+                                                                    {businessPhotos.length < 3 && (
+                                                                        <UploadButton
+                                                                            endpoint="practitionerMedia"
+                                                                            onClientUploadComplete={(res) => {
+                                                                                const uploadedUrl = res?.[0]?.ufsUrl;
+                                                                                if (uploadedUrl && businessPhotos.length < 3) {
+                                                                                    setBusinessPhotos(prev => [...prev, uploadedUrl]);
+                                                                                }
+                                                                            }}
+                                                                            onUploadError={(error) => console.error("Upload failed", error)}
+                                                                        />
+                                                                    )}
+
+                                                                    {businessPhotos.length === 0 ? (
+                                                                        <div
+                                                                            className="dz-message"
+                                                                            style={{
+                                                                                display: 'flex',
+                                                                                flexDirection: 'column',
+                                                                                alignItems: 'center',
+                                                                                zIndex: 1,
+                                                                                color: '#667085',
+                                                                            }}
+                                                                        >
+                                                                            <i
+                                                                                className="fa-solid fa-image"
+                                                                                style={{ fontSize: '32px', marginBottom: '8px', color: '#9ca3af' }}
+                                                                            ></i>
+                                                                            <p style={{ margin: 0, fontWeight: 500 }}>
+                                                                                Click or Drag to Upload Business Photos
+                                                                            </p>
+                                                                            <span style={{ fontSize: '12px', color: '#98a2b3' }}>
+                                                                                Images (max 4MB each, up to 3 photos)
+                                                                            </span>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div style={{ width: '100%' }}>
+                                                                            <div className="row">
+                                                                                {businessPhotos.map((photo, index) => (
+                                                                                    <div key={index} className="col-md-4 mb-3">
+                                                                                        <div style={{ position: 'relative' }}>
+                                                                                            <img
+                                                                                                src={photo}
+                                                                                                alt={`Business Photo ${index + 1}`}
+                                                                                                style={{
+                                                                                                    width: '100%',
+                                                                                                    height: '150px',
+                                                                                                    borderRadius: '8px',
+                                                                                                    objectFit: 'cover',
+                                                                                                }}
+                                                                                            />
+                                                                                            <button
+                                                                                                type="button"
+                                                                                                className="btn btn-sm btn-danger"
+                                                                                                style={{
+                                                                                                    position: 'absolute',
+                                                                                                    top: '5px',
+                                                                                                    right: '5px',
+                                                                                                    borderRadius: '50%',
+                                                                                                    width: '30px',
+                                                                                                    height: '30px',
+                                                                                                    padding: '0',
+                                                                                                    display: 'flex',
+                                                                                                    alignItems: 'center',
+                                                                                                    justifyContent: 'center',
+                                                                                                }}
+                                                                                                onClick={() => setBusinessPhotos(prev => prev.filter((_, i) => i !== index))}
+                                                                                            >
+                                                                                                <i className="fa-solid fa-times"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+                                                                            {businessPhotos.length < 3 && (
+                                                                                <div className="text-center mt-3">
+                                                                                    <p style={{ color: '#667085', fontSize: '14px' }}>
+                                                                                        You can upload {3 - businessPhotos.length} more photo{businessPhotos.length < 2 ? '' : 's'}
+                                                                                    </p>
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
+                                                        <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(2)}>Back</button>
+                                                        <button
+                                                            className="btn btn-primary fw-medium px-5"
+                                                            type="button"
+                                                            // disabled={!isBusinessPhotosValid}
+                                                            onClick={() => setCurrentStep(4)}
+                                                        >
+                                                            Next
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        )}
+
+                                        {currentStep === 4 && (
+                                            <motion.div
+                                                key="step4"
                                                 initial={{ opacity: 0, x: -50 }}
                                                 animate={{ opacity: 1, x: 0 }}
                                                 exit={{ opacity: 0, x: 50 }}
@@ -695,7 +813,7 @@ export default function SubmitProperty() {
                                                         ))}
                                                     </div>
                                                     <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
-                                                        <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(2)}>Back</button>
+                                                        <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(3)}>Back</button>
                                                         <button
                                                             className="btn btn-primary fw-medium px-5"
                                                             type="button"
@@ -707,7 +825,7 @@ export default function SubmitProperty() {
                                                     </div>
                                                 </div>
                                             </motion.div>
-                                        )} */}
+                                        )}
 
                                         {/* <div className="form-group col-lg-12 col-md-12">
                                     <button className="btn btn-primary fw-medium px-5" type="button" onClick={handleMerchantFormSubmit}>Submit & Preview</button>

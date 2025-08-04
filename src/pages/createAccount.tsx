@@ -141,7 +141,7 @@ export default function RegisterAccount() {
                 setEmail("")
                 setPhone("")
 
-                navigate("/")
+                navigate(-1)
             }).catch((err)=>{
                 console.log("handleOTPVerification Error",err)
             })
