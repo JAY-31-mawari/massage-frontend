@@ -28,6 +28,8 @@ export default function PropertyDetail() {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [selectedDay, setSelectedDay] = useState(0);
   const [appointmentDateTime, setAppointmentDateTime] = useState(new Date());
+  const [appointmentTimeToString, setAppointmentTimeToString] = useState('')
+  const [bookedSlots, setBookedSlots] = useState([])
   const accessToken = getStorageItem("token");
   const [isOpen, setIsOpen] = useState(false);
   let [open2, setOpen2] = useState<boolean>(true);
@@ -55,18 +57,14 @@ export default function PropertyDetail() {
     { value: "1", label: "05 Star" },
   ];
 
-  const handleSelectedDate = (date: Date) => {
-    setSelectedDate(date);
-  };
-
-  const handleSelectedTimeSlot = (timeslot: string) => {
-    setSelectedTimeSlot(timeslot);
-  };
-
   const BookAppointment = async () => {
-    if (!user?._id || !merchant?._id) {
+    if (!user?._id) {
       navigate("/create-account")
       toast.error("Please Login First and select service");
+      return;
+    }
+    if(!merchant?._id){
+      toast.error("Please select service first for booking");
       return;
     }
     if (selectedTimeSlot === "") {
@@ -79,7 +77,6 @@ export default function PropertyDetail() {
       return;
     }
 
-    console.log("Appointment Time from api", appointmentDateTime)
     const bookingPayload = {
       method: "POST",
       url: global.config.ROOTURL.prod + `/appointment`,
@@ -91,33 +88,57 @@ export default function PropertyDetail() {
         userId: user._id,
         businessId: merchant._id,
         serviceName: "Physiotherapy",
-        appointmentDate: selectedDate,
+        appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
         duration: 60,
         serviceType: "Home",
         price: 150,
       },
     };
-
-    // await axios(bookingPayload)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((error) => {
-    //     console.log("handleBookAppointment Error", error);
-    //   });
+    await axios(bookingPayload)
+      .then((res) => {
+        getAllBookings()
+      })
+      .catch((error) => {
+        console.log("handleBookAppointment Error", error);
+      });
   };
+
+  const getAllBookings = async() => {
+    if(!merchant?._id){
+      toast.error("Select a business first")
+      return;
+    }
+    const getBookingPayload = {
+      method: 'GET',
+      url: global.config.ROOTURL.prod + `/appointment/business/${merchant._id}?appointmentDate=${appointmentDateTime}`
+    }
+    try{
+      await axios(getBookingPayload).then((res)=>{
+        setBookedSlots(res.data?.data)
+      }).catch((error)=>{
+        console.log(error)
+      })
+    }catch(err){
+      console.error('getAllBookings Error', err)
+    }
+  }
+
+  useEffect(()=>{
+    getAllBookings()
+  },[selectedDate])
 
   return (
     <>
       <div className="property_block_wrap style-2">
         <DateTimeComponent
+          bookedSlots={bookedSlots}
+          selectedDate={selectedDate}
           startTime={9}
           endTime={24}
-          selectedDate={selectedDate}
           selectedTimeSlot={selectedTimeSlot}
           appointmentDateTime={appointmentDateTime}
-          setSelectedDate={handleSelectedDate}
-          setSelectedTimeSlot={handleSelectedTimeSlot}
+          setSelectedDate={setSelectedDate}
+          setSelectedTimeSlot={setSelectedTimeSlot}
           setAppointmentDateTime={setAppointmentDateTime}
           handleBookingAppointment={BookAppointment}
         />

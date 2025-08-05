@@ -2,7 +2,22 @@ import { useState, useEffect } from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
+interface Booking{
+  active: boolean
+  appointmentDate: Date
+  businessId: string
+  duration: number
+  paymentStatus: string
+  price: number
+  reminderSent: false
+  serviceName: string
+  serviceType: string
+  status: string
+  _id: string
+}
+
 interface BookingProps{
+  bookedSlots: Booking[]
   startTime: number
   endTime: number
   selectedDate: Date
@@ -14,7 +29,7 @@ interface BookingProps{
   handleBookingAppointment: () => void
 }
 
-export default function DateTimeComponent({startTime, endTime, selectedDate, selectedTimeSlot, appointmentDateTime, setSelectedDate, setSelectedTimeSlot, setAppointmentDateTime, handleBookingAppointment}: BookingProps) {
+export default function DateTimeComponent({bookedSlots, startTime, endTime, selectedDate, selectedTimeSlot, appointmentDateTime, setSelectedDate, setSelectedTimeSlot, setAppointmentDateTime, handleBookingAppointment}: BookingProps) {
   const [showCalendar, setShowCalendar] = useState(false)
   const [selectedDay, setSelectedDay] = useState(0)
    // Default to today (first day)
@@ -66,24 +81,38 @@ export default function DateTimeComponent({startTime, endTime, selectedDate, sel
     const now = new Date()
     const isToday = selectedDate.toDateString() === now.toDateString()
 
+    const bookedTimes = bookedSlots.map(booking => {
+      const bookingTime = new Date(booking.appointmentDate)
+      bookingTime.setHours(bookingTime.getHours()-5)
+      bookingTime.setMinutes(bookingTime.getMinutes()-30)
+      return bookingTime.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+    })
     for (let hour = startHour; hour < endHour; hour++) {
       for (let minute = 0; minute < 60; minute += interval) {
-        const time = new Date()
+        const time = new Date(selectedDate)
         time.setHours(hour, minute, 0, 0)
-        
+        const timeString = time.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        })
+    
+        // Skip if already booked
+        if (bookedTimes.includes(timeString)) {
+          continue
+        }
+    
         // If it's today, only include time slots that haven't passed yet
         if (isToday) {
-          const timeSlotTime = new Date(selectedDate)
-          timeSlotTime.setHours(hour, minute, 0, 0)
-          
-          // Add 30 minutes buffer to current time to allow for reasonable booking time
-          const bufferTime = new Date(now.getTime())
-          
-          if (timeSlotTime > bufferTime) {
+          const now = new Date()
+          if (time > now) {
             slots.push(new Date(time))
           }
         } else {
-          // For future dates, include all time slots
           slots.push(new Date(time))
         }
       }
@@ -96,7 +125,7 @@ export default function DateTimeComponent({startTime, endTime, selectedDate, sel
   // Update time slots when selected date changes
   useEffect(() => {
     setTimeSlots(generateTimeSlots())
-  }, [selectedDate, startTime, endTime])
+  }, [selectedDate, startTime, endTime, bookedSlots])
 
   const handleDayClick = (index: number) => {
     setSelectedDay(index)
@@ -464,7 +493,7 @@ export default function DateTimeComponent({startTime, endTime, selectedDate, sel
                 e.currentTarget.style.backgroundColor = "#2563eb"
                 e.currentTarget.style.borderColor = "#2563eb"
               }}
-              onClick={handleBookingAppointment}
+              onClick={()=>handleBookingAppointment()}
             >
               Confirm Appointment
             </button>
