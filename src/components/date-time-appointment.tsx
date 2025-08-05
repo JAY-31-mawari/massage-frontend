@@ -63,18 +63,40 @@ export default function DateTimeComponent({startTime, endTime, selectedDate, sel
     const startHour = startTime // 9 AM
     const endHour = endTime // 9 PM (21:00)
     const interval = 30 // 30 minutes
+    const now = new Date()
+    const isToday = selectedDate.toDateString() === now.toDateString()
 
     for (let hour = startHour; hour < endHour; hour++) {
       for (let minute = 0; minute < 60; minute += interval) {
         const time = new Date()
         time.setHours(hour, minute, 0, 0)
-        slots.push(new Date(time))
+        
+        // If it's today, only include time slots that haven't passed yet
+        if (isToday) {
+          const timeSlotTime = new Date(selectedDate)
+          timeSlotTime.setHours(hour, minute, 0, 0)
+          
+          // Add 30 minutes buffer to current time to allow for reasonable booking time
+          const bufferTime = new Date(now.getTime())
+          
+          if (timeSlotTime > bufferTime) {
+            slots.push(new Date(time))
+          }
+        } else {
+          // For future dates, include all time slots
+          slots.push(new Date(time))
+        }
       }
     }
     return slots
   }
 
-  const timeSlots = generateTimeSlots()
+  const [timeSlots, setTimeSlots] = useState<Date[]>([])
+
+  // Update time slots when selected date changes
+  useEffect(() => {
+    setTimeSlots(generateTimeSlots())
+  }, [selectedDate, startTime, endTime])
 
   const handleDayClick = (index: number) => {
     setSelectedDay(index)
@@ -339,19 +361,13 @@ export default function DateTimeComponent({startTime, endTime, selectedDate, sel
                 hour12: true
               })
               
-              // Check if this time slot has passed for today
-              const now = new Date()
-              const isToday = selectedDate.toDateString() === now.toDateString()
-              const hasPassed = isToday && timeSlot.getTime() < now.getTime()
-              
               return (
                 <button
                   key={timeIndex}
                   className="btn border-0 fw-medium rounded-2"
-                  disabled={hasPassed}
                   style={{
-                    backgroundColor: selectedTimeSlot === timeString ? "#f59e0b" : hasPassed ? "#f3f4f6" : "white",
-                    color: selectedTimeSlot === timeString ? "white" : hasPassed ? "#9ca3af" : "#374151",
+                    backgroundColor: selectedTimeSlot === timeString ? "#f59e0b" : "white",
+                    color: selectedTimeSlot === timeString ? "white" : "#374151",
                     fontSize: "14px",
                     width: "100px",
                     height: "44px",
@@ -361,38 +377,33 @@ export default function DateTimeComponent({startTime, endTime, selectedDate, sel
                         ? "0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.1)"
                         : "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
                     border: "1px solid #e5e7eb",
-                    cursor: hasPassed ? "not-allowed" : "pointer",
-                    opacity: hasPassed ? 0.6 : 1,
+                    cursor: "pointer",
                   }}
-                  onClick={() => !hasPassed && handleTimeSlotClick(timeSlot)}
+                  onClick={() => handleTimeSlotClick(timeSlot)}
                   onMouseEnter={(e) => {
-                    if (!hasPassed) {
-                      if (selectedTimeSlot !== timeString) {
-                        e.currentTarget.style.backgroundColor = "#f8fafc"
-                        e.currentTarget.style.borderColor = "#d1d5db"
-                        e.currentTarget.style.transform = "translateY(-1px)"
-                        e.currentTarget.style.boxShadow =
-                          "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-                      } else {
-                        e.currentTarget.style.transform = "translateY(-1px)"
-                        e.currentTarget.style.boxShadow =
-                          "0 20px 25px -5px rgba(245, 158, 11, 0.2), 0 10px 10px -5px rgba(245, 158, 11, 0.1)"
-                      }
+                    if (selectedTimeSlot !== timeString) {
+                      e.currentTarget.style.backgroundColor = "#f8fafc"
+                      e.currentTarget.style.borderColor = "#d1d5db"
+                      e.currentTarget.style.transform = "translateY(-1px)"
+                      e.currentTarget.style.boxShadow =
+                        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+                    } else {
+                      e.currentTarget.style.transform = "translateY(-1px)"
+                      e.currentTarget.style.boxShadow =
+                        "0 20px 25px -5px rgba(245, 158, 11, 0.2), 0 10px 10px -5px rgba(245, 158, 11, 0.1)"
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (!hasPassed) {
-                      if (selectedTimeSlot !== timeString) {
-                        e.currentTarget.style.backgroundColor = "white"
-                        e.currentTarget.style.borderColor = "#e5e7eb"
-                        e.currentTarget.style.transform = "translateY(0)"
-                        e.currentTarget.style.boxShadow =
-                          "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-                      } else {
-                        e.currentTarget.style.transform = "translateY(0)"
-                        e.currentTarget.style.boxShadow =
-                          "0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.1)"
-                      }
+                    if (selectedTimeSlot !== timeString) {
+                      e.currentTarget.style.backgroundColor = "white"
+                      e.currentTarget.style.borderColor = "#e5e7eb"
+                      e.currentTarget.style.transform = "translateY(0)"
+                      e.currentTarget.style.boxShadow =
+                        "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
+                    } else {
+                      e.currentTarget.style.transform = "translateY(0)"
+                      e.currentTarget.style.boxShadow =
+                        "0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.1)"
                     }
                   }}
                 >
