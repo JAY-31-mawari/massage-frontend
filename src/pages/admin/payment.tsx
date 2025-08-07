@@ -46,7 +46,9 @@ export default function Payment() {
                     console.log("UnAuthorized Access, getPayment")
                     deleteStorageItem('user-data')
                     deleteStorageItem('token')
-                    navigate("/create-account")
+                    setTimeout(() => {
+                        navigate("/create-account");
+                    }, 2000);  
                 }
             })
         }
