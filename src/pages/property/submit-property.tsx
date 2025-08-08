@@ -10,6 +10,7 @@ import { UploadButton } from '../../utils/uploadthing';
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+import ProgressSidebar from '../../components/progress-sidebar';
 
 interface LocationState {
     lat: number | null;
@@ -260,7 +261,7 @@ export default function SubmitProperty() {
 
     const handleMerchantFormSubmit = async () => {
         try {
-            const businessPayload:any = {
+            const businessPayload: any = {
                 businessName,
                 businessType,
                 business_email: email,
@@ -272,8 +273,8 @@ export default function SubmitProperty() {
                 merchantZipCode,
                 businessPhotos,
             }
-            
-            if(location.lat && location.lng){
+
+            if (location.lat && location.lng) {
                 businessPayload.location = location
             }
 
@@ -336,55 +337,14 @@ export default function SubmitProperty() {
             <section className="gray-simple">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-12 col-md-12">
-                            <div id="login-frm" className={`collapse mb-5 ${show ? 'show' : ''}`}>
-                                <div className="row">
-
-                                    <div className="col-lg-5 col-md-4 col-sm-6">
-                                        <div className="form-group">
-                                            <div className="input-with-icons">
-                                                <input type="text" className="form-control" placeholder="Username" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-5 col-md-4 col-sm-6">
-                                        <div className="form-group">
-                                            <div className="input-with-icons">
-                                                <input type="text" className="form-control" placeholder="*******" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-2 col-md-4 col-sm-12">
-                                        <div className="form-group">
-                                            <button type="submit" className="btn btn-primary full-width">Submit</button>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-12 col-md-12 col-sm-12">
-                                        <div className="exclop-wrap d-flex align-items-center justify-content-between">
-                                            <div className="exclop">
-                                                <input id="a-1" className="form-check-input" name="a-1" type="checkbox" />
-                                                <label htmlFor="a-1" className="form-check-label ms-2">Remember Me</label>
-                                            </div>
-                                            <div className="exclop-last">
-                                                <Link to="#" className="fw-medium text-primary">Forget Password?</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
+                        <div className="col-lg-3 col-md-4 d-none d-md-block">
+                            <ProgressSidebar currentStep={currentStep} setCurrentStep={(index) => setCurrentStep(index)} />
                         </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col-lg-12 col-md-12">
+                        <div className="col-lg-9 col-md-8">
                             <div className="submit-page">
                                 <motion.div layout>
                                     <AnimatePresence mode="wait">
-                                        {currentStep === 1 && (
+                                        {(currentStep === 1 || currentStep === 5) && (
                                             <motion.div
                                                 key="step1"
                                                 initial={{ opacity: 0, x: -50 }}
@@ -455,21 +415,11 @@ export default function SubmitProperty() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="form-group col-lg-12 mt-3">
-                                                        <button
-                                                            className="btn btn-primary fw-medium px-5"
-                                                            type="button"
-                                                            // disabled={!isBasicInfoValid}
-                                                            onClick={() => setCurrentStep(2)}
-                                                        >
-                                                            Next
-                                                        </button>
-                                                    </div>
                                                 </div>
                                             </motion.div>
                                         )}
 
-                                        {currentStep === 2 && (
+                                        {(currentStep === 2 || currentStep === 5) && (
                                             <motion.div
                                                 key="step2"
                                                 initial={{ opacity: 0, x: -50 }}
@@ -500,22 +450,12 @@ export default function SubmitProperty() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
-                                                        <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(1)}>Back</button>
-                                                        <button
-                                                            className="btn btn-primary fw-medium px-5"
-                                                            type="button"
-                                                            // disabled={!isBusinessAddressValid}
-                                                            onClick={() => setCurrentStep(3)}
-                                                        >
-                                                            Next
-                                                        </button>
-                                                    </div>
+
                                                 </div>
                                             </motion.div>
                                         )}
 
-                                        {currentStep === 3 && (
+                                        {(currentStep === 3 || currentStep === 5) && (
                                             <motion.div
                                                 key="step3"
                                                 initial={{ opacity: 0, x: -50 }}
@@ -632,22 +572,11 @@ export default function SubmitProperty() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
-                                                        <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(2)}>Back</button>
-                                                        <button
-                                                            className="btn btn-primary fw-medium px-5"
-                                                            type="button"
-                                                            // disabled={!isBusinessPhotosValid}
-                                                            onClick={() => setCurrentStep(4)}
-                                                        >
-                                                            Next
-                                                        </button>
-                                                    </div>
                                                 </div>
                                             </motion.div>
                                         )}
 
-                                        {currentStep === 4 && (
+                                        {(currentStep === 4 || currentStep === 5) && (
                                             <motion.div
                                                 key="step4"
                                                 initial={{ opacity: 0, x: -50 }}
@@ -657,7 +586,7 @@ export default function SubmitProperty() {
                                                 layout
                                             >
                                                 <div className="form-submit">
-                                                    <h3>Practitioner Details & Specializations</h3>
+                                                    <h3>Practitioner Details</h3>
                                                     {(businessType !== 'Home-Based Practice' && businessType !== "Mobile Practitioner") && <div className="form-group col-md-12 d-flex justify-content-between align-items-center mb-3">
                                                         <ul className="nav nav-tabs">
                                                             {tabs.map((tab) => (
@@ -812,17 +741,6 @@ export default function SubmitProperty() {
                                                             </div>
                                                         ))}
                                                     </div>
-                                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
-                                                        <button className="btn btn-outline-secondary" onClick={() => setCurrentStep(3)}>Back</button>
-                                                        <button
-                                                            className="btn btn-primary fw-medium px-5"
-                                                            type="button"
-                                                            disabled={!isPractitionerDetailsValid}
-                                                            onClick={handleMerchantFormSubmit}
-                                                        >
-                                                            Submit & Preview
-                                                        </button>
-                                                    </div>
                                                 </div>
                                             </motion.div>
                                         )}
@@ -832,6 +750,19 @@ export default function SubmitProperty() {
                                 </div> */}
                                     </AnimatePresence>
                                 </motion.div>
+                                <div>
+                                    <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
+                                        <button className="btn btn-outline-secondary" disabled={currentStep===1} onClick={() => currentStep - 1 > 0 ? setCurrentStep(currentStep-1) : null}>Previous</button>
+                                        <button
+                                            className="btn btn-primary fw-medium px-5"
+                                            type="button"
+                                            // disabled={!isPractitionerDetailsValid}
+                                            onClick={() => currentStep === 5 ? handleMerchantFormSubmit() : setCurrentStep(currentStep+1)}
+                                        >
+                                            {currentStep === 5 ? 'Preview & Submit': 'Next'}
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

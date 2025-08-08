@@ -383,6 +383,11 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
           </h2>
 
           <div className="d-flex flex-wrap gap-3">
+            {timeSlots.length === 0 && 
+              <div>
+                <h5>No Available timeslots for the selected Date</h5>
+              </div>
+            }
             {timeSlots.map((timeSlot: Date, timeIndex: number) => {
               const timeString = timeSlot.toLocaleTimeString('en-US', {
                 hour: 'numeric',

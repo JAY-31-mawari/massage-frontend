@@ -1,6 +1,7 @@
 import { generateUploadButton } from "@uploadthing/react";
+import global from "../config";
 
 //Replace with your actual server URL
 export const UploadButton = generateUploadButton({
-  url: "http://localhost:3002/api/uploadthing", // or your deployed server
+  url: global.ROOTURL.prod + "/api/uploadthing", // or your deployed server
 });

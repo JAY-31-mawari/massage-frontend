@@ -1,17 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
 import axios from 'axios'
-import { getStorageItem } from '../../utils/sessionStorage'
+import { getStorageItem, deleteStorageItem } from '../../utils/sessionStorage'
 import { userProperty } from '../../data/property'
 import { useUserStore } from '../../store/userStore'
+import toast from 'react-hot-toast'
+
+interface BusinessData {
+    businessName: string
+    business_phone: string
+    merchantAddress: string
+    _id: string
+}
+
+interface AppointmentHistory {
+    active: boolean
+    appointmentDate: string
+    businessId: BusinessData
+    duration: number
+    price: number
+    reminderSend: boolean
+    serviceName: string
+    serviceType: string
+    userId: string
+    _id: string
+}
 
 export default function Orders() {
+    const navigate = useNavigate()
+    const [userAppointmentHisotry, setUserAppointmentHistory] = useState<AppointmentHistory[]>([])
     let [show, setShow] = useState<boolean>(false)
-    const userData = useUserStore((state) => state.user)
-    // const [userData, setUserData] = useState<any>(JSON.parse(getStorageItem('user-data')))
+    const user = useUserStore((state) => state.user)
+    const accessToken = getStorageItem("token")
+    // const [user, setuser] = useState<any>(JSON.parse(getStorageItem('user-data')))
     const [uid, setUid] = useState(getStorageItem("uid"))
-    console.log(userData)
+    console.log(user)
     const [practitioners, setPractitioners] = useState<any>([])
 
     const fetchPractitionersByBusinessId = async () => {
@@ -20,10 +44,40 @@ export default function Orders() {
         console.log(practitionerRes.data.data)
     }
 
-    useEffect(() => {
-        if (userData?._id && userData?.businessName) {
-            fetchPractitionersByBusinessId()
+    const fetchUserAppointments = async () => {
+        if (!user?._id) {
+            toast.error("Please Login First and select service");
+            setTimeout(() => {
+                navigate("/create-account");
+            }, 2000);
+            return;
         }
+
+        const appointmentPayload = {
+            method: 'GET',
+            url: global.config.ROOTURL.prod + `/appointment/user/${user._id}`,
+            headers: {
+                Authorization: "Bearer " + accessToken,
+                "Content-type": "application/json",
+            },
+        }
+
+        await axios(appointmentPayload).then((res) => {
+            setUserAppointmentHistory(res.data?.data)
+        }).catch((err) => {
+            if (err.response.status === 401) {
+                console.log("UnAuthorized Access, getPayment")
+                deleteStorageItem('user-data')
+                deleteStorageItem('token')
+                setTimeout(() => {
+                    navigate("/create-account");
+                }, 2000);
+            }
+        })
+    }
+
+    useEffect(() => {
+        fetchUserAppointments()
     }, [])
 
     return (
@@ -42,27 +96,46 @@ export default function Orders() {
                             </div>
 
                             <div className="row">
-                                {practitioners.map((item: any, index: number) => (
-                                    <motion.div
+                                {userAppointmentHisotry.length !== 0 && userAppointmentHisotry.map((appointment, index: number) => {
+                                    const date = new Date(appointment?.appointmentDate);
+
+                                    const year = date.getUTCFullYear();
+                                    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // months are 0-based
+                                    const day = String(date.getUTCDate()).padStart(2, '0');
+                                    
+                                    const hours = date.getUTCHours();
+                                    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+                                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                                    const hour12 = String(hours % 12 || 12).padStart(2, '0');
+                                    
+                                    const formatted = `${year}-${month}-${day} ${hour12}:${minutes} ${ampm}`;
+
+                                    return (<motion.div
                                         className="col-md-12 col-sm-12"
-                                        key={item?._id}
+                                        key={appointment?._id}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: index * 0.1, duration: 0.4 }}
                                     >
                                         <div className="singles-dashboard-list">
                                             <div className="sd-list-left">
-                                                <img src={item?.profilePicture} className="img-fluid" alt="" />
+                                                {/* <img src={item?.profilePicture} className="img-fluid" alt="" /> */}
                                             </div>
                                             <div className="sd-list-right">
                                                 <h4 className="listing_dashboard_title">
-                                                    <Link to="#" className="text-primary">{item?.practitionerName}</Link>
+                                                    <Link to="#" className="text-primary">{appointment?.businessId?.businessName}</Link>
                                                 </h4>
                                                 <div className="user_dashboard_listed">
-                                                    Listed in <Link to="#" className="text-primary"></Link> and <Link to="#" className="text-primary">{userData?.businessName}</Link>
+                                                    Appointment Date & Time: <Link to="#" className="text-primary">{formatted}</Link>
                                                 </div>
                                                 <div className="user_dashboard_listed">
-                                                    Area of Expertise: <Link to="#" className="text-primary">{item?.areaOfExpertise[0]}</Link>
+                                                    Service Type : <Link to="#" className="text-primary">{appointment?.serviceType}</Link>
+                                                </div>
+                                                <div className="user_dashboard_listed">
+                                                    Area of Expertise: <Link to="#" className="text-primary">{appointment?.serviceName}</Link>
+                                                </div>
+                                                <div className="user_dashboard_listed">
+                                                    Price: <Link to="#" className="text-primary">{appointment?.price}</Link>
                                                 </div>
                                                 <div className="action">
                                                     <Link to="#" title="Edit"><i className="fa-solid fa-pen-to-square"></i></Link>
@@ -72,8 +145,8 @@ export default function Orders() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </motion.div>
-                                ))}
+                                    </motion.div>)
+                                })}
                             </div>
                         </motion.div>
                     </div>

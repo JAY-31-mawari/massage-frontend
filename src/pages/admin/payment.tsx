@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import image1 from '../../assets/img/p-14.jpg'
-import { getStorageItem } from '../../utils/sessionStorage'
+import { deleteStorageItem, getStorageItem } from '../../utils/sessionStorage'
 import axios from 'axios'
 
 interface PaymentCard{
@@ -24,6 +24,7 @@ export default function Payment() {
     let [open4, setOpen4] = useState<boolean>(false)
     const [paymentCard, setPaymentCard] = useState<PaymentCard>()
     const accessToken = getStorageItem("token")
+    const navigate = useNavigate()
 
     useEffect(()=>{
         async function getPayment(){
@@ -38,8 +39,18 @@ export default function Payment() {
                 },
 
             }
-            const paymentRes = await axios(payment)
-            setPaymentCard(paymentRes.data.data)
+            const paymentRes = await axios(payment).then((res)=>{
+                setPaymentCard(res.data.data)
+            }).catch((err)=>{
+                if(err.response.status === 401){
+                    console.log("UnAuthorized Access, getPayment")
+                    deleteStorageItem('user-data')
+                    deleteStorageItem('token')
+                    setTimeout(() => {
+                        navigate("/create-account");
+                    }, 2000);  
+                }
+            })
         }
         getPayment()
     },[])

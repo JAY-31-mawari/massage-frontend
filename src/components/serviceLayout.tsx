@@ -44,6 +44,7 @@ interface Service{
     merchantState: string
     merchantZipCode: string
     practitioners: string[]
+    businessPhotos: string[]
 }
 
 export default function ServiceLayout({item}:{item:Service}) {
@@ -77,16 +78,15 @@ export default function ServiceLayout({item}:{item:Service}) {
                         })}
                     </div> */}
                     <div className="list-img-slide">
-                        <img src='' alt='service parlour image'></img>
-                        {/* <div className="click mb-0 rounded-3 overflow-hidden">
+                        <div className="click mb-0 rounded-3 overflow-hidden">
                         <TinySlider settings={settings}>
-                            {item.image.map((el:any, index:number) => {
+                            {item?.businessPhotos &&  item.businessPhotos.map((el:any, index:number) => {
                             return(
-                                <div key={index}><Link to={`/single-property-1/${item.id}`}><img src={el} className="img-fluid" alt="" /></Link></div>
+                                <div key={index}><Link to={`/single-property-1/${item._id}`}><img src={el} className="img-fluid" alt="" /></Link></div>
                             )
                             })}
                         </TinySlider>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>

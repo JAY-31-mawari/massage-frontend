@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useSearchParams } from 'react-router-dom'
 
@@ -11,8 +11,13 @@ import Footer from '../../components/footer'
 import axios from 'axios';
 import ServiceLayout from '../../components/serviceLayout';
 import Placeholder from 'react-select/dist/declarations/src/components/Placeholder';
-import { getStorageItem, setStorageItem } from '../../utils/sessionStorage';
 import { number } from 'framer-motion';
+import { useSearchLocation } from '../../store/searchLocation';
+import { Button } from '../../components/button';
+import { stat } from 'fs';
+import { P, s } from 'framer-motion/dist/types.d-Bq-Qm38R';
+import { getStorageItem, deleteStorageItem } from '../../utils/sessionStorage';
+import { useServiceStore } from '../../store/serviceStore';
 
 interface Location {
   type: string
@@ -32,38 +37,48 @@ interface Service {
   merchantState: string
   merchantZipCode: string
   practitioners: string[]
+  businessPhotos: string[]
 }
 
 export default function ClassicalProperty() {
+  const search = useSearchLocation((state) => state.searchLocation)
+  const updateSearch = useSearchLocation((state) => state.updateSearchLocation)
+  const serviceData = useServiceStore((state) => state.services)
+  const setServiceData = useServiceStore((state) => state.setServices)
   let [open, setOpen] = useState<boolean>(false)
   const [range, setRange] = useState<number[]>([20, 80]);
-  const [serviceData, setServiceData] = useState<Service[]>([])
   const [location, setLocation] = useState('')
+  const liveLocation = useRef(false)
+  const latitudeRef = useRef(0)
+  const longitudeRef = useRef(0)
+  const searchLocation = useRef('')
   const [isLoadingLocation, setIsLoadingLocation] = useState(false)
   const [searchParams] = useSearchParams()
-  const search = searchParams.get('search')
-  const [latitude, setLatitude] = useState(0)
-  const [longitude, setLongitude] = useState(0)
+  const searchQuery = searchParams.get('search')
+  const live = getStorageItem("live")
   const [radius, setRadius] = useState(10)
-  const [limit, setLimit] = useState(10)
-  
-  useEffect(()=>{
-    if(search){
-      setLocation(search)
+
+  useEffect(() => {
+    console.log(live)
+    if (live) {
+      console.log("hello 1")
+      getCurrentLocation()
+      deleteStorageItem("live")
+    } else if (searchQuery) {
+      console.log("hello 2")
+      searchLocation.current = searchQuery
+      setLocation(searchQuery)
+      liveLocation.current = false
+      getSearchData()
     }
-  },[search])
+
+  }, [searchQuery])
 
   const handleRangeChange = (values: number | number[]) => {
     if (Array.isArray(values)) {
       setRange(values);
     }
   };
-
-  // const shorty = [
-  //   { value: '1', label: 'Low Price' },
-  //   { value: '1', label: 'High Price' },
-  //   { value: '1', label: 'Most Popular' },
-  // ]
 
   const getCurrentLocation = () => {
     setIsLoadingLocation(true)
@@ -77,10 +92,12 @@ export default function ClassicalProperty() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords
-        setLatitude(latitude)
-        setLongitude(longitude)
-        setStorageItem("latitide",latitude)
-        setStorageItem("longitude",longitude)
+        latitudeRef.current = latitude
+        longitudeRef.current = longitude
+        updateSearch({ latitude, longitude, liveLocation: liveLocation.current })
+        liveLocation.current = true
+        getSearchData()
+        // getLiveLocationData(latitude, longitude)
         try {
           // Reverse geocoding using OpenStreetMap Nominatim API
           const response = await fetch(
@@ -95,15 +112,16 @@ export default function ClassicalProperty() {
             const state = addressParts[2] || ''
             const locationString = `${city}, ${state}`.trim()
             setLocation(locationString)
-            setStorageItem("location",locationString)
+            updateSearch({ location: locationString })
           } else {
             setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`)
+            updateSearch({ location: `${latitude.toFixed(4)}, ${longitude.toFixed(4)}` })
           }
         } catch (error) {
           console.error('Error reverse geocoding:', error)
           setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`)
+          updateSearch({ location: `${latitude.toFixed(4)}, ${longitude.toFixed(4)}` })
         }
-
         setIsLoadingLocation(false)
       },
       (error) => {
@@ -136,46 +154,46 @@ export default function ClassicalProperty() {
     )
   }
 
-  useEffect(()=>{
-    const latitude = getStorageItem("latitide")
-    const longitude = getStorageItem("longitude")
-    const location = getStorageItem("location")
-    const radius = getStorageItem("radius")
-    if(latitude){
-      setLatitude(latitude)
+  // useEffect(()=>{
+  //   console.log("adskasdkjd",search)
+  // },[search])
+
+  async function getSearchData() {
+    const searchBusinessData = await axios.get(global.config.ROOTURL.prod + `/business/search?q=${searchLocation.current}&latitude=${latitudeRef.current}&longitude=${longitudeRef.current}&radius=${radius}&liveLocation=${liveLocation.current}`)
+    setServiceData(searchBusinessData.data.businesses)
+    updateSearch({
+      location: searchLocation.current,
+      liveLocation: liveLocation.current,
+      radius: 10
+    })
+  }
+
+  // useEffect(()=>{
+  //   if(searchLocation){
+  //     getSearchData()
+  //   }
+  // },[radius])
+
+  useEffect(() => {
+    if (search?.location) {
+      searchLocation.current = search.location
+      setLocation(search.location)
     }
-    if(longitude){
-      setLongitude(longitude)
-    }
-    if(location){
-      setLocation(location)
-    }
-    if(radius){
-      setRadius(radius)
-    }
-  },[])
+  }, [])
 
   useEffect(() => {
     async function getData() {
       const businessData = await axios.get(global.config.ROOTURL.prod + '/business')
       setServiceData(businessData.data.businesses)
     }
-    if(location === ''){
+    if (serviceData.length === 0) {
       getData()
     }
-  }, [])
+  })
 
-  useEffect(()=>{
-    console.log("asdasdjn",latitude)
-    console.log("asddasdasdasd",longitude)
-    async function getSearchData(){ 
-      const searchBusinessData = await axios.get(global.config.ROOTURL.prod + `/business/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&limit=${limit}`)
-      setServiceData(searchBusinessData.data.businesses)
-    }
-    if(location){
-      getSearchData()
-    }
-  },[location,radius])
+  useEffect(() => {
+    searchLocation.current = location
+  }, [location])
 
   return (
     <>
@@ -196,7 +214,7 @@ export default function ClassicalProperty() {
                     <div className="col-lg-7 col-md-9 col-sm-12">
                       <div className="form-group">
                         <div className="position-relative">
-                          <input type="text" className="form-control border-0 ps-5" placeholder="Search for a location" value={location} onChange={(e) => setLocation(e.target.value)} />
+                          <input type="text" className="form-control border-0 ps-5" placeholder="Enter city, state or zipcode" value={location} onChange={(e) => setLocation(e.target.value)} />
                           <div className="position-absolute top-50 start-0 translate-middle-y ms-2">
                             <span className="svg-icon text-primary svg-icon-2hx">
                               <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -210,7 +228,10 @@ export default function ClassicalProperty() {
                     </div>
                     <div className="col-lg-2 col-md-3 col-sm-12">
                       <div className="form-group">
-                        <Link to="#" className="btn btn-dark full-width">Search</Link>
+                        <Button color='blue' name='Search' onClick={() => {
+                          liveLocation.current = false
+                          getSearchData()
+                        }} />
                       </div>
                     </div>
                     <div className="col-lg-3 col-md-3 col-sm-12">
@@ -238,10 +259,9 @@ export default function ClassicalProperty() {
         </div>
         <div className="ht-30"></div>
         <div>
-          <input type="number" value={radius} onChange={(e)=>{
-            setRadius(parseInt(e.target.value,10))
-            setStorageItem("radius",parseInt(e.target.value,10))
-            }} placeholder="Enter radius" />
+          <input type="number" value={radius} onChange={(e) => {
+            setRadius(parseInt(e.target.value, 10))
+          }} placeholder="Enter radius" />
         </div>
       </section>
 
@@ -297,13 +317,13 @@ export default function ClassicalProperty() {
           </div>
 
           <div className="row justify-content-center g-4">
-            {serviceData && serviceData.map((item, index) => {
+            {serviceData.length > 0 ? serviceData.map((item, index) => {
               return (
                 <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12" key={index}>
                   <ServiceLayout item={item} />
                 </div>
               )
-            })}
+            }) : <div>No services Found</div>}
           </div>
 
           <div className="row">

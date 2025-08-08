@@ -59,8 +59,10 @@ export default function PropertyDetail() {
 
   const BookAppointment = async () => {
     if (!user?._id) {
-      navigate("/create-account")
       toast.error("Please Login First and select service");
+      setTimeout(() => {
+        navigate("/create-account");
+      }, 2000);       
       return;
     }
     if(!merchant?._id){
