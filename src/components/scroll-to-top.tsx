@@ -25,6 +25,6 @@ export default function ScrollToTop() {
     },[])
 
   return (
-    <Link id="back2Top" onClick={()=>scrollToTop()} className={`top-scroll ${scroll ? 'd-block' : ''}`} title="Back to top" to="#"><FiArrowUp className="ti-arrow-up"/></Link>
+    <Link id="back2Top" onClick={()=>scrollToTop()} className={`top-scroll ${scroll ? 'd-block' : ''} px-2 py-2`} title="Back to top" to="#"><FiArrowUp className="ti-arrow-up"/></Link>
   )
 }
