@@ -124,7 +124,7 @@ export default function IndexSix() {
               <h2 className="text-light mb-4">
                 Last-Minute Appointments, First-Class Care
               </h2>
-              <div className="full-search-2 eclip-search italian-search hero-search-radius shadow-hard mt-5 pt-5">
+              <div className="full-search-2 eclip-search italian-search hero-search-radius shadow-hard mt-5 p-2">
                 <div className="hero-search-content">
                   <div className="row">
                     <div className="col-lg-9 col-md-9 col-sm-12 elio">

@@ -106,7 +106,7 @@ export default function RegisterAccount() {
         console.error("Unexpected status:", res.status);
       }
     } catch (error) {
-      alert("user not found");
+      toast.error("user not found");
       console.error("handleAccountLogin Error:", error);
     }
   };
