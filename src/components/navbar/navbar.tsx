@@ -150,6 +150,13 @@ export default function Navbar({ transparent }: { transparent: any }) {
               <h5 className="text-2xl font-bold mb-0">Last Minute Wellness</h5>
             </Link>
 
+            <div>
+              <ul  className="nav-menu">
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/my-account">My Account</Link></li>
+              </ul>
+            </div>
+
             {/* Desktop Menu */}
             <ul className="hidden lg:flex items-center gap-6 mb-0">
               <li>
