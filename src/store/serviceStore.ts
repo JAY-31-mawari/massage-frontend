@@ -4,7 +4,13 @@ import { create } from 'zustand';
 interface Location {
     type: string
     coordinates: [Number, Number]
-  }
+}
+
+interface PractitionerDetails{
+  practitionerName: string
+  areaOfExpertise: string[]
+  _id: string
+}
 
 interface Service {
     _id: string
@@ -18,7 +24,7 @@ interface Service {
     merchantCity: string
     merchantState: string
     merchantZipCode: string
-    practitioners: string[]
+    practitioners: PractitionerDetails[]
     businessPhotos: string[]
   }
   

@@ -1,44 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useSearchParams } from 'react-router-dom'
-
-import Select from 'react-select';
 import Slider from 'rc-slider';
-
 import Navbar from '../../components/navbar/navbar'
 import FooterTop from '../../components/footer-top'
 import Footer from '../../components/footer'
 import axios from 'axios';
 import ServiceLayout from '../../components/serviceLayout';
-import Placeholder from 'react-select/dist/declarations/src/components/Placeholder';
-import { number } from 'framer-motion';
 import { useSearchLocation } from '../../store/searchLocation';
 import { Button } from '../../components/button';
-import { stat } from 'fs';
-import { P, s } from 'framer-motion/dist/types.d-Bq-Qm38R';
 import { getStorageItem, deleteStorageItem } from '../../utils/sessionStorage';
 import { useServiceStore } from '../../store/serviceStore';
-
-interface Location {
-  type: string
-  coordinates: [Number, Number]
-}
-
-interface Service {
-  _id: string
-  location: Location
-  businessName: string
-  businessType: string
-  business_email: string
-  business_phone: string
-  bankingDetails: string
-  merchantAddress: string
-  merchantCity: string
-  merchantState: string
-  merchantZipCode: string
-  practitioners: string[]
-  businessPhotos: string[]
-}
 
 export default function ClassicalProperty() {
   const search = useSearchLocation((state) => state.searchLocation)

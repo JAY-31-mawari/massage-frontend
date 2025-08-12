@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
-import UserNav from '../../components/navbar/user-nav'
+import { useState } from 'react';
 import AdminSidebar from '../../components/admin-sidebar'
 import Footer from '../../components/footer'
 import { useNavigate } from 'react-router-dom';
-
-// Admin Pages
-// import Dashboard from './dashboard';
 import Payment from './payment';
 import MyProfile from './my-profile';
 import MyOrders from './my-orders';
@@ -13,6 +9,7 @@ import BookmarkList from './bookmark-list';
 import ChangePassword from './change-password';
 import Checkout from './checkout';
 import SubmitPropertyDashboard from './submit-property-dashboard';
+import Navbar from '../../components/navbar/navbar';
 
 export default function AdminMainLayout() {
     const [selectedPage, setSelectedPage] = useState('my-profile');
@@ -45,7 +42,7 @@ export default function AdminMainLayout() {
         <div className="min-h-screen flex flex-col">
             {/* Navbar */}
             <div className="w-full">
-                <UserNav />
+                <Navbar transparent={false}/>
             </div>
 
             {/* Main Content Area */}

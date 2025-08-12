@@ -1,8 +1,20 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+interface Location{
+  type: string
+  coordinates: [Number, Number]
+}
+
+interface PractitionerDetails{
+  practitionerName: string
+  areaOfExpertise: string[]
+  _id: string
+}
+
 interface Merchant {
   _id: string
+  location: Location
   businessName: string
   businessType: string
   business_email: string
@@ -12,11 +24,8 @@ interface Merchant {
   merchantCity: string
   merchantState: string
   merchantZipCode: string
-  active: boolean
-  practitioners: any[]
-  createdAt: string
-  updatedAt: string
-  __v: number
+  practitioners: PractitionerDetails[]
+  businessPhotos: string[]
 }
 
 interface MerchantStore {

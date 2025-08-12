@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
 import { FiChevronDown } from "react-icons/fi";
 import { TiSocialGooglePlus, TiSocialFacebook } from "react-icons/ti";
-
 import { navProperty } from '../../data/data';
 
 import logo from '../../assets/img/logo.svg'

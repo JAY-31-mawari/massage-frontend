@@ -1,11 +1,6 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-
 import map from '../assets/img/svg/map-1.svg'
-import moon from '../assets/img/svg/moon.svg'
-import verified from '../assets/img/svg/verified.svg'
-import user from '../assets/img/svg/user-1.svg'
-
 import TinySlider from "tiny-slider-react";
 import '../../node_modules/tiny-slider/dist/tiny-slider.css'
 import { setStorageItem } from '../utils/sessionStorage';
@@ -31,6 +26,12 @@ interface Location{
     coordinates: [Number, Number]
 }
 
+interface PractitionerDetails{
+    practitionerName: string
+    areaOfExpertise: string[]
+    _id: string
+}
+
 interface Service{
     _id: string
     location: Location
@@ -43,7 +44,7 @@ interface Service{
     merchantCity: string
     merchantState: string
     merchantZipCode: string
-    practitioners: string[]
+    practitioners: PractitionerDetails[]
     businessPhotos: string[]
 }
 
@@ -56,7 +57,8 @@ export default function ServiceLayout({item}:{item:Service}) {
         setStorageItem('merchant-data', JSON.stringify(item))
         updateMerchant(item)
         navigate(`/single-property-1/${item._id}`)
-      }
+    }
+
   return (
         <div className="property-listing card border-0 rounded-3" onClick={handleSelectService}>
             
