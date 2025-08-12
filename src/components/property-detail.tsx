@@ -20,7 +20,7 @@ import { getStorageItem } from "../utils/sessionStorage";
 import axios from "axios";
 import { Button } from "./button";
 
-export default function PropertyDetail() {
+export default function PropertyDetail({practitionerId, serviceName}:{practitionerId:string, serviceName:string}) {
   const navigate = useNavigate()
   const merchant = useMerchantStore((state) => state.merchant);
   const user = useUserStore((state) => state.user);
@@ -73,6 +73,12 @@ export default function PropertyDetail() {
       toast.error("Please select time slot for your appoinment");
       return;
     }
+
+    if(serviceName === ""){
+      toast.error("Please select service")
+      return;
+    }
+
     const currentTime = new Date()
     if(appointmentDateTime < currentTime){
       toast.error("Please select a future Time for your appointment");
@@ -89,7 +95,8 @@ export default function PropertyDetail() {
       data: {
         userId: user._id,
         businessId: merchant._id,
-        serviceName: "Physiotherapy",
+        serviceName,
+        practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
         duration: 60,
         serviceType: "Home",

@@ -127,6 +127,10 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
     setTimeSlots(generateTimeSlots())
   }, [selectedDate, startTime, endTime, bookedSlots])
 
+   useEffect(()=>{
+    console.log("caskndkjsn",bookedSlots)
+  },[])
+
   const handleDayClick = (index: number) => {
     setSelectedDay(index)
     setSelectedDate(days[index].fullDate)

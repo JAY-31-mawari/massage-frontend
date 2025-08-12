@@ -67,27 +67,27 @@ export default function SinglePropertyOne() {
 
   const merchant = useMerchantStore((state) => state.merchant)
 
-  function mapServiceToPractitionerCount(business: Merchant): Record<string, number> {
-    const serviceMap: Record<string, number> = {};
+  // function mapServiceToPractitionerCount(business: Merchant): Record<string, number> {
+  //   const serviceMap: Record<string, number> = {};
 
-    for (const practitioner of business.practitioners) {
-      for (const service of practitioner.areaOfExpertise || []) {
-        serviceMap[service] = (serviceMap[service] || 0) + 1;
-      }
-    }
+  //   for (const practitioner of business.practitioners) {
+  //     for (const service of practitioner.areaOfExpertise || []) {
+  //       serviceMap[service] = (serviceMap[service] || 0) + 1;
+  //     }
+  //   }
 
-    return serviceMap;
-  }
+  //   return serviceMap;
+  // }
 
-  useEffect(() => { console.log(userSelectedPractitionerId) }, [userSelectedPractitionerId])
+  // useEffect(() => { console.log(userSelectedPractitionerId) }, [userSelectedPractitionerId])
 
-  useEffect(() => {
-    // if (merchant?.practitioners?.length && merchant._id) {
-    //     const mapped = mapServiceToPractitionerCount(merchant as Merchant);
-    //     console.log("mapped service count", mapped)
-    //     setServiceCountMap(mapped);
-    //   }
-  }, [merchant])
+  // useEffect(() => {
+  //   // if (merchant?.practitioners?.length && merchant._id) {
+  //   //     const mapped = mapServiceToPractitionerCount(merchant as Merchant);
+  //   //     console.log("mapped service count", mapped)
+  //   //     setServiceCountMap(mapped);
+  //   //   }
+  // }, [merchant])
   return (
     <>
       <Navbar transparent={false} />
@@ -163,7 +163,7 @@ export default function SinglePropertyOne() {
                     </div>
                   ))}
               </div>
-              <PropertyDetail />
+              <PropertyDetail serviceName={userSelectedService} practitionerId={userSelectedPractitionerId}/>
             </div>
 
             <div className="col-lg-4 col-md-12 col-sm-12">

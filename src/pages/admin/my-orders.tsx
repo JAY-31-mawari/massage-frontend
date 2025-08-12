@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
 import axios from 'axios'
 import { getStorageItem, deleteStorageItem } from '../../utils/sessionStorage'
-import { userProperty } from '../../data/property'
 import { useUserStore } from '../../store/userStore'
 import toast from 'react-hot-toast'
 
@@ -33,16 +32,14 @@ export default function Orders() {
     let [show, setShow] = useState<boolean>(false)
     const user = useUserStore((state) => state.user)
     const accessToken = getStorageItem("token")
-    // const [user, setuser] = useState<any>(JSON.parse(getStorageItem('user-data')))
     const [uid, setUid] = useState(getStorageItem("uid"))
-    console.log(user)
     const [practitioners, setPractitioners] = useState<any>([])
 
-    const fetchPractitionersByBusinessId = async () => {
-        const practitionerRes = await axios.get(global.config.ROOTURL.prod + `/practitioner/${uid}`)
-        setPractitioners(practitionerRes.data.data)
-        console.log(practitionerRes.data.data)
-    }
+    // const fetchPractitionersByBusinessId = async () => {
+    //     const practitionerRes = await axios.get(global.config.ROOTURL.prod + `/practitioner/${uid}`)
+    //     setPractitioners(practitionerRes.data.data)
+    //     console.log(practitionerRes.data.data)
+    // }
 
     const fetchUserAppointments = async () => {
         if (!user?._id) {

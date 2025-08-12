@@ -1,38 +1,25 @@
 import { useState } from 'react';
 import AdminSidebar from '../../components/admin-sidebar'
 import Footer from '../../components/footer'
-import { useNavigate } from 'react-router-dom';
 import Payment from './payment';
 import MyProfile from './my-profile';
 import MyOrders from './my-orders';
-import BookmarkList from './bookmark-list';
 import ChangePassword from './change-password';
-import Checkout from './checkout';
-import SubmitPropertyDashboard from './submit-property-dashboard';
 import Navbar from '../../components/navbar/navbar';
 
 export default function AdminMainLayout() {
     const [selectedPage, setSelectedPage] = useState('my-profile');
-    const navigate = useNavigate();
 
     const renderPage = () => {
         switch (selectedPage) {
-            // case 'dashboard':
-            //     return <Dashboard />;
             case 'payment':
                 return <Payment />;
             case 'my-profile':
                 return <MyProfile />;
             case 'my-orders':
                 return <MyOrders />;
-            case 'my-orders':
-                return <BookmarkList />;
             case 'change-password':
                 return <ChangePassword />;
-            case 'checkout':
-                return <Checkout />;
-            case 'submit-property-dashboard':
-                return <SubmitPropertyDashboard />;
             default:
                 return <MyProfile />;
         }

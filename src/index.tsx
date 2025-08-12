@@ -16,7 +16,7 @@ root.render(
   <BrowserRouter>
     <div id="main-wrapper">
       <App />
-      <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { fontSize: '22px', textAlign: 'center' } }} />
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { fontSize: '18px', textAlign: 'center' } }} />
     </div>
   </BrowserRouter>
 );
