@@ -13,38 +13,37 @@ import { getStorageItem, deleteStorageItem } from '../../utils/sessionStorage';
 import { useServiceStore } from '../../store/serviceStore';
 
 export default function ClassicalProperty() {
-  const search = useSearchLocation((state) => state.searchLocation)
-  const updateSearch = useSearchLocation((state) => state.updateSearchLocation)
-  const serviceData = useServiceStore((state) => state.services)
-  const setServiceData = useServiceStore((state) => state.setServices)
-  let [open, setOpen] = useState<boolean>(false)
+  const search = useSearchLocation((state) => state.searchLocation);
+  const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
+  const serviceData = useServiceStore((state) => state.services);
+  const setServiceData = useServiceStore((state) => state.setServices);
+  let [open, setOpen] = useState<boolean>(false);
   const [range, setRange] = useState<number[]>([20, 80]);
-  const [location, setLocation] = useState('')
-  const liveLocation = useRef(false)
-  const latitudeRef = useRef(0)
-  const longitudeRef = useRef(0)
-  const searchLocation = useRef('')
-  const [isLoadingLocation, setIsLoadingLocation] = useState(false)
-  const [searchParams] = useSearchParams()
-  const searchQuery = searchParams.get('search')
-  const live = getStorageItem("live")
-  const [radius, setRadius] = useState(10)
+  const [location, setLocation] = useState("");
+  const liveLocation = useRef(false);
+  const latitudeRef = useRef(0);
+  const longitudeRef = useRef(0);
+  const searchLocation = useRef("");
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search");
+  const live = getStorageItem("live");
+  const [radius, setRadius] = useState(10);
 
   useEffect(() => {
-    console.log(live)
+    console.log(live);
     if (live) {
-      console.log("hello 1")
-      getCurrentLocation()
-      deleteStorageItem("live")
+      console.log("hello 1");
+      getCurrentLocation();
+      deleteStorageItem("live");
     } else if (searchQuery) {
-      console.log("hello 2")
-      searchLocation.current = searchQuery
-      setLocation(searchQuery)
-      liveLocation.current = false
-      getSearchData()
+      console.log("hello 2");
+      searchLocation.current = searchQuery;
+      setLocation(searchQuery);
+      liveLocation.current = false;
+      getSearchData();
     }
-
-  }, [searchQuery])
+  }, [searchQuery]);
 
   const handleRangeChange = (values: number | number[]) => {
     if (Array.isArray(values)) {
@@ -53,91 +52,103 @@ export default function ClassicalProperty() {
   };
 
   const getCurrentLocation = () => {
-    setIsLoadingLocation(true)
+    setIsLoadingLocation(true);
 
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by this browser.')
-      setIsLoadingLocation(false)
-      return
+      alert("Geolocation is not supported by this browser.");
+      setIsLoadingLocation(false);
+      return;
     }
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
-        const { latitude, longitude } = position.coords
-        latitudeRef.current = latitude
-        longitudeRef.current = longitude
-        updateSearch({ latitude, longitude, liveLocation: liveLocation.current })
-        liveLocation.current = true
-        getSearchData()
+        const { latitude, longitude } = position.coords;
+        latitudeRef.current = latitude;
+        longitudeRef.current = longitude;
+        updateSearch({
+          latitude,
+          longitude,
+          liveLocation: liveLocation.current,
+        });
+        liveLocation.current = true;
+        getSearchData();
         // getLiveLocationData(latitude, longitude)
         try {
           // Reverse geocoding using OpenStreetMap Nominatim API
           const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
-          )
-          const data = await response.json()
+          );
+          const data = await response.json();
 
           if (data.display_name) {
             // Extract city and state from the full address
-            const addressParts = data.display_name.split(', ')
-            const city = addressParts[1] || addressParts[0]
-            const state = addressParts[2] || ''
-            const locationString = `${city}, ${state}`.trim()
-            setLocation(locationString)
-            updateSearch({ location: locationString })
+            const addressParts = data.display_name.split(", ");
+            const city = addressParts[1] || addressParts[0];
+            const state = addressParts[2] || "";
+            const locationString = `${city}, ${state}`.trim();
+            setLocation(locationString);
+            updateSearch({ location: locationString });
           } else {
-            setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`)
-            updateSearch({ location: `${latitude.toFixed(4)}, ${longitude.toFixed(4)}` })
+            setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+            updateSearch({
+              location: `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`,
+            });
           }
         } catch (error) {
-          console.error('Error reverse geocoding:', error)
-          setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`)
-          updateSearch({ location: `${latitude.toFixed(4)}, ${longitude.toFixed(4)}` })
+          console.error("Error reverse geocoding:", error);
+          setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+          updateSearch({
+            location: `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`,
+          });
         }
-        setIsLoadingLocation(false)
+        setIsLoadingLocation(false);
       },
       (error) => {
-        console.error('Error getting location:', error)
-        let errorMessage = 'Unable to get your location'
+        console.error("Error getting location:", error);
+        let errorMessage = "Unable to get your location";
 
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMessage = 'Location access denied. Please enable location services.'
-            break
+            errorMessage =
+              "Location access denied. Please enable location services.";
+            break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = 'Location information unavailable.'
-            break
+            errorMessage = "Location information unavailable.";
+            break;
           case error.TIMEOUT:
-            errorMessage = 'Location request timed out.'
-            break
+            errorMessage = "Location request timed out.";
+            break;
           default:
-            errorMessage = 'An unknown error occurred.'
-            break
+            errorMessage = "An unknown error occurred.";
+            break;
         }
 
-        alert(errorMessage)
-        setIsLoadingLocation(false)
+        alert(errorMessage);
+        setIsLoadingLocation(false);
       },
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 60000
+        maximumAge: 60000,
       }
-    )
-  }
+    );
+  };
 
   // useEffect(()=>{
   //   console.log("adskasdkjd",search)
   // },[search])
 
   async function getSearchData() {
-    const searchBusinessData = await axios.get(global.config.ROOTURL.prod + `/business/search?q=${searchLocation.current}&latitude=${latitudeRef.current}&longitude=${longitudeRef.current}&radius=${radius}&liveLocation=${liveLocation.current}`)
-    setServiceData(searchBusinessData.data.businesses)
+    const searchBusinessData = await axios.get(
+      global.config.ROOTURL.prod +
+        `/business/search?q=${searchLocation.current}&latitude=${latitudeRef.current}&longitude=${longitudeRef.current}&radius=${radius}&liveLocation=${liveLocation.current}`
+    );
+    setServiceData(searchBusinessData.data.businesses);
     updateSearch({
       location: searchLocation.current,
       liveLocation: liveLocation.current,
-      radius: 10
-    })
+      radius: 10,
+    });
   }
 
   // useEffect(()=>{
@@ -148,24 +159,26 @@ export default function ClassicalProperty() {
 
   useEffect(() => {
     if (search?.location) {
-      searchLocation.current = search.location
-      setLocation(search.location)
+      searchLocation.current = search.location;
+      setLocation(search.location);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     async function getData() {
-      const businessData = await axios.get(global.config.ROOTURL.prod + '/business')
-      setServiceData(businessData.data.businesses)
+      const businessData = await axios.get(
+        global.config.ROOTURL.prod + "/business"
+      );
+      setServiceData(businessData.data.businesses);
     }
     if (serviceData.length === 0) {
-      getData()
+      getData();
     }
-  })
+  });
 
   useEffect(() => {
-    searchLocation.current = location
-  }, [location])
+    searchLocation.current = location;
+  }, [location]);
 
   return (
     <>
@@ -183,45 +196,93 @@ export default function ClassicalProperty() {
               <div className="full-search-2 eclip-search italian-search hero-search-radius shadow-hard">
                 <div className="hero-search-content">
                   <div className="row">
-                    <div className="col-lg-7 col-md-9 col-sm-12">
+                    <div className="col-lg-9 col-md-9 col-sm-12">
                       <div className="form-group">
                         <div className="position-relative">
-                          <input type="text" className="form-control border-0 ps-5" placeholder="Enter city, state or zipcode" value={location} onChange={(e) => setLocation(e.target.value)} />
+                          {/* Location Input */}
+                          <input
+                            type="text"
+                            className="form-control border-0 ps-5"
+                            placeholder="Enter city, state or zipcode"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                          />
+
+                          {/* Left Icon */}
                           <div className="position-absolute top-50 start-0 translate-middle-y ms-2">
                             <span className="svg-icon text-primary svg-icon-2hx">
-                              <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.3" d="M18.0624 15.3453L13.1624 20.7453C12.5624 21.4453 11.5624 21.4453 10.9624 20.7453L6.06242 15.3453C4.56242 13.6453 3.76242 11.4453 4.06242 8.94534C4.56242 5.34534 7.46242 2.44534 11.0624 2.04534C15.8624 1.54534 19.9624 5.24534 19.9624 9.94534C20.0624 12.0453 19.2624 13.9453 18.0624 15.3453Z" fill="currentColor" />
-                                <path d="M12.0624 13.0453C13.7193 13.0453 15.0624 11.7022 15.0624 10.0453C15.0624 8.38849 13.7193 7.04535 12.0624 7.04535C10.4056 7.04535 9.06241 8.38849 9.06241 10.0453C9.06241 11.7022 10.4056 13.0453 12.0624 13.0453Z" fill="currentColor" />
+                              <svg
+                                width="25"
+                                height="25"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  opacity="0.3"
+                                  d="M18.0624 15.3453L13.1624 20.7453C12.5624 21.4453 11.5624 21.4453 10.9624 20.7453L6.06242 15.3453C4.56242 13.6453 3.76242 11.4453 4.06242 8.94534C4.56242 5.34534 7.46242 2.44534 11.0624 2.04534C15.8624 1.54534 19.9624 5.24534 19.9624 9.94534C20.0624 12.0453 19.2624 13.9453 18.0624 15.3453Z"
+                                  fill="currentColor"
+                                />
+                                <path
+                                  d="M12.0624 13.0453C13.7193 13.0453 15.0624 11.7022 15.0624 10.0453C15.0624 8.38849 13.7193 7.04535 12.0624 7.04535C10.4056 7.04535 9.06241 8.38849 9.06241 10.0453C9.06241 11.7022 10.4056 13.0453 12.0624 13.0453Z"
+                                  fill="currentColor"
+                                />
                               </svg>
                             </span>
                           </div>
+
+                          {/* Live Location Button inside input */}
+                          <button
+                            type="button"
+                            className="position-absolute top-50 end-0 translate-middle-y me-3 btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+                            onClick={getCurrentLocation}
+                            disabled={isLoadingLocation}
+                            title="Use my current location"
+                          >
+                            {isLoadingLocation ? (
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                            ) : (
+                              <>
+                                <svg
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                <span className="font-semibold">
+                                  Live Location
+                                </span>
+                              </>
+                            )}
+                          </button>
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-2 col-md-3 col-sm-12">
-                      <div className="form-group">
-                        <Button color='blue' name='Search' onClick={() => {
-                          liveLocation.current = false
-                          getSearchData()
-                        }} />
-                      </div>
-                    </div>
+
+                    {/* Search Button */}
                     <div className="col-lg-3 col-md-3 col-sm-12">
-                      <button
-                        type="button"
-                        className="position-absolute top-50 end-0 translate-middle-y me-3 btn btn-sm btn-outline-primary"
-                        onClick={getCurrentLocation}
-                        disabled={isLoadingLocation}
-                        title="Use my current location"
-                      >
-                        {isLoadingLocation ? (
-                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        ) : (
-                          <h6><svg className='flex flex-col' width="18" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor" />
-                          </svg>Live Location</h6>
-                        )}
-                      </button>
+                      <div className="form-group">
+                        <button
+                          type="button"
+                          className="btn btn-dark full-width"
+                          onClick={() => {
+                            liveLocation.current = false;
+                            getSearchData();
+                          }}
+                        >
+                          Search
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -230,114 +291,99 @@ export default function ClassicalProperty() {
           </div>
         </div>
         <div className="ht-30"></div>
-        <div>
-          <input type="number" value={radius} onChange={(e) => {
-            setRadius(parseInt(e.target.value, 10))
-          }} placeholder="Enter radius" />
-        </div>
       </section>
 
       <section className="gray-simple">
-        <div className="container">
-          <div className="row justify-content-center">
+        <div className="container-fluid">
+          <div className="row g-4 px-16">
+            {/* Left side - Cards */}
             <div className="col-lg-12 col-md-12">
-              <div className="item-shorting-box">
-                {/* <div className="item-shorting clearfix">
-                  <div className="left-column pull-left"><h4 className="m-0 fs-6">Found 1-10 of 142 Results</h4></div>
-                </div> */}
-                <div className="item-shorting-box-right">
-                  {/* <div className="shorting-by">
-                    <Select options={shorty} className="form-control" placeholder="Show All" />
-                  </div> */}
-                  {/* <ul className="shorting-list">
-                    <li>
-                      <Link to="/grid" className="w-12 h-12">
-                        <span className="svg-icon text-muted-2 svg-icon-2hx">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="2" width="9" height="9" rx="2" fill="currentColor" />
-                            <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="currentColor" />
-                            <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="currentColor" />
-                            <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="currentColor" />
-                          </svg>
-                        </span>
+              <div className="row g-4">
+                {serviceData.length > 0 ? (
+                  serviceData.map((item, index) => (
+                    <div className="col-12" key={index}>
+                      {" "}
+                      {/* Full width card */}
+                      <ServiceLayout item={item} />
+                    </div>
+                  ))
+                ) : (
+                  <div>No services Found</div>
+                )}
+              </div>
+
+              {/* Pagination */}
+              <div className="row mt-4">
+                <div className="col-lg-12">
+                  <ul className="pagination p-center">
+                    <li className="page-item">
+                      <Link className="page-link" to="#" aria-label="Previous">
+                        <i className="fa-solid fa-arrow-left-long"></i>
                       </Link>
                     </li>
-                    <li>
-                      <Link to="/list-layout-full" className="active w-12 h-12">
-                        <span className="svg-icon text-seegreen svg-icon-2hx">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path opacity="0.3" d="M14 10V20C14 20.6 13.6 21 13 21H10C9.4 21 9 20.6 9 20V10C9 9.4 9.4 9 10 9H13C13.6 9 14 9.4 14 10ZM20 9H17C16.4 9 16 9.4 16 10V20C16 20.6 16.4 21 17 21H20C20.6 21 21 20.6 21 20V10C21 9.4 20.6 9 20 9Z" fill="currentColor" />
-                            <path d="M7 10V20C7 20.6 6.6 21 6 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H6C6.6 9 7 9.4 7 10ZM21 6V3C21 2.4 20.6 2 20 2H3C2.4 2 2 2.4 2 3V6C2 6.6 2.4 7 3 7H20C20.6 7 21 6.6 21 6Z" fill="currentColor" />
-                          </svg>
-                        </span>
+                    <li className="page-item">
+                      <Link className="page-link" to="#">
+                        1
                       </Link>
                     </li>
-                    <li>
-                      <Link to="#" className="w-12 h-12" onClick={() => setOpen(!open)}>
-                        <span className="svg-icon text-primary svg-icon-2hx">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="currentColor" />
-                            <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="currentColor" />
-                          </svg>
-                        </span>
+                    <li className="page-item">
+                      <Link className="page-link" to="#">
+                        2
                       </Link>
                     </li>
-                  </ul> */}
+                    <li className="page-item active">
+                      <Link className="page-link" to="#">
+                        3
+                      </Link>
+                    </li>
+                    <li className="page-item">
+                      <Link className="page-link" to="#">
+                        ...
+                      </Link>
+                    </li>
+                    <li className="page-item">
+                      <Link className="page-link" to="#">
+                        18
+                      </Link>
+                    </li>
+                    <li className="page-item">
+                      <Link className="page-link" to="#" aria-label="Next">
+                        <i className="fa-solid fa-arrow-right-long"></i>
+                      </Link>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="row justify-content-center g-4">
-            {serviceData.length > 0 ? serviceData.map((item, index) => {
-              return (
-                <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12" key={index}>
-                  <ServiceLayout item={item} />
-                </div>
-              )
-            }) : <div>No services Found</div>}
-          </div>
-
-          <div className="row">
-            <div className="col-lg-12 col-md-12 col-sm-12">
-              <ul className="pagination p-center">
-                <li className="page-item">
-                  <Link className="page-link" to="#" aria-label="Previous">
-                    <i className="fa-solid fa-arrow-left-long"></i>
-                    <span className="sr-only">Previous</span>
-                  </Link>
-                </li>
-                <li className="page-item"><Link className="page-link" to="#">1</Link></li>
-                <li className="page-item"><Link className="page-link" to="#">2</Link></li>
-                <li className="page-item active"><Link className="page-link" to="#">3</Link></li>
-                <li className="page-item"><Link className="page-link" to="#">...</Link></li>
-                <li className="page-item"><Link className="page-link" to="#">18</Link></li>
-                <li className="page-item">
-                  <Link className="page-link" to="#" aria-label="Next">
-                    <i className="fa-solid fa-arrow-right-long"></i>
-                    <span className="sr-only">Next</span>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </section>
+
       <FooterTop bg="theme-bg" />
+
       <Footer />
-      {open &&
-        <div className="modal fade bd-example-modal-lg show d-block" id="filter" style={{ backgroundColor: "#0000008a" }}>
+      {open && (
+        <div
+          className="modal fade bd-example-modal-lg show d-block"
+          id="filter"
+          style={{ backgroundColor: "#0000008a" }}
+        >
           <div className="modal-dialog modal-lg filter_scroll" role="document">
             <div className="modal-content" id="sign-up">
-              <span className="mod-close" onClick={() => setOpen(!open)}><i className="fa-solid fa-xmark"></i></span>
+              <span className="mod-close" onClick={() => setOpen(!open)}>
+                <i className="fa-solid fa-xmark"></i>
+              </span>
               <div className="modal-body">
                 <div className="filter_modal">
                   <div className="filter_modal_inner">
                     <div className="filter_modal_flex">
-
-                      <div className="adv_ft_title"><h5>Advance Filter</h5></div>
+                      <div className="adv_ft_title">
+                        <h5>Advance Filter</h5>
+                      </div>
                       <div className="flt_single_item">
-                        <div className="flt_item_lablel"><label>Price</label></div>
+                        <div className="flt_item_lablel">
+                          <label>Price</label>
+                        </div>
                         <div className="flt_item_content flcl">
                           <div className="rg-slider">
                             <Slider
@@ -349,7 +395,13 @@ export default function ClassicalProperty() {
                               onChange={handleRangeChange}
                               allowCross={false}
                             />
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10 }}>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginTop: 10,
+                              }}
+                            >
                               <span>Min: {range[0]}</span>
                               <span>Max: {range[1]}</span>
                             </div>
@@ -358,246 +410,553 @@ export default function ClassicalProperty() {
                       </div>
 
                       <div className="flt_single_item">
-                        <div className="flt_item_lablel"><label>Bedrooms</label></div>
+                        <div className="flt_item_lablel">
+                          <label>Bedrooms</label>
+                        </div>
                         <div className="flt_item_content">
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bd-1" className="switchbtn-checkbox" type="checkbox" value="bd1" name="bd-1" />
-                              <label className="switchbtn-label" htmlFor="bd-1">Studio</label>
+                              <input
+                                id="bd-1"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bd1"
+                                name="bd-1"
+                              />
+                              <label className="switchbtn-label" htmlFor="bd-1">
+                                Studio
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bd-2" className="switchbtn-checkbox" type="checkbox" value="bd2" name="bd-2" />
-                              <label className="switchbtn-label" htmlFor="bd-2">1</label>
+                              <input
+                                id="bd-2"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bd2"
+                                name="bd-2"
+                              />
+                              <label className="switchbtn-label" htmlFor="bd-2">
+                                1
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bd-3" className="switchbtn-checkbox" type="checkbox" value="bd3" name="bd-3" />
-                              <label className="switchbtn-label" htmlFor="bd-3">2</label>
+                              <input
+                                id="bd-3"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bd3"
+                                name="bd-3"
+                              />
+                              <label className="switchbtn-label" htmlFor="bd-3">
+                                2
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bd-4" className="switchbtn-checkbox" type="checkbox" value="bd4" name="bd-4" />
-                              <label className="switchbtn-label" htmlFor="bd-4">3</label>
+                              <input
+                                id="bd-4"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bd4"
+                                name="bd-4"
+                              />
+                              <label className="switchbtn-label" htmlFor="bd-4">
+                                3
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bd-5" className="switchbtn-checkbox" type="checkbox" value="bd5" name="bd-5" />
-                              <label className="switchbtn-label" htmlFor="bd-5">4+</label>
+                              <input
+                                id="bd-5"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bd5"
+                                name="bd-5"
+                              />
+                              <label className="switchbtn-label" htmlFor="bd-5">
+                                4+
+                              </label>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       <div className="flt_single_item">
-                        <div className="flt_item_lablel"><label>Bathrooms</label></div>
+                        <div className="flt_item_lablel">
+                          <label>Bathrooms</label>
+                        </div>
                         <div className="flt_item_content">
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bt-1" className="switchbtn-checkbox" type="checkbox" value="bt1" name="bt-1" />
-                              <label className="switchbtn-label" htmlFor="bt-1">1</label>
+                              <input
+                                id="bt-1"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bt1"
+                                name="bt-1"
+                              />
+                              <label className="switchbtn-label" htmlFor="bt-1">
+                                1
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bt-2" className="switchbtn-checkbox" type="checkbox" value="bt2" name="bt-2" />
-                              <label className="switchbtn-label" htmlFor="bt-2">2</label>
+                              <input
+                                id="bt-2"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bt2"
+                                name="bt-2"
+                              />
+                              <label className="switchbtn-label" htmlFor="bt-2">
+                                2
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bt-3" className="switchbtn-checkbox" type="checkbox" value="bt3" name="bt-3" />
-                              <label className="switchbtn-label" htmlFor="bt-3">3</label>
+                              <input
+                                id="bt-3"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bt3"
+                                name="bt-3"
+                              />
+                              <label className="switchbtn-label" htmlFor="bt-3">
+                                3
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bt-4" className="switchbtn-checkbox" type="checkbox" value="bt4" name="bt-4" />
-                              <label className="switchbtn-label" htmlFor="bt-4">4</label>
+                              <input
+                                id="bt-4"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bt4"
+                                name="bt-4"
+                              />
+                              <label className="switchbtn-label" htmlFor="bt-4">
+                                4
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="bt-5" className="switchbtn-checkbox" type="checkbox" value="bt5" name="bt-5" />
-                              <label className="switchbtn-label" htmlFor="bt-5">5+</label>
+                              <input
+                                id="bt-5"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="bt5"
+                                name="bt-5"
+                              />
+                              <label className="switchbtn-label" htmlFor="bt-5">
+                                5+
+                              </label>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       <div className="flt_single_item">
-                        <div className="flt_item_lablel"><label>Hot Deals</label></div>
+                        <div className="flt_item_lablel">
+                          <label>Hot Deals</label>
+                        </div>
                         <div className="flt_item_content">
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="d-4" className="switchbtn-checkbox" type="checkbox" value="d" name="d-4" />
-                              <label className="switchbtn-label" htmlFor="d-4">Hot Deals</label>
+                              <input
+                                id="d-4"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="d"
+                                name="d-4"
+                              />
+                              <label className="switchbtn-label" htmlFor="d-4">
+                                Hot Deals
+                              </label>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       <div className="flt_single_item">
-                        <div className="flt_item_lablel"><label>Pets</label></div>
+                        <div className="flt_item_lablel">
+                          <label>Pets</label>
+                        </div>
                         <div className="flt_item_content">
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="pet-4" className="switchbtn-checkbox" type="checkbox" value="pet" name="pet-4" />
-                              <label className="switchbtn-label" htmlFor="pet-4">Pet Friendly</label>
+                              <input
+                                id="pet-4"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="pet"
+                                name="pet-4"
+                              />
+                              <label
+                                className="switchbtn-label"
+                                htmlFor="pet-4"
+                              >
+                                Pet Friendly
+                              </label>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       <div className="flt_single_item">
-                        <div className="flt_item_lablel"><label>Laundry</label></div>
+                        <div className="flt_item_lablel">
+                          <label>Laundry</label>
+                        </div>
                         <div className="flt_item_content">
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="ld-1" className="switchbtn-checkbox" type="checkbox" value="ld1" name="ld-1" />
-                              <label className="switchbtn-label" htmlFor="ld-1">Washer/Dryer In Unit</label>
+                              <input
+                                id="ld-1"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="ld1"
+                                name="ld-1"
+                              />
+                              <label className="switchbtn-label" htmlFor="ld-1">
+                                Washer/Dryer In Unit
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="ld-2" className="switchbtn-checkbox" type="checkbox" value="ld2" name="ld-2" />
-                              <label className="switchbtn-label" htmlFor="ld-2">Washer/Dryer Connections</label>
+                              <input
+                                id="ld-2"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="ld2"
+                                name="ld-2"
+                              />
+                              <label className="switchbtn-label" htmlFor="ld-2">
+                                Washer/Dryer Connections
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="ld-3" className="switchbtn-checkbox" type="checkbox" value="ld3" name="ld-3" />
-                              <label className="switchbtn-label" htmlFor="ld-3">Laundry Facility</label>
+                              <input
+                                id="ld-3"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="ld3"
+                                name="ld-3"
+                              />
+                              <label className="switchbtn-label" htmlFor="ld-3">
+                                Laundry Facility
+                              </label>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       <div className="flt_single_item">
-                        <div className="flt_item_lablel"><label>Amenities</label></div>
+                        <div className="flt_item_lablel">
+                          <label>Amenities</label>
+                        </div>
                         <div className="flt_item_content align_center">
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-1" className="switchbtn-checkbox" type="checkbox" value="am1" name="am-1" />
-                              <label className="switchbtn-label" htmlFor="am-1">Air Conditioning</label>
+                              <input
+                                id="am-1"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am1"
+                                name="am-1"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-1">
+                                Air Conditioning
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-2" className="switchbtn-checkbox" type="checkbox" value="am2" name="am-2" />
-                              <label className="switchbtn-label" htmlFor="am-2">Senior Living</label>
+                              <input
+                                id="am-2"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am2"
+                                name="am-2"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-2">
+                                Senior Living
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-3" className="switchbtn-checkbox" type="checkbox" value="am3" name="am-3" />
-                              <label className="switchbtn-label" htmlFor="am-3">Waterfront</label>
+                              <input
+                                id="am-3"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am3"
+                                name="am-3"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-3">
+                                Waterfront
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-4" className="switchbtn-checkbox" type="checkbox" value="am4" name="am-4" />
-                              <label className="switchbtn-label" htmlFor="am-4">Garage</label>
+                              <input
+                                id="am-4"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am4"
+                                name="am-4"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-4">
+                                Garage
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-5" className="switchbtn-checkbox" type="checkbox" value="am5" name="am-5" />
-                              <label className="switchbtn-label" htmlFor="am-5">Spa & Massage</label>
+                              <input
+                                id="am-5"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am5"
+                                name="am-5"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-5">
+                                Spa & Massage
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-6" className="switchbtn-checkbox" type="checkbox" value="am6" name="am-6" />
-                              <label className="switchbtn-label" htmlFor="am-6">Car Parking</label>
+                              <input
+                                id="am-6"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am6"
+                                name="am-6"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-6">
+                                Car Parking
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-7" className="switchbtn-checkbox" type="checkbox" value="am7" name="am-7" />
-                              <label className="switchbtn-label" htmlFor="am-7">Free WiFi</label>
+                              <input
+                                id="am-7"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am7"
+                                name="am-7"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-7">
+                                Free WiFi
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-8" className="switchbtn-checkbox" type="checkbox" value="am8" name="am-8" />
-                              <label className="switchbtn-label" htmlFor="am-8">Pets Allow</label>
+                              <input
+                                id="am-8"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am8"
+                                name="am-8"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-8">
+                                Pets Allow
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-9" className="switchbtn-checkbox" type="checkbox" value="am9" name="am-9" />
-                              <label className="switchbtn-label" htmlFor="am-9">Internet</label>
+                              <input
+                                id="am-9"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am9"
+                                name="am-9"
+                              />
+                              <label className="switchbtn-label" htmlFor="am-9">
+                                Internet
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-10" className="switchbtn-checkbox" type="checkbox" value="am10" name="am-10" />
-                              <label className="switchbtn-label" htmlFor="am-10">Window Covering</label>
+                              <input
+                                id="am-10"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am10"
+                                name="am-10"
+                              />
+                              <label
+                                className="switchbtn-label"
+                                htmlFor="am-10"
+                              >
+                                Window Covering
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-11" className="switchbtn-checkbox" type="checkbox" value="am11" name="am-11" />
-                              <label className="switchbtn-label" htmlFor="am-11">Alarm</label>
+                              <input
+                                id="am-11"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am11"
+                                name="am-11"
+                              />
+                              <label
+                                className="switchbtn-label"
+                                htmlFor="am-11"
+                              >
+                                Alarm
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-12" className="switchbtn-checkbox" type="checkbox" value="am12" name="am-12" />
-                              <label className="switchbtn-label" htmlFor="am-12">Gym</label>
+                              <input
+                                id="am-12"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am12"
+                                name="am-12"
+                              />
+                              <label
+                                className="switchbtn-label"
+                                htmlFor="am-12"
+                              >
+                                Gym
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-13" className="switchbtn-checkbox" type="checkbox" value="am13" name="am-13" />
-                              <label className="switchbtn-label" htmlFor="am-13">Luxury Community</label>
+                              <input
+                                id="am-13"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am13"
+                                name="am-13"
+                              />
+                              <label
+                                className="switchbtn-label"
+                                htmlFor="am-13"
+                              >
+                                Luxury Community
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-14" className="switchbtn-checkbox" type="checkbox" value="am14" name="am-14" />
-                              <label className="switchbtn-label" htmlFor="am-14">Central Heating</label>
+                              <input
+                                id="am-14"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am14"
+                                name="am-14"
+                              />
+                              <label
+                                className="switchbtn-label"
+                                htmlFor="am-14"
+                              >
+                                Central Heating
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="am-15" className="switchbtn-checkbox" type="checkbox" value="am15" name="am-15" />
-                              <label className="switchbtn-label" htmlFor="am-15">Swimming Pool</label>
+                              <input
+                                id="am-15"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="am15"
+                                name="am-15"
+                              />
+                              <label
+                                className="switchbtn-label"
+                                htmlFor="am-15"
+                              >
+                                Swimming Pool
+                              </label>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       <div className="flt_single_item">
-                        <div className="flt_item_lablel"><label>Sort By</label></div>
+                        <div className="flt_item_lablel">
+                          <label>Sort By</label>
+                        </div>
                         <div className="flt_item_content">
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="st-1" className="switchbtn-checkbox" type="checkbox" value="st1" name="st-1" />
-                              <label className="switchbtn-label" htmlFor="st-1">Best Match</label>
+                              <input
+                                id="st-1"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="st1"
+                                name="st-1"
+                              />
+                              <label className="switchbtn-label" htmlFor="st-1">
+                                Best Match
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="st-2" className="switchbtn-checkbox" type="checkbox" value="st2" name="st-2" />
-                              <label className="switchbtn-label" htmlFor="st-2">Price: Low to High</label>
+                              <input
+                                id="st-2"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="st2"
+                                name="st-2"
+                              />
+                              <label className="switchbtn-label" htmlFor="st-2">
+                                Price: Low to High
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="st-3" className="switchbtn-checkbox" type="checkbox" value="st3" name="st-3" />
-                              <label className="switchbtn-label" htmlFor="st-3">Price: High to Low</label>
+                              <input
+                                id="st-3"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="st3"
+                                name="st-3"
+                              />
+                              <label className="switchbtn-label" htmlFor="st-3">
+                                Price: High to Low
+                              </label>
                             </div>
                           </div>
                           <div className="switchbtn-wrap">
                             <div className="switchbtn">
-                              <input id="st-4" className="switchbtn-checkbox" type="checkbox" value="st4" name="st-4" />
-                              <label className="switchbtn-label" htmlFor="st-4">Top Rated</label>
+                              <input
+                                id="st-4"
+                                className="switchbtn-checkbox"
+                                type="checkbox"
+                                value="st4"
+                                name="st-4"
+                              />
+                              <label className="switchbtn-label" htmlFor="st-4">
+                                Top Rated
+                              </label>
                             </div>
                           </div>
                         </div>
@@ -615,14 +974,16 @@ export default function ClassicalProperty() {
                   </div>
                   <div className="elgio_ft_last">
                     <button className="btn btn-gray mr-2">Cancel</button>
-                    <button className="btn btn-primary mr-2">See 76 Properties</button>
+                    <button className="btn btn-primary mr-2">
+                      See 76 Properties
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      }
+      )}
     </>
-  )
+  );
 }

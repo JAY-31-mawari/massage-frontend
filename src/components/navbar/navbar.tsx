@@ -13,6 +13,7 @@ export default function Navbar({ transparent }: { transparent: any }) {
     const [login, setLogin] = useState<boolean>(false);
     const [property, setProperty] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useState<number>(1)
+    const [toggle, setIsToggle] = useState(true)
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('')
     const navigate = useNavigate()
@@ -20,153 +21,194 @@ export default function Navbar({ transparent }: { transparent: any }) {
 
     let [scroll, setScroll] = useState<boolean>(false)
 
-    const location = useLocation();
-    const current = location.pathname
+  const location = useLocation();
+  const current = location.pathname;
 
-    const validateEmail = (email: string) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleEmailChange = (e: any) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    if (value === "") {
+      setEmailError("Email is required");
+    } else if (!validateEmail(value)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
     }
+  };
 
-    const handleEmailChange = (e: any) => {
-        const value = e.target.value
-        setEmail(value)
-
-        if (value === '') {
-            setEmailError('Email is required')
-        } else if (!validateEmail(value)) {
-            setEmailError('Please enter a valid email address')
-        } else {
-            setEmailError('')
-        }
+  const checkAccountExist = async () => {
+    try {
+      const res = await axios.post(global.config.ROOTURL.prod + "/user/exist", {
+        email,
+      });
+      console.log("hello:world", res);
+      if (res.status === 201 || res.status === 200) {
+        console.log("Data submitted successfully:", res.data);
+        setLogin(!login);
+        setStorageItem("uid", res?.data?.data?._id);
+        setStorageItem(
+          "fullName",
+          res?.data?.data?.businessName
+            ? res.data.data.businessName
+            : res.data.data?.fullName
+        );
+        setStorageItem(
+          "userName",
+          res?.data?.data?.businessName
+            ? res.data.data.businessName
+            : res.data.data?.userName
+        );
+        setStorageItem(
+          "email",
+          res?.data?.data?.business_email
+            ? res.data.data?.business_email
+            : res.data.data?.email
+        );
+        setStorageItem(
+          "phoneNo",
+          res?.data?.data?.business_phone
+            ? res.data.data.business_phone
+            : res.data.data?.phone
+        );
+        setStorageItem("token", res.data.token);
+        setStorageItem("user-data", JSON.stringify(res.data.data));
+        updateUserDetails(res.data.data);
+        toast.success("user account exists");
+        setEmail("");
+      } else {
+        console.error("Unexpected status:", res.status);
+      }
+    } catch (error) {
+      alert("user not found");
+      console.error("Error submitting data:", error);
     }
+  };
 
-    const checkAccountExist = async () => {
-        try {
-            const res = await axios.post(global.config.ROOTURL.prod + '/user/exist', { email });
-            console.log("hello:world", res)
-            if (res.status === 201 || res.status === 200) {
-                console.log('Data submitted successfully:', res.data);
-                setLogin(!login)
-                setStorageItem("uid", res?.data?.data?._id)
-                setStorageItem("fullName", res?.data?.data?.businessName ? res.data.data.businessName : res.data.data?.fullName)
-                setStorageItem("userName", res?.data?.data?.businessName ? res.data.data.businessName : res.data.data?.userName)
-                setStorageItem("email", res?.data?.data?.business_email ? res.data.data?.business_email : res.data.data?.email)
-                setStorageItem("phoneNo", res?.data?.data?.business_phone ? res.data.data.business_phone : res.data.data?.phone)
-                setStorageItem("token", res.data.token)
-                setStorageItem("user-data", JSON.stringify(res.data.data))
-                updateUserDetails(res.data.data)
-                toast.success("user account exists")
-                setEmail("")
-            } else {
-                console.error('Unexpected status:', res.status);
-            }
-        } catch (error) {
-            alert("user not found")
-            console.error('Error submitting data:', error);
-        }
-    }
+  const handleMouseEnter = (menu: string, submenu?: string) => {
+    setActiveMenu((prev) => ({
+      ...prev,
+      [menu]: {
+        ...prev[menu],
+        [submenu || "main"]: true, // Open main menu or submenu
+      },
+    }));
+  };
 
-    const handleMouseEnter = (menu: string, submenu?: string) => {
-        setActiveMenu((prev) => ({
-            ...prev,
-            [menu]: {
-                ...prev[menu],
-                [submenu || 'main']: true, // Open main menu or submenu
-            },
-        }));
+  // Handle mouse leave for any menu or submenu
+  const handleMouseLeave = (menu: string, submenu?: string) => {
+    setActiveMenu((prev) => ({
+      ...prev,
+      [menu]: {
+        ...prev[menu],
+        [submenu || "main"]: false, // Close main menu or submenu
+      },
+    }));
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const handlerScroll = () => {
+      if (window.scrollY > 50) {
+        setScroll(true);
+      } else {
+        setScroll(false);
+      }
     };
 
-    // Handle mouse leave for any menu or submenu
-    const handleMouseLeave = (menu: string, submenu?: string) => {
-        setActiveMenu((prev) => ({
-            ...prev,
-            [menu]: {
-                ...prev[menu],
-                [submenu || 'main']: false, // Close main menu or submenu
-            },
-        }));
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
     };
 
-    useEffect(() => {
-        window.scrollTo(0, 0)
+    window.addEventListener("scroll", handlerScroll);
+    window.addEventListener("resize", handleResize);
 
-        const handlerScroll = () => {
-            if (window.scrollY > 50) {
-                setScroll(true)
-            } else { setScroll(false) }
-        }
+    return () => {
+      window.removeEventListener("scroll", handlerScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [windowWidth]);
 
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
+  return (
+    <>
+      <div
+        className={`w-full ${scroll ? "fixed top-0 shadow-md bg-white" : ""} ${
+          transparent ? "bg-transparent text-white" : "bg-white text-gray-900"
+        }`}
+      >
+        <div className="container mx-auto">
+          <nav className="h-20 flex items-center justify-between">
+            {/* Left: Logo */}
+            <Link to="/" className="flex items-center gap-2">
+              <img src={logo} alt="Logo" className="max-h-20" />
+              <h5 className="text-2xl font-bold mb-0">Last Minute Wellness</h5>
+            </Link>
 
-        window.addEventListener('scroll', handlerScroll)
-        window.addEventListener('resize', handleResize);
+            {/* Desktop Menu */}
+            <ul className="hidden lg:flex items-center gap-6 mb-0">
+              <li>
+                <Link
+                  to="/create-account"
+                  className="flex items-center px-4 py-3 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <span className="font-medium">Sign Up / Sign In</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/submit-property"
+                  className="flex items-center gap-2 px-4 py-3 rounded-md bg-blue-600 text-white font-semibold shadow-sm hover:bg-blue-700 hover:shadow-md transition-all duration-200"
+                >
+                  <img src={loginImg} alt="Join Icon" className="h-5 w-5" />
+                  Join as a Provider
+                </Link>
+              </li>
+            </ul>
 
-        return () => {
-            window.removeEventListener('scroll', handlerScroll)
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [windowWidth])
+            {/* Mobile Toggle */}
+            <button
+              className="lg:hidden text-2xl"
+              onClick={() => setIsToggle(!toggle)}
+            >
+              ☰
+            </button>
+          </nav>
+        </div>
 
-    return (
-        <>
-            <div className={`header ${scroll ? 'header-fixed' : ''} ${transparent ? 'header-transparent dark' : 'header-light head-shadow'}`}>
-                <div className="container">
-                    <nav id="navigation " className={windowWidth > 991 ? "navigation navigation-landscape" : "navigation navigation-portrait"}>
-                        <div className="nav-header" style={{ lineHeight: '0' }}>
-                            <Link className="nav-brand text-logo" to="#">
-                                <img src={logo} alt="" />
-                                <Link to="/" className={current === '/' ? 'active' : ''}>
-                                    <h5 className="fs-3 fw-bold ms-1 my-0">Last minute wellness</h5>
-                                </Link>
-                            </Link>
-                            
-                        </div>
-                        <div className={`nav-menus-wrapper`} style={{ transitionProperty: 'left' }}>
-                            <ul className="nav-menu">
-
-                                <li><Link to="/" className={current === '/' ? 'active' : ''}>Home</Link></li>
-                                <li><Link to="/my-account" className={current === '/my-account' ? 'active' : ''}>My Account</Link></li>
-
-                            </ul>
-
-                            <ul className="nav-menu nav-menu-social align-to-right d-none d-lg-inline-flex">
-
-                                <li>
-                                    <Link to="/create-account" className="fw-medium text-muted-2">
-                                        <span className="svg-icon svg-icon-2hx me-1">
-                                            <svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.3" d="M16.5 9C16.5 13.125 13.125 16.5 9 16.5C4.875 16.5 1.5 13.125 1.5 9C1.5 4.875 4.875 1.5 9 1.5C13.125 1.5 16.5 4.875 16.5 9Z" fill="currentColor" />
-                                                <path d="M9 16.5C10.95 16.5 12.75 15.75 14.025 14.55C13.425 12.675 11.4 11.25 9 11.25C6.6 11.25 4.57499 12.675 3.97499 14.55C5.24999 15.75 7.05 16.5 9 16.5Z" fill="currentColor" />
-                                                <rect x="7" y="6" width="4" height="4" rx="2" fill="currentColor" />
-                                            </svg>
-                                        </span>
-                                        SignUp or SignIn
-                                    </Link>
-                                </li>
-                                <li className="add-listing">
-                                    <Link to="/submit-property" className="bg-primary">
-                                        <img src={loginImg} alt="" className='me-1' />Join as a Provider
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="#" className="text-primary" onClick={() => setProperty(!property)}>
-                                        <span className="svg-icon svg-icon-2hx">
-                                            <svg width="24" height="24" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect y="6" width="16" height="3" rx="1.5" fill="currentColor" />
-                                                <rect opacity="0.3" y="12" width="8" height="3" rx="1.5" fill="currentColor" />
-                                                <rect opacity="0.3" width="12" height="3" rx="1.5" fill="currentColor" />
-                                            </svg>
-                                        </span>
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
+        {/* Mobile Menu */}
+        {toggle && (
+          <div className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40">
+            <div className="absolute top-0 right-0 w-3/4 max-w-xs h-full bg-white shadow-lg p-6 flex flex-col gap-4">
+              <button
+                className="self-end text-2xl"
+                onClick={() => setIsToggle(false)}
+              >
+                ✕
+              </button>
+              <Link
+                to="/create-account"
+                className="flex items-center gap-2 px-4 py-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition"
+                onClick={() => setIsToggle(false)}
+              >
+                Sign Up / Sign In
+              </Link>
+              <Link
+                to="/submit-property"
+                className="flex items-center gap-2 px-5 py-2 rounded-md bg-blue-600 text-white font-semibold shadow-sm hover:bg-blue-700 transition"
+                onClick={() => setIsToggle(false)}
+              >
+                Join as a Provider
+              </Link>
             </div>
-        </>
-    )
+          </div>
+        )}
+      </div>
+    </>
+  );
 }
