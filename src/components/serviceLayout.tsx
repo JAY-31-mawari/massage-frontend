@@ -5,6 +5,7 @@ import TinySlider from "tiny-slider-react";
 import "../../node_modules/tiny-slider/dist/tiny-slider.css";
 import { setStorageItem } from "../utils/sessionStorage";
 import { useMerchantStore } from "../store/merchantStore";
+import { Service } from './interfaces';
 
 const settings = {
   items: 1,
@@ -20,33 +21,6 @@ const settings = {
   speed: 400,
   gutter: 0,
 };
-
-interface Location {
-  type: string;
-  coordinates: [Number, Number];
-}
-
-interface PractitionerDetails{
-    practitionerName: string
-    areaOfExpertise: string[]
-    _id: string
-}
-
-interface Service{
-    _id: string
-    location: Location
-    businessName: string
-    businessType: string
-    business_email: string
-    business_phone: string
-    bankingDetails: string
-    merchantAddress: string
-    merchantCity: string
-    merchantState: string
-    merchantZipCode: string
-    practitioners: PractitionerDetails[]
-    businessPhotos: string[]
-}
 
 export default function ServiceLayout({ item }: { item: Service }) {
   const navigate = useNavigate();

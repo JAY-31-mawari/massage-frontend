@@ -344,7 +344,7 @@ export default function SubmitProperty() {
                             <div className="submit-page">
                                 <motion.div layout>
                                     <AnimatePresence mode="wait">
-                                        {(currentStep === 1 || currentStep === 5) && (
+                                        {(currentStep === 1 || currentStep === 4) && (
                                             <motion.div
                                                 key="step1"
                                                 initial={{ opacity: 0, x: -50 }}
@@ -393,21 +393,6 @@ export default function SubmitProperty() {
 
                                                             </div>
 
-                                                            {/* <div className="form-group col-md-6">
-                                                <label className='mb-2'>Areas of Expertise</label>
-                                                <Select options={expertiseList} className="form-control" classNamePrefix="react-select" placeholder="Areas of Expertise" value={expertiseList.find((option) => option.value === areaOfExpertise)} onChange={(selectedOption) => setAreaOfExpertise(selectedOption?.value)} />
-                                            </div> */}
-
-                                                            {/* <div className="form-group col-md-6">
-                                                <label className='mb-2'>License/Registration Number</label>
-                                                <input type="text" className="form-control" value={license} onChange={(e)=>setLicense(e.target.value)} />
-                                            </div>
-
-                                            <div className="form-group col-md-6">
-                                                <label className='mb-2'>For mobile practitioners - Coverage Postal code</label>
-                                                <input type="text" className="form-control" value={postalCode} onChange={(e)=>setPostalCode(e.target.value)}/>
-                                            </div> */}
-
                                                             <div className="form-group col-md-12">
                                                                 <label className='mb-2'>Banking Details</label>
                                                                 <input type="text" className="form-control" placeholder='Banking Details' value={bankingDetails} onChange={(e) => setBankingDetails(e.target.value)} />
@@ -416,18 +401,6 @@ export default function SubmitProperty() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </motion.div>
-                                        )}
-
-                                        {(currentStep === 2 || currentStep === 5) && (
-                                            <motion.div
-                                                key="step2"
-                                                initial={{ opacity: 0, x: -50 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                exit={{ opacity: 0, x: 50 }}
-                                                transition={{ duration: 0.4 }}
-                                                layout
-                                            >
                                                 <div className="form-submit">
                                                     <h3>Business Address</h3>
                                                     <div className="submit-section">
@@ -455,7 +428,7 @@ export default function SubmitProperty() {
                                             </motion.div>
                                         )}
 
-                                        {(currentStep === 3 || currentStep === 5) && (
+                                        {(currentStep === 2 || currentStep === 4) && (
                                             <motion.div
                                                 key="step3"
                                                 initial={{ opacity: 0, x: -50 }}
@@ -576,7 +549,7 @@ export default function SubmitProperty() {
                                             </motion.div>
                                         )}
 
-                                        {(currentStep === 4 || currentStep === 5) && (
+                                        {(currentStep === 3 || currentStep === 4) && (
                                             <motion.div
                                                 key="step4"
                                                 initial={{ opacity: 0, x: -50 }}
@@ -757,9 +730,9 @@ export default function SubmitProperty() {
                                             className="btn btn-primary fw-medium px-5"
                                             type="button"
                                             // disabled={!isPractitionerDetailsValid}
-                                            onClick={() => currentStep === 5 ? handleMerchantFormSubmit() : setCurrentStep(currentStep+1)}
+                                            onClick={() => currentStep === 4 ? handleMerchantFormSubmit() : setCurrentStep(currentStep+1)}
                                         >
-                                            {currentStep === 5 ? 'Preview & Submit': 'Next'}
+                                            {currentStep === 4 ? 'Preview & Submit': 'Next'}
                                         </button>
                                     </div>
                                 </div>

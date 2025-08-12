@@ -9,9 +9,8 @@ interface ProgressSidebarProps {
 const steps = [
   {
     title: "Basic Information",
-    description: "Company details and contact info",
+    description: "Company details, address, & contact info",
   },
-  { title: "Business Address", description: "Location and address details" },
   { title: "Business Photos", description: "Upload your business images" },
   { title: "Practitioner Details", description: "Professional information" },
   { title: "Preview & Submit", description: "Review and finalize" },
