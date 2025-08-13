@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function SideFilter({show, setShow}:{show:any, setShow:any}) {
+export default function SideFilter({show, setShow, selectService, setSelectService, serviceNames}:{show:any, setShow:any, selectService: string, setSelectService: any, serviceNames: string[]}) {
     let[open, setOpen] = useState<boolean>(false)
     let[open2, setOpen2] = useState<boolean>(false)
     let[open3, setOpen3] = useState<boolean>(false)
@@ -69,6 +69,24 @@ export default function SideFilter({show, setShow}:{show:any, setShow:any}) {
                         </div>
                         
                     </div>
+                </div>
+
+                <div className='grid'>
+                    {serviceNames.map((service)=>{
+                        const checked = service === selectService
+                        return(
+                            <div className='flex items-center gap-4'>
+                            <input 
+                                type="radio"
+                                name={service}
+                                checked={checked}
+                                value={selectService}
+                                onChange={()=>setSelectService(service)}
+                            />
+                            <label>{service}</label>
+                            </div>
+                        )
+                    })}
                 </div>
                 
                 <div className="filter_wraps">

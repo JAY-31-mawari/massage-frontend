@@ -18,6 +18,7 @@ export interface Service {
     business_email: string
     business_phone: string
     bankingDetails: string
+    services?: string[]
     merchantAddress: string
     merchantCity: string
     merchantState: string

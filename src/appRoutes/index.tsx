@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Home from '../pages/index/home';
 
-import ClassicalProperty from '../pages/property/classical-property';
-import SinglePropertyOne from '../pages/property/single-property-1';
+import ServiceSearchPage from '../pages/property/searchService';
+import ServicePage from '../pages/property/servicePage';
 import Agents from '../pages/agents/agents';
 import AgentPage from '../pages/agents/agent-page';
 import AgencyPage from '../pages/agents/agency-page';
@@ -32,8 +32,8 @@ export function AppRoutes() {
             <Route path='/service/massage' element={<Service3 />} />
             <Route path='/service/acupuncture' element={<Service4 />} />
 
-            <Route path='/classical-property' element={<ClassicalProperty />} />
-            <Route path='/single-property-1/:id' element={<SinglePropertyOne />} />
+            <Route path='/serviceList' element={<ServiceSearchPage />} />
+            <Route path='/service' element={<ServicePage />} />
             <Route path='/agents' element={<Agents />} />
             <Route path='/agent-page' element={<AgentPage />} />
             <Route path='/agent-page/:id' element={<AgentPage />} />

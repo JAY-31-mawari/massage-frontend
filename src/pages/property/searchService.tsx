@@ -11,13 +11,18 @@ import { useSearchLocation } from "../../store/searchLocation";
 import { Button } from "../../components/button";
 import { getStorageItem, deleteStorageItem } from "../../utils/sessionStorage";
 import { useServiceStore } from "../../store/serviceStore";
+import { serviceNames, serviceTypes } from "../../data/servicesData";
+import { useUserStore } from "../../store/userStore";
 
 export default function ClassicalProperty() {
   const search = useSearchLocation((state) => state.searchLocation);
   const [show, setShow] = useState(true);
   const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
-  const serviceData = useServiceStore((state) => state.services);
-  const setServiceData = useServiceStore((state) => state.setServices);
+  const user = useUserStore((state)=>state.user)
+  const updateUser = useUserStore((state)=> state.updateUser)
+  const servicesData = useServiceStore((state) => state.services);
+  const setservicesData = useServiceStore((state) => state.setServices);
+  const [selectService, setSelectService] = useState(user?.serviceType || '')
   let [open, setOpen] = useState<boolean>(false);
   const [range, setRange] = useState<number[]>([20, 80]);
   const [location, setLocation] = useState("");
@@ -144,12 +149,17 @@ export default function ClassicalProperty() {
       global.config.ROOTURL.prod +
         `/business/search?q=${searchLocation.current}&latitude=${latitudeRef.current}&longitude=${longitudeRef.current}&radius=${radius}&liveLocation=${liveLocation.current}`
     );
-    setServiceData(searchBusinessData.data.businesses);
+    setservicesData(searchBusinessData.data.businesses);
     updateSearch({
       location: searchLocation.current,
       liveLocation: liveLocation.current,
       radius: 10,
     });
+  }
+
+  const handleSelectService = (data:string) => {
+    setSelectService(data)
+    updateUser({serviceType: data})
   }
 
   // useEffect(()=>{
@@ -165,14 +175,15 @@ export default function ClassicalProperty() {
     }
   }, []);
 
+
   useEffect(() => {
     async function getData() {
       const businessData = await axios.get(
         global.config.ROOTURL.prod + "/business"
       );
-      setServiceData(businessData.data.businesses);
+      setservicesData(businessData.data.businesses);
     }
-    if (serviceData.length === 0) {
+    if (servicesData.length === 0) {
       getData();
     }
   });
@@ -296,23 +307,33 @@ export default function ClassicalProperty() {
 
       <div className="row">
         <div className="col-lg-4 col-md-12 col-sm-12">
-          <SideFilter show={show} setShow={setShow} />
+          <SideFilter show={show} setShow={setShow} selectService={selectService} setSelectService={handleSelectService} serviceNames={serviceTypes}/>
         </div>
         <div className="col-lg-8 col-md-12 col-sm-12 g-4 px-16">
           {/* Left side - service Cards */}
           <div className="col-lg-12 col-md-12">
             <div className="row g-4">
-              {serviceData.length > 0 ? (
-                serviceData.map((item, index) => (
+              {servicesData.length > 0 ? (
+                selectService === '' ? 
+                servicesData.map((item, index) => (
+                  <div className="col-12" key={index}>
+                    {" "}
+                    {/* Full width card */}
+                    <ServiceLayout item={item} />
+                  </div>
+                )): 
+                (
+                  servicesData.filter(item => item.businessType === selectService).map((item, index) => (
                   <div className="col-12" key={index}>
                     {" "}
                     {/* Full width card */}
                     <ServiceLayout item={item} />
                   </div>
                 ))
+                )
               ) : (
                 <div>No services Found</div>
-              )}
+              ) }
             </div>
 
             {/* Pagination */}

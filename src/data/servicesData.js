@@ -29,3 +29,7 @@ export const servicesData = [
         desc:["Acupuncture is an ancient healing practice rooted in Traditional Chinese Medicine that involves inserting very fine, sterile needles into specific points on the body. These points are believed to lie along energy pathways, known as meridians, which help regulate the flow of “qi” or vital energy. By stimulating these points, acupuncture aims to restore balance within the body, reduce pain, and promote natural healing. It is commonly used to address conditions such as chronic pain, migraines, stress, and digestive disorders.","Beyond its role in pain management, acupuncture is valued for its holistic benefits. Many people experience improved sleep, reduced anxiety, and enhanced overall well‑being after regular treatments. The therapy encourages the body’s self‑healing mechanisms, supporting immune function and reducing inflammation without the use of medications. Whether used as a standalone treatment or alongside other therapies, acupuncture offers a gentle, effective approach to achieving better health and balance in daily life."]
     },
 ];
+
+export const serviceNames = ["Physiotherapy","Chiropractic Care","Massage Therapy","Acupuncture"]
+
+export const serviceTypes = ["Clinic-Based Practice", "Home-Based Practice"]

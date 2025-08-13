@@ -8,6 +8,7 @@ interface Booking{
   businessId: string
   duration: number
   paymentStatus: string
+  practitionerId: string
   price: number
   reminderSent: false
   serviceName: string
@@ -23,13 +24,14 @@ interface BookingProps{
   selectedDate: Date
   selectedTimeSlot: string
   appointmentDateTime: Date
+  selectedPractitionerId: string
   setSelectedDate: (date: Date) => void
   setSelectedTimeSlot: (day: string) => void 
   setAppointmentDateTime: (date: Date) => void
   handleBookingAppointment: () => void
 }
 
-export default function DateTimeComponent({bookedSlots, startTime, endTime, selectedDate, selectedTimeSlot, appointmentDateTime, setSelectedDate, setSelectedTimeSlot, setAppointmentDateTime, handleBookingAppointment}: BookingProps) {
+export default function DateTimeComponent({bookedSlots, startTime, endTime, selectedPractitionerId, selectedDate, selectedTimeSlot, appointmentDateTime, setSelectedDate, setSelectedTimeSlot, setAppointmentDateTime, handleBookingAppointment}: BookingProps) {
   const [showCalendar, setShowCalendar] = useState(false)
   const [selectedDay, setSelectedDay] = useState(0)
    // Default to today (first day)
@@ -81,7 +83,9 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
     const now = new Date()
     const isToday = selectedDate.toDateString() === now.toDateString()
 
-    const bookedTimes = bookedSlots.map(booking => {
+    const practitionerBookings = bookedSlots.filter(booking => booking?.practitionerId === selectedPractitionerId)
+
+    const bookedTimes = practitionerBookings.map(booking => {
       const bookingTime = new Date(booking.appointmentDate)
       bookingTime.setHours(bookingTime.getHours()-5)
       bookingTime.setMinutes(bookingTime.getMinutes()-30)
@@ -125,11 +129,11 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
   // Update time slots when selected date changes
   useEffect(() => {
     setTimeSlots(generateTimeSlots())
-  }, [selectedDate, startTime, endTime, bookedSlots])
+  }, [selectedDate, startTime, endTime, bookedSlots, selectedPractitionerId])
 
    useEffect(()=>{
     console.log("caskndkjsn",bookedSlots)
-  },[])
+  },[bookedSlots])
 
   const handleDayClick = (index: number) => {
     setSelectedDay(index)

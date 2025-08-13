@@ -202,9 +202,9 @@ export default function IndexSix() {
                           onClick={() =>
                             location
                               ? navigate(
-                                  `/classical-property?search=${location}`
+                                  `/serviceList?search=${location}`
                                 )
-                              : navigate(`/classical-property`)
+                              : navigate(`/serviceList`)
                           }
                         >
                           Search

@@ -10,6 +10,7 @@ interface User {
   businessName?: string
   business_email?: string
   business_phone?: string
+  serviceType?: string
   __v: number
 }
 

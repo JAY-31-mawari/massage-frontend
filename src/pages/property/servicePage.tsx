@@ -12,7 +12,7 @@ import bathtub from "../../assets/img/bathtub.svg";
 import move from "../../assets/img/move.svg";
 
 import Navbar from "../../components/navbar/navbar";
-import PropertyDetail from "../../components/property-detail";
+import PropertyDetail from "../../components/service-detail";
 import DetailSidebar from "../../components/detail-sidebar";
 import FooterTop from "../../components/footer-top";
 import Footer from "../../components/footer";
@@ -41,9 +41,11 @@ export default function SinglePropertyOne() {
     "Massage Therapy",
     "Acupuncture",
   ]);
+  const timesDuration = [30, 45, 60]
   const [userSelectedService, setUserSelectedService] = useState("");
   const [userSelectedPractitionerId, setUserSelectedPractitionerId] =
     useState("");
+  const [userSelectedTimeDuration, setUserSelectedTimeDuration] = useState(0);
 
   const merchant = useMerchantStore((state) => state.merchant);
 
@@ -160,6 +162,23 @@ export default function SinglePropertyOne() {
                       ))}
                     </select>
                   </div>
+                  <div className="listing-card-info-icon">
+                    <label htmlFor="timeDuration">Select Time Duration</label>
+                    <select
+                      id="timeDuration"
+                      value={userSelectedTimeDuration}
+                      onChange={(e) => setUserSelectedTimeDuration(parseInt(e.target.value, 10))}
+                    >
+                      <option value="" disabled>
+                        -- Choose a time --
+                      </option>
+                      {timesDuration.map((time) => (
+                        <option key={time} value={time}>
+                          {time} minutes
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
               <div className="listing-card-info-icon">
@@ -222,6 +241,7 @@ export default function SinglePropertyOne() {
               <PropertyDetail
                 serviceName={userSelectedService}
                 practitionerId={userSelectedPractitionerId}
+                duration={userSelectedTimeDuration}
               />
             </div>
 

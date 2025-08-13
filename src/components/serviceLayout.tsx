@@ -29,7 +29,7 @@ export default function ServiceLayout({ item }: { item: Service }) {
     const handleSelectService = () => {
         setStorageItem('merchant-data', JSON.stringify(item))
         updateMerchant(item)
-        navigate(`/single-property-1/${item._id}`)
+        navigate(`/service`)
     }
 
   return (
@@ -50,7 +50,6 @@ export default function ServiceLayout({ item }: { item: Service }) {
                 {item?.businessPhotos &&
                   item.businessPhotos.map((el, index) => (
                     <div key={index} style={{ height: "100%" }}>
-                      <Link to={`/single-property-1/${item._id}`}>
                         <img
                           src={el}
                           style={{
@@ -60,7 +59,6 @@ export default function ServiceLayout({ item }: { item: Service }) {
                           }}
                           alt=""
                         />
-                      </Link>
                     </div>
                   ))}
               </TinySlider>
@@ -77,12 +75,7 @@ export default function ServiceLayout({ item }: { item: Service }) {
         {/* Top: Title & Location */}
         <div>
           <h4 className="listing-name fw-semibold fs-6 mb-2">
-            <Link
-              to={`/single-property-1/${item._id}`}
-              className="prt-link-detail"
-            >
               {item.businessName}
-            </Link>
           </h4>
           <div className="prt-location text-muted-2 d-flex align-items-center">
             <img src={map} alt="" className="me-1" />

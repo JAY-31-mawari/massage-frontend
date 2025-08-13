@@ -20,15 +20,13 @@ import { getStorageItem } from "../utils/sessionStorage";
 import axios from "axios";
 import { Button } from "./button";
 
-export default function PropertyDetail({practitionerId, serviceName}:{practitionerId:string, serviceName:string}) {
+export default function PropertyDetail({practitionerId, serviceName, duration}:{practitionerId:string, serviceName:string, duration:number}) {
   const navigate = useNavigate()
   const merchant = useMerchantStore((state) => state.merchant);
   const user = useUserStore((state) => state.user);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
-  const [selectedDay, setSelectedDay] = useState(0);
   const [appointmentDateTime, setAppointmentDateTime] = useState(new Date());
-  const [appointmentTimeToString, setAppointmentTimeToString] = useState('')
   const [bookedSlots, setBookedSlots] = useState([])
   const accessToken = getStorageItem("token");
   const [isOpen, setIsOpen] = useState(false);
@@ -74,11 +72,6 @@ export default function PropertyDetail({practitionerId, serviceName}:{practition
       return;
     }
 
-    if(serviceName === ""){
-      toast.error("Please select service")
-      return;
-    }
-
     const currentTime = new Date()
     if(appointmentDateTime < currentTime){
       toast.error("Please select a future Time for your appointment");
@@ -95,11 +88,11 @@ export default function PropertyDetail({practitionerId, serviceName}:{practition
       data: {
         userId: user._id,
         businessId: merchant._id,
-        serviceName,
+        serviceName:"Acupunture",
         practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
-        duration: 60,
-        serviceType: "Home",
+        duration,
+        serviceType: merchant?.businessType,
         price: 150,
       },
     };
@@ -132,6 +125,8 @@ export default function PropertyDetail({practitionerId, serviceName}:{practition
     }
   }
 
+  console.log("asdasdd",merchant)
+
   useEffect(()=>{
     getAllBookings()
   },[selectedDate])
@@ -142,6 +137,7 @@ export default function PropertyDetail({practitionerId, serviceName}:{practition
         <DateTimeComponent
           bookedSlots={bookedSlots}
           selectedDate={selectedDate}
+          selectedPractitionerId={practitionerId}
           startTime={9}
           endTime={24}
           selectedTimeSlot={selectedTimeSlot}
