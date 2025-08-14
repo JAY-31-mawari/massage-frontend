@@ -13,10 +13,17 @@ interface BusinessData {
     _id: string
 }
 
+interface PractitionerData {
+    _id: string
+    practitionerName: string
+    areaOfExpertise: string[]
+}
+
 interface AppointmentHistory {
     active: boolean
     appointmentDate: string
     businessId: BusinessData
+    practitionerId: PractitionerData
     duration: number
     price: number
     reminderSend: boolean
@@ -120,8 +127,11 @@ export default function Orders() {
                                             </div>
                                             <div className="sd-list-right">
                                                 <h4 className="listing_dashboard_title">
-                                                    <Link to="#" className="text-primary">{appointment?.businessId?.businessName}</Link>
+                                                    <Link to={`/service/${appointment?.businessId?._id}`} className="text-primary">{appointment?.businessId?.businessName}</Link>
                                                 </h4>
+                                                <div className='user_dashboard_listed'>
+                                                    Practitioner Name: <Link to='#' className="text-primary">{appointment?.practitionerId?.practitionerName}</Link>
+                                                </div>
                                                 <div className="user_dashboard_listed">
                                                     Appointment Date & Time: <Link to="#" className="text-primary">{formatted}</Link>
                                                 </div>

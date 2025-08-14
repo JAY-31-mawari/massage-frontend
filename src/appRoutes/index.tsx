@@ -34,6 +34,7 @@ export function AppRoutes() {
 
             <Route path='/serviceList' element={<ServiceSearchPage />} />
             <Route path='/service' element={<ServicePage />} />
+            <Route path='/service/:id' element={<ServicePage />} />
             <Route path='/agents' element={<Agents />} />
             <Route path='/agent-page' element={<AgentPage />} />
             <Route path='/agent-page/:id' element={<AgentPage />} />

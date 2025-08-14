@@ -17,6 +17,9 @@ import DetailSidebar from "../../components/detail-sidebar";
 import FooterTop from "../../components/footer-top";
 import Footer from "../../components/footer";
 import { useMerchantStore } from "../../store/merchantStore";
+import { serviceNames } from "../../data/servicesData";
+import axios from "axios";
+import { Service } from "../../components/interfaces";
 
 var settings = {
   dots: false,
@@ -35,21 +38,36 @@ export default function SinglePropertyOne() {
   const [serviceCountMap, setServiceCountMap] = useState<
     Record<string, number>
   >({});
-  const [services, setServices] = useState([
-    "Physiotherapy",
-    "Chiropractic Care",
-    "Massage Therapy",
-    "Acupuncture",
-  ]);
+  const [merchant, setMerchant] = useState<any>()
   const timesDuration = [30, 45, 60]
   const [userSelectedService, setUserSelectedService] = useState("");
   const [userSelectedPractitionerId, setUserSelectedPractitionerId] =
     useState("");
   const [userSelectedTimeDuration, setUserSelectedTimeDuration] = useState(0);
 
-  const merchant = useMerchantStore((state) => state.merchant);
+  const selectedServiceData = useMerchantStore((state) => state.merchant);
 
-  console.log("merads", merchant);
+  const getSpecificBusinessById = async() => {
+    const payload = {
+      method: 'GET',
+      url: global.config.ROOTURL.prod + `/business/${id}`
+    }
+
+    await axios(payload).then((res)=>{
+      setMerchant(res.data)
+    }).catch((err)=>{
+      console.error("Error Fetching Data: getSpecificBusinessById", err)
+    })
+  }
+
+  useEffect(()=>{
+    if(id){
+      getSpecificBusinessById()
+    }else{
+      setMerchant(selectedServiceData)
+    }
+  },[id])
+
 
   // function mapServiceToPractitionerCount(business: Merchant): Record<string, number> {
   //   const serviceMap: Record<string, number> = {};
@@ -155,7 +173,7 @@ export default function SinglePropertyOne() {
                       <option value="" disabled>
                         -- Choose a service --
                       </option>
-                      {services.map((serviceName) => (
+                      {serviceNames.map((serviceName) => (
                         <option key={serviceName} value={serviceName}>
                           {serviceName}
                         </option>
@@ -183,7 +201,7 @@ export default function SinglePropertyOne() {
               </div>
               <div className="listing-card-info-icon">
                 {userSelectedService === ""
-                  ? merchant?.practitioners?.map((practitioner) => (
+                  ? merchant?.practitioners?.map((practitioner:any) => (
                       <div
                         className="mt-4 px-6"
                         key={practitioner._id}
@@ -208,12 +226,12 @@ export default function SinglePropertyOne() {
                       </div>
                     ))
                   : merchant?.practitioners
-                      ?.filter((practitioner) =>
+                      ?.filter((practitioner:any) =>
                         practitioner.areaOfExpertise?.includes(
                           userSelectedService
                         )
                       )
-                      .map((practitioner) => (
+                      .map((practitioner:any) => (
                         <div
                           className="mt-4 px-6"
                           key={practitioner._id}
