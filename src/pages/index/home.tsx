@@ -109,8 +109,6 @@ export default function IndexSix() {
 
   return (
     <>
-      <Navbar transparent={false} />
-
       <div
         className="image-cover hero-banner bg-primary"
         style={{ backgroundImage: `url(${bg})`, backgroundRepeat: "no-repeat" }}
@@ -201,9 +199,7 @@ export default function IndexSix() {
                           className="btn btn-dark full-width"
                           onClick={() =>
                             location
-                              ? navigate(
-                                  `/serviceList?search=${location}`
-                                )
+                              ? navigate(`/serviceList?search=${location}`)
                               : navigate(`/serviceList`)
                           }
                         >

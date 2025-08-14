@@ -1,30 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-import { FiArrowUp } from 'react-icons/fi'
+import { FiArrowUp } from "react-icons/fi";
 
 export default function ScrollToTop() {
-    let[scroll,setScroll] = useState<boolean>(false)
+  let [scroll, setScroll] = useState<boolean>(false);
 
-    const scrollToTop = () =>{
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-    useEffect(()=>{
+  useEffect(() => {
+    const handlerScroll = () => {
+      if (window.scrollY > 50) {
+        setScroll(true);
+      } else {
+        setScroll(false);
+      }
+    };
+    window.addEventListener("scroll", handlerScroll);
 
-        const handlerScroll=()=>{
-            if(window.scrollY > 50){
-                setScroll(true)
-            }else{setScroll(false)}
-        }
-        window.addEventListener('scroll',handlerScroll)
-
-        return () => {
-            window.removeEventListener('scroll',handlerScroll)
-          };
-    },[])
+    return () => {
+      window.removeEventListener("scroll", handlerScroll);
+    };
+  }, []);
 
   return (
-    <Link id="back2Top" onClick={()=>scrollToTop()} className={`top-scroll ${scroll ? 'd-block' : ''} px-2 py-2`} title="Back to top" to="#"><FiArrowUp className="ti-arrow-up"/></Link>
-  )
+    <Link
+      id="back2Top"
+      onClick={() => scrollToTop()}
+      className={`top-scroll ${scroll ? "d-block" : ""} px-2 py-2`}
+      title="Back to top"
+      to="#"
+    >
+      <FiArrowUp className="ti-arrow-up" />
+    </Link>
+  );
 }
