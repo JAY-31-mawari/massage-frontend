@@ -18,11 +18,11 @@ export default function ClassicalProperty() {
   const search = useSearchLocation((state) => state.searchLocation);
   const [show, setShow] = useState(true);
   const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
-  const user = useUserStore((state)=>state.user)
-  const updateUser = useUserStore((state)=> state.updateUser)
+  const user = useUserStore((state) => state.user);
+  const updateUser = useUserStore((state) => state.updateUser);
   const servicesData = useServiceStore((state) => state.services);
   const setservicesData = useServiceStore((state) => state.setServices);
-  const [selectService, setSelectService] = useState(user?.serviceType || '')
+  const [selectService, setSelectService] = useState(user?.serviceType || "");
   let [open, setOpen] = useState<boolean>(false);
   const [range, setRange] = useState<number[]>([20, 80]);
   const [location, setLocation] = useState("");
@@ -157,10 +157,10 @@ export default function ClassicalProperty() {
     });
   }
 
-  const handleSelectService = (data:string) => {
-    setSelectService(data)
-    updateUser({serviceType: data})
-  }
+  const handleSelectService = (data: string) => {
+    setSelectService(data);
+    updateUser({ serviceType: data });
+  };
 
   // useEffect(()=>{
   //   if(searchLocation){
@@ -174,7 +174,6 @@ export default function ClassicalProperty() {
       setLocation(search.location);
     }
   }, []);
-
 
   useEffect(() => {
     async function getData() {
@@ -194,8 +193,6 @@ export default function ClassicalProperty() {
 
   return (
     <>
-      <Navbar transparent={false} />
-
       <section className="bg-primary position-relative">
         <div className="position-absolute start-0 top-0 w-25 h-15 bg-light rounded-end-pill opacity-25 mt-4"></div>
         <div className="position-absolute start-0 bottom-0 w-15 h-20 bg-light rounded-top-pill opacity-25 ms-4"></div>
@@ -307,33 +304,41 @@ export default function ClassicalProperty() {
 
       <div className="row">
         <div className="col-lg-4 col-md-12 col-sm-12">
-          <SideFilter show={show} setShow={setShow} selectService={selectService} setSelectService={handleSelectService} serviceNames={serviceTypes}/>
+          <SideFilter
+            show={show}
+            setShow={setShow}
+            selectService={selectService}
+            setSelectService={handleSelectService}
+            serviceNames={serviceTypes}
+          />
         </div>
         <div className="col-lg-8 col-md-12 col-sm-12 g-4 px-16">
           {/* Left side - service Cards */}
           <div className="col-lg-12 col-md-12">
             <div className="row g-4">
               {servicesData.length > 0 ? (
-                selectService === '' ? 
-                servicesData.map((item, index) => (
-                  <div className="col-12" key={index}>
-                    {" "}
-                    {/* Full width card */}
-                    <ServiceLayout item={item} />
-                  </div>
-                )): 
-                (
-                  servicesData.filter(item => item.businessType === selectService).map((item, index) => (
-                  <div className="col-12" key={index}>
-                    {" "}
-                    {/* Full width card */}
-                    <ServiceLayout item={item} />
-                  </div>
-                ))
+                selectService === "" ? (
+                  servicesData.map((item, index) => (
+                    <div className="col-12" key={index}>
+                      {" "}
+                      {/* Full width card */}
+                      <ServiceLayout item={item} />
+                    </div>
+                  ))
+                ) : (
+                  servicesData
+                    .filter((item) => item.businessType === selectService)
+                    .map((item, index) => (
+                      <div className="col-12" key={index}>
+                        {" "}
+                        {/* Full width card */}
+                        <ServiceLayout item={item} />
+                      </div>
+                    ))
                 )
               ) : (
                 <div>No services Found</div>
-              ) }
+              )}
             </div>
 
             {/* Pagination */}

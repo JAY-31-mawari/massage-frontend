@@ -41,7 +41,7 @@ export default function SinglePropertyOne() {
     "Massage Therapy",
     "Acupuncture",
   ]);
-  const timesDuration = [30, 45, 60]
+  const timesDuration = [30, 45, 60];
   const [userSelectedService, setUserSelectedService] = useState("");
   const [userSelectedPractitionerId, setUserSelectedPractitionerId] =
     useState("");
@@ -74,8 +74,6 @@ export default function SinglePropertyOne() {
   // }, [merchant])
   return (
     <>
-      <Navbar transparent={false} />
-
       <div className="featured_slick_gallery gray">
         <div className="featured_slick_gallery-slide home-slider">
           <Slider {...settings}>
@@ -167,7 +165,11 @@ export default function SinglePropertyOne() {
                     <select
                       id="timeDuration"
                       value={userSelectedTimeDuration}
-                      onChange={(e) => setUserSelectedTimeDuration(parseInt(e.target.value, 10))}
+                      onChange={(e) =>
+                        setUserSelectedTimeDuration(
+                          parseInt(e.target.value, 10)
+                        )
+                      }
                     >
                       <option value="" disabled>
                         -- Choose a time --
@@ -192,19 +194,22 @@ export default function SinglePropertyOne() {
                         }
                       >
                         <img
-                            src={practitioner.profilePicture}
-                            className={`w-24 h-24 object-cover rounded-full ring-4 ${practitioner._id === userSelectedPractitionerId ? "ring-green-600" : "ring-indigo-300"}`}
-                            width="130"
-                            alt=""
-                          />
-                          <div className="fr-grid-deatil text-center">
-                            <div className="fr-grid-deatil-flex">
-                              <h5 className="fr-can-name mb-0">
-                                {practitioner.practitionerName}                              
-                              </h5>
-
-                            </div>
+                          src={practitioner.profilePicture}
+                          className={`w-24 h-24 object-cover rounded-full ring-4 ${
+                            practitioner._id === userSelectedPractitionerId
+                              ? "ring-green-600"
+                              : "ring-indigo-300"
+                          }`}
+                          width="130"
+                          alt=""
+                        />
+                        <div className="fr-grid-deatil text-center">
+                          <div className="fr-grid-deatil-flex">
+                            <h5 className="fr-can-name mb-0">
+                              {practitioner.practitionerName}
+                            </h5>
                           </div>
+                        </div>
                       </div>
                     ))
                   : merchant?.practitioners
@@ -230,9 +235,8 @@ export default function SinglePropertyOne() {
                           <div className="fr-grid-deatil text-center">
                             <div className="fr-grid-deatil-flex">
                               <h5 className="fr-can-name mb-0">
-                                {practitioner.practitionerName}                              
+                                {practitioner.practitionerName}
                               </h5>
-
                             </div>
                           </div>
                         </div>

@@ -176,7 +176,6 @@ export default function RegisterAccount() {
 
   return (
     <>
-      {/* <Navbar transparent={false} /> */}
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
         <div className="flex flex-col items-center justify-center p-8 bg-white overflow-y-auto">
           {/* Left Section - Forms */}
