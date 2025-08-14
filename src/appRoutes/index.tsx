@@ -8,7 +8,7 @@ import AgentPage from '../pages/agents/agent-page';
 import AgencyPage from '../pages/agents/agency-page';
 import Payment from '../pages/admin/payment';
 import ChangePassword from '../pages/admin/change-password';
-import SubmitProperty from '../pages/property/submit-property';
+import RegisterBusiness from '../pages/property/registerBusiness';
 import Pricing from '../pages/pricing';
 import Error from '../pages/error';
 import Contact from '../pages/contact';
@@ -41,7 +41,7 @@ export function AppRoutes() {
             <Route path='/agency-page' element={<AgencyPage />} />
             <Route path='/payment' element={<Payment />} />
             <Route path='/change-password' element={<ChangePassword />} />
-            <Route path='/submit-property' element={<SubmitProperty />} />
+            <Route path='/register' element={<RegisterBusiness />} />
             <Route path='/mapbox' element={<ParlourMap />} />
             <Route path='/pricing' element={<Pricing />} />
             <Route path='/404' element={<Error />} />
