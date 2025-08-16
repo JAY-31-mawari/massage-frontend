@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface OTPSectionProps {
-  email?: string;
-  phone?: string;
-  onVerify: (otp: string) => void;
-  onBack: () => void;
-  isLoading?: boolean;
+  email?: string
+  phone?: string
+  onVerify: (otp: string) => void
+  onBack: () => void
+  handleResendOTP: () => void
+  isLoading?: boolean
 }
 
 const OTPSection: React.FC<OTPSectionProps> = ({
@@ -14,9 +15,10 @@ const OTPSection: React.FC<OTPSectionProps> = ({
   phone,
   onVerify,
   onBack,
-  isLoading = false
+  isLoading = false,
+  handleResendOTP
 }) => {
-  const [otp, setOtp] = useState<string[]>(new Array(6).fill(''));
+  const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -41,8 +43,11 @@ const OTPSection: React.FC<OTPSectionProps> = ({
     }
   };
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       // Move to previous input on backspace if current is empty
       setActiveIndex(index - 1);
       inputRefs.current[index - 1]?.focus();
@@ -51,9 +56,12 @@ const OTPSection: React.FC<OTPSectionProps> = ({
 
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData('text/plain').replace(/\D/g, '').slice(0, 6);
+    const pastedData = e.clipboardData
+      .getData("text/plain")
+      .replace(/\D/g, "")
+      .slice(0, 6);
     if (pastedData.length === 6) {
-      const newOtp = pastedData.split('');
+      const newOtp = pastedData.split("");
       setOtp(newOtp);
       setActiveIndex(5);
       inputRefs.current[5]?.focus();
@@ -61,13 +69,13 @@ const OTPSection: React.FC<OTPSectionProps> = ({
   };
 
   const handleVerify = () => {
-    const otpString = otp.join('');
+    const otpString = otp.join("");
     if (otpString.length === 6) {
       onVerify(otpString);
     }
   };
 
-  const isOtpComplete = otp.every(digit => digit !== '');
+  const isOtpComplete = otp.every((digit) => digit !== "");
 
   return (
     <motion.div
@@ -86,10 +94,8 @@ const OTPSection: React.FC<OTPSectionProps> = ({
       >
         <h1 className="text-3xl font-bold text-gray-900">Verify OTP</h1>
         <p className="mt-2 text-sm text-gray-600">
-          We've sent a verification code to{' '}
-          <span className="font-medium text-gray-900">
-            {email || phone}
-          </span>
+          We've sent a verification code to{" "}
+          <span className="font-medium text-gray-900">{email || phone}</span>
         </p>
       </motion.div>
 
@@ -122,13 +128,14 @@ const OTPSection: React.FC<OTPSectionProps> = ({
                 className={`
                   w-12 h-12 text-center text-lg font-semibold border-2 rounded-lg
                   transition-all duration-200 focus:outline-none
-                  ${activeIndex === index
-                    ? 'border-blue-500 bg-blue-50 shadow-lg'
-                    : digit
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-gray-300 hover:border-gray-400'
+                  ${
+                    activeIndex === index
+                      ? "border-blue-500 bg-blue-50 shadow-lg"
+                      : digit
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-300 hover:border-gray-400"
                   }
-                  ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+                  ${isLoading ? "opacity-50 cursor-not-allowed" : ""}
                 `}
                 disabled={isLoading}
               />
@@ -145,9 +152,10 @@ const OTPSection: React.FC<OTPSectionProps> = ({
           disabled={!isOtpComplete || isLoading}
           className={`
             w-full py-3 px-4 rounded-lg font-medium transition-all duration-200
-            ${isOtpComplete && !isLoading
-              ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'
-              : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            ${
+              isOtpComplete && !isLoading
+                ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl"
+                : "bg-gray-200 text-gray-500 cursor-not-allowed"
             }
           `}
         >
@@ -157,9 +165,41 @@ const OTPSection: React.FC<OTPSectionProps> = ({
               <span>Verifying...</span>
             </div>
           ) : (
-            'Verify OTP'
+            "Verify OTP"
           )}
         </motion.button>
+
+        <div className="mt-3 flex items-start gap-2 text-sm">
+          <svg
+            className="mt-0.5 h-5 w-5 flex-none"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Z"
+              stroke="currentColor"
+              className="text-emerald-500"
+              stroke-width="1.5"
+            />
+            <path
+              d="M8.5 12.5l2.5 2.5 4.5-5"
+              stroke="currentColor"
+              className="text-emerald-600"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <p className="text-gray-700">
+            We’ve sent a one-time code to your email. Please enter it above to
+            continue with your booking.
+            <span className="block text-gray-500">
+              Didn’t get it? Check your <strong>Inbox</strong> and{" "}
+              <strong>Spam/Junk</strong> folders.
+            </span>
+          </p>
+        </div>
 
         {/* Back Button */}
         <motion.button
@@ -181,9 +221,10 @@ const OTPSection: React.FC<OTPSectionProps> = ({
           className="text-center"
         >
           <p className="text-sm text-gray-600">
-            Didn't receive the code?{' '}
+            Didn't receive the code?{" "}
             <button
               className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
+              onClick={handleResendOTP}
               disabled={isLoading}
             >
               Resend OTP
@@ -195,4 +236,4 @@ const OTPSection: React.FC<OTPSectionProps> = ({
   );
 };
 
-export default OTPSection; 
+export default OTPSection;

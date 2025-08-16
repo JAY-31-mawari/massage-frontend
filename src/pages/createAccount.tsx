@@ -59,12 +59,15 @@ export default function RegisterAccount() {
   };
 
   const changeForm = () => {
-    setEmailError("");
     setIsLogin(!isLogin);
   };
 
   const handleUserRegistration = async () => {
     try {
+      if (!fullName || !userName || !email || !phone) {
+        toast.error("All Fields are required");
+        return;
+      }
       const userPayload = {
         fullName,
         userName,
@@ -77,36 +80,46 @@ export default function RegisterAccount() {
         userPayload
       );
 
-      if (res.data.msg === "Email or phone already exists") {
+      if (!res.data.success) {
         toast.error(res.data.msg);
         return;
       } else if (res.status === 201 || res.status === 200) {
+        setUserData(res.data?.data);
+        toast.success(res.data.msg);
+        setShowOTP(true);
+      } else {
+        toast.error("Failed to create account! Please try once again:");
+        console.error("Error! Please try once again:", res.data.message);
+      }
+    } catch (error) {
+      console.error("handleUserRegistration Error:", error);
+      toast.error("Failed to create account! Please try once again.");
+    }
+  };
+
+  const handleUserLogin = async () => {
+    try {
+      if(!email){
+        toast.error("Email is required")
+        return
+      }
+
+      const res = await axios.post(global.config.ROOTURL.prod + "/user/login", {
+        email,
+      });
+      if (res.status === 200) {
         toast.success(res.data.msg);
         setUserData(res.data?.data);
         setShowOTP(true);
       } else {
-        console.error("Unexpected status:", res.data.message);
+        toast.error("Something went wrong, please try again");
       }
-    } catch (error) {
-      console.error("handleUserRegistration Error:", error);
-      toast.error("Failed to create account. Please try again.");
-    }
-  };
-
-  const handleAccountLogin = async () => {
-    try {
-      const res = await axios.post(global.config.ROOTURL.prod + "/user/login", {
-        email,
-      });
-      if (res.status === 201 || res.status === 200) {
-        toast.success("Logged in Successfully");
-        setUserData(res.data?.data);
-        setShowOTP(true);
-      } else {
-        console.error("Unexpected status:", res.status);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(
+          error.response.data?.msg || "Something went wrong, please try again"
+        );
       }
-    } catch (error) {
-      toast.error("user not found");
       console.error("handleAccountLogin Error:", error);
     }
   };
@@ -129,10 +142,7 @@ export default function RegisterAccount() {
 
       await axios(OTPPayload)
         .then((res) => {
-          if (res.data.msg === "wrong OTP") {
-            toast.error(res.data.msg);
-            return;
-          }
+          toast.success(res.data.msg);
           setStorageItem("uid", userData._id);
           setStorageItem("fullName", userData.fullName);
           setStorageItem("userName", userData.userName);
@@ -141,9 +151,6 @@ export default function RegisterAccount() {
           setStorageItem("token", res.data?.token);
           setStorageItem("user-data", JSON.stringify(userData));
           updateUserDetails(userData);
-
-          toast.success("OTP verified successfully!");
-          setShowOTP(false);
           setUserData(null);
 
           setFullName("");
@@ -151,16 +158,44 @@ export default function RegisterAccount() {
           setEmail("");
           setPhone("");
 
-          navigate(-1);
+          setTimeout(() => {
+            navigate(-1);
+          }, 2000);
         })
-        .catch((err) => {
-          console.log("handleOTPVerification Error", err);
+        .catch((error) => {
+          if(error.response){
+            toast.error(error.response.data?.msg)
+          }
+          setIsOTPLoading(false)
+          console.error("handleOTPVerification Error", error);
         });
-    } catch (error) {
-      console.error("OTP verification error:", error);
-      toast.error("Invalid OTP. Please try again.");
+    } catch (error:any) {
+      if(error.response){
+        toast.error(error.response.data?.msg)
+      }
+      console.error("Invalid OTP. Please try again.");
     } finally {
       setIsOTPLoading(false);
+    }
+  };
+
+  const handleResendOTP = async () => {
+    try {
+      const res = await axios.post(global.config.ROOTURL.prod + "/user/resendOTP", {
+        email,
+      });
+      if (res.status === 200) {
+        toast.success(res.data.msg);
+      } else {
+        toast.error("Something went wrong, please try again");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(
+          error.response.data?.msg || "Something went wrong, please try again"
+        );
+      }
+      console.error("handleAccountLogin Error:", error);
     }
   };
 
@@ -229,6 +264,7 @@ export default function RegisterAccount() {
                         <input
                           type="text"
                           id="fullName"
+                          value={fullName}
                           placeholder="Enter your full name"
                           onChange={(e) => setFullName(e.target.value)}
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -250,6 +286,7 @@ export default function RegisterAccount() {
                         <input
                           type="text"
                           id="userName"
+                          value={userName}
                           placeholder="Enter your userName"
                           onChange={(e) => setUserName(e.target.value)}
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -271,6 +308,7 @@ export default function RegisterAccount() {
                         <input
                           type="email"
                           id="email"
+                          value={email}
                           placeholder="Enter your email"
                           onChange={(e) => handleEmailChange(e)}
                           className={`w-full p-3 border rounded-lg focus:ring-2 focus:${
@@ -299,6 +337,7 @@ export default function RegisterAccount() {
                         <input
                           type="text"
                           id="phone"
+                          value={phone}
                           placeholder="Enter your mobile Number"
                           onChange={(e) => handlePhoneNoChange(e)}
                           className={`w-full p-3 border rounded-lg focus:ring-2 focus:${
@@ -329,17 +368,6 @@ export default function RegisterAccount() {
                   </div>
                 )}
 
-                {/* Divider */}
-                {/* <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300"></div>
-                            </div>
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">Or</span>
-                            </div>
-                        </div> */}
-
-                {/* Login Section */}
                 {isLogin && (
                   <div className="space-y-4">
                     <motion.div
@@ -371,6 +399,7 @@ export default function RegisterAccount() {
                       <input
                         type="email"
                         id="email"
+                        value={email}
                         placeholder="Enter your email"
                         onChange={(e) => handleEmailChange(e)}
                         className={`w-full p-3 border rounded-lg focus:ring-2 focus:${
@@ -388,7 +417,7 @@ export default function RegisterAccount() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.4, duration: 0.5 }}
                         type="button"
-                        onClick={handleAccountLogin}
+                        onClick={handleUserLogin}
                         className="w-full py-3 px-4 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-lg transition duration-200"
                       >
                         Sign In
@@ -433,6 +462,7 @@ export default function RegisterAccount() {
                   onVerify={handleOTPVerification}
                   onBack={handleBackToRegistration}
                   isLoading={isOTPLoading}
+                  handleResendOTP={handleResendOTP}
                 />
               </motion.div>
             )}
