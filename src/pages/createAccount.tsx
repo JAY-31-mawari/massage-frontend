@@ -64,6 +64,14 @@ export default function RegisterAccount() {
 
   const handleUserRegistration = async () => {
     try {
+      if(emailError){
+        toast.error("Invalid Email")
+        return
+      }
+      if(phoneNoError){
+        toast.error("Invalid Phone Number")
+        return
+      }
       if (!fullName || !userName || !email || !phone) {
         toast.error("All Fields are required");
         return;
@@ -102,6 +110,11 @@ export default function RegisterAccount() {
       if(!email){
         toast.error("Email is required")
         return
+      }
+
+      if(emailError){
+        toast.error("Invalid Email")
+        return;
       }
 
       const res = await axios.post(global.config.ROOTURL.prod + "/user/login", {

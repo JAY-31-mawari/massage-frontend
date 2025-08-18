@@ -36,21 +36,12 @@ interface AppointmentHistory {
 export default function Orders() {
     const navigate = useNavigate()
     const [userAppointmentHisotry, setUserAppointmentHistory] = useState<AppointmentHistory[]>([])
-    let [show, setShow] = useState<boolean>(false)
     const user = useUserStore((state) => state.user)
     const accessToken = getStorageItem("token")
-    const [uid, setUid] = useState(getStorageItem("uid"))
-    const [practitioners, setPractitioners] = useState<any>([])
-
-    // const fetchPractitionersByBusinessId = async () => {
-    //     const practitionerRes = await axios.get(global.config.ROOTURL.prod + `/practitioner/${uid}`)
-    //     setPractitioners(practitionerRes.data.data)
-    //     console.log(practitionerRes.data.data)
-    // }
 
     const fetchUserAppointments = async () => {
-        if (!user?._id) {
-            toast.error("Please Login First and select service");
+        if (!user?._id || !accessToken) {
+            toast.error("Please Login First");
             setTimeout(() => {
                 navigate("/create-account");
             }, 2000);
@@ -68,9 +59,9 @@ export default function Orders() {
 
         await axios(appointmentPayload).then((res) => {
             setUserAppointmentHistory(res.data?.data)
-        }).catch((err) => {
-            if (err.response.status === 401) {
-                console.log("UnAuthorized Access, getPayment")
+        }).catch((error) => {
+            if (error.response.status === 401) {
+                toast.error("Please Login First");
                 deleteStorageItem('user-data')
                 deleteStorageItem('token')
                 setTimeout(() => {
