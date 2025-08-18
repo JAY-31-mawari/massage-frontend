@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import Navbar from "../../components/navbar/navbar";
 import SellPropertyOne from "../../components/sell-property-one";
 import TeamOne from "../../components/team-one";
 import ClientOne from "../../components/client-one";
 import FooterTop from "../../components/footer-top";
 import Footer from "../../components/footer";
-
 import bg from "../../assets/img/banner-6.png";
 import oneImg from "../../assets/img/one.webp";
 import twoImg from "../../assets/img/two.webp";
@@ -18,91 +15,92 @@ import axios from "axios";
 import { useSearchLocation } from "../../store/searchLocation";
 import { setStorageItem } from "../../utils/sessionStorage";
 import { useServiceStore } from "../../store/serviceStore";
+import toast from "react-hot-toast";
 
-export default function IndexSix() {
+export default function Home() {
   const navigate = useNavigate();
   const updateLocation = useSearchLocation(
     (state) => state.updateSearchLocation
   );
   const [location, setLocation] = useState("");
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
-  const setServiceData = useServiceStore((state) => state.setServices);
+  const setServicesData = useServiceStore((state) => state.setServices);
   // Function to get user's current location
 
-  const getCurrentLocation = () => {
-    setIsLoadingLocation(true);
+  // const getCurrentLocation = () => {
+  //   setIsLoadingLocation(true);
 
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by this browser.");
-      setIsLoadingLocation(false);
-      return;
-    }
+  //   if (!navigator.geolocation) {
+  //     toast.success("Geolocation is not supported by this browser.");
+  //     setIsLoadingLocation(false);
+  //     return;
+  //   }
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
+  //   navigator.geolocation.getCurrentPosition(
+  //     async (position) => {
+  //       const { latitude, longitude } = position.coords;
 
-        try {
-          // Reverse geocoding using OpenStreetMap Nominatim API
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
-          );
-          const data = await response.json();
+  //       try {
+  //         // Reverse geocoding using OpenStreetMap Nominatim API
+  //         const response = await fetch(
+  //           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+  //         );
+  //         const data = await response.json();
 
-          if (data.display_name) {
-            // Extract city and state from the full address
-            const addressParts = data.display_name.split(", ");
-            const city = addressParts[1] || addressParts[0];
-            const state = addressParts[2] || "";
-            const locationString = `${city}, ${state}`.trim();
-            setLocation(locationString);
-          } else {
-            setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
-          }
-        } catch (error) {
-          console.error("Error reverse geocoding:", error);
-          setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
-        }
+  //         if (data.display_name) {
+  //           // Extract city and state from the full address
+  //           const addressParts = data.display_name.split(", ");
+  //           const city = addressParts[1] || addressParts[0];
+  //           const state = addressParts[2] || "";
+  //           const locationString = `${city}, ${state}`.trim();
+  //           setLocation(locationString);
+  //         } else {
+  //           setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error reverse geocoding:", error);
+  //         setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+  //       }
 
-        setIsLoadingLocation(false);
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-        let errorMessage = "Unable to get your location";
+  //       setIsLoadingLocation(false);
+  //     },
+  //     (error) => {
+  //       console.error("Error getting location:", error);
+  //       let errorMessage = "Unable to get your location";
 
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage =
-              "Location access denied. Please enable location services.";
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = "Location information unavailable.";
-            break;
-          case error.TIMEOUT:
-            errorMessage = "Location request timed out.";
-            break;
-          default:
-            errorMessage = "An unknown error occurred.";
-            break;
-        }
+  //       switch (error.code) {
+  //         case error.PERMISSION_DENIED:
+  //           errorMessage =
+  //             "Location access denied. Please enable location services.";
+  //           break;
+  //         case error.POSITION_UNAVAILABLE:
+  //           errorMessage = "Location information unavailable.";
+  //           break;
+  //         case error.TIMEOUT:
+  //           errorMessage = "Location request timed out.";
+  //           break;
+  //         default:
+  //           errorMessage = "An unknown error occurred.";
+  //           break;
+  //       }
 
-        alert(errorMessage);
-        setIsLoadingLocation(false);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 60000,
-      }
-    );
-  };
+  //       toast.error(errorMessage);
+  //       setIsLoadingLocation(false);
+  //     },
+  //     {
+  //       enableHighAccuracy: true,
+  //       timeout: 10000,
+  //       maximumAge: 60000,
+  //     }
+  //   );
+  // };
 
   useEffect(() => {
     async function getData() {
       const businessData = await axios.get(
         global.config.ROOTURL.prod + "/business"
       );
-      setServiceData(businessData.data.businesses);
+      setServicesData(businessData.data.businesses);
     }
     getData();
   }, []);
@@ -159,7 +157,10 @@ export default function IndexSix() {
                           <button
                             type="button"
                             className="position-absolute top-50 end-0 translate-middle-y me-3 btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
-                            onClick={getCurrentLocation}
+                            onClick={()=>{
+                              setStorageItem("live","true")
+                              navigate("/serviceList")
+                            }}
                             disabled={isLoadingLocation}
                             title="Use my current location"
                           >

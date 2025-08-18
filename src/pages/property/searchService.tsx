@@ -13,17 +13,18 @@ import { getStorageItem, deleteStorageItem } from "../../utils/sessionStorage";
 import { useServiceStore } from "../../store/serviceStore";
 import { serviceNames, serviceTypes } from "../../data/servicesData";
 import { useUserStore } from "../../store/userStore";
+import toast from "react-hot-toast";
 
 export default function ClassicalProperty() {
   const search = useSearchLocation((state) => state.searchLocation);
+  const updateLocation = useSearchLocation((state)=> state.updateSearchLocation)
   const [show, setShow] = useState(true);
-  const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
   const user = useUserStore((state) => state.user);
-  const updateUser = useUserStore((state) => state.updateUser);
   const servicesData = useServiceStore((state) => state.services);
+  const updateUser = useUserStore((state) => state.updateUser);
+  const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
   const setservicesData = useServiceStore((state) => state.setServices);
   const [selectService, setSelectService] = useState(user?.serviceType || "");
-  let [open, setOpen] = useState<boolean>(false);
   const [range, setRange] = useState<number[]>([20, 80]);
   const [location, setLocation] = useState("");
   const liveLocation = useRef(false);
@@ -36,32 +37,11 @@ export default function ClassicalProperty() {
   const live = getStorageItem("live");
   const [radius, setRadius] = useState(10);
 
-  useEffect(() => {
-    console.log(live);
-    if (live) {
-      console.log("hello 1");
-      getCurrentLocation();
-      deleteStorageItem("live");
-    } else if (searchQuery) {
-      console.log("hello 2");
-      searchLocation.current = searchQuery;
-      setLocation(searchQuery);
-      liveLocation.current = false;
-      getSearchData();
-    }
-  }, [searchQuery]);
-
-  const handleRangeChange = (values: number | number[]) => {
-    if (Array.isArray(values)) {
-      setRange(values);
-    }
-  };
-
   const getCurrentLocation = () => {
     setIsLoadingLocation(true);
 
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by this browser.");
+      toast.error("Geolocation is not supported by this browser.");
       setIsLoadingLocation(false);
       return;
     }
@@ -71,12 +51,12 @@ export default function ClassicalProperty() {
         const { latitude, longitude } = position.coords;
         latitudeRef.current = latitude;
         longitudeRef.current = longitude;
+        liveLocation.current = true;
         updateSearch({
           latitude,
           longitude,
           liveLocation: liveLocation.current,
         });
-        liveLocation.current = true;
         getSearchData();
         // getLiveLocationData(latitude, longitude)
         try {
@@ -140,10 +120,6 @@ export default function ClassicalProperty() {
     );
   };
 
-  // useEffect(()=>{
-  //   console.log("adskasdkjd",search)
-  // },[search])
-
   async function getSearchData() {
     const searchBusinessData = await axios.get(
       global.config.ROOTURL.prod +
@@ -162,34 +138,46 @@ export default function ClassicalProperty() {
     updateUser({ serviceType: data });
   };
 
-  // useEffect(()=>{
-  //   if(searchLocation){
-  //     getSearchData()
-  //   }
-  // },[radius])
-
-  useEffect(() => {
-    if (search?.location) {
-      searchLocation.current = search.location;
-      setLocation(search.location);
-    }
-  }, []);
-
-  useEffect(() => {
-    async function getData() {
+  async function getData() {
       const businessData = await axios.get(
         global.config.ROOTURL.prod + "/business"
       );
       setservicesData(businessData.data.businesses);
     }
-    if (servicesData.length === 0) {
-      getData();
-    }
-  });
 
   useEffect(() => {
     searchLocation.current = location;
+    if(location === ''){
+      getData()
+    }
   }, [location]);
+
+   useEffect(() => {
+    if (live) {
+      deleteStorageItem("live")
+      getCurrentLocation()
+    } else if (searchQuery) {
+      setLocation(searchQuery)
+      searchLocation.current = searchQuery;
+      updateLocation({location:searchQuery})
+      liveLocation.current = false
+      getSearchData();
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (search?.location && !searchQuery) {
+      searchLocation.current = search.location;
+      setLocation(search.location);
+      getSearchData()
+    }
+  }, []);
+
+  useEffect(() => {
+    if (servicesData.length === 0) {
+      getData();
+    }
+  },[]);
 
   return (
     <>
