@@ -27,6 +27,9 @@ export default function Navbar() {
           <div className="hidden lg:block">
             <ul className="nav-menu">
               <li>
+                <Link to="/serviceList">Book an appointment</Link>
+              </li>
+              <li>
                 <Link to="/">Home</Link>
               </li>
               <li>

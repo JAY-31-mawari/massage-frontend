@@ -183,113 +183,114 @@ export default function ClassicalProperty() {
 
   return (
     <>
-      <section className="bg-primary position-relative">
-        <div className="position-absolute start-0 top-0 w-25 h-10 bg-light rounded-end-pill opacity-25 mt-4"></div>
-        <div className="position-absolute start-0 bottom-0 w-15 h-10 bg-light rounded-top-pill opacity-25 ms-4"></div>
-        <div className="position-absolute end-0 top-0 w-15 h-10 bg-light rounded-bottom-pill opacity-25 me-4"></div>
-        <div className="position-absolute end-0 bottom-0 w-25 h-10 bg-light rounded-start-pill opacity-25 mb-4"></div>
-        <div className="ht-1"></div>
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-7 col-md-12">
-              <div className="full-search-2 eclip-search italian-search hero-search-radius shadow-hard">
-                <div className="hero-search-content">
-                  <div className="row">
-                    <div className="col-lg-9 col-md-9 col-sm-12">
-                      <div className="form-group">
-                        <div className="position-relative">
-                          {/* Location Input */}
-                          <input
-                            type="text"
-                            className="form-control border-0 ps-5"
-                            placeholder="Enter city, state or zipcode"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                          />
+      <section className="relative bg-blue-600">
+        {/* Decorative Pills */}
+        <div className="absolute left-0 top-0 w-1/4 h-10 bg-white rounded-r-full opacity-25 mt-4"></div>
+        <div className="absolute left-0 bottom-0 w-[15%] h-10 bg-white rounded-t-full opacity-25 ml-4"></div>
+        <div className="absolute right-0 top-0 w-[15%] h-10 bg-white rounded-b-full opacity-25 mr-4"></div>
+        <div className="absolute right-0 bottom-0 w-1/4 h-10 bg-white rounded-l-full opacity-25 mb-4"></div>
 
-                          {/* Left Icon */}
-                          <div className="position-absolute top-50 start-0 translate-middle-y ms-2">
-                            <span className="svg-icon text-primary svg-icon-2hx">
-                              <svg
-                                width="25"
-                                height="25"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  opacity="0.3"
-                                  d="M18.0624 15.3453L13.1624 20.7453C12.5624 21.4453 11.5624 21.4453 10.9624 20.7453L6.06242 15.3453C4.56242 13.6453 3.76242 11.4453 4.06242 8.94534C4.56242 5.34534 7.46242 2.44534 11.0624 2.04534C15.8624 1.54534 19.9624 5.24534 19.9624 9.94534C20.0624 12.0453 19.2624 13.9453 18.0624 15.3453Z"
-                                  fill="currentColor"
-                                />
-                                <path
-                                  d="M12.0624 13.0453C13.7193 13.0453 15.0624 11.7022 15.0624 10.0453C15.0624 8.38849 13.7193 7.04535 12.0624 7.04535C10.4056 7.04535 9.06241 8.38849 9.06241 10.0453C9.06241 11.7022 10.4056 13.0453 12.0624 13.0453Z"
-                                  fill="currentColor"
-                                />
-                              </svg>
-                            </span>
-                          </div>
+        <div className="py-10"></div>
 
-                          {/* Live Location Button inside input */}
-                          <button
-                            type="button"
-                            className="position-absolute top-50 end-0 translate-middle-y me-3 btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
-                            onClick={getCurrentLocation}
-                            disabled={isLoadingLocation}
-                            title="Use my current location"
-                          >
-                            {isLoadingLocation ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                role="status"
-                                aria-hidden="true"
-                              ></span>
-                            ) : (
-                              <>
-                                <svg
-                                  width="16"
-                                  height="16"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                                <span className="font-semibold">
-                                  Live Location
-                                </span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </div>
+        {/* Container */}
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center">
+            <div className="w-full max-w-2xl">
+              <div className="bg-white shadow-xl rounded-2xl p-6">
+                <div className="flex flex-col md:flex-row gap-4">
+                  {/* Location Input */}
+                  <div className="relative flex-1">
+                    <input
+                      type="text"
+                      className="w-full border-0 rounded-lg pl-12 pr-28 py-3 text-gray-700 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                      placeholder="Enter city, state or zipcode"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                    />
+
+                    {/* Left Icon */}
+                    <div className="absolute top-1/2 left-3 -translate-y-1/2 text-blue-600">
+                      <svg
+                        width="25"
+                        height="25"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          opacity="0.3"
+                          d="M18.0624 15.3453L13.1624 20.7453C12.5624 21.4453 11.5624 21.4453 10.9624 20.7453L6.06242 15.3453C4.56242 13.6453 3.76242 11.4453 4.06242 8.94534C4.56242 5.34534 7.46242 2.44534 11.0624 2.04534C15.8624 1.54534 19.9624 5.24534 19.9624 9.94534C20.0624 12.0453 19.2624 13.9453 18.0624 15.3453Z"
+                        />
+                        <path d="M12.0624 13.0453C13.7193 13.0453 15.0624 11.7022 15.0624 10.0453C15.0624 8.38849 13.7193 7.04535 12.0624 7.04535C10.4056 7.04535 9.06241 8.38849 9.06241 10.0453C9.06241 11.7022 10.4056 13.0453 12.0624 13.0453Z" />
+                      </svg>
                     </div>
 
-                    {/* Search Button */}
-                    <div className="col-lg-3 col-md-3 col-sm-12">
-                      <div className="form-group">
-                        <button
-                          type="button"
-                          className="btn btn-dark full-width"
-                          onClick={() => {
-                            liveLocation.current = false;
-                            getSearchData();
-                          }}
+                    {/* Live Location Button */}
+                    <button
+                      type="button"
+                      className="absolute top-1/2 right-2 -translate-y-1/2 px-3 py-1.5 rounded-lg border border-blue-500 text-blue-600 text-sm font-medium flex items-center gap-1 hover:bg-blue-50 transition disabled:opacity-50"
+                      onClick={getCurrentLocation}
+                      disabled={isLoadingLocation}
+                      title="Use my current location"
+                    >
+                      {isLoadingLocation ? (
+                        <svg
+                          className="animate-spin h-4 w-4 text-blue-600"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
                         >
-                          Search
-                        </button>
-                      </div>
-                    </div>
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8H4z"
+                          />
+                        </svg>
+                      ) : (
+                        <>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                          </svg>
+                          <span className="font-medium">Live Location</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Search Button */}
+                  <div className="w-full md:w-auto">
+                    <button
+                      type="button"
+                      className="w-full bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg shadow-md transition"
+                      onClick={() => {
+                        liveLocation.current = false;
+                        getSearchData();
+                      }}
+                    >
+                      Search
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="ht-30"></div>
+
+        <div className="py-12"></div>
       </section>
 
       <div className="container mx-auto px-1 py-10">
