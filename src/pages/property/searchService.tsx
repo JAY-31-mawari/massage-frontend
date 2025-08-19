@@ -6,7 +6,7 @@ import Navbar from "../../components/navbar/navbar";
 import FooterTop from "../../components/footer-top";
 import Footer from "../../components/footer";
 import axios from "axios";
-import ServiceLayout from "../../components/serviceLayout";
+import ServiceCardLayout from "../../components/serviceCardLayout";
 import { useSearchLocation } from "../../store/searchLocation";
 import { Button } from "../../components/button";
 import { getStorageItem, deleteStorageItem } from "../../utils/sessionStorage";
@@ -17,7 +17,9 @@ import toast from "react-hot-toast";
 
 export default function ClassicalProperty() {
   const search = useSearchLocation((state) => state.searchLocation);
-  const updateLocation = useSearchLocation((state)=> state.updateSearchLocation)
+  const updateLocation = useSearchLocation(
+    (state) => state.updateSearchLocation
+  );
   const [show, setShow] = useState(true);
   const user = useUserStore((state) => state.user);
   const servicesData = useServiceStore((state) => state.services);
@@ -139,28 +141,28 @@ export default function ClassicalProperty() {
   };
 
   async function getData() {
-      const businessData = await axios.get(
-        global.config.ROOTURL.prod + "/business"
-      );
-      setservicesData(businessData.data.businesses);
-    }
+    const businessData = await axios.get(
+      global.config.ROOTURL.prod + "/business"
+    );
+    setservicesData(businessData.data.businesses);
+  }
 
   useEffect(() => {
     searchLocation.current = location;
-    if(location === ''){
-      getData()
+    if (location === "") {
+      getData();
     }
   }, [location]);
 
-   useEffect(() => {
+  useEffect(() => {
     if (live) {
-      deleteStorageItem("live")
-      getCurrentLocation()
+      deleteStorageItem("live");
+      getCurrentLocation();
     } else if (searchQuery) {
-      setLocation(searchQuery)
+      setLocation(searchQuery);
       searchLocation.current = searchQuery;
-      updateLocation({location:searchQuery})
-      liveLocation.current = false
+      updateLocation({ location: searchQuery });
+      liveLocation.current = false;
       getSearchData();
     }
   }, [searchQuery]);
@@ -169,7 +171,7 @@ export default function ClassicalProperty() {
     if (search?.location && !searchQuery) {
       searchLocation.current = search.location;
       setLocation(search.location);
-      getSearchData()
+      getSearchData();
     }
   }, []);
 
@@ -177,16 +179,16 @@ export default function ClassicalProperty() {
     if (servicesData.length === 0) {
       getData();
     }
-  },[]);
+  }, []);
 
   return (
     <>
       <section className="bg-primary position-relative">
-        <div className="position-absolute start-0 top-0 w-25 h-15 bg-light rounded-end-pill opacity-25 mt-4"></div>
-        <div className="position-absolute start-0 bottom-0 w-15 h-20 bg-light rounded-top-pill opacity-25 ms-4"></div>
-        <div className="position-absolute end-0 top-0 w-15 h-25 bg-light rounded-bottom-pill opacity-25 me-4"></div>
-        <div className="position-absolute end-0 bottom-0 w-25 h-15 bg-light rounded-start-pill opacity-25 mb-4"></div>
-        <div className="ht-30"></div>
+        <div className="position-absolute start-0 top-0 w-25 h-10 bg-light rounded-end-pill opacity-25 mt-4"></div>
+        <div className="position-absolute start-0 bottom-0 w-15 h-10 bg-light rounded-top-pill opacity-25 ms-4"></div>
+        <div className="position-absolute end-0 top-0 w-15 h-10 bg-light rounded-bottom-pill opacity-25 me-4"></div>
+        <div className="position-absolute end-0 bottom-0 w-25 h-10 bg-light rounded-start-pill opacity-25 mb-4"></div>
+        <div className="ht-1"></div>
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-7 col-md-12">
@@ -290,81 +292,110 @@ export default function ClassicalProperty() {
         <div className="ht-30"></div>
       </section>
 
-      <div className="row">
-        <div className="col-lg-4 col-md-12 col-sm-12">
-          <SideFilter
-            show={show}
-            setShow={setShow}
-            selectService={selectService}
-            setSelectService={handleSelectService}
-            serviceNames={serviceTypes}
-          />
-        </div>
-        <div className="col-lg-8 col-md-12 col-sm-12 g-4 px-16">
-          {/* Left side - service Cards */}
-          <div className="col-lg-12 col-md-12">
-            <div className="row g-4">
-              {servicesData.length > 0 ? (
-                selectService === "" ? (
-                  servicesData.map((item, index) => (
-                    <div className="col-12" key={index}>
-                      {" "}
-                      {/* Full width card */}
-                      <ServiceLayout item={item} />
-                    </div>
-                  ))
-                ) : (
-                  servicesData
-                    .filter((item) => item.businessType === selectService)
-                    .map((item, index) => (
-                      <div className="col-12" key={index}>
-                        {" "}
-                        {/* Full width card */}
-                        <ServiceLayout item={item} />
+      <div className="container mx-auto px-1 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Sidebar (Fixed/Sticky) */}
+          <div className="lg:col-span-4 col-span-12">
+            <div className="sticky top-6">
+              <div className="bg-gray-50 rounded-2xl shadow p-6 h-fit">
+                <SideFilter
+                  show={show}
+                  setShow={setShow}
+                  selectService={selectService}
+                  setSelectService={handleSelectService}
+                  serviceNames={serviceTypes}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Services + Pagination (Scrollable) */}
+          <div className="lg:col-span-8 col-span-12">
+            <div className="max-h-[80vh] overflow-y-auto pr-2">
+              {/* Services List */}
+              <div className="grid gap-6">
+                {servicesData.length > 0 ? (
+                  selectService === "" ? (
+                    servicesData.map((item, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-xl shadow hover:shadow-md transition mx-10 my-2"
+                      >
+                        <ServiceCardLayout item={item} />
                       </div>
                     ))
-                )
-              ) : (
-                <div>No services Found</div>
-              )}
-            </div>
+                  ) : (
+                    servicesData
+                      .filter((item) => item.businessType === selectService)
+                      .map((item, index) => (
+                        <div
+                          key={index}
+                          className="bg-white rounded-xl shadow hover:shadow-md transition mx-10 my-2"
+                        >
+                          <ServiceCardLayout item={item} />
+                        </div>
+                      ))
+                  )
+                ) : (
+                  <div className="text-center text-gray-500 bg-gray-100 py-6 rounded-lg">
+                    No services found
+                  </div>
+                )}
+              </div>
 
-            {/* Pagination */}
-            <div className="row mt-4">
-              <div className="col-lg-12">
-                <ul className="pagination p-center">
-                  <li className="page-item">
-                    <Link className="page-link" to="#" aria-label="Previous">
+              {/* Pagination */}
+              <div className="flex justify-center mt-10">
+                <ul className="flex items-center space-x-2 text-sm">
+                  <li>
+                    <Link
+                      to="#"
+                      aria-label="Previous"
+                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    >
                       <i className="fa-solid fa-arrow-left-long"></i>
                     </Link>
                   </li>
-                  <li className="page-item">
-                    <Link className="page-link" to="#">
+                  <li>
+                    <Link
+                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                      to="#"
+                    >
                       1
                     </Link>
                   </li>
-                  <li className="page-item">
-                    <Link className="page-link" to="#">
+                  <li>
+                    <Link
+                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                      to="#"
+                    >
                       2
                     </Link>
                   </li>
-                  <li className="page-item active">
-                    <Link className="page-link" to="#">
+                  <li>
+                    <Link
+                      className="px-3 py-2 rounded-lg bg-blue-600 text-white"
+                      to="#"
+                    >
                       3
                     </Link>
                   </li>
-                  <li className="page-item">
-                    <Link className="page-link" to="#">
-                      ...
-                    </Link>
+                  <li>
+                    <span className="px-3 py-2 text-gray-500">...</span>
                   </li>
-                  <li className="page-item">
-                    <Link className="page-link" to="#">
+                  <li>
+                    <Link
+                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                      to="#"
+                    >
                       18
                     </Link>
                   </li>
-                  <li className="page-item">
-                    <Link className="page-link" to="#" aria-label="Next">
+                  <li>
+                    <Link
+                      to="#"
+                      aria-label="Next"
+                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    >
                       <i className="fa-solid fa-arrow-right-long"></i>
                     </Link>
                   </li>
