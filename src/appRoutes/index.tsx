@@ -22,18 +22,15 @@ import Service3 from "../pages/services/services3";
 import Service4 from "../pages/services/services4";
 import AdminMainLayout from "../pages/admin/main";
 import RegisterAccount from "../pages/createAccount";
-import NewDetail from "../components/newDetails"
 
 export function AppRoutes() {
     return (
         <Routes>
-            <Route path="/detail"  element={<NewDetail />}/>
             <Route path='/' element={<Home />} />
             <Route path='/service/physiotherapy' element={<Service1 />} />
             <Route path='/service/chiropractic' element={<Service2 />} />
             <Route path='/service/massage' element={<Service3 />} />
             <Route path='/service/acupuncture' element={<Service4 />} />
-
             <Route path='/serviceList' element={<ServiceSearchPage />} />
             <Route path='/service' element={<ServicePage />} />
             <Route path='/service/:id' element={<ServicePage />} />

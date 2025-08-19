@@ -56,7 +56,7 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
 
   const BookAppointment = async () => {
     if (!user?._id) {
-      toast.error("Please Login First and select service");
+      toast.error("Please Login First");
       setTimeout(() => {
         navigate("/create-account");
       }, 2000);       
@@ -68,6 +68,14 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
     }
     if (selectedTimeSlot === "") {
       toast.error("Please select time slot for your appoinment");
+      return;
+    }
+    if(!serviceName){
+      toast.error("Please select service first")
+      return;
+    }
+    if(!practitionerId){
+      toast.error("Please select your practitioner")
       return;
     }
 
@@ -87,7 +95,7 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
       data: {
         userId: user._id,
         businessId: merchant._id,
-        serviceName:"Acupunture",
+        serviceName,
         practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
         duration:60,
@@ -98,6 +106,7 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
     await axios(bookingPayload)
       .then((res) => {
         getAllBookings()
+        toast.success("Your Appointment is Booked")
       })
       .catch((error) => {
         console.log("handleBookAppointment Error", error);
