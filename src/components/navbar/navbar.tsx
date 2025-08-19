@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/img/logo.svg";
 import loginImg from "../../assets/img/svg/login.svg";
 import { motion, AnimatePresence } from "framer-motion";
+import { useUserStore } from "../../store/userStore";
 
 export default function Navbar() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [toggle, setIsToggle] = useState(false);
+
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -16,48 +19,66 @@ export default function Navbar() {
 
   return (
     <div className="w-full sticky top-0 bg-white text-gray-900 shadow-md z-50">
-      <div className="container mx-auto">
+      <div className="w-auto mx-5">
         <nav className="h-20 flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="Logo" className="max-h-20" />
-            <h5 className="text-2xl font-bold mb-0">Last Minute Wellness</h5>
-          </Link>
+          {/* Left: Logo */}
+          <div className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
+              <img src={logo} alt="Logo" className="max-h-20" />
+              <h5 className="text-2xl font-bold mb-0">Last Minute Wellness</h5>
+            </Link>
+          </div>
 
-          <div className="hidden lg:block">
-            <ul className="nav-menu">
-              <li>
-                <Link to="/serviceList">Book an appointment</Link>
-              </li>
+          {/* Center: Nav Links */}
+          <div className="hidden lg:flex flex-1 justify-center">
+            <ul className="flex items-center gap-8 font-medium">
               <li>
                 <Link to="/">Home</Link>
               </li>
               <li>
                 <Link to="/my-account">My Account</Link>
               </li>
+              <li>
+                <Link to="/serviceList">Book an appointment</Link>
+              </li>
+              {user && (
+                <li>
+                  <Link to="/register">Join as a Provider</Link>
+                </li>
+              )}
             </ul>
           </div>
 
-          {/* Desktop Menu */}
-          <ul className="hidden lg:flex items-center gap-6 mb-0">
-            <li>
-              <Link
-                to="/create-account"
-                className="flex items-center px-4 py-3 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition"
-              >
-                Sign Up / Sign In
+          {/* Right: Profile or Auth Buttons */}
+          <div className="hidden lg:flex items-center gap-6">
+            {user ? (
+              <Link to="/my-account" className="flex items-center gap-2">
+                <img
+                  src={`https://ui-avatars.com/api/?name=${
+                    user.fullName || user.userName || "User"
+                  }&background=random`}
+                  alt="Profile"
+                  className="h-10 w-10 rounded-full border shadow-sm"
+                />
               </Link>
-            </li>
-            <li>
-              <Link
-                to="/register"
-                className="flex items-center gap-2 px-4 py-3 rounded-md bg-blue-600 text-white font-semibold shadow-sm hover:bg-blue-700 transition"
-              >
-                <img src={loginImg} alt="Join Icon" className="h-5 w-5" />
-                Join as a Provider
-              </Link>
-            </li>
-          </ul>
+            ) : (
+              <>
+                <Link
+                  to="/create-account"
+                  className="flex items-center px-4 py-3 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition"
+                >
+                  Sign Up / Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="flex items-center gap-2 px-4 py-3 rounded-md bg-blue-600 text-white font-semibold shadow-sm hover:bg-blue-700 transition"
+                >
+                  <img src={loginImg} alt="Join Icon" className="h-5 w-5" />
+                  Join as a Provider
+                </Link>
+              </>
+            )}
+          </div>
 
           {/* Mobile Toggle */}
           <button
@@ -69,7 +90,7 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu (unchanged) */}
       <AnimatePresence>
         {toggle && (
           <motion.div
@@ -87,18 +108,36 @@ export default function Navbar() {
               <li>
                 <Link to="/my-account">My Account</Link>
               </li>
-              <li>
-                <Link to="/sign-in">Sign Up / Sign In</Link>
-              </li>
-              <li>
-                <Link
-                  to="/submit-property"
-                  className="flex items-center gap-2 px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
-                >
-                  <img src={loginImg} alt="Join Icon" className="h-5 w-5" />
-                  Join as a Provider
-                </Link>
-              </li>
+
+              {user ? (
+                <li>
+                  <Link to="/my-account" className="flex items-center gap-2">
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${
+                        user.fullName || user.userName || "User"
+                      }&background=random`}
+                      alt="Profile"
+                      className="h-10 w-10 rounded-full border shadow-sm"
+                    />
+                    <span>{user.fullName || "Profile"}</span>
+                  </Link>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/sign-in">Sign Up / Sign In</Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/register"
+                      className="flex items-center gap-2 px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+                    >
+                      <img src={loginImg} alt="Join Icon" className="h-5 w-5" />
+                      Join as a Provider
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </motion.div>
         )}
