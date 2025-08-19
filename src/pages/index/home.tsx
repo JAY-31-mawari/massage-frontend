@@ -184,9 +184,9 @@ export default function Home() {
                                     fill="currentColor"
                                   />
                                 </svg>
-                                <span className="font-semibold">
+                                {/* <span className="font-semibold">
                                   Live Location
-                                </span>
+                                </span> */}
                               </>
                             )}
                           </button>
