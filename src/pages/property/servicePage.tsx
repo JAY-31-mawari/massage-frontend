@@ -70,6 +70,7 @@ export default function SinglePropertyOne() {
   //   //     setServiceCountMap(mapped);
   //   //   }
   // }, [merchant])
+
   return (
     <>
       <div className="min-h-screen bg-[#fdf8f5] p-4 md:p-8 flex flex-col md:flex-row gap-6">
