@@ -184,13 +184,12 @@ export default function ClassicalProperty() {
         <div className="absolute right-0 top-0 w-[15%] h-10 bg-white rounded-b-full opacity-25 mr-4"></div>
         <div className="absolute right-0 bottom-0 w-1/4 h-10 bg-white rounded-l-full opacity-25 mb-4"></div>
 
-        <div className="py-10"></div>
-
+        <div className="py-1"></div>
         {/* Container */}
         <div className="container mx-auto px-4">
           <div className="flex justify-center">
             <div className="w-full max-w-2xl">
-              <div className="bg-white shadow-xl rounded-2xl p-6">
+              <div className="bg-white rounded-2xl p-6">
                 <div className="flex flex-col md:flex-row gap-4">
                   {/* Location Input */}
                   <div className="relative flex-1">
@@ -283,16 +282,15 @@ export default function ClassicalProperty() {
             </div>
           </div>
         </div>
-
-        <div className="py-12"></div>
+        <div className="py-1"></div>
       </section>
 
-      <div className="container mx-auto px-1 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="w-full px-1 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Sidebar (Fixed/Sticky) */}
-          <div className="lg:col-span-4 col-span-12">
+          <div className="lg:col-span-3 col-span-12">
             <div className="sticky top-6">
-              <div className="bg-gray-50 rounded-2xl shadow p-6 h-fit">
+              <div className="bg-gray-50 rounded-2xl shadow pl-6 h-fit">
                 <SideFilter
                   show={show}
                   setShow={setShow}
@@ -305,10 +303,14 @@ export default function ClassicalProperty() {
           </div>
 
           {/* Services + Pagination (Scrollable) */}
-          <div className="lg:col-span-8 col-span-12">
-            <div className="max-h-[80vh] overflow-y-auto pr-2">
+          <div className="lg:col-span-9 col-span-12">
+            <div className="pl-10">
+              <h3>Search Results</h3>
+            </div>
+
+            <div className="relative max-h-[80vh] overflow-y-auto pr-2">
               {/* Services List */}
-              <div className="grid gap-6">
+              <div className="grid gap-6 relative z-0">
                 {servicesData.length > 0 ? (
                   selectService === "" ? (
                     servicesData.map((item, index) => (
@@ -332,70 +334,86 @@ export default function ClassicalProperty() {
                       ))
                   )
                 ) : (
-                  <div className="text-center text-gray-500 bg-gray-100 py-6 rounded-lg">
-                    No services found
+                  <div className="flex flex-col items-center justify-center text-gray-600 bg-gray-50 py-12 rounded-xl mx-10 my-6">
+                    <svg
+                      className="w-12 h-12 text-gray-400 mb-3"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 17v-2a4 4 0 014-4h6M9 13h.01M9 9h.01M9 5h.01"
+                      />
+                    </svg>
+                    <p className="text-lg font-medium">No services found</p>
+                    <p className="text-sm text-gray-500">
+                      Try adjusting your filters or search again.
+                    </p>
                   </div>
                 )}
               </div>
+            </div>
 
-              {/* Pagination */}
-              <div className="flex justify-center mt-10">
-                <ul className="flex items-center space-x-2 text-sm">
-                  <li>
-                    <Link
-                      to="#"
-                      aria-label="Previous"
-                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                    >
-                      <i className="fa-solid fa-arrow-left-long"></i>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                      to="#"
-                    >
-                      1
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                      to="#"
-                    >
-                      2
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="px-3 py-2 rounded-lg bg-blue-600 text-white"
-                      to="#"
-                    >
-                      3
-                    </Link>
-                  </li>
-                  <li>
-                    <span className="px-3 py-2 text-gray-500">...</span>
-                  </li>
-                  <li>
-                    <Link
-                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                      to="#"
-                    >
-                      18
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="#"
-                      aria-label="Next"
-                      className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                    >
-                      <i className="fa-solid fa-arrow-right-long"></i>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+            {/* Pagination */}
+            <div className="flex justify-center mt-10">
+              <ul className="flex items-center space-x-2 text-sm">
+                <li>
+                  <Link
+                    to="#"
+                    aria-label="Previous"
+                    className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                  >
+                    <i className="fa-solid fa-arrow-left-long"></i>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    to="#"
+                  >
+                    1
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    to="#"
+                  >
+                    2
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="px-3 py-2 rounded-lg bg-blue-600 text-white"
+                    to="#"
+                  >
+                    3
+                  </Link>
+                </li>
+                <li>
+                  <span className="px-3 py-2 text-gray-500">...</span>
+                </li>
+                <li>
+                  <Link
+                    className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    to="#"
+                  >
+                    18
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="#"
+                    aria-label="Next"
+                    className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                  >
+                    <i className="fa-solid fa-arrow-right-long"></i>
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
