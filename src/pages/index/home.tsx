@@ -33,6 +33,9 @@ export default function Home() {
       const businessData = await axios.get(
         global.config.ROOTURL.prod + "/business"
       );
+      if(businessData.data.businesses.length === 0){
+        return
+      }
       setServicesData(businessData.data.businesses);
     }
     if(services.length === 0){
