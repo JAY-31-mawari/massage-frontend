@@ -2,16 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import SideFilter from "../../components/side-filter";
-import Navbar from "../../components/navbar/navbar";
 import FooterTop from "../../components/footer-top";
 import Footer from "../../components/footer";
 import axios from "axios";
 import ServiceCardLayout from "../../components/serviceCardLayout";
 import { useSearchLocation } from "../../store/searchLocation";
-import { Button } from "../../components/button";
 import { getStorageItem, deleteStorageItem } from "../../utils/sessionStorage";
 import { useServiceStore } from "../../store/serviceStore";
-import { serviceNames, serviceTypes } from "../../data/servicesData";
+import { serviceTypes } from "../../data/servicesData";
 import { useUserStore } from "../../store/userStore";
 import toast from "react-hot-toast";
 
@@ -27,7 +25,6 @@ export default function ClassicalProperty() {
   const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
   const setservicesData = useServiceStore((state) => state.setServices);
   const [selectService, setSelectService] = useState(user?.serviceType || "");
-  const [range, setRange] = useState<number[]>([20, 80]);
   const [location, setLocation] = useState("");
   const liveLocation = useRef(false);
   const latitudeRef = useRef(0);
@@ -59,7 +56,7 @@ export default function ClassicalProperty() {
           longitude,
           liveLocation: liveLocation.current,
         });
-        getSearchData();
+        getSearchBusinesses();
         // getLiveLocationData(latitude, longitude)
         try {
           // Reverse geocoding using OpenStreetMap Nominatim API
@@ -122,7 +119,7 @@ export default function ClassicalProperty() {
     );
   };
 
-  async function getSearchData() {
+  async function getSearchBusinesses() {
     const searchBusinessData = await axios.get(
       global.config.ROOTURL.prod +
         `/business/search?q=${searchLocation.current}&latitude=${latitudeRef.current}&longitude=${longitudeRef.current}&radius=${radius}&liveLocation=${liveLocation.current}`
@@ -140,7 +137,7 @@ export default function ClassicalProperty() {
     updateUser({ serviceType: data });
   };
 
-  async function getData() {
+  async function getDefaultBusinesses() {
     const businessData = await axios.get(
       global.config.ROOTURL.prod + "/business"
     );
@@ -149,9 +146,6 @@ export default function ClassicalProperty() {
 
   useEffect(() => {
     searchLocation.current = location;
-    if (location === "") {
-      getData();
-    }
   }, [location]);
 
   useEffect(() => {
@@ -163,7 +157,7 @@ export default function ClassicalProperty() {
       searchLocation.current = searchQuery;
       updateLocation({ location: searchQuery });
       liveLocation.current = false;
-      getSearchData();
+      getSearchBusinesses();
     }
   }, [searchQuery]);
 
@@ -171,13 +165,13 @@ export default function ClassicalProperty() {
     if (search?.location && !searchQuery) {
       searchLocation.current = search.location;
       setLocation(search.location);
-      getSearchData();
+      getSearchBusinesses();
     }
   }, []);
 
   useEffect(() => {
     if (servicesData.length === 0) {
-      getData();
+      getDefaultBusinesses();
     }
   }, []);
 
@@ -278,7 +272,7 @@ export default function ClassicalProperty() {
                       className="w-full bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg shadow-md transition"
                       onClick={() => {
                         liveLocation.current = false;
-                        getSearchData();
+                        getSearchBusinesses();
                       }}
                     >
                       Search

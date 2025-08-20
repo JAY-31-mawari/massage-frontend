@@ -32,6 +32,9 @@ export default function SinglePropertyOne() {
     await axios(payload)
       .then((res) => {
         setMerchant(res.data);
+        if(res.data?.businessPhotos){
+          setSelectedImage(res.data.businessPhotos[0])
+        }
       })
       .catch((err) => {
         console.error("Error Fetching Data: getSpecificBusinessById", err);
@@ -48,28 +51,6 @@ export default function SinglePropertyOne() {
       }
     }
   }, [id]);
-
-  // function mapServiceToPractitionerCount(business: Merchant): Record<string, number> {
-  //   const serviceMap: Record<string, number> = {};
-
-  //   for (const practitioner of business.practitioners) {
-  //     for (const service of practitioner.areaOfExpertise || []) {
-  //       serviceMap[service] = (serviceMap[service] || 0) + 1;
-  //     }
-  //   }
-
-  //   return serviceMap;
-  // }
-
-  // useEffect(() => { console.log(userSelectedPractitionerId) }, [userSelectedPractitionerId])
-
-  // useEffect(() => {
-  //   // if (merchant?.practitioners?.length && merchant._id) {
-  //   //     const mapped = mapServiceToPractitionerCount(merchant as Merchant);
-  //   //     console.log("mapped service count", mapped)
-  //   //     setServiceCountMap(mapped);
-  //   //   }
-  // }, [merchant])
 
   return (
     <>
