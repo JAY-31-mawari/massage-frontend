@@ -3,9 +3,8 @@ import AdminSidebar from "../../components/admin-sidebar";
 import Footer from "../../components/footer";
 import Payment from "./payment";
 import MyProfile from "./my-profile";
-import MyOrders from "./my-orders";
+import UserBookings from "./userBookings";
 import ChangePassword from "./change-password";
-import Navbar from "../../components/navbar/navbar";
 
 export default function AdminMainLayout() {
   const [selectedPage, setSelectedPage] = useState("my-profile");
@@ -17,7 +16,7 @@ export default function AdminMainLayout() {
       case "my-profile":
         return <MyProfile />;
       case "my-orders":
-        return <MyOrders />;
+        return <UserBookings />;
       case "change-password":
         return <ChangePassword />;
       default:
