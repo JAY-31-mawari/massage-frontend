@@ -530,153 +530,192 @@ export default function SubmitProperty() {
                         layout
                       >
                         <div className="form-submit">
-                          <h3>Business Photos</h3>
+                          <h3 className="mb-3 text-xl font-semibold text-gray-800">
+                            Business Photos
+                          </h3>
                           <div className="submit-section">
                             <div className="row">
                               <div className="form-group col-md-12">
-                                <label className="mb-2">
-                                  Upload Business Photos (Maximum 3 photos)
+                                <label className="mb-2 font-medium text-gray-600">
+                                  Upload Business Photos{" "}
+                                  <span className="text-sm text-gray-400">
+                                    (Maximum 3)
+                                  </span>
                                 </label>
-                                <div
-                                  className="dropzone dz-clickable primary-dropzone"
-                                  style={{
-                                    position: "relative",
-                                    padding: "20px",
-                                    border: "2px dashed #d0d5dd",
-                                    borderRadius: "12px",
-                                    backgroundColor: "#fafafa",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    minHeight: "200px",
-                                    transition: "all 0.3s ease-in-out",
-                                  }}
-                                >
-                                  {businessPhotos.length < 3 && (
-                                    <UploadButton
-                                      endpoint="practitionerMedia"
-                                      onClientUploadComplete={(res) => {
-                                        const uploadedUrl = res?.[0]?.ufsUrl;
-                                        if (
-                                          uploadedUrl &&
-                                          businessPhotos.length < 3
-                                        ) {
-                                          setBusinessPhotos((prev) => [
-                                            ...prev,
-                                            uploadedUrl,
-                                          ]);
-                                        }
-                                      }}
-                                      onUploadError={(error) =>
-                                        console.error("Upload failed", error)
-                                      }
-                                    />
-                                  )}
+                              </div>
 
-                                  {businessPhotos.length === 0 ? (
-                                    <div
-                                      className="dz-message"
-                                      style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        zIndex: 1,
-                                        color: "#667085",
-                                      }}
-                                    >
-                                      <i
-                                        className="fa-solid fa-image"
+                              {/* Upload button with dropzone look */}
+                              <div
+                                style={{
+                                  padding: "60px",
+                                  border: "2px dashed #d0d5dd",
+                                  borderRadius: "12px",
+                                  backgroundColor: "#fafafa",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  minHeight: "200px",
+                                  transition: "all 0.3s ease-in-out",
+                                  cursor: "pointer",
+                                  width: "100%",
+                                }}
+                              >
+                                <UploadButton
+                                  endpoint="practitionerMedia"
+                                  onClientUploadComplete={(res) => {
+                                    const uploadedUrl = res?.[0]?.ufsUrl;
+                                    if (
+                                      uploadedUrl &&
+                                      businessPhotos.length < 3
+                                    ) {
+                                      setBusinessPhotos((prev) => [
+                                        ...prev,
+                                        uploadedUrl,
+                                      ]);
+                                    }
+                                  }}
+                                  onUploadError={(error) =>
+                                    console.error("Upload failed", error)
+                                  }
+                                  content={{
+                                    button: (
+                                      <div
+                                        className="dropzone dz-clickable primary-dropzone"
                                         style={{
-                                          fontSize: "32px",
-                                          marginBottom: "8px",
-                                          color: "#9ca3af",
+                                          border: "0px",
+                                          borderRadius: "12px",
+                                          backgroundColor: "#fafafa",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                          transition: "all 0.3s ease-in-out",
+                                          cursor: "pointer",
+                                          width: "100%",
+                                          
                                         }}
-                                      ></i>
-                                      <p style={{ margin: 0, fontWeight: 500 }}>
-                                        Click or Drag to Upload Business Photos
-                                      </p>
-                                      <span
-                                        style={{
-                                          fontSize: "12px",
-                                          color: "#98a2b3",
-                                        }}
+                                        onMouseEnter={(e) =>
+                                          (e.currentTarget.style.backgroundColor =
+                                            "#f9fafb")
+                                        }
+                                        onMouseLeave={(e) =>
+                                          (e.currentTarget.style.backgroundColor =
+                                            "#fafafa")
+                                        }
                                       >
-                                        Images (max 4MB each, up to 3 photos)
-                                      </span>
-                                    </div>
-                                  ) : (
-                                    <div style={{ width: "100%" }}>
-                                      <div className="row">
-                                        {businessPhotos.map((photo, index) => (
+                                        {businessPhotos.length === 0 ? (
                                           <div
-                                            key={index}
-                                            className="col-md-4 mb-3"
+                                            className="dz-message text-center"
+                                            style={{ color: "#667085" }}
                                           >
-                                            <div
-                                              style={{ position: "relative" }}
+                                            <p
+                                              style={{
+                                                margin: 0,
+                                                fontWeight: 600,
+                                                fontSize: "16px",
+                                              }}
                                             >
-                                              <img
-                                                src={photo}
-                                                alt={`Business Photo ${
-                                                  index + 1
-                                                }`}
-                                                style={{
-                                                  width: "100%",
-                                                  height: "150px",
-                                                  borderRadius: "8px",
-                                                  objectFit: "cover",
-                                                }}
-                                              />
-                                              <button
-                                                type="button"
-                                                className="btn btn-sm btn-danger"
-                                                style={{
-                                                  position: "absolute",
-                                                  top: "5px",
-                                                  right: "5px",
-                                                  borderRadius: "50%",
-                                                  width: "30px",
-                                                  height: "30px",
-                                                  padding: "0",
-                                                  display: "flex",
-                                                  alignItems: "center",
-                                                  justifyContent: "center",
-                                                }}
-                                                onClick={() =>
-                                                  setBusinessPhotos((prev) =>
-                                                    prev.filter(
-                                                      (_, i) => i !== index
-                                                    )
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa-solid fa-times"></i>
-                                              </button>
-                                            </div>
+                                              Click or Drag to Upload Business
+                                              Photos
+                                            </p>
                                           </div>
-                                        ))}
-                                      </div>
-                                      {businessPhotos.length < 3 && (
-                                        <div className="text-center mt-3">
+                                        ) : (
                                           <p
                                             style={{
                                               color: "#667085",
-                                              fontSize: "14px",
+                                              fontWeight: 500,
                                             }}
                                           >
-                                            You can upload{" "}
-                                            {3 - businessPhotos.length} more
-                                            photo
-                                            {businessPhotos.length < 2
-                                              ? ""
-                                              : "s"}
+                                            Click to Upload More Photos
                                           </p>
+                                        )}
+                                      </div>
+                                    ),
+                                  }}
+                                />
+                              </div>
+
+                              {/* Preview section */}
+                              {businessPhotos.length > 0 && (
+                                <div
+                                  style={{ width: "100%", marginTop: "24px" }}
+                                >
+                                  <div className="row">
+                                    {businessPhotos.map((photo, index) => (
+                                      <div
+                                        key={index}
+                                        className="col-md-4 mb-4"
+                                      >
+                                        <div
+                                          style={{
+                                            position: "relative",
+                                            borderRadius: "10px",
+                                            overflow: "hidden",
+                                            boxShadow:
+                                              "0 2px 6px rgba(0,0,0,0.1)",
+                                          }}
+                                        >
+                                          <img
+                                            src={photo}
+                                            alt={`Business Photo ${index + 1}`}
+                                            style={{
+                                              width: "100%",
+                                              height: "180px",
+                                              objectFit: "cover",
+                                              display: "block",
+                                            }}
+                                          />
+                                          <button
+                                            type="button"
+                                            className="btn btn-sm btn-danger"
+                                            style={{
+                                              position: "absolute",
+                                              top: "10px",
+                                              right: "10px",
+                                              borderRadius: "50%",
+                                              width: "32px",
+                                              height: "32px",
+                                              padding: 0,
+                                              display: "flex",
+                                              alignItems: "center",
+                                              justifyContent: "center",
+                                              boxShadow:
+                                                "0 2px 4px rgba(0,0,0,0.2)",
+                                            }}
+                                            onClick={() =>
+                                              setBusinessPhotos((prev) =>
+                                                prev.filter(
+                                                  (_, i) => i !== index
+                                                )
+                                              )
+                                            }
+                                          >
+                                            <i className="fa-solid fa-times"></i>
+                                          </button>
                                         </div>
-                                      )}
+                                      </div>
+                                    ))}
+                                  </div>
+
+                                  {/* Remaining uploads */}
+                                  {businessPhotos.length < 3 && (
+                                    <div className="text-center mt-2">
+                                      <p
+                                        style={{
+                                          color: "#667085",
+                                          fontSize: "14px",
+                                        }}
+                                      >
+                                        You can upload{" "}
+                                        <strong>
+                                          {3 - businessPhotos.length}
+                                        </strong>{" "}
+                                        more photo
+                                        {businessPhotos.length < 2 ? "" : "s"}
+                                      </p>
                                     </div>
                                   )}
                                 </div>
-                              </div>
+                              )}
                             </div>
                           </div>
                         </div>
