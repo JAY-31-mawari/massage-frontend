@@ -45,7 +45,7 @@ export default function Footer() {
               <h4 className="widget-title">Navigations</h4>
               <ul className="footer-menu">
                 <li>
-                  <Link to="/about-us">About Us</Link>
+                  <Link to="/tnc">Terms & Conditions</Link>
                 </li>
                 <li>
                   <Link to="/faq">FAQs Page</Link>

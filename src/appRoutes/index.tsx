@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Home from '../pages/index/home';
-
 import ServiceSearchPage from '../pages/property/searchService';
 import ServicePage from '../pages/property/servicePage';
 import Agents from '../pages/agents/agents';
@@ -22,18 +21,16 @@ import Service3 from "../pages/services/services3";
 import Service4 from "../pages/services/services4";
 import AdminMainLayout from "../pages/admin/main";
 import RegisterAccount from "../pages/createAccount";
-import NewDetail from "../components/newDetails"
+import TermsNConditions from "../pages/others/terms&conditions"
 
 export function AppRoutes() {
     return (
         <Routes>
-            <Route path="/detail"  element={<NewDetail />}/>
             <Route path='/' element={<Home />} />
             <Route path='/service/physiotherapy' element={<Service1 />} />
             <Route path='/service/chiropractic' element={<Service2 />} />
             <Route path='/service/massage' element={<Service3 />} />
             <Route path='/service/acupuncture' element={<Service4 />} />
-
             <Route path='/serviceList' element={<ServiceSearchPage />} />
             <Route path='/service' element={<ServicePage />} />
             <Route path='/service/:id' element={<ServicePage />} />
@@ -49,6 +46,7 @@ export function AppRoutes() {
             <Route path='/404' element={<Error />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/about-us' element={<AboutUs />} />
+            <Route path='/tnc' element={<TermsNConditions />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/faq' element={<Faq />} />
             <Route path='/my-account' element={<AdminMainLayout />} />

@@ -17,12 +17,12 @@ import "../../node_modules/react-modal-video/css/modal-video.css";
 import "../../node_modules/react-18-image-lightbox/style.css";
 import { getStorageItem } from "../utils/sessionStorage";
 import axios from "axios";
-import { Button } from "./button";
-
+import { useAppointmentStore } from "../store/appointmentHistoryStore";
 export default function ServiceBookingDetail({practitionerId, serviceName, duration}:{practitionerId:string, serviceName:string, duration:number}) {
   const navigate = useNavigate()
   const merchant = useMerchantStore((state) => state.merchant);
   const user = useUserStore((state) => state.user);
+  const clearUserAppoinmentHistory = useAppointmentStore((state)=> state.clearAppointments)
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [appointmentDateTime, setAppointmentDateTime] = useState(new Date());
@@ -56,7 +56,7 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
 
   const BookAppointment = async () => {
     if (!user?._id) {
-      toast.error("Please Login First and select service");
+      toast.error("Please Login First");
       setTimeout(() => {
         navigate("/create-account");
       }, 2000);       
@@ -68,6 +68,14 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
     }
     if (selectedTimeSlot === "") {
       toast.error("Please select time slot for your appoinment");
+      return;
+    }
+    if(!serviceName){
+      toast.error("Please select service first")
+      return;
+    }
+    if(!practitionerId){
+      toast.error("Please select your practitioner")
       return;
     }
 
@@ -87,7 +95,7 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
       data: {
         userId: user._id,
         businessId: merchant._id,
-        serviceName:"Acupunture",
+        serviceName,
         practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
         duration:60,
@@ -98,6 +106,8 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
     await axios(bookingPayload)
       .then((res) => {
         getAllBookings()
+        toast.success("Your Appointment is Booked")
+        clearUserAppoinmentHistory()
       })
       .catch((error) => {
         console.log("handleBookAppointment Error", error);
