@@ -18,18 +18,28 @@ import "../../node_modules/react-18-image-lightbox/style.css";
 import { getStorageItem } from "../utils/sessionStorage";
 import axios from "axios";
 import { useAppointmentStore } from "../store/appointmentHistoryStore";
-export default function ServiceBookingDetail({practitionerId, serviceName, duration}:{practitionerId:string, serviceName:string, duration:number}) {
-  const navigate = useNavigate()
+export default function ServiceBookingDetail({
+  practitionerId,
+  serviceName,
+  duration,
+}: {
+  practitionerId: string;
+  serviceName: string;
+  duration: number;
+}) {
+  const navigate = useNavigate();
   const merchant = useMerchantStore((state) => state.merchant);
   const user = useUserStore((state) => state.user);
-  const clearUserAppoinmentHistory = useAppointmentStore((state)=> state.clearAppointments)
+  const clearUserAppoinmentHistory = useAppointmentStore(
+    (state) => state.clearAppointments
+  );
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [appointmentDateTime, setAppointmentDateTime] = useState(new Date());
-  const [bookedSlots, setBookedSlots] = useState([])
+  const [bookedSlots, setBookedSlots] = useState([]);
   const accessToken = getStorageItem("token");
   const [isOpen, setIsOpen] = useState(false);
-  let [open2, setOpen2] = useState<boolean>(true);
+  let [open2, setOpen2] = useState<boolean>(false);
   let [open4, setOpen4] = useState<boolean>(false);
   let [open5, setOpen5] = useState<boolean>(false);
   let [open6, setOpen6] = useState<boolean>(false);
@@ -59,10 +69,10 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
       toast.error("Please Login First");
       setTimeout(() => {
         navigate("/create-account");
-      }, 2000);       
+      }, 2000);
       return;
     }
-    if(!merchant?._id){
+    if (!merchant?._id) {
       toast.error("Please select service first for booking");
       return;
     }
@@ -70,17 +80,17 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
       toast.error("Please select time slot for your appoinment");
       return;
     }
-    if(!serviceName){
-      toast.error("Please select service first")
+    if (!serviceName) {
+      toast.error("Please select service first");
       return;
     }
-    if(!practitionerId){
-      toast.error("Please select your practitioner")
+    if (!practitionerId) {
+      toast.error("Please select your practitioner");
       return;
     }
 
-    const currentTime = new Date()
-    if(appointmentDateTime < currentTime){
+    const currentTime = new Date();
+    if (appointmentDateTime < currentTime) {
       toast.error("Please select a future Time for your appointment");
       return;
     }
@@ -98,47 +108,51 @@ export default function ServiceBookingDetail({practitionerId, serviceName, durat
         serviceName,
         practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
-        duration:60,
+        duration: 60,
         serviceType: merchant?.businessType,
         price: 150,
       },
     };
     await axios(bookingPayload)
       .then((res) => {
-        getAllBookings()
-        toast.success("Your Appointment is Booked")
-        clearUserAppoinmentHistory()
+        getAllBookings();
+        toast.success("Your Appointment is Booked");
+        clearUserAppoinmentHistory();
       })
       .catch((error) => {
         console.log("handleBookAppointment Error", error);
       });
   };
 
-  const getAllBookings = async() => {
-    if(!merchant?._id){
-      toast.error("Select a business first")
+  const getAllBookings = async () => {
+    if (!merchant?._id) {
+      toast.error("Select a business first");
       return;
     }
     const getBookingPayload = {
-      method: 'GET',
-      url: global.config.ROOTURL.prod + `/appointment/business/${merchant._id}?appointmentDate=${appointmentDateTime}`
+      method: "GET",
+      url:
+        global.config.ROOTURL.prod +
+        `/appointment/business/${merchant._id}?appointmentDate=${appointmentDateTime}`,
+    };
+    try {
+      await axios(getBookingPayload)
+        .then((res) => {
+          setBookedSlots(res.data?.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (err) {
+      console.error("getAllBookings Error", err);
     }
-    try{
-      await axios(getBookingPayload).then((res)=>{
-        setBookedSlots(res.data?.data)
-      }).catch((error)=>{
-        console.log(error)
-      })
-    }catch(err){
-      console.error('getAllBookings Error', err)
-    }
-  }
+  };
 
-  console.log("asdasdd",merchant)
+  console.log("asdasdd", merchant);
 
-  useEffect(()=>{
-    getAllBookings()
-  },[selectedDate])
+  useEffect(() => {
+    getAllBookings();
+  }, [selectedDate]);
 
   return (
     <>
