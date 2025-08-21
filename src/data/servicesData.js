@@ -2,6 +2,12 @@ import physiotheraphy from "../assets/img/physiotherapy.png";
 import chiropracticCare from "../assets/img/Chiropractic Care.jpeg";
 import massage from "../assets/img/massage.webp";
 import acupuncture from "../assets/img/acupuncture.webp";
+import client1 from "../assets/img/user-1.jpg";
+import client2 from "../assets/img/user-2.jpg";
+import client3 from "../assets/img/user-3.jpg";
+import client4 from "../assets/img/user-4.jpg";
+import client5 from "../assets/img/user-5.jpg";
+
 
 export const servicesData = [
     {
@@ -33,3 +39,93 @@ export const servicesData = [
 export const serviceNames = ["Physiotherapy","Chiropractic Care","Massage Therapy","Acupuncture"]
 
 export const serviceTypes = ["Clinic-Based Practice", "Home-Based Practice"]
+
+export const clientReviewData = [
+  {
+    image: client1,
+    quote: "bg-primary",
+    desc: `
+      <p>Amazing massage!!</p>
+      <p>
+        I went for the first time today. I have been having hip pain for several weeks that wasn’t going away. 
+        Dana managed to massage my hip and it feels so much better! I haven’t felt this pain-free or relaxed 
+        in a long time!
+      </p>
+      <p>
+        I’ll definitely be back!
+      </p>
+    `,
+    name: "Andy Anthony",
+  },
+  {
+    image: client2,
+    quote: "bg-primary",
+    desc: `
+      <p>
+        I’ve been coming to Atinama for the past seven months, and I’ve consistently had wonderful experiences. 
+        Every massage I’ve received has been not only relaxing but also highly beneficial. 
+      </p>
+      <p>
+        I especially appreciate that the staff take the time to understand your needs — they listen attentively, 
+        offer personalized recommendations, and check in throughout the session to ensure everything is going well. 
+      </p>
+      <p>
+        Special kudos to Mike and Robbie, both of whom gave exceptional massages that left me feeling 
+        noticeably better and completely stress-free.
+      </p>
+    `,
+    name: "Sebastian Botero",
+  },
+  {
+    image: client3,
+    quote: "bg-purple",
+    desc: `
+      <p>
+        Good place for a nice massage... Would recommend a different and relaxing massage
+        with lots of stretching and pulse point acupuncture.  
+      </p>
+      <p>
+        The ambience is nice and calming. Loved the epsom salt given at the end of it, 
+        and the lemongrass tea was also a lovely touch.
+      </p>
+    `,
+    name: "Shaurya Ratna",
+  },
+  {
+    image: client4,
+    quote: "bg-seegreen",
+    desc: `
+      <p>
+        My husband brought me for a couples massage for my birthday, and I think this is the 
+        best massage I’ve ever had!  
+      </p>
+      <p>
+        I was paired with Jan, who somehow knew the perfect amount of pressure to apply and 
+        was communicative throughout the massage — especially on the deeper stretches, making sure 
+        it was comfortable for me.  
+      </p>
+      <p>
+        It was such a relaxing experience. I will definitely return. Thank you!  
+      </p>
+    `,
+    name: "Tara K",
+  },
+  {
+    image: client5,
+    quote: "bg-danger",
+    desc: `
+      <p>
+        I was skeptical about seeing a Chiropractor but I'm thankful I finally gave in.  
+        Dr. Moh was knowledgeable, professional & reassuring.  
+      </p>
+      <p>
+        He made the experience both comfortable and informative.  
+        I've already noticed a decrease in pain as well as <b>improved posture</b>.  
+      </p>
+      <p>
+        I would highly recommend Dr. Moh if you are looking for a Chiropractor.  
+      </p>
+    `,
+    name: "Robyn Court",
+  },
+];

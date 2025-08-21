@@ -33,17 +33,17 @@ export default function Navbar() {
           <div className="hidden lg:flex flex-1 justify-center">
             <ul className="flex items-center gap-8 font-medium">
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/">HOME</Link>
               </li>
               <li>
-                <Link to="/my-account">My Account</Link>
+                <Link to="/my-account">MY ACCOUNT</Link>
               </li>
               <li>
-                <Link to="/serviceList">Book an appointment</Link>
+                <Link to="/serviceList">BOOK AN APPOINTMENT</Link>
               </li>
               {user && (
                 <li>
-                  <Link to="/register">Join as a Provider</Link>
+                  <Link to="/register">JOIN AS A PROVIDER</Link>
                 </li>
               )}
             </ul>

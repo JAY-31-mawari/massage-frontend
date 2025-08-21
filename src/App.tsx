@@ -8,10 +8,10 @@ function App() {
   return (
     <>
       <Navbar />
+      <ScrollToTop />
       <main>
         <AppRoutes />
       </main>
-      <ScrollToTop />
     </>
   );
 }

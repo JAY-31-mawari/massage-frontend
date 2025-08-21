@@ -1,39 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-import { FiArrowUp } from "react-icons/fi";
-
-export default function ScrollToTop() {
-  let [scroll, setScroll] = useState<boolean>(false);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    const handlerScroll = () => {
-      if (window.scrollY > 50) {
-        setScroll(true);
-      } else {
-        setScroll(false);
-      }
-    };
-    window.addEventListener("scroll", handlerScroll);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
 
-    return () => {
-      window.removeEventListener("scroll", handlerScroll);
-    };
-  }, []);
+  return null;
+};
 
-  return (
-    <Link
-      id="back2Top"
-      onClick={() => scrollToTop()}
-      className={`top-scroll ${scroll ? "d-block" : ""} px-2 py-2`}
-      title="Back to top"
-      to="#"
-    >
-      <FiArrowUp className="ti-arrow-up" />
-    </Link>
-  );
-}
+export default ScrollToTop;
