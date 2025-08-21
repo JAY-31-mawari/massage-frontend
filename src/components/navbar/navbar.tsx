@@ -10,6 +10,21 @@ export default function Navbar() {
   const [toggle, setIsToggle] = useState(false);
 
   const user = useUserStore((state) => state.user);
+  
+  const navbarItems = [
+    {
+      to:"/",
+      name:"HOME"
+    },
+    {
+      to:"/my-account",
+      name:"MY ACCOUNT"
+    },
+    {
+      to:"/serviceList",
+      name:"BOOK AN APPOINTMENT"
+    }
+  ]
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -25,25 +40,21 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2">
               <img src={logo} alt="Logo" className="max-h-20" />
-              <h5 className="text-2xl font-bold mb-0">Last Minute Wellness</h5>
+              <h6 className="text-2xl font-bold mb-0">Last Minute Wellness</h6>
             </Link>
           </div>
 
           {/* Center: Nav Links */}
           <div className="hidden lg:flex flex-1 justify-center">
-            <ul className="flex items-center gap-8 font-medium">
-              <li>
-                <Link to="/">HOME</Link>
-              </li>
-              <li>
-                <Link to="/my-account">MY ACCOUNT</Link>
-              </li>
-              <li>
-                <Link to="/serviceList">BOOK AN APPOINTMENT</Link>
-              </li>
+            <ul className="flex items-center gap-8 font-small">
+              {navbarItems.map((item)=>(
+                <li>
+                  <Link to={item.to} className="p-2 hover:[background-color:#F9F9F9] rounded:6xl">{item.name}</Link>
+                </li>
+              ))}
               {user && (
                 <li>
-                  <Link to="/register">JOIN AS A PROVIDER</Link>
+                  <Link to="/register" className="p-2 hover:bg-cyan-600">JOIN AS A PROVIDER</Link>
                 </li>
               )}
             </ul>
@@ -102,13 +113,11 @@ export default function Navbar() {
           >
             {/* Nav Links */}
             <ul className="flex flex-col space-y-4 pl-0 text-lg font-medium">
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/my-account">My Account</Link>
-              </li>
-
+              {navbarItems.map((item)=>(
+                <li>
+                  <Link to={item.to}>{item.name}</Link>
+                </li>
+              ))}
               {user ? (
                 <li>
                   <Link to="/my-account" className="flex items-center gap-2">
