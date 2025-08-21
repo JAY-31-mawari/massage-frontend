@@ -13,7 +13,7 @@ const settings = {
   mouseDrag: true,
   loop: true,
   rewind: true,
-  autoplay: true,
+  autoplay: false,
   autoplayButtonOutput: false,
   autoplayTimeout: 3000,
   navPosition: "bottom",
@@ -45,11 +45,14 @@ export default function ServiceCardLayout({ item }: { item: Service }) {
               <TinySlider settings={settings}>
                 {item?.businessPhotos &&
                   item.businessPhotos.map((el, index) => (
-                    <div key={index} className="h-full">
+                    <div
+                      key={index}
+                      className="relative w-full h-[250px] flex items-center justify-center bg-gray-100"
+                    >
                       <img
                         src={el}
                         alt=""
-                        className="w-full h-full object-cover"
+                        className="absolute inset-0 w-full h-full object-cover object-center"
                       />
                     </div>
                   ))}

@@ -1,201 +1,248 @@
-import { useState, useEffect } from "react"
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
+import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-interface Booking{
-  active: boolean
-  appointmentDate: Date
-  businessId: string
-  duration: number
-  paymentStatus: string
-  practitionerId: string
-  price: number
-  reminderSent: false
-  serviceName: string
-  serviceType: string
-  status: string
-  _id: string
+interface Booking {
+  active: boolean;
+  appointmentDate: Date;
+  businessId: string;
+  duration: number;
+  paymentStatus: string;
+  practitionerId: string;
+  price: number;
+  reminderSent: false;
+  serviceName: string;
+  serviceType: string;
+  status: string;
+  _id: string;
 }
 
-interface BookingProps{
-  bookedSlots: Booking[]
-  startTime: number
-  endTime: number
-  selectedDate: Date
-  selectedTimeSlot: string
-  appointmentDateTime: Date
-  selectedPractitionerId: string
-  setSelectedDate: (date: Date) => void
-  setSelectedTimeSlot: (day: string) => void 
-  setAppointmentDateTime: (date: Date) => void
-  handleBookingAppointment: () => void
+interface BookingProps {
+  bookedSlots: Booking[];
+  startTime: number;
+  endTime: number;
+  selectedDate: Date;
+  selectedTimeSlot: string;
+  appointmentDateTime: Date;
+  selectedPractitionerId: string;
+  setSelectedDate: (date: Date) => void;
+  setSelectedTimeSlot: (day: string) => void;
+  setAppointmentDateTime: (date: Date) => void;
+  handleBookingAppointment: () => void;
 }
 
-export default function DateTimeComponent({bookedSlots, startTime, endTime, selectedPractitionerId, selectedDate, selectedTimeSlot, appointmentDateTime, setSelectedDate, setSelectedTimeSlot, setAppointmentDateTime, handleBookingAppointment}: BookingProps) {
-  const [showCalendar, setShowCalendar] = useState(false)
-  const [selectedDay, setSelectedDay] = useState(0)
-   // Default to today (first day)
-  const [days, setDays] = useState<Array<{ date: string; waiting: string; fullDate: Date; isCustom?: boolean }>>([])
+export default function DateTimeComponent({
+  bookedSlots,
+  startTime,
+  endTime,
+  selectedPractitionerId,
+  selectedDate,
+  selectedTimeSlot,
+  appointmentDateTime,
+  setSelectedDate,
+  setSelectedTimeSlot,
+  setAppointmentDateTime,
+  handleBookingAppointment,
+}: BookingProps) {
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedDay, setSelectedDay] = useState(0);
+  // Default to today (first day)
+  const [days, setDays] = useState<
+    Array<{ date: string; waiting: string; fullDate: Date; isCustom?: boolean }>
+  >([]);
 
   // Generate dynamic dates based on today (7 days initially)
   useEffect(() => {
     const generateDays = () => {
-      const today = new Date()
-      const generatedDays = []
+      const today = new Date();
+      const generatedDays = [];
 
-      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
 
       // Generate all 7 days initially
       for (let i = 0; i < 7; i++) {
-        const currentDate = new Date(today)
-        currentDate.setDate(today.getDate() + i)
+        const currentDate = new Date(today);
+        currentDate.setDate(today.getDate() + i);
 
-        const dayName = dayNames[currentDate.getDay()]
-        const monthName = monthNames[currentDate.getMonth()]
-        const dateNum = currentDate.getDate()
+        const dayName = dayNames[currentDate.getDay()];
+        const monthName = monthNames[currentDate.getMonth()];
+        const dateNum = currentDate.getDate();
 
         // Generate realistic waiting numbers (higher on weekends)
-        const isWeekend = currentDate.getDay() === 0 || currentDate.getDay() === 6
-        const baseWaiting = isWeekend ? 120 : 80
-        const randomVariation = Math.floor(Math.random() * 50)
-        const waitingCount = baseWaiting + randomVariation + i * 10 // Increase over time
+        const isWeekend =
+          currentDate.getDay() === 0 || currentDate.getDay() === 6;
+        const baseWaiting = isWeekend ? 120 : 80;
+        const randomVariation = Math.floor(Math.random() * 50);
+        const waitingCount = baseWaiting + randomVariation + i * 10; // Increase over time
 
         generatedDays.push({
           date: `${dayName}, ${monthName} ${dateNum}`,
           waiting: `${waitingCount} Waiting`,
           fullDate: new Date(currentDate),
-        })
+        });
       }
-      
-      setSelectedDate(generatedDays[0].fullDate)
-      return generatedDays
-    }
-    setDays(generateDays())
-  }, [])
+
+      setSelectedDate(generatedDays[0].fullDate);
+      return generatedDays;
+    };
+    setDays(generateDays());
+  }, []);
 
   // Generate time slots from 9:00 AM to 9:00 PM with 30-minute intervals
   const generateTimeSlots = () => {
-    const slots: Date[] = []
-    const startHour = startTime // 9 AM
-    const endHour = endTime // 9 PM (21:00)
-    const interval = 30 // 30 minutes
-    const now = new Date()
-    const isToday = selectedDate.toDateString() === now.toDateString()
+    const slots: Date[] = [];
+    const startHour = startTime; // 9 AM
+    const endHour = endTime; // 9 PM (21:00)
+    const interval = 30; // 30 minutes
+    const now = new Date();
+    const isToday = selectedDate.toDateString() === now.toDateString();
 
-    const practitionerBookings = bookedSlots.filter(booking => booking?.practitionerId === selectedPractitionerId)
+    const practitionerBookings = bookedSlots.filter(
+      (booking) => booking?.practitionerId === selectedPractitionerId
+    );
 
-    const bookedTimes = practitionerBookings.map(booking => {
-      const bookingTime = new Date(booking.appointmentDate)
-      bookingTime.setHours(bookingTime.getHours()-5)
-      bookingTime.setMinutes(bookingTime.getMinutes()-30)
-      return bookingTime.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      })
-    })
+    const bookedTimes = practitionerBookings.map((booking) => {
+      const bookingTime = new Date(booking.appointmentDate);
+      bookingTime.setHours(bookingTime.getHours() - 5);
+      bookingTime.setMinutes(bookingTime.getMinutes() - 30);
+      return bookingTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+    });
     for (let hour = startHour; hour < endHour; hour++) {
       for (let minute = 0; minute < 60; minute += interval) {
-        const time = new Date(selectedDate)
-        time.setHours(hour, minute, 0, 0)
-        const timeString = time.toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true
-        })
-    
+        const time = new Date(selectedDate);
+        time.setHours(hour, minute, 0, 0);
+        const timeString = time.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        });
+
         // Skip if already booked
         if (bookedTimes.includes(timeString)) {
-          continue
+          continue;
         }
-    
+
         // If it's today, only include time slots that haven't passed yet
         if (isToday) {
-          const now = new Date()
+          const now = new Date();
           if (time > now) {
-            slots.push(new Date(time))
+            slots.push(new Date(time));
           }
         } else {
-          slots.push(new Date(time))
+          slots.push(new Date(time));
         }
       }
     }
-    return slots
-  }
+    return slots;
+  };
 
-  const [timeSlots, setTimeSlots] = useState<Date[]>([])
+  const [timeSlots, setTimeSlots] = useState<Date[]>([]);
 
   // Update time slots when selected date changes
   useEffect(() => {
-    setTimeSlots(generateTimeSlots())
-  }, [selectedDate, startTime, endTime, bookedSlots, selectedPractitionerId])
+    setTimeSlots(generateTimeSlots());
+  }, [selectedDate, startTime, endTime, bookedSlots, selectedPractitionerId]);
 
-   useEffect(()=>{
-    console.log("caskndkjsn",bookedSlots)
-  },[bookedSlots])
+  useEffect(() => {
+    console.log("caskndkjsn", bookedSlots);
+  }, [bookedSlots]);
 
   const handleDayClick = (index: number) => {
-    setSelectedDay(index)
-    setSelectedDate(days[index].fullDate)
-    
+    setSelectedDay(index);
+    setSelectedDate(days[index].fullDate);
+
     // Console log the selected date in IST format
-    const selectedDateIST = new Date(days[index].fullDate.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}))
-    setAppointmentDateTime(selectedDateIST)
-  }
+    const selectedDateIST = new Date(
+      days[index].fullDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    );
+    setAppointmentDateTime(selectedDateIST);
+  };
 
   const handleTimeSlotClick = (timeSlot: Date) => {
-    const timeString = timeSlot.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    })
-    setSelectedTimeSlot(timeString)
-    
-    const appointmentTime = new Date(selectedDate)
-    appointmentTime.setHours(timeSlot.getHours(), timeSlot.getMinutes(), 0, 0)   
-    setAppointmentDateTime(appointmentTime)
-  }
+    const timeString = timeSlot.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+    setSelectedTimeSlot(timeString);
+
+    const appointmentTime = new Date(selectedDate);
+    appointmentTime.setHours(timeSlot.getHours(), timeSlot.getMinutes(), 0, 0);
+    setAppointmentDateTime(appointmentTime);
+  };
 
   const handleDateSelect = (date: Date | null) => {
-    if (!date) return
-    
-    setSelectedDate(date)
-    setShowCalendar(false)
+    if (!date) return;
+
+    setSelectedDate(date);
+    setShowCalendar(false);
 
     // Console log the selected date from datepicker in IST format
-    const selectedDateIST = new Date(date.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}))
-    setAppointmentDateTime(selectedDateIST)
-    
+    const selectedDateIST = new Date(
+      date.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    );
+    setAppointmentDateTime(selectedDateIST);
+
     // Add the custom date as a new slot
-    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    
-    const dayName = dayNames[date.getDay()]
-    const monthName = monthNames[date.getMonth()]
-    const dateNum = date.getDate()
-    
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const dayName = dayNames[date.getDay()];
+    const monthName = monthNames[date.getMonth()];
+    const dateNum = date.getDate();
+
     // Generate waiting number for the custom date
-    const isWeekend = date.getDay() === 0 || date.getDay() === 6
-    const baseWaiting = isWeekend ? 120 : 80
-    const randomVariation = Math.floor(Math.random() * 50)
-    const waitingCount = baseWaiting + randomVariation
-    
-    setDays(prevDays => {
-      const updatedDays = [...prevDays]
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+    const baseWaiting = isWeekend ? 120 : 80;
+    const randomVariation = Math.floor(Math.random() * 50);
+    const waitingCount = baseWaiting + randomVariation;
+
+    setDays((prevDays) => {
+      const updatedDays = [...prevDays];
       // Add the custom date as a new slot at the end
       updatedDays.push({
         date: `${dayName}, ${monthName} ${dateNum}`,
         waiting: `${waitingCount} Waiting`,
         fullDate: new Date(date),
-        isCustom: true
-      })
-      return updatedDays
-    })
-    
+        isCustom: true,
+      });
+      return updatedDays;
+    });
+
     // Set the selected day to the new custom date slot (last index)
-    setSelectedDay(days.length)
-  }
+    setSelectedDay(days.length);
+  };
 
   const CalendarIcon = () => (
     <DatePicker
@@ -213,20 +260,30 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
             backgroundColor: "#2563eb",
             color: "white",
             transition: "all 0.15s ease-in-out",
-            boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+            boxShadow:
+              "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#1d4ed8"
-            e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-            e.currentTarget.style.transform = "translateY(-1px)"
+            e.currentTarget.style.backgroundColor = "#1d4ed8";
+            e.currentTarget.style.boxShadow =
+              "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
+            e.currentTarget.style.transform = "translateY(-1px)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#2563eb"
-            e.currentTarget.style.boxShadow = "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-            e.currentTarget.style.transform = "translateY(0)"
+            e.currentTarget.style.backgroundColor = "#2563eb";
+            e.currentTarget.style.boxShadow =
+              "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
+            e.currentTarget.style.transform = "translateY(0)";
           }}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -239,40 +296,45 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
       showPopperArrow={false}
       popperClassName="custom-datepicker-popper"
       popperPlacement="bottom-start"
-             popperModifiers={[
-         {
-           name: "offset",
-           options: {
-             offset: [0, 8],
-           },
-           fn: ({ x, y }) => ({ x, y }),
-         },
-       ]}
+      popperModifiers={[
+        {
+          name: "offset",
+          options: {
+            offset: [0, 8],
+          },
+          fn: ({ x, y }) => ({ x, y }),
+        },
+      ]}
     />
-  )
+  );
 
   const formatSelectedDate = () => {
-    if (days.length === 0) return ""
+    if (days.length === 0) return "";
 
-    const selected = days[selectedDay]
-    const today = new Date()
-    const isToday = appointmentDateTime.toDateString() === today.toDateString()
+    const selected = days[selectedDay];
+    const today = new Date();
+    const isToday = appointmentDateTime.toDateString() === today.toDateString();
     const isTomorrow =
-      appointmentDateTime.toDateString() === new Date(today.getTime() + 24 * 60 * 60 * 1000).toDateString()
+      appointmentDateTime.toDateString() ===
+      new Date(today.getTime() + 24 * 60 * 60 * 1000).toDateString();
 
-    if (isToday) return `Today, ${appointmentDateTime.toLocaleDateString() }`
-    if (isTomorrow) return `Tomorrow, ${appointmentDateTime.toLocaleDateString()}`
-    return appointmentDateTime.toLocaleDateString()
-  }
+    if (isToday) return `Today, ${appointmentDateTime.toLocaleDateString()}`;
+    if (isTomorrow)
+      return `Tomorrow, ${appointmentDateTime.toLocaleDateString()}`;
+    return appointmentDateTime.toLocaleDateString();
+  };
 
   if (days.length === 0) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh" }}
+      >
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -280,108 +342,207 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
       style={{
         backgroundColor: "#f9fafb",
         minHeight: "100vh",
-        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif",
+        fontFamily:
+          "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif",
       }}
     >
-      <div className="container-fluid py-5 px-4">
+      <div className="container-fluid py-3 px-4">
         {/* Header */}
         <div className="mb-5">
           <h1 className="h3 fw-bold mb-2" style={{ color: "#111827" }}>
             Select Your Appointment
           </h1>
-                     <p className="text-muted mb-0" style={{ fontSize: "16px", color: "#6b7280" }}>
-             Choose your preferred date and time slot for the next 7 days or add a custom date
-           </p>
+          <p
+            className="text-muted mb-0"
+            style={{ fontSize: "16px", color: "#6b7280" }}
+          >
+            Choose your preferred date and time slot for the next 7 days or add
+            a custom date
+          </p>
         </div>
 
         {/* Date Selection */}
         <div className="mb-5">
           <div className="row g-3 align-items-center">
-                         {days.map((day, index) => {
-               const isToday = index === 0
-               const isTomorrow = index === 1
-               const isCustomDate = day.isCustom
+            {days.map((day, index) => {
+              const isToday = index === 0;
+              const isTomorrow = index === 1;
+              const isCustomDate = day.isCustom;
 
-               return (
-                 <div key={index} className="col">
-                   <button
-                     className={`btn w-100 text-start border-0 p-3 rounded-3 position-relative ${selectedDay === index ? "text-white" : ""}`}
-                     style={{
-                       backgroundColor: selectedDay === index ? "#2563eb" : isCustomDate ? "#f8fafc" : "white",
-                       fontSize: "14px",
-                       fontWeight: "500",
-                       transition: "all 0.15s ease-in-out",
-                       boxShadow:
-                         selectedDay === index
-                           ? "0 10px 15px -3px rgba(37, 99, 235, 0.2), 0 4px 6px -2px rgba(37, 99, 235, 0.1)"
-                           : "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-                       border: selectedDay === index ? "none" : isCustomDate ? "2px dashed #d1d5db" : "1px solid #e5e7eb",
-                     }}
-                     onClick={() => handleDayClick(index)}
-                     onMouseEnter={(e) => {
-                       if (selectedDay !== index) {
-                         e.currentTarget.style.backgroundColor = isCustomDate ? "#f1f5f9" : "#f8fafc"
-                         e.currentTarget.style.borderColor = "#d1d5db"
-                         e.currentTarget.style.transform = "translateY(-1px)"
-                         e.currentTarget.style.boxShadow =
-                           "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-                       }
-                     }}
-                     onMouseLeave={(e) => {
-                       if (selectedDay !== index) {
-                         e.currentTarget.style.backgroundColor = isCustomDate ? "#f8fafc" : "white"
-                         e.currentTarget.style.borderColor = isCustomDate ? "#d1d5db" : "#e5e7eb"
-                         e.currentTarget.style.transform = "translateY(0)"
-                         e.currentTarget.style.boxShadow =
-                           "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-                       }
-                     }}
-                   >
-                     {isToday && (
-                       <span
-                         className="position-absolute top-0 end-0 badge bg-success rounded-pill"
-                         style={{ fontSize: "10px", transform: "translate(25%, -25%)" }}
-                       >
-                         Today
-                       </span>
-                     )}
-                     {isTomorrow && (
-                       <span
-                         className="position-absolute top-0 end-0 badge bg-info rounded-pill"
-                         style={{ fontSize: "10px", transform: "translate(25%, -25%)" }}
-                       >
-                         Tomorrow
-                       </span>
-                     )}
-                     {isCustomDate && (
-                       <span
-                         className="position-absolute top-0 end-0 badge bg-warning rounded-pill"
-                         style={{ fontSize: "10px", transform: "translate(25%, -25%)" }}
-                       >
-                         Custom
-                       </span>
-                     )}
-                     <div className="fw-semibold mb-1" style={{ fontSize: "15px" }}>
-                       {day.date}
-                     </div>
-                     <div
-                       style={{
-                         fontSize: "12px",
-                         opacity: selectedDay === index ? 0.9 : 0.7,
-                         color: selectedDay === index ? "rgba(255,255,255,0.9)" : "#6b7280",
-                       }}
-                     >
-                       {day.waiting}
-                     </div>
-                   </button>
-                 </div>
-               )
-             })}
+              return (
+                <div
+                  key={index}
+                  className="col d-flex flex-column align-items-center"
+                >
+                  {/* Date Button */}
+                  <button
+                    className={`btn w-100 border-0 p-3 rounded-3 position-relative ${
+                      selectedDay === index ? "text-white" : "text-gray-700"
+                    }`}
+                    style={{
+                      backgroundColor:
+                        selectedDay === index
+                          ? "#2563eb"
+                          : isCustomDate
+                          ? "#f9fafb"
+                          : "white",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      transition: "all 0.25s ease",
+                      boxShadow:
+                        selectedDay === index
+                          ? "0 6px 12px rgba(37, 99, 235, 0.25)"
+                          : "0 2px 6px rgba(0,0,0,0.08)",
+                      border:
+                        selectedDay === index
+                          ? "none"
+                          : isCustomDate
+                          ? "2px dashed #cbd5e1"
+                          : "1px solid #e5e7eb",
+                      borderRadius: "12px",
+                    }}
+                    onClick={() => handleDayClick(index)}
+                  >
+                    {/* Horizontal Date inside Button */}
+                    <div className="d-flex flex-column text-center">
+                      <div className="fw-semibold" style={{ fontSize: "13px" }}>
+                        {day.date}
+                      </div>
+                    </div>
 
+                    {/* Today Badge */}
+                    {isToday && (
+                      <span
+                        className="position-absolute top-0 end-0 badge bg-success rounded-pill"
+                        style={{
+                          fontSize: "10px",
+                          padding: "4px 6px",
+                          transform: "translate(30%, -30%)",
+                          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                        }}
+                      >
+                        Today
+                      </span>
+                    )}
+
+                    {/* Tomorrow Badge */}
+                    {isTomorrow && (
+                      <span
+                        className="position-absolute top-0 end-0 badge bg-info rounded-pill"
+                        style={{
+                          fontSize: "10px",
+                          padding: "4px 6px",
+                          transform: "translate(30%, -30%)",
+                          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                        }}
+                      >
+                        Tomorrow
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Waiting below button */}
+                  <div
+                    className="mt-1 text-center"
+                    style={{
+                      fontSize: "12px",
+                      opacity: selectedDay === index ? 0.95 : 0.7,
+                      color: selectedDay === index ? "#2563eb" : "#6b7280",
+                    }}
+                  >
+                    {day.waiting}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Calendar Icon Button */}
             <div className="col-auto">
-              <CalendarIcon />
+              <button
+                className="d-flex align-items-center justify-content-center rounded-3"
+                style={{
+                  backgroundColor: "#2563eb",
+                  border: "none",
+                  width: "48px",
+                  height: "48px",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.15)",
+                  transition: "all 0.25s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 6px 12px rgba(0,0,0,0.2)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow =
+                    "0 4px 8px rgba(0,0,0,0.15)";
+                }}
+              >
+                <div>
+                  <CalendarIcon />
+                </div>
+              </button>
             </div>
           </div>
+
+          {/* Custom Date Row (Now Clickable with Animation) */}
+          {/* <div className="mt-3">
+            <button
+              className={`btn w-100 text-start border-0 p-4 rounded-3 ${
+                selectedDay === days.length ? "text-white" : "text-gray-700"
+              }`}
+              style={{
+                backgroundColor:
+                  selectedDay === days.length ? "#2563eb" : "white",
+                fontSize: "14px",
+                fontWeight: "500",
+                transition: "all 0.25s ease",
+                boxShadow:
+                  selectedDay === days.length
+                    ? "0 6px 12px rgba(37, 99, 235, 0.25)"
+                    : "0 2px 6px rgba(0,0,0,0.08)",
+                border:
+                  selectedDay === days.length ? "none" : "1px solid #e5e7eb",
+                borderRadius: "12px",
+              }}
+              onClick={() => handleDayClick(days.length)}
+              onMouseEnter={(e) => {
+                if (selectedDay !== days.length) {
+                  e.currentTarget.style.backgroundColor = "#f9fafb";
+                  e.currentTarget.style.borderColor = "#d1d5db";
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 8px 14px rgba(0,0,0,0.12)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (selectedDay !== days.length) {
+                  e.currentTarget.style.backgroundColor = "white";
+                  e.currentTarget.style.borderColor = "#e5e7eb";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow =
+                    "0 2px 6px rgba(0,0,0,0.08)";
+                }
+              }}
+            >
+              <div
+                className="fw-semibold mb-1"
+                style={{ fontSize: "15px", letterSpacing: "0.3px" }}
+              >
+                {customDate?.date}
+              </div>
+              <div
+                style={{
+                  fontSize: "12px",
+                  opacity: selectedDay === days.length ? 0.95 : 0.7,
+                  color: selectedDay === days.length ? "#f9fafb" : "#6b7280",
+                }}
+              >
+                {customDate?.waiting}
+              </div>
+            </button>
+          </div> */}
         </div>
 
         {/* Time Slots */}
@@ -391,25 +552,27 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
           </h2>
 
           <div className="d-flex flex-wrap gap-3">
-            {timeSlots.length === 0 && 
+            {timeSlots.length === 0 && (
               <div>
                 <h5>No Available timeslots for the selected Date</h5>
               </div>
-            }
+            )}
             {timeSlots.map((timeSlot: Date, timeIndex: number) => {
-              const timeString = timeSlot.toLocaleTimeString('en-US', {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-              })
-              
+              const timeString = timeSlot.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              });
+
               return (
                 <button
                   key={timeIndex}
                   className="btn border-0 fw-medium rounded-2"
                   style={{
-                    backgroundColor: selectedTimeSlot === timeString ? "#f59e0b" : "white",
-                    color: selectedTimeSlot === timeString ? "white" : "#374151",
+                    backgroundColor:
+                      selectedTimeSlot === timeString ? "#f59e0b" : "white",
+                    color:
+                      selectedTimeSlot === timeString ? "white" : "#374151",
                     fontSize: "14px",
                     width: "100px",
                     height: "44px",
@@ -424,34 +587,34 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
                   onClick={() => handleTimeSlotClick(timeSlot)}
                   onMouseEnter={(e) => {
                     if (selectedTimeSlot !== timeString) {
-                      e.currentTarget.style.backgroundColor = "#f8fafc"
-                      e.currentTarget.style.borderColor = "#d1d5db"
-                      e.currentTarget.style.transform = "translateY(-1px)"
+                      e.currentTarget.style.backgroundColor = "#f8fafc";
+                      e.currentTarget.style.borderColor = "#d1d5db";
+                      e.currentTarget.style.transform = "translateY(-1px)";
                       e.currentTarget.style.boxShadow =
-                        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+                        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
                     } else {
-                      e.currentTarget.style.transform = "translateY(-1px)"
+                      e.currentTarget.style.transform = "translateY(-1px)";
                       e.currentTarget.style.boxShadow =
-                        "0 20px 25px -5px rgba(245, 158, 11, 0.2), 0 10px 10px -5px rgba(245, 158, 11, 0.1)"
+                        "0 20px 25px -5px rgba(245, 158, 11, 0.2), 0 10px 10px -5px rgba(245, 158, 11, 0.1)";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (selectedTimeSlot !== timeString) {
-                      e.currentTarget.style.backgroundColor = "white"
-                      e.currentTarget.style.borderColor = "#e5e7eb"
-                      e.currentTarget.style.transform = "translateY(0)"
+                      e.currentTarget.style.backgroundColor = "white";
+                      e.currentTarget.style.borderColor = "#e5e7eb";
+                      e.currentTarget.style.transform = "translateY(0)";
                       e.currentTarget.style.boxShadow =
-                        "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
+                        "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
                     } else {
-                      e.currentTarget.style.transform = "translateY(0)"
+                      e.currentTarget.style.transform = "translateY(0)";
                       e.currentTarget.style.boxShadow =
-                        "0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.1)"
+                        "0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.1)";
                     }
                   }}
                 >
                   {timeString}
                 </button>
-              )
+              );
             })}
           </div>
         </div>
@@ -461,7 +624,8 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
           <div
             className="bg-white rounded-3 p-4 border"
             style={{
-              boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+              boxShadow:
+                "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
               borderColor: "#e5e7eb",
             }}
           >
@@ -471,20 +635,32 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
             <div className="row">
               <div className="col-md-6">
                 <div className="mb-2">
-                  <span className="text-muted me-2" style={{ fontSize: "14px" }}>
+                  <span
+                    className="text-muted me-2"
+                    style={{ fontSize: "14px" }}
+                  >
                     Date:
                   </span>
-                  <span className="fw-medium" style={{ color: "#374151", fontSize: "14px" }}>
+                  <span
+                    className="fw-medium"
+                    style={{ color: "#374151", fontSize: "14px" }}
+                  >
                     {formatSelectedDate()}
                   </span>
                 </div>
               </div>
               <div className="col-md-6">
                 <div className="mb-2">
-                  <span className="text-muted me-2" style={{ fontSize: "14px" }}>
+                  <span
+                    className="text-muted me-2"
+                    style={{ fontSize: "14px" }}
+                  >
                     Time:
                   </span>
-                  <span className="fw-medium" style={{ color: "#374151", fontSize: "14px" }}>
+                  <span
+                    className="fw-medium"
+                    style={{ color: "#374151", fontSize: "14px" }}
+                  >
                     {selectedTimeSlot}
                   </span>
                 </div>
@@ -499,14 +675,14 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
                 transition: "all 0.15s ease-in-out",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#1d4ed8"
-                e.currentTarget.style.borderColor = "#1d4ed8"
+                e.currentTarget.style.backgroundColor = "#1d4ed8";
+                e.currentTarget.style.borderColor = "#1d4ed8";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#2563eb"
-                e.currentTarget.style.borderColor = "#2563eb"
+                e.currentTarget.style.backgroundColor = "#2563eb";
+                e.currentTarget.style.borderColor = "#2563eb";
               }}
-              onClick={()=>handleBookingAppointment()}
+              onClick={() => handleBookingAppointment()}
             >
               Confirm Appointment
             </button>
@@ -514,8 +690,9 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
           .custom-datepicker-popper {
             z-index: 1050 !important;
           }
@@ -574,8 +751,9 @@ export default function DateTimeComponent({bookedSlots, startTime, endTime, sele
             color: #d1d5db !important;
             cursor: not-allowed !important;
           }
-        `
-      }} />
+        `,
+        }}
+      />
     </div>
-  )
+  );
 }

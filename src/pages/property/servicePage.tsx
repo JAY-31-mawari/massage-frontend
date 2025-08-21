@@ -32,8 +32,8 @@ export default function SinglePropertyOne() {
     await axios(payload)
       .then((res) => {
         setMerchant(res.data);
-        if(res.data?.businessPhotos){
-          setSelectedImage(res.data.businessPhotos[0])
+        if (res.data?.businessPhotos) {
+          setSelectedImage(res.data.businessPhotos[0]);
         }
       })
       .catch((err) => {
@@ -54,40 +54,44 @@ export default function SinglePropertyOne() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#fdf8f5] p-4 md:p-8 flex flex-col md:flex-row gap-6">
-        {/* Left - Side */}
-        <div className="flex-1">
-          <div className="overflow-hidden rounded-2xl ">
-            <img
-              src={selectedImage}
-              alt="Service"
-              className="w-full h-[350px] object-cover transition-transform duration-500 hover:scale-105"
-            />
-          </div>
-          <div className="flex gap-3 mt-4">
-            {merchant?.businessPhotos.map((img: string, idx: number) => (
+      <div className="min-h-screen bg-[#f6f6f6] p-4 md:p-8 flex flex-col md:flex-row gap-6">
+        {/* Left - Side (Sticky) */}
+        <div className="md:w-1/2 lg:w-5/12 relative">
+          <div className="sticky top-[100px]">
+            {" "}
+            {/* 👈 This keeps it in view */}
+            <div className="overflow-hidden rounded-2xl">
               <img
-                key={idx}
-                src={img}
-                onClick={() => setSelectedImage(img)}
-                className={`w-20 h-20 object-cover rounded-xl cursor-pointer transition-transform duration-300 hover:scale-105 border-2 ${
-                  selectedImage === img
-                    ? "border-[#d4a373]"
-                    : "border-transparent"
-                }`}
+                src={selectedImage}
+                alt="Service"
+                className="w-full h-[350px] object-cover transition-transform duration-500 hover:scale-105"
               />
-            ))}
+            </div>
+            <div className="flex gap-3 mt-4 flex-wrap">
+              {merchant?.businessPhotos.map((img: string, idx: number) => (
+                <img
+                  key={idx}
+                  src={img}
+                  onClick={() => setSelectedImage(img)}
+                  className={`w-20 h-20 object-cover rounded-xl cursor-pointer transition-transform duration-300 hover:scale-105 border-2 ${
+                    selectedImage === img
+                      ? "border-[#d4a373]"
+                      : "border-transparent"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
         {/*  Right - Side */}
-        <div className="flex-1 bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-5">
+        <div className="flex-1 bg-white rounded-2xl p-6 flex flex-col gap-5">
           {/* Business Info */}
           <div>
             <h1 className="text-2xl font-bold text-[#3d2b1f]">
               {merchant?.businessName}
             </h1>
-            <p className="text-[#6b4f3f]">{merchant?.merchantAddress}</p>
+            <p className="text-[#6b4f3f] mb-0">{merchant?.merchantAddress}</p>
           </div>
 
           {/* Service Selection */}
@@ -174,12 +178,13 @@ export default function SinglePropertyOne() {
                       </div>
                     ))}
             </div>
-            <ServiceBookingDetail
-              serviceName={userSelectedService}
-              practitionerId={userSelectedPractitionerId}
-              duration={userSelectedTimeDuration}
-            />
           </div>
+
+          <ServiceBookingDetail
+            serviceName={userSelectedService}
+            practitionerId={userSelectedPractitionerId}
+            duration={userSelectedTimeDuration}
+          />
         </div>
       </div>
       <FooterTop bg="theme-bg" />
