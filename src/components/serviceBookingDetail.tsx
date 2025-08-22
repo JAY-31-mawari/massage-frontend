@@ -148,7 +148,6 @@ export default function ServiceBookingDetail({
     }
   };
 
-  console.log("asdasdd", merchant);
 
   useEffect(() => {
     getAllBookings();
@@ -161,8 +160,6 @@ export default function ServiceBookingDetail({
           bookedSlots={bookedSlots}
           selectedDate={selectedDate}
           selectedPractitionerId={practitionerId}
-          startTime={9}
-          endTime={24}
           selectedTimeSlot={selectedTimeSlot}
           appointmentDateTime={appointmentDateTime}
           setSelectedDate={setSelectedDate}

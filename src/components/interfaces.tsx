@@ -3,6 +3,18 @@ interface Location{
   coordinates: [Number, Number]
 }
 
+interface TimeSlot{
+  startTime: string,
+  endTime: string
+}
+
+interface Availability{
+  _id: string,
+  date: string,
+  practitionerId: string
+  slots: TimeSlot[]
+}
+
 interface PractitionerDetails{
   practitionerName: string
   profilePicture: string
@@ -25,6 +37,7 @@ export interface Service {
     merchantZipCode: string
     practitioners: PractitionerDetails[]
     businessPhotos: string[]
+    availabilities: Availability[]
   }
 
   interface BusinessData {

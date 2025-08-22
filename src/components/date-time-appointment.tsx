@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useMerchantStore } from "../store/merchantStore";
 
 interface Booking {
   active: boolean;
@@ -19,8 +20,6 @@ interface Booking {
 
 interface BookingProps {
   bookedSlots: Booking[];
-  startTime: number;
-  endTime: number;
   selectedDate: Date;
   selectedTimeSlot: string;
   appointmentDateTime: Date;
@@ -33,8 +32,6 @@ interface BookingProps {
 
 export default function DateTimeComponent({
   bookedSlots,
-  startTime,
-  endTime,
   selectedPractitionerId,
   selectedDate,
   selectedTimeSlot,
@@ -44,6 +41,7 @@ export default function DateTimeComponent({
   setAppointmentDateTime,
   handleBookingAppointment,
 }: BookingProps) {
+  const selectedServiceData = useMerchantStore((state) => state.merchant);
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDay, setSelectedDay] = useState(0);
   // Default to today (first day)
@@ -105,8 +103,6 @@ export default function DateTimeComponent({
   // Generate time slots from 9:00 AM to 9:00 PM with 30-minute intervals
   const generateTimeSlots = () => {
     const slots: Date[] = [];
-    const startHour = startTime; // 9 AM
-    const endHour = endTime; // 9 PM (21:00)
     const interval = 30; // 30 minutes
     const now = new Date();
     const isToday = selectedDate.toDateString() === now.toDateString();
@@ -125,32 +121,44 @@ export default function DateTimeComponent({
         hour12: true,
       });
     });
-    for (let hour = startHour; hour < endHour; hour++) {
-      for (let minute = 0; minute < 60; minute += interval) {
-        const time = new Date(selectedDate);
-        time.setHours(hour, minute, 0, 0);
-        const timeString = time.toLocaleTimeString("en-US", {
+
+    const practitionerAvailability = selectedServiceData?.availabilities?.find(
+      (a: any) => a.practitionerId === selectedPractitionerId && new Date(a.date).toDateString() === new Date(selectedDate).toDateString()
+    ); 
+    if (!practitionerAvailability) {
+      return [];
+    }
+
+    practitionerAvailability.slots.forEach((range) => {
+      const [startHour, startMinute] = range.startTime.split(":").map(Number);
+      const [endHour, endMinute] = range.endTime.split(":").map(Number);
+
+      const start = new Date(selectedDate);
+      start.setHours(startHour, startMinute, 0, 0);
+
+      const end = new Date(selectedDate);
+      end.setHours(endHour, endMinute, 0, 0);
+      for (
+        let time = new Date(start);
+        time < end;
+        time.setMinutes(time.getMinutes() + interval)
+      ) {
+        const slot = new Date(time);
+
+        const timeString = slot.toLocaleTimeString("en-US", {
           hour: "numeric",
           minute: "2-digit",
           hour12: true,
         });
 
-        // Skip if already booked
-        if (bookedTimes.includes(timeString)) {
-          continue;
-        }
+        // skip booked slots
+        if (bookedTimes.includes(timeString)) continue;
 
-        // If it's today, only include time slots that haven't passed yet
-        if (isToday) {
-          const now = new Date();
-          if (time > now) {
-            slots.push(new Date(time));
-          }
-        } else {
-          slots.push(new Date(time));
-        }
+        // skip past slots if today
+        if (isToday && slot <= now) continue;
+        slots.push(new Date(slot));
       }
-    }
+    });
     return slots;
   };
 
@@ -159,11 +167,7 @@ export default function DateTimeComponent({
   // Update time slots when selected date changes
   useEffect(() => {
     setTimeSlots(generateTimeSlots());
-  }, [selectedDate, startTime, endTime, bookedSlots, selectedPractitionerId]);
-
-  useEffect(() => {
-    console.log("caskndkjsn", bookedSlots);
-  }, [bookedSlots]);
+  }, [selectedDate, bookedSlots, selectedPractitionerId]);
 
   const handleDayClick = (index: number) => {
     setSelectedDay(index);
@@ -485,64 +489,6 @@ export default function DateTimeComponent({
               </button>
             </div>
           </div>
-
-          {/* Custom Date Row (Now Clickable with Animation) */}
-          {/* <div className="mt-3">
-            <button
-              className={`btn w-100 text-start border-0 p-4 rounded-3 ${
-                selectedDay === days.length ? "text-white" : "text-gray-700"
-              }`}
-              style={{
-                backgroundColor:
-                  selectedDay === days.length ? "#2563eb" : "white",
-                fontSize: "14px",
-                fontWeight: "500",
-                transition: "all 0.25s ease",
-                boxShadow:
-                  selectedDay === days.length
-                    ? "0 6px 12px rgba(37, 99, 235, 0.25)"
-                    : "0 2px 6px rgba(0,0,0,0.08)",
-                border:
-                  selectedDay === days.length ? "none" : "1px solid #e5e7eb",
-                borderRadius: "12px",
-              }}
-              onClick={() => handleDayClick(days.length)}
-              onMouseEnter={(e) => {
-                if (selectedDay !== days.length) {
-                  e.currentTarget.style.backgroundColor = "#f9fafb";
-                  e.currentTarget.style.borderColor = "#d1d5db";
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 14px rgba(0,0,0,0.12)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (selectedDay !== days.length) {
-                  e.currentTarget.style.backgroundColor = "white";
-                  e.currentTarget.style.borderColor = "#e5e7eb";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow =
-                    "0 2px 6px rgba(0,0,0,0.08)";
-                }
-              }}
-            >
-              <div
-                className="fw-semibold mb-1"
-                style={{ fontSize: "15px", letterSpacing: "0.3px" }}
-              >
-                {customDate?.date}
-              </div>
-              <div
-                style={{
-                  fontSize: "12px",
-                  opacity: selectedDay === days.length ? 0.95 : 0.7,
-                  color: selectedDay === days.length ? "#f9fafb" : "#6b7280",
-                }}
-              >
-                {customDate?.waiting}
-              </div>
-            </button>
-          </div> */}
         </div>
 
         {/* Time Slots */}
