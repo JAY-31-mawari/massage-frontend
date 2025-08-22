@@ -39,6 +39,7 @@ export default function ServiceBookingDetail({
   const [bookedSlots, setBookedSlots] = useState([]);
   const accessToken = getStorageItem("token");
   const [isOpen, setIsOpen] = useState(false);
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   let [open2, setOpen2] = useState<boolean>(false);
   let [open4, setOpen4] = useState<boolean>(false);
   let [open5, setOpen5] = useState<boolean>(false);
@@ -109,6 +110,7 @@ export default function ServiceBookingDetail({
         practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
         duration: 60,
+        timeZone: userTimeZone,
         serviceType: merchant?.businessType,
         price: 150,
       },

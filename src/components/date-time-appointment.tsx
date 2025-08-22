@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMerchantStore } from "../store/merchantStore";
+import { DateTime } from "luxon";
+
 
 interface Booking {
   active: boolean;
@@ -44,6 +46,8 @@ export default function DateTimeComponent({
   const selectedServiceData = useMerchantStore((state) => state.merchant);
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDay, setSelectedDay] = useState(0);
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   // Default to today (first day)
   const [days, setDays] = useState<
     Array<{ date: string; waiting: string; fullDate: Date; isCustom?: boolean }>
@@ -100,7 +104,7 @@ export default function DateTimeComponent({
     setDays(generateDays());
   }, []);
 
-  // Generate time slots from 9:00 AM to 9:00 PM with 30-minute intervals
+  // Generate time slots from according to practitioner timeslots with 30-minute intervals
   const generateTimeSlots = () => {
     const slots: Date[] = [];
     const interval = 30; // 30 minutes
@@ -112,13 +116,12 @@ export default function DateTimeComponent({
     );
 
     const bookedTimes = practitionerBookings.map((booking) => {
-      const bookingTime = new Date(booking.appointmentDate);
-      bookingTime.setHours(bookingTime.getHours() - 5);
-      bookingTime.setMinutes(bookingTime.getMinutes() - 30);
-      return bookingTime.toLocaleTimeString("en-US", {
+      const bookingUtc = new Date(booking.appointmentDate)
+      return bookingUtc.toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
+        timeZone: userTimeZone
       });
     });
 
@@ -149,6 +152,7 @@ export default function DateTimeComponent({
           hour: "numeric",
           minute: "2-digit",
           hour12: true,
+          timeZone: userTimeZone
         });
 
         // skip booked slots
