@@ -32,6 +32,7 @@ export default function SubmitProperty() {
   const navigate = useNavigate();
   const [show, setShow] = useState<boolean>(false);
   const [businessName, setBusinessName] = useState("");
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [businessType, setBusinessType] = useState<string | undefined>("");
   // const [areaOfExpertise, setAreaOfExpertise] = useState<string | undefined>('')
   // const [license, setLicense] = useState('')
@@ -216,38 +217,6 @@ export default function SubmitProperty() {
     setActiveTab(nextId);
   };
 
-  // function handleFileChange(e: any) {
-  //     const eventName = e.target.name
-
-  //     if (eventName === "treatmentSpace") {
-  //         setTreatmentSpace(e.target.files[0].name)
-  //     } else if (eventName === "insurance") {
-  //         setInsurance(e.target.files[0].name)
-  //     } else if (eventName === "governmentId") {
-  //         setGovernmentId(e.target.files[0].name)
-  //     } else if (eventName === "qualification") {
-  //         setQualification(e.target.files[0].name)
-  //     } else {
-  //         setProfilePicture(e.target.files[0].name)
-  //     }
-  //     console.log(e.target.files[0]);
-  // }
-
-  // const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //     const field = e.target.name as keyof PractitionerData;
-  //     const file = e.target.files?.[0];
-  //     if (!file) return;
-
-  //     const fileUrl = URL.createObjectURL(file);
-  //     setTabData((prev) => ({
-  //         ...prev,
-  //         [activeTab]: {
-  //             ...prev[activeTab],
-  //             [field]: fileUrl,
-  //         },
-  //     }));
-  // };
-
   const handleTabInputChange = (
     field: keyof PractitionerData,
     value: string | string[]
@@ -269,6 +238,7 @@ export default function SubmitProperty() {
         business_email: email,
         business_phone: phone,
         bankingDetails,
+        timeZone: userTimeZone,
         merchantAddress,
         merchantCity,
         merchantState,

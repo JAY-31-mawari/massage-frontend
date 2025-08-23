@@ -8,6 +8,8 @@ import { DateTime } from "luxon";
 interface Booking {
   active: boolean;
   appointmentDate: Date;
+  startTime:Date,
+  endTime: Date,
   businessId: string;
   duration: number;
   paymentStatus: string;
@@ -23,6 +25,7 @@ interface Booking {
 interface BookingProps {
   bookedSlots: Booking[];
   selectedDate: Date;
+  isLoading: boolean,
   selectedTimeSlot: string;
   appointmentDateTime: Date;
   selectedPractitionerId: string;
@@ -34,6 +37,7 @@ interface BookingProps {
 
 export default function DateTimeComponent({
   bookedSlots,
+  isLoading,
   selectedPractitionerId,
   selectedDate,
   selectedTimeSlot,
@@ -115,51 +119,67 @@ export default function DateTimeComponent({
       (booking) => booking?.practitionerId === selectedPractitionerId
     );
 
-    const bookedTimes = practitionerBookings.map((booking) => {
-      const bookingUtc = new Date(booking.appointmentDate)
-      return bookingUtc.toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-        timeZone: userTimeZone
-      });
+    const bookedRanges = practitionerBookings.map((booking) => {
+      const startUTC = new Date(booking.startTime)
+      const endUTC = new Date(booking.endTime)
+
+      const startLocal = new Date(startUTC.toLocaleString("en-US",{timeZone: userTimeZone}))
+      const endLocal = new Date(endUTC.toLocaleString("en-US",{timeZone: userTimeZone}))
+
+      return {startLocal, endLocal}
+      // const bookingUtc = new Date(booking.appointmentDate);
+      // return bookingUtc.toLocaleTimeString("en-US", {
+      //   hour: "numeric",
+      //   minute: "2-digit",
+      //   hour12: true,
+      //   timeZone: userTimeZone,
+      // });
     });
 
     const practitionerAvailability = selectedServiceData?.availabilities?.find(
-      (a: any) => a.practitionerId === selectedPractitionerId && new Date(a.date).toDateString() === new Date(selectedDate).toDateString()
-    ); 
+      (a: any) =>
+        a.practitionerId === selectedPractitionerId &&
+        new Date(a.date).toDateString() ===
+          new Date(selectedDate).toDateString()
+    );
     if (!practitionerAvailability) {
       return [];
     }
 
     practitionerAvailability.slots.forEach((range) => {
-      const [startHour, startMinute] = range.startTime.split(":").map(Number);
-      const [endHour, endMinute] = range.endTime.split(":").map(Number);
+      const startUTC = new Date(range.startTime);
+      const endUTC = new Date(range.endTime);
 
-      const start = new Date(selectedDate);
-      start.setHours(startHour, startMinute, 0, 0);
-
-      const end = new Date(selectedDate);
-      end.setHours(endHour, endMinute, 0, 0);
+      const startLocal = new Date(
+        startUTC.toLocaleString("en-US", { timeZone: userTimeZone })
+      );
+      const endLocal = new Date(
+        endUTC.toLocaleString("en-US", { timeZone: userTimeZone })
+      );
       for (
-        let time = new Date(start);
-        time < end;
+        let time = new Date(startLocal);
+        time < endLocal;
         time.setMinutes(time.getMinutes() + interval)
       ) {
         const slot = new Date(time);
 
-        const timeString = slot.toLocaleTimeString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-          timeZone: userTimeZone
-        });
-
-        // skip booked slots
-        if (bookedTimes.includes(timeString)) continue;
-
         // skip past slots if today
         if (isToday && slot <= now) continue;
+
+        // check time slot is conflicting with appointment time
+        const isConflicting = bookedRanges.some((range)=> slot >= range.startLocal && slot < range.endLocal)
+
+        if(isConflicting) continue 
+        // const timeString = slot.toLocaleTimeString("en-US", {
+        //   hour: "numeric",
+        //   minute: "2-digit",
+        //   hour12: true,
+        //   timeZone: userTimeZone,
+        // });
+
+        // // skip booked slots
+        // if (bookedRanges.includes(timeString)) continue;
+
         slots.push(new Date(slot));
       }
     });
@@ -618,6 +638,7 @@ export default function DateTimeComponent({
             </div>
             <button
               className="btn btn-primary mt-3 px-4 py-2 fw-medium rounded-2"
+              disabled={isLoading}
               style={{
                 backgroundColor: "#2563eb",
                 borderColor: "#2563eb",

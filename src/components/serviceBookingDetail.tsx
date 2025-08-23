@@ -28,6 +28,7 @@ export default function ServiceBookingDetail({
   duration: number;
 }) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false)
   const merchant = useMerchantStore((state) => state.merchant);
   const user = useUserStore((state) => state.user);
   const clearUserAppoinmentHistory = useAppointmentStore(
@@ -95,7 +96,7 @@ export default function ServiceBookingDetail({
       toast.error("Please select a future Time for your appointment");
       return;
     }
-
+    setIsLoading(true)
     const bookingPayload = {
       method: "POST",
       url: global.config.ROOTURL.prod + `/appointment`,
@@ -122,8 +123,11 @@ export default function ServiceBookingDetail({
         clearUserAppoinmentHistory();
       })
       .catch((error) => {
+        toast.error("This Slot is already Booked")
         console.log("handleBookAppointment Error", error);
       });
+
+    setIsLoading(false)
   };
 
   const getAllBookings = async () => {
@@ -159,6 +163,7 @@ export default function ServiceBookingDetail({
     <>
       <div className="property_block_wrap style-2">
         <DateTimeComponent
+          isLoading={isLoading}
           bookedSlots={bookedSlots}
           selectedDate={selectedDate}
           selectedPractitionerId={practitionerId}
