@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import logo from "../../assets/img/logo.svg";
 import loginImg from "../../assets/img/svg/login.svg";
@@ -6,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "../../store/userStore";
 
 export default function Navbar() {
+  const location = useLocation()
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [toggle, setIsToggle] = useState(false);
 
@@ -52,7 +54,7 @@ export default function Navbar() {
                   <Link to={item.to} className="p-2 hover:[background-color:#F9F9F9] rounded:6xl">{item.name}</Link>
                 </li>
               ))}
-              {user && (
+              {user && location.pathname === '/' && (
                 <li>
                   <Link to="/register" className="p-2 hover:bg-cyan-600">JOIN AS A PROVIDER</Link>
                 </li>
