@@ -6,13 +6,13 @@ export default function SideFilter({
   setShow,
   selectService,
   setSelectService,
-  serviceNames,
+  serviceTypes,
 }: {
   show: any;
   setShow: any;
   selectService: string;
   setSelectService: any;
-  serviceNames: string[];
+  serviceTypes: string[];
 }) {
   return (
     <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow p-4 space-y-6">
@@ -34,7 +34,7 @@ export default function SideFilter({
           />
           All
         </label>
-        {serviceNames.map((service, index) => {
+        {serviceTypes.map((service, index) => {
           const checked = service === selectService;
           return (
             <label

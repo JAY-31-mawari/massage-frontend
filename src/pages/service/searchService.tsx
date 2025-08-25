@@ -12,6 +12,7 @@ import { useServiceStore } from "../../store/serviceStore";
 import { serviceTypes } from "../../data/servicesData";
 import { useUserStore } from "../../store/userStore";
 import toast from "react-hot-toast";
+import { serviceNames } from "../../data/servicesData";
 
 export default function ClassicalProperty() {
   const search = useSearchLocation((state) => state.searchLocation);
@@ -25,6 +26,7 @@ export default function ClassicalProperty() {
   const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
   const setservicesData = useServiceStore((state) => state.setServices);
   const [selectService, setSelectService] = useState(user?.serviceType || "");
+  const [userSelectedService, setUserSelectedService] = useState("");
   const [location, setLocation] = useState("");
   const liveLocation = useRef(false);
   const latitudeRef = useRef(0);
@@ -201,6 +203,23 @@ export default function ClassicalProperty() {
                       onChange={(e) => setLocation(e.target.value)}
                     />
 
+                    <div>
+                      <label className="block mb-2 font-medium text-[#3d2b1f]">
+                        Choose Service
+                      </label>
+                      <select
+                        className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-[#d4a373] outline-none"
+                        onChange={(e) => setUserSelectedService(e.target.value)}
+                      >
+                        <option value="">Select Service</option>
+                        {serviceNames.map((name, index) => (
+                          <option key={index} value={name}>
+                            {name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
                     {/* Left Icon */}
                     <div className="absolute top-1/2 left-3 -translate-y-1/2 text-blue-600">
                       <svg
@@ -296,7 +315,7 @@ export default function ClassicalProperty() {
                   setShow={setShow}
                   selectService={selectService}
                   setSelectService={handleSelectService}
-                  serviceNames={serviceTypes}
+                  serviceTypes={serviceTypes}
                 />
               </div>
             </div>
@@ -312,8 +331,15 @@ export default function ClassicalProperty() {
               {/* Services List */}
               <div className="grid gap-6 relative z-0">
                 {servicesData.length > 0 ? (
-                  selectService === "" ? (
-                    servicesData.map((item, index) => (
+                  servicesData
+                    .filter(
+                      (item) =>
+                        (selectService === "" ||
+                          item.businessType === selectService) &&
+                        (userSelectedService === "" ||
+                          item.services?.includes(userSelectedService))
+                    )
+                    .map((item, index) => (
                       <div
                         key={index}
                         className="bg-white rounded-xl shadow hover:shadow-md transition mx-10 my-2"
@@ -321,18 +347,6 @@ export default function ClassicalProperty() {
                         <ServiceCardLayout item={item} />
                       </div>
                     ))
-                  ) : (
-                    servicesData
-                      .filter((item) => item.businessType === selectService)
-                      .map((item, index) => (
-                        <div
-                          key={index}
-                          className="bg-white rounded-xl shadow hover:shadow-md transition mx-10 my-2"
-                        >
-                          <ServiceCardLayout item={item} />
-                        </div>
-                      ))
-                  )
                 ) : (
                   <div className="flex flex-col items-center justify-center text-gray-600 bg-gray-50 py-12 rounded-xl mx-10 my-6">
                     <svg
@@ -349,6 +363,10 @@ export default function ClassicalProperty() {
                       />
                     </svg>
                     <p className="text-lg font-medium">No services found</p>
+                    <p>
+                      Please Enter correct city, state or zipcode for better
+                      results
+                    </p>
                     <p className="text-sm text-gray-500">
                       Try adjusting your filters or search again.
                     </p>
@@ -357,7 +375,7 @@ export default function ClassicalProperty() {
               </div>
             </div>
 
-            {/* Pagination */}
+            {/* Pagination
             <div className="flex justify-center mt-10">
               <ul className="flex items-center space-x-2 text-sm">
                 <li>
@@ -414,7 +432,7 @@ export default function ClassicalProperty() {
                   </Link>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

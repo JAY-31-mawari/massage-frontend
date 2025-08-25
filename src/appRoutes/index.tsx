@@ -1,20 +1,19 @@
 import { Routes, Route } from "react-router-dom";
 import Home from '../pages/index/home';
-import ServiceSearchPage from '../pages/property/searchService';
-import ServicePage from '../pages/property/servicePage';
+import ServiceSearchPage from '../pages/service/searchService';
+import ServicePage from '../pages/service/servicePage';
 import Agents from '../pages/agents/agents';
 import AgentPage from '../pages/agents/agent-page';
 import AgencyPage from '../pages/agents/agency-page';
 import Payment from '../pages/admin/payment';
 import ChangePassword from '../pages/admin/change-password';
-import RegisterBusiness from '../pages/property/registerBusiness';
+import RegisterBusiness from '../pages/service/registerBusiness';
 import Pricing from '../pages/pricing';
 import Error from '../pages/error';
 import Contact from '../pages/contact';
 import AboutUs from '../pages/about-us';
 import Checkout from '../pages/admin/checkout';
 import Faq from '../pages/faq';
-import ParlourMap from "../pages/property/mapbox";
 import Service1 from "../pages/services/services1";
 import Service2 from "../pages/services/services2";
 import Service3 from "../pages/services/services3";
@@ -41,7 +40,6 @@ export function AppRoutes() {
             <Route path='/payment' element={<Payment />} />
             <Route path='/change-password' element={<ChangePassword />} />
             <Route path='/register' element={<RegisterBusiness />} />
-            <Route path='/mapbox' element={<ParlourMap />} />
             <Route path='/pricing' element={<Pricing />} />
             <Route path='/404' element={<Error />} />
             <Route path='/contact' element={<Contact />} />
