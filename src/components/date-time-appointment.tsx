@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMerchantStore } from "../store/merchantStore";
-import { DateTime } from "luxon";
+import { DateTime, Duration } from "luxon";
 
 
 interface Booking {
@@ -29,6 +29,7 @@ interface BookingProps {
   selectedTimeSlot: string;
   appointmentDateTime: Date;
   selectedPractitionerId: string;
+  serviceDuration:number,
   setSelectedDate: (date: Date) => void;
   setSelectedTimeSlot: (day: string) => void;
   setAppointmentDateTime: (date: Date) => void;
@@ -42,6 +43,7 @@ export default function DateTimeComponent({
   selectedDate,
   selectedTimeSlot,
   appointmentDateTime,
+  serviceDuration,
   setSelectedDate,
   setSelectedTimeSlot,
   setAppointmentDateTime,
@@ -111,7 +113,7 @@ export default function DateTimeComponent({
   // Generate time slots from according to practitioner timeslots with 30-minute intervals
   const generateTimeSlots = () => {
     const slots: Date[] = [];
-    const interval = 30; // 30 minutes
+    const interval = 15; // 30 minutes
     const now = new Date();
     const isToday = selectedDate.toDateString() === now.toDateString();
 
@@ -161,13 +163,15 @@ export default function DateTimeComponent({
         time < endLocal;
         time.setMinutes(time.getMinutes() + interval)
       ) {
-        const slot = new Date(time);
+        const slotStart = new Date(time);
+        const slotEnd = new Date(time);
+        slotEnd.setMinutes(slotEnd.getMinutes() + serviceDuration)
 
         // skip past slots if today
-        if (isToday && slot <= now) continue;
+        if (isToday && slotStart <= now) continue;
 
         // check time slot is conflicting with appointment time
-        const isConflicting = bookedRanges.some((range)=> slot >= range.startLocal && slot < range.endLocal)
+        const isConflicting = bookedRanges.some((range)=> slotStart < range.endLocal && slotEnd > range.startLocal)
 
         if(isConflicting) continue 
         // const timeString = slot.toLocaleTimeString("en-US", {
@@ -180,7 +184,7 @@ export default function DateTimeComponent({
         // // skip booked slots
         // if (bookedRanges.includes(timeString)) continue;
 
-        slots.push(new Date(slot));
+        slots.push(slotStart);
       }
     });
     return slots;
@@ -191,7 +195,7 @@ export default function DateTimeComponent({
   // Update time slots when selected date changes
   useEffect(() => {
     setTimeSlots(generateTimeSlots());
-  }, [selectedDate, bookedSlots, selectedPractitionerId]);
+  }, [selectedDate, bookedSlots, selectedPractitionerId, serviceDuration]);
 
   const handleDayClick = (index: number) => {
     setSelectedDay(index);

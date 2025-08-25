@@ -18,8 +18,8 @@ export default function SinglePropertyOne() {
   const [userSelectedService, setUserSelectedService] = useState("");
   const [userSelectedPractitionerId, setUserSelectedPractitionerId] =
     useState("");
-  const [userSelectedTimeDuration, setUserSelectedTimeDuration] = useState(0);
-
+  const [userSelectedTimeDuration, setUserSelectedTimeDuration] = useState(15);
+  const timeDuration = [15, 30, 45 ,60]
   const selectedServiceData = useMerchantStore((state) => state.merchant);
   const [selectedImage, setSelectedImage] = useState("");
 
@@ -112,6 +112,23 @@ export default function SinglePropertyOne() {
             </select>
           </div>
 
+          <div>
+            <label className="block mb-2 font-medium text-[#3d2b1f]">
+              Choose Duration
+            </label>
+            <select
+              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-[#d4a373] outline-none"
+              value={userSelectedTimeDuration}
+              onChange={(e) => setUserSelectedTimeDuration(parseInt(e.target.value,10))}
+            >
+              {timeDuration.map((time, index) => (
+                <option key={index} value={time}>
+                  {time}{' '}minutes
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Practitioner Selection */}
           <div>
             <p className="mb-2 font-medium text-[#3d2b1f]">Select Provider</p>
@@ -184,6 +201,7 @@ export default function SinglePropertyOne() {
             serviceName={userSelectedService}
             practitionerId={userSelectedPractitionerId}
             duration={userSelectedTimeDuration}
+            setDuration={setUserSelectedTimeDuration}
           />
         </div>
       </div>

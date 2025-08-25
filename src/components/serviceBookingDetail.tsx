@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import ModalVideo from "react-modal-video";
-import Lightbox from "react-18-image-lightbox";
-
-import floor from "../assets/img/floor.jpg";
-import image1 from "../assets/img/pl-6.jpg";
 import DateTimeComponent from "./date-time-appointment";
 import { useMerchantStore } from "../store/merchantStore";
 import { useUserStore } from "../store/userStore";
 
-import { galleryImg } from "../data/property";
 import toast from "react-hot-toast";
 
 import "../../node_modules/react-modal-video/css/modal-video.css";
@@ -22,10 +16,12 @@ export default function ServiceBookingDetail({
   practitionerId,
   serviceName,
   duration,
+  setDuration,
 }: {
   practitionerId: string;
   serviceName: string;
   duration: number;
+  setDuration:(time:number)=>void;
 }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false)
@@ -110,7 +106,7 @@ export default function ServiceBookingDetail({
         serviceName,
         practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
-        duration: 60,
+        duration: duration,
         timeZone: userTimeZone,
         serviceType: merchant?.businessType,
         price: 150,
@@ -120,6 +116,7 @@ export default function ServiceBookingDetail({
       .then((res) => {
         getAllBookings();
         toast.success("Your Appointment is Booked");
+        setDuration(15)
         clearUserAppoinmentHistory();
       })
       .catch((error) => {
@@ -173,6 +170,7 @@ export default function ServiceBookingDetail({
           setSelectedTimeSlot={setSelectedTimeSlot}
           setAppointmentDateTime={setAppointmentDateTime}
           handleBookingAppointment={BookAppointment}
+          serviceDuration={duration}
         />
       </div>
 
