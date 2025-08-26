@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <>
-    {/* <div
+      {/* <div
         className="relative image-cover hero-banner bg-primary"
         style={{
           backgroundImage: `url(${bg})`,
@@ -101,7 +101,7 @@ export default function Home() {
           </div>
         </div>
       </div> */}
-    {/* Search Section */}
+      {/* Search Section */}
       <div
         className="image-cover hero-banner bg-primary"
         style={{ backgroundImage: `url(${bg})`, backgroundRepeat: "no-repeat" }}
@@ -115,7 +115,7 @@ export default function Home() {
               <h2 className="text-light mb-4">
                 Last-Minute Appointments, First-Class Care
               </h2>
-              <div className="flex items-center gap-2 bg-white rounded-2xl p-3 w-full max-w-3xl mx-auto border border-gray-100">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-white rounded-2xl p-3 w-full max-w-3xl mx-auto border border-gray-100">
                 {/* Input */}
                 <div className="flex items-center flex-1 bg-gray-50 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 transition">
                   <MapPin className="text-blue-500 w-5 h-5 mr-2" />
@@ -130,7 +130,7 @@ export default function Home() {
 
                 {/* Live Location */}
                 <button
-                  className="flex items-center gap-1 px-4 py-2.5 text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition text-sm font-medium"
+                  className="flex items-center justify-center gap-1 px-4 py-2.5 text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition text-sm font-medium sm:w-auto w-full"
                   onClick={() => {
                     setStorageItem("live", "true");
                     navigate("/serviceList");
@@ -139,11 +139,12 @@ export default function Home() {
                   title="Use my current location"
                 >
                   <Locate className="w-6 h-6" />
+                  <span className="sm:hidden">Use Location</span>
                 </button>
 
                 {/* Search Button */}
                 <button
-                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:shadow-lg transition"
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:shadow-lg transition sm:w-auto w-full"
                   onClick={() =>
                     location
                       ? navigate(`/serviceList?search=${location}`)
@@ -157,7 +158,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-{/* Service Details startpoint */}
+      {/* Service Details startpoint */}
       <div className="bg-[#f8fdfd] mt-5 mb-5 p-6 sm:p-10 rounded-xl">
         {/* Main Title */}
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-5">
@@ -216,7 +217,7 @@ export default function Home() {
         </div>
       </section>
 
-            {/* Steps for users */}
+      {/* Steps for users */}
       <section className="gray-bg">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 leading-snug">
@@ -317,8 +318,8 @@ export default function Home() {
                   </span>
                   and a{" "}
                   <span className="font-semibold text-gray-700">reminder</span>{" "}
-                  day before your appointment. Now, sit back and get ready to feel
-                  amazing ✨
+                  day before your appointment. Now, sit back and get ready to
+                  feel amazing ✨
                 </p>
               </div>
               <img
@@ -331,7 +332,7 @@ export default function Home() {
         </div>
       </section>
 
-            {/* Customer Reviews */}
+      {/* Customer Reviews */}
       <section className="gray-bg">
         <div className="container">
           <div className="row justify-content-center">
