@@ -67,3 +67,21 @@ export interface AppointmentHistory {
     userId: string
     _id: string
 }
+
+
+export interface Booking {
+  active: boolean;
+  appointmentDate: Date;
+  startTime:Date,
+  endTime: Date,
+  businessId: string;
+  duration: number;
+  paymentStatus: string;
+  practitionerId: string;
+  price: number;
+  reminderSent: false;
+  serviceName: string;
+  serviceType: string;
+  status: string;
+  _id: string;
+}

@@ -2,34 +2,16 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMerchantStore } from "../store/merchantStore";
-import { DateTime, Duration } from "luxon";
-
-
-interface Booking {
-  active: boolean;
-  appointmentDate: Date;
-  startTime:Date,
-  endTime: Date,
-  businessId: string;
-  duration: number;
-  paymentStatus: string;
-  practitionerId: string;
-  price: number;
-  reminderSent: false;
-  serviceName: string;
-  serviceType: string;
-  status: string;
-  _id: string;
-}
+import { Booking } from "./interfaces";
 
 interface BookingProps {
   bookedSlots: Booking[];
   selectedDate: Date;
-  isLoading: boolean,
+  isLoading: boolean;
   selectedTimeSlot: string;
   appointmentDateTime: Date;
   selectedPractitionerId: string;
-  serviceDuration:number,
+  serviceDuration: number;
   setSelectedDate: (date: Date) => void;
   setSelectedTimeSlot: (day: string) => void;
   setAppointmentDateTime: (date: Date) => void;
@@ -52,12 +34,12 @@ export default function DateTimeComponent({
   const selectedServiceData = useMerchantStore((state) => state.merchant);
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDay, setSelectedDay] = useState(0);
-  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
+  const [timeSlots, setTimeSlots] = useState<Date[]>([]);
   // Default to today (first day)
   const [days, setDays] = useState<
-    Array<{ date: string; waiting: string; fullDate: Date; isCustom?: boolean }>
+    Array<{ date: string; fullDate: Date; isCustom?: boolean }>
   >([]);
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // Generate dynamic dates based on today (7 days initially)
   useEffect(() => {
@@ -90,17 +72,10 @@ export default function DateTimeComponent({
         const monthName = monthNames[currentDate.getMonth()];
         const dateNum = currentDate.getDate();
 
-        // Generate realistic waiting numbers (higher on weekends)
-        const isWeekend =
-          currentDate.getDay() === 0 || currentDate.getDay() === 6;
-        const baseWaiting = isWeekend ? 120 : 80;
-        const randomVariation = Math.floor(Math.random() * 50);
-        const waitingCount = baseWaiting + randomVariation + i * 10; // Increase over time
-
         generatedDays.push({
           date: `${dayName}, ${monthName} ${dateNum}`,
-          waiting: `${waitingCount} Waiting`,
           fullDate: new Date(currentDate),
+          isCustom: false,
         });
       }
 
@@ -122,20 +97,17 @@ export default function DateTimeComponent({
     );
 
     const bookedRanges = practitionerBookings.map((booking) => {
-      const startUTC = new Date(booking.startTime)
-      const endUTC = new Date(booking.endTime)
+      const startUTC = new Date(booking.startTime);
+      const endUTC = new Date(booking.endTime);
 
-      const startLocal = new Date(startUTC.toLocaleString("en-US",{timeZone: userTimeZone}))
-      const endLocal = new Date(endUTC.toLocaleString("en-US",{timeZone: userTimeZone}))
+      const startLocal = new Date(
+        startUTC.toLocaleString("en-US", { timeZone: userTimeZone })
+      );
+      const endLocal = new Date(
+        endUTC.toLocaleString("en-US", { timeZone: userTimeZone })
+      );
 
-      return {startLocal, endLocal}
-      // const bookingUtc = new Date(booking.appointmentDate);
-      // return bookingUtc.toLocaleTimeString("en-US", {
-      //   hour: "numeric",
-      //   minute: "2-digit",
-      //   hour12: true,
-      //   timeZone: userTimeZone,
-      // });
+      return { startLocal, endLocal };
     });
 
     const practitionerAvailability = selectedServiceData?.availabilities?.find(
@@ -144,6 +116,7 @@ export default function DateTimeComponent({
         new Date(a.date).toDateString() ===
           new Date(selectedDate).toDateString()
     );
+    
     if (!practitionerAvailability) {
       return [];
     }
@@ -165,32 +138,24 @@ export default function DateTimeComponent({
       ) {
         const slotStart = new Date(time);
         const slotEnd = new Date(time);
-        slotEnd.setMinutes(slotEnd.getMinutes() + serviceDuration)
+        slotEnd.setMinutes(slotEnd.getMinutes() + serviceDuration);
 
         // skip past slots if today
         if (isToday && slotStart <= now) continue;
 
         // check time slot is conflicting with appointment time
-        const isConflicting = bookedRanges.some((range)=> slotStart < range.endLocal && slotEnd > range.startLocal)
+        const isConflicting = bookedRanges.some(
+          (range) => slotStart < range.endLocal && slotEnd > range.startLocal
+        );
 
-        if(isConflicting) continue 
-        // const timeString = slot.toLocaleTimeString("en-US", {
-        //   hour: "numeric",
-        //   minute: "2-digit",
-        //   hour12: true,
-        //   timeZone: userTimeZone,
-        // });
-
-        // // skip booked slots
-        // if (bookedRanges.includes(timeString)) continue;
+        if (isConflicting) continue;
 
         slots.push(slotStart);
       }
     });
+
     return slots;
   };
-
-  const [timeSlots, setTimeSlots] = useState<Date[]>([]);
 
   // Update time slots when selected date changes
   useEffect(() => {
@@ -203,7 +168,7 @@ export default function DateTimeComponent({
 
     // Console log the selected date in IST format
     const selectedDateIST = new Date(
-      days[index].fullDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+      days[index].fullDate.toLocaleString("en-US", { timeZone: userTimeZone })
     );
     setAppointmentDateTime(selectedDateIST);
   };
@@ -213,6 +178,7 @@ export default function DateTimeComponent({
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
+      timeZone: userTimeZone
     });
     setSelectedTimeSlot(timeString);
 
@@ -229,7 +195,7 @@ export default function DateTimeComponent({
 
     // Console log the selected date from datepicker in IST format
     const selectedDateIST = new Date(
-      date.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+      date.toLocaleString("en-US", { timeZone: userTimeZone })
     );
     setAppointmentDateTime(selectedDateIST);
 
@@ -255,17 +221,12 @@ export default function DateTimeComponent({
     const dateNum = date.getDate();
 
     // Generate waiting number for the custom date
-    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-    const baseWaiting = isWeekend ? 120 : 80;
-    const randomVariation = Math.floor(Math.random() * 50);
-    const waitingCount = baseWaiting + randomVariation;
 
     setDays((prevDays) => {
       const updatedDays = [...prevDays];
       // Add the custom date as a new slot at the end
       updatedDays.push({
         date: `${dayName}, ${monthName} ${dateNum}`,
-        waiting: `${waitingCount} Waiting`,
         fullDate: new Date(date),
         isCustom: true,
       });
@@ -379,7 +340,6 @@ export default function DateTimeComponent({
       }}
     >
       <div className="container-fluid py-3 px-4">
-        {/* Header */}
         <div className="mb-5">
           <h1 className="h3 fw-bold mb-2" style={{ color: "#111827" }}>
             Select Your Appointment
@@ -472,18 +432,6 @@ export default function DateTimeComponent({
                       </span>
                     )}
                   </button>
-
-                  {/* Waiting below button */}
-                  <div
-                    className="mt-1 text-center"
-                    style={{
-                      fontSize: "12px",
-                      opacity: selectedDay === index ? 0.95 : 0.7,
-                      color: selectedDay === index ? "#2563eb" : "#6b7280",
-                    }}
-                  >
-                    {day.waiting}
-                  </div>
                 </div>
               );
             })}
@@ -536,6 +484,7 @@ export default function DateTimeComponent({
                 hour: "numeric",
                 minute: "2-digit",
                 hour12: true,
+                timeZone: userTimeZone,
               });
 
               return (
@@ -595,68 +544,34 @@ export default function DateTimeComponent({
 
         {/* Selection Summary */}
         <div className="mt-5">
-          <div
-            className="bg-white rounded-3 p-4 border"
-            style={{
-              boxShadow:
-                "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-              borderColor: "#e5e7eb",
-            }}
-          >
-            <h3 className="h6 fw-semibold mb-3" style={{ color: "#111827" }}>
+          <div className="bg-white rounded-lg p-4 border shadow-sm">
+            <h3 className="text-base font-semibold mb-3 text-gray-900">
               Your Selection
             </h3>
-            <div className="row">
-              <div className="col-md-6">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
                 <div className="mb-2">
-                  <span
-                    className="text-muted me-2"
-                    style={{ fontSize: "14px" }}
-                  >
-                    Date:
-                  </span>
-                  <span
-                    className="fw-medium"
-                    style={{ color: "#374151", fontSize: "14px" }}
-                  >
+                  <span className="text-gray-500 mr-2 text-sm">Date:</span>
+                  <span className="font-medium text-gray-700 text-sm">
                     {formatSelectedDate()}
                   </span>
                 </div>
               </div>
-              <div className="col-md-6">
+
+              <div>
                 <div className="mb-2">
-                  <span
-                    className="text-muted me-2"
-                    style={{ fontSize: "14px" }}
-                  >
-                    Time:
-                  </span>
-                  <span
-                    className="fw-medium"
-                    style={{ color: "#374151", fontSize: "14px" }}
-                  >
+                  <span className="text-gray-500 mr-2 text-sm">Time:</span>
+                  <span className="font-medium text-gray-700 text-sm">
                     {selectedTimeSlot}
                   </span>
                 </div>
               </div>
             </div>
+
             <button
-              className="btn btn-primary mt-3 px-4 py-2 fw-medium rounded-2"
+              className="btn btn-primary mt-3 px-4 py-2 font-medium rounded bg-blue-600 text-white border border-blue-600 text-sm transition-all duration-150 hover:bg-blue-700 hover:border-blue-700 disabled:opacity-50"
               disabled={isLoading}
-              style={{
-                backgroundColor: "#2563eb",
-                borderColor: "#2563eb",
-                fontSize: "14px",
-                transition: "all 0.15s ease-in-out",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#1d4ed8";
-                e.currentTarget.style.borderColor = "#1d4ed8";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#2563eb";
-                e.currentTarget.style.borderColor = "#2563eb";
-              }}
               onClick={() => handleBookingAppointment()}
             >
               Confirm Appointment
