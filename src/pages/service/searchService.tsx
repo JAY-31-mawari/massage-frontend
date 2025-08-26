@@ -191,56 +191,35 @@ export default function ClassicalProperty() {
         <div className="container mx-auto px-4">
           <div className="flex justify-center">
             <div className="w-full max-w-2xl">
-              <div className="bg-white rounded-2xl p-6">
-                <div className="flex flex-col md:flex-row gap-4">
+              <div className="bg-white rounded-2xl p-4 md:p-6 shadow-md">
+                <div className="flex flex-col md:flex-row items-stretch gap-3">
                   {/* Location Input */}
                   <div className="relative flex-1">
                     <input
                       type="text"
-                      className="w-full border-0 rounded-lg pl-12 pr-28 py-3 text-gray-700 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                      className="w-full border border-blue-300 rounded-lg pl-10 pr-12 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                       placeholder="Enter city, state or zipcode"
                       value={location}
                       onChange={(e) => setLocation(e.target.value)}
                     />
 
-                    <div>
-                      <label className="block mb-2 font-medium text-[#3d2b1f]">
-                        Choose Service
-                      </label>
-                      <select
-                        className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-[#d4a373] outline-none"
-                        onChange={(e) => setUserSelectedService(e.target.value)}
-                      >
-                        <option value="">Select Service</option>
-                        {serviceNames.map((name, index) => (
-                          <option key={index} value={name}>
-                            {name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
                     {/* Left Icon */}
                     <div className="absolute top-1/2 left-3 -translate-y-1/2 text-blue-600">
                       <svg
-                        width="25"
-                        height="25"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <path
-                          opacity="0.3"
-                          d="M18.0624 15.3453L13.1624 20.7453C12.5624 21.4453 11.5624 21.4453 10.9624 20.7453L6.06242 15.3453C4.56242 13.6453 3.76242 11.4453 4.06242 8.94534C4.56242 5.34534 7.46242 2.44534 11.0624 2.04534C15.8624 1.54534 19.9624 5.24534 19.9624 9.94534C20.0624 12.0453 19.2624 13.9453 18.0624 15.3453Z"
-                        />
-                        <path d="M12.0624 13.0453C13.7193 13.0453 15.0624 11.7022 15.0624 10.0453C15.0624 8.38849 13.7193 7.04535 12.0624 7.04535C10.4056 7.04535 9.06241 8.38849 9.06241 10.0453C9.06241 11.7022 10.4056 13.0453 12.0624 13.0453Z" />
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                       </svg>
                     </div>
 
                     {/* Live Location Button */}
                     <button
                       type="button"
-                      className="absolute top-1/2 right-2 -translate-y-1/2 px-3 py-1.5 rounded-lg border border-blue-500 text-blue-600 text-sm font-medium flex items-center gap-1 hover:bg-blue-50 transition disabled:opacity-50"
+                      className="absolute top-1/2 right-2 -translate-y-1/2 p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-300 transition disabled:opacity-50"
                       onClick={getCurrentLocation}
                       disabled={isLoadingLocation}
                       title="Use my current location"
@@ -267,27 +246,39 @@ export default function ClassicalProperty() {
                           />
                         </svg>
                       ) : (
-                        <>
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                          </svg>
-                          <span className="font-medium">Live Location</span>
-                        </>
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                        </svg>
                       )}
                     </button>
+                  </div>
+
+                  {/* Service Select (kept as extra feature) */}
+                  <div className="flex-1 md:max-w-xs">
+                    <select
+                      className="w-full border border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-[#d4a373] outline-none"
+                      onChange={(e) => setUserSelectedService(e.target.value)}
+                    >
+                      <option value="">Select Service</option>
+                      {serviceNames.map((name, index) => (
+                        <option key={index} value={name}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   {/* Search Button */}
                   <div className="w-full md:w-auto">
                     <button
                       type="button"
-                      className="w-full bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg shadow-md transition"
+                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-lg shadow-md transition font-medium"
                       onClick={() => {
                         liveLocation.current = false;
                         getSearchBusinesses();
