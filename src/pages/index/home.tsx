@@ -43,64 +43,6 @@ export default function Home() {
 
   return (
     <>
-      {/* <div
-        className="relative image-cover hero-banner bg-primary"
-        style={{
-          backgroundImage: `url(${bg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/70 to-indigo-700/70 backdrop-blur-sm"></div>
-
-        <div className="relative container py-24">
-          <div className="text-center mb-10">
-            <p className="text-lg md:text-xl text-blue-100 tracking-wide">
-              Feel Better, Even on Your Busiest Days
-            </p>
-            <h1 className="text-3xl md:text-5xl font-bold text-white mt-2 leading-tight drop-shadow-lg">
-              Last-Minute Appointments, <br /> First-Class Care
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-3 bg-white/80 backdrop-blur-lg rounded-3xl p-4 md:p-5 w-full max-w-3xl mx-auto border border-blue-200 shadow-lg">
-            <div className="flex items-center flex-1 bg-gray-50 rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-blue-500 transition shadow-sm">
-              <MapPin className="text-blue-600 w-5 h-5 mr-2" />
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Enter city, state or zipcode"
-                className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400"
-              />
-            </div>
-
-            <button
-              className="flex items-center justify-center gap-1 px-4 py-2.5 text-blue-700 bg-blue-100 rounded-xl hover:bg-blue-200 transition text-sm font-medium shadow-md hover:shadow-lg animate-pulse"
-              onClick={() => {
-                localStorage.setItem("live", "true");
-                navigate("/serviceList");
-              }}
-              disabled={isLoadingLocation}
-              title="Use my current location"
-            >
-              <Locate className="w-6 h-6" />
-            </button>
-
-            <button
-              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-blue-400/40 hover:scale-105 transition-transform shadow-md"
-              onClick={() =>
-                location
-                  ? navigate(`/serviceList?search=${location}`)
-                  : navigate(`/serviceList`)
-              }
-            >
-              Search
-            </button>
-          </div>
-        </div>
-      </div> */}
       {/* Search Section */}
       <div
         className="image-cover hero-banner bg-primary"
@@ -117,14 +59,14 @@ export default function Home() {
               </h2>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-white rounded-2xl p-3 w-full max-w-3xl mx-auto border border-gray-100">
                 {/* Input */}
-                <div className="flex items-center flex-1 bg-gray-50 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 transition">
+                <div className="flex items-center flex-1 bg-blue-50 rounded-xl px-3 py-3 focus-within:ring-2 focus-within:ring-blue-500 transition">
                   <MapPin className="text-blue-500 w-5 h-5 mr-2" />
                   <input
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="Enter city, state or zipcode"
-                    className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400"
+                    className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400 text-lg"
                   />
                 </div>
 
