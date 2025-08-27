@@ -15,7 +15,7 @@ export default function AdminMainLayout() {
         return <Payment />;
       case "my-profile":
         return <MyProfile />;
-      case "my-orders":
+      case "my-bookings":
         return <UserBookings />;
       case "change-password":
         return <ChangePassword />;

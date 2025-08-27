@@ -12,6 +12,7 @@ export default function Contact() {
   const [phoneNo, setPhoneNo] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneNoError, setphoneNoError] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -50,6 +51,9 @@ export default function Contact() {
   };
 
   const sendMessage = async () => {
+  setIsLoading(true);
+
+  try {
     const contactPayload = {
       method: "POST",
       url: global.config.ROOTURL.prod + `/contact/`,
@@ -61,23 +65,25 @@ export default function Contact() {
       },
     };
 
-    await axios(contactPayload)
-      .then((res) => {
-        if (res.data.success) {
-          toast.success(res.data.msg);
-          setFullName("");
-          setEmail("");
-          setMessage("");
-          setPhoneNo("");
-        } else if (!res.data.success) {
-          toast.error(res.data.msg);
-        }
-      })
-      .catch((error) => {
-        toast.error("Error in sending Information");
-        console.error("Error in sending Information", error);
-      });
-  };
+    const res = await axios(contactPayload);
+
+    if (res.data.success) {
+      toast.success(res.data.msg);
+      setFullName("");
+      setEmail("");
+      setMessage("");
+      setPhoneNo("");
+    } else {
+      toast.error(res.data.msg);
+    }
+  } catch (error) {
+    toast.error("Error in sending Information");
+    console.error("Error in sending Information", error);
+  } finally {
+    setIsLoading(false); // always runs (success or error)
+  }
+};
+
 
   return (
     <>
@@ -223,6 +229,7 @@ export default function Contact() {
               <button
                 type="button"
                 onClick={sendMessage}
+                disabled={isLoading}
                 className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg px-6 py-3 transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 Send Message

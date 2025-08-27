@@ -20,6 +20,7 @@ export default function RegisterAccount() {
   const [showOTP, setShowOTP] = useState(false);
   const [isOTPLoading, setIsOTPLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
+  const lastLoggedInTime = new Date().toISOString()
   const updateUserDetails = useUserStore((state) => state.fullUpdate);
 
   const validateEmail = (email: string) => {
@@ -95,6 +96,7 @@ export default function RegisterAccount() {
         setUserData(res.data?.data);
         toast.success(res.data.msg);
         setShowOTP(true);
+        setStorageItem('lastLoggedIn', lastLoggedInTime)
       } else {
         toast.error("Failed to create account! Please try once again:");
         console.error("Error! Please try once again:", res.data.message);
@@ -124,6 +126,7 @@ export default function RegisterAccount() {
         toast.success(res.data.msg);
         setUserData(res.data?.data);
         setShowOTP(true);
+        setStorageItem('lastLoggedIn', lastLoggedInTime)
       } else {
         toast.error("Something went wrong, please try again");
       }

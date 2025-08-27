@@ -85,3 +85,15 @@ export interface Booking {
   status: string;
   _id: string;
 }
+
+export interface PaymentCard {
+  id: string;
+  cardNumber: string;
+  cardHolderName: string;
+  expiryDate: string;
+  isDefault: boolean;
+  cardType: string;
+  isActive: boolean;
+  lastUsed: Date;
+  isExpired: boolean;
+}

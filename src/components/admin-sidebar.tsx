@@ -9,12 +9,8 @@ export default function AdminSidebar({ selectedPage, setSelectedPage }: { select
         <div className="sidebar-widgets h-full bg-white shadow-lg px-6 py-8">
             <ul className="space-y-1 pl-0">
                 {[
-                    // { key: 'dashboard', label: 'Dashboard' },
-                    { key: 'my-profile', label: 'My Profile' },
-                    // { key: 'bookmark-list', label: 'Bookmarked Listings' },
-                    { key: 'my-orders', label: 'My Orders' },
-                    // { key: 'submit-property-dashboard', label: 'Submit Property' },
-                    // { key: 'checkout', label: 'Checkout' },
+                    { key: 'my-profile', label: 'Profile' },
+                    { key: 'my-bookings', label: 'Bookings' },
                     { key: 'payment', label: 'Payment' },
                     { key: 'change-password', label: 'Change Password' },
                 ].map((item) => (

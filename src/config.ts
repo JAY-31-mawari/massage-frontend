@@ -6,6 +6,7 @@ declare global {
     MAPBOX_TOKEN: string,
     MAP_COORDINATES: [number, number],
     MAP_ZOOM: number
+    DAYS: number
   }
 
   interface Global {
@@ -23,7 +24,8 @@ global.config = {
   },
   MAPBOX_TOKEN: "pk.eyJ1IjoiamF5bWF3YXJpIiwiYSI6ImNrdWhiZXRlODJhNzUycG12YW1ubGJvb3kifQ.tNmhwcgvyLZxZIMZw0MHLA",
   MAP_COORDINATES: [-74.0242, 40.6941],
-  MAP_ZOOM: 10.12
+  MAP_ZOOM: 10.12,
+  DAYS:7
 };
 
 export default global.config;

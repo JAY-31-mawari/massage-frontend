@@ -65,7 +65,7 @@ export default function Home() {
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Enter city, state or zipcode"
+                    placeholder="Enter City, State or Zipcode"
                     className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400 text-lg"
                   />
                 </div>

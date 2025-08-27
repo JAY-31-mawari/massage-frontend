@@ -5,11 +5,17 @@ import logo from "../../assets/img/logo.svg";
 import loginImg from "../../assets/img/svg/login.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "../../store/userStore";
+import { deleteStorageItem, getStorageItem, setStorageItem } from "../../utils/sessionStorage";
 
 export default function Navbar() {
   const location = useLocation()
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [toggle, setIsToggle] = useState(false);
+  const [showSignUpSignIn, setShowSignUpSignIn] = useState(true);
+  const todayLoggedInTime = new Date().toISOString()
+  const lastLoggedInTime = getStorageItem('lastLoggedIn')
+
+  const token = getStorageItem('token')
 
   const user = useUserStore((state) => state.user);
   
@@ -19,12 +25,12 @@ export default function Navbar() {
       name:"HOME"
     },
     {
-      to:"/my-account",
-      name:"MY ACCOUNT"
-    },
-    {
       to:"/serviceList",
       name:"BOOK AN APPOINTMENT"
+    },
+    {
+      to:"/contact",
+      name:'CONTACT'
     }
   ]
 
@@ -33,6 +39,25 @@ export default function Navbar() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(()=>{
+    if(!lastLoggedInTime || !token){
+      setShowSignUpSignIn(true)
+      return
+    }
+    const lastLoginTime = new Date(lastLoggedInTime)
+    const now = new Date()
+
+    const diffInMs = now.getTime() - lastLoginTime.getTime()
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24)
+
+    if(diffInDays > global.config.DAYS){
+      deleteStorageItem("token")
+    }else{
+      setStorageItem('lastLoggedIn', todayLoggedInTime)
+    }
+    setShowSignUpSignIn(false)
+  },[lastLoggedInTime, token])
 
   return (
     <div className="w-full sticky top-0 bg-white text-gray-900 shadow-md z-50">
@@ -54,7 +79,7 @@ export default function Navbar() {
                   <Link to={item.to} className="p-2 hover:[background-color:#F9F9F9] rounded:6xl">{item.name}</Link>
                 </li>
               ))}
-              {user && location.pathname === '/' && (
+              {showSignUpSignIn && location.pathname === '/' && (
                 <li>
                   <Link to="/register" className="p-2 hover:bg-cyan-600">JOIN AS A PROVIDER</Link>
                 </li>
@@ -64,11 +89,11 @@ export default function Navbar() {
 
           {/* Right: Profile or Auth Buttons */}
           <div className="hidden lg:flex items-center gap-6">
-            {user ? (
+            {!showSignUpSignIn ? (
               <Link to="/my-account" className="flex items-center gap-2">
                 <img
                   src={`https://ui-avatars.com/api/?name=${
-                    user.fullName || user.userName || "User"
+                    user?.fullName || "User"
                   }&background=random`}
                   alt="Profile"
                   className="h-10 w-10 rounded-full border shadow-sm"
@@ -82,13 +107,13 @@ export default function Navbar() {
                 >
                   Sign Up / Sign In
                 </Link>
-                <Link
+                {/* <Link
                   to="/register"
                   className="flex items-center gap-2 px-4 py-3 rounded-md bg-blue-600 text-white font-semibold shadow-sm hover:bg-blue-700 transition"
                 >
                   <img src={loginImg} alt="Join Icon" className="h-5 w-5" />
                   Join as a Provider
-                </Link>
+                </Link> */}
               </>
             )}
           </div>
