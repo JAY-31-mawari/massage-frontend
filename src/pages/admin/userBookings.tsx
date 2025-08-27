@@ -34,6 +34,7 @@ export default function UserBookings() {
     AppointmentHistory[]
   >([]);
   const user = useUserStore((state) => state.user);
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const accessToken = getStorageItem("token");
 
   const fetchUserAppointments = async () => {
@@ -98,23 +99,17 @@ export default function UserBookings() {
                 {userAppointmentHisotry.length !== 0 &&
                   userAppointmentHisotry.map((appointment, index: number) => {
                     const date = new Date(appointment?.appointmentDate);
+                    const options: Intl.DateTimeFormatOptions = {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                      timeZone: userTimeZone, // changes to your user timezone
+                    };
 
-                    const year = date.getUTCFullYear();
-                    const month = String(date.getUTCMonth() + 1).padStart(
-                      2,
-                      "0"
-                    ); // months are 0-based
-                    const day = String(date.getUTCDate()).padStart(2, "0");
-
-                    const hours = date.getUTCHours();
-                    const minutes = String(date.getUTCMinutes()).padStart(
-                      2,
-                      "0"
-                    );
-                    const ampm = hours >= 12 ? "PM" : "AM";
-                    const hour12 = String(hours % 12 || 12).padStart(2, "0");
-
-                    const formatted = `${year}-${month}-${day} ${hour12}:${minutes} ${ampm}`;
+                    const formatted = date.toLocaleString("en-US", options);
 
                     return (
                       <motion.div
@@ -123,26 +118,30 @@ export default function UserBookings() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1, duration: 0.4 }}
-                        onClick={()=>navigate(`/service/${appointment?.businessId?._id}`)}
+                        onClick={() =>
+                          navigate(`/service/${appointment?.businessId?._id}`)
+                        }
                       >
                         <div className="singles-dashboard-list">
                           <div className="sd-list-left">
                             <TinySlider settings={settings}>
                               {appointment?.businessId?.businessPhotos &&
-                                appointment.businessId.businessPhotos.map((el, index) => (
-                                  <div key={index} className="h-full">
-                                    <img
-                                      src={el}
-                                      alt=""
-                                      className="w-full h-full object-cover"
-                                    />
-                                  </div>
-                                ))}
+                                appointment.businessId.businessPhotos.map(
+                                  (el, index) => (
+                                    <div key={index} className="h-full">
+                                      <img
+                                        src={el}
+                                        alt=""
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                  )
+                                )}
                             </TinySlider>
                           </div>
                           <div className="sd-list-right">
-                            <h4 className="listing_dashboard_title">  
-                                {appointment?.businessId?.businessName}
+                            <h4 className="listing_dashboard_title">
+                              {appointment?.businessId?.businessName}
                             </h4>
                             <div className="user_dashboard_listed">
                               Practitioner Name:{" "}
