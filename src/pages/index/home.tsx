@@ -15,6 +15,7 @@ import { setStorageItem } from "../../utils/sessionStorage";
 import { useServiceStore } from "../../store/serviceStore";
 import toast from "react-hot-toast";
 import { MapPin, Locate } from "lucide-react";
+import homeBg from "../../assets/img/background/pexels-olly-3757952.jpg";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -46,7 +47,12 @@ export default function Home() {
       {/* Search Section */}
       <div
         className="image-cover hero-banner bg-primary"
-        style={{ backgroundImage: `url(${bg})`, backgroundRepeat: "no-repeat" }}
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${homeBg})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
         <div className="container">
           <div className="simple-search-wrap">
@@ -72,7 +78,7 @@ export default function Home() {
 
                 {/* Live Location */}
                 <button
-                  className="flex items-center justify-center gap-1 px-4 py-2.5 text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition text-sm font-medium sm:w-auto w-full"
+                  className="flex items-center justify-center gap-1 px-4 py-3 text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition text-sm font-medium sm:w-auto w-full"
                   onClick={() => {
                     setStorageItem("live", "true");
                     navigate("/serviceList");
@@ -86,7 +92,7 @@ export default function Home() {
 
                 {/* Search Button */}
                 <button
-                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:shadow-lg transition sm:w-auto w-full"
+                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:shadow-lg transition sm:w-auto w-full"
                   onClick={() =>
                     location
                       ? navigate(`/serviceList?search=${location}`)
@@ -100,8 +106,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
       {/* Service Details startpoint */}
-      <div className="bg-[#f8fdfd] mt-5 mb-5 p-6 sm:p-10 rounded-xl">
+      <div className="bg-[#f8fdfd] mt-3 mb-5 p-6 sm:p-10 rounded-xl">
         {/* Main Title */}
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-5">
           Services We Provide
@@ -119,9 +126,9 @@ export default function Home() {
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="rounded mb-3 mx-auto object-cover transition duration-300 ease-in-out w-full sm:w-[200px] h-36 sm:h-[180px]"
+                  className="rounded mb-3 mx-auto object-cover transition duration-300 ease-in-out w-full sm:w-[250px] h-36 sm:h-[200px]"
                 />
-                <p className="font-semibold text-sm sm:text-base">
+                <p className="font-semibold text-md sm:text-base">
                   {service.title}
                 </p>
               </div>
@@ -131,8 +138,7 @@ export default function Home() {
       </div>
 
       {/* website Content */}
-
-      <section className="bg-[#f8fdfd] py-16 px-4 md:px-16">
+      <section className="bg-[#ffffff] py-8 px-4 md:px-16">
         <div className="flex flex-col md:flex-row items-center justify-center gap-12 text-center">
           {/* Left Text Section */}
           <div className="md:w-1/2 flex flex-col items-center justify-center text-center">
@@ -153,14 +159,14 @@ export default function Home() {
             <img
               src={reviewsImg}
               alt="reviews"
-              className="w-[280px] h-[320px] object-cover rounded-xl shadow-lg transition-all duration-300 ease-in-out transform group-hover:-translate-y-2 group-hover:shadow-[0_0_20px_3px_rgba(86,97,246,0.4)] cursor-pointer"
+              className="w-[400px] h-[320px] object-cover rounded-xl shadow-lg transition-all duration-300 ease-in-out transform group-hover:-translate-y-2 group-hover:shadow-[0_0_20px_3px_rgba(86,97,246,0.4)] cursor-pointer"
             />
           </div>
         </div>
       </section>
 
       {/* Steps for users */}
-      <section className="gray-bg">
+      <section className="gray-bg pt-5 pb-5">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 leading-snug">
             Your perfect massage, made simple in 3 steps
@@ -275,7 +281,7 @@ export default function Home() {
       </section>
 
       {/* Customer Reviews */}
-      <section className="gray-bg">
+      <section className="bg-white pt-5">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-7 col-md-10 text-center">
