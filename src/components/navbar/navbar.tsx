@@ -49,8 +49,7 @@ export default function Navbar() {
     const now = new Date()
 
     const diffInMs = now.getTime() - lastLoginTime.getTime()
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24)
-
+    const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24))
     if(diffInDays > global.config.DAYS){
       deleteStorageItem("token")
     }else{

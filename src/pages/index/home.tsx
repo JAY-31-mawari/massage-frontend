@@ -43,72 +43,70 @@ export default function Home() {
   }, [services]);
 
   return (
-    <>
+    <div className="bg-gradient-to-r from-cyan-100 via-white to-purple-200">
       {/* Search Section */}
       <div
-        className="image-cover hero-banner bg-primary"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${homeBg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+        className="relative bg-no-repeat bg-cover bg-center w-full h-[600px] lg:h-[700px]"
+        style={{ backgroundImage: `url(${homeBg})` }}
       >
-        <div className="container">
-          <div className="simple-search-wrap">
-            <div className="hero-search-2">
-              <p className="lead-i text-light">
-                Feel Better, Even on Your Busiest Days
-              </p>
-              <h2 className="text-light mb-4">
-                Last-Minute Appointments, First-Class Care
-              </h2>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-white rounded-2xl p-3 w-full max-w-3xl mx-auto border border-gray-100">
-                {/* Input */}
-                <div className="flex items-center flex-1 bg-blue-50 rounded-xl px-3 py-3 focus-within:ring-2 focus-within:ring-blue-500 transition">
-                  <MapPin className="text-blue-500 w-5 h-5 mr-2" />
-                  <input
-                    type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Enter City, State or Zipcode"
-                    className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400 text-lg"
-                  />
-                </div>
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
 
-                {/* Live Location */}
-                <button
-                  className="flex items-center justify-center gap-1 px-4 py-3 text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition text-sm font-medium sm:w-auto w-full"
-                  onClick={() => {
-                    setStorageItem("live", "true");
-                    navigate("/serviceList");
-                  }}
-                  disabled={isLoadingLocation}
-                  title="Use my current location"
-                >
-                  <Locate className="w-6 h-6" />
-                  <span className="sm:hidden">Use Location</span>
-                </button>
+        {/* Content */}
+        <div className="relative max-w-8xl mx-12 px-6 h-full flex flex-col justify-center items-start">
+          {/* Hero Text */}
+          <p className="text-lg md:text-xl text-white mb-4 font-medium">
+            Feel Better, Even on Your Busiest Days
+          </p>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 leading-tight max-w-2xl">
+            Last-Minute Appointments, First-Class Care
+          </h2>
 
-                {/* Search Button */}
-                <button
-                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:shadow-lg transition sm:w-auto w-full"
-                  onClick={() =>
-                    location
-                      ? navigate(`/serviceList?search=${location}`)
-                      : navigate(`/serviceList`)
-                  }
-                >
-                  Search
-                </button>
-              </div>
+          {/* Search Box */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-white rounded-2xl p-3 w-full max-w-2xl border border-gray-200 shadow-md sm:w-full">
+            {/* Input */}
+            <div className="flex items-center flex-1 bg-blue-50 rounded-xl px-3 py-3 focus-within:ring-2 focus-within:ring-blue-500 transition">
+              <MapPin className="text-blue-500 w-5 h-5 mr-2" />
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Enter City, State or Zipcode"
+                className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400 lg:text-lg sm:text-xs"
+              />
             </div>
+
+            {/* Live Location */}
+            <button
+              className="flex items-center justify-center gap-2 px-4 py-3 text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition text-sm font-medium sm:w-auto w-full"
+              onClick={() => {
+                setStorageItem("live", "true");
+                navigate("/serviceList");
+              }}
+              disabled={isLoadingLocation}
+              title="Use my current location"
+            >
+              <Locate className="w-6 h-6" />
+              <span className="sm:hidden">Use Location</span>
+            </button>
+
+            {/* Search Button */}
+            <button
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition sm:w-auto w-full"
+              onClick={() =>
+                location
+                  ? navigate(`/serviceList?search=${location}`)
+                  : navigate(`/serviceList`)
+              }
+            >
+              Search
+            </button>
           </div>
         </div>
       </div>
 
       {/* Service Details startpoint */}
-      <div className="bg-[#f8fdfd] mt-3 mb-5 p-6 sm:p-10 rounded-xl">
+      <div className="mt-2 p-6 sm:p-10 rounded-xl max-w-[1400px] mx-auto">
         {/* Main Title */}
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-5">
           Services We Provide
@@ -116,19 +114,19 @@ export default function Home() {
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-10">
           {/* Service Grid */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-5 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 w-full max-w-[1200px]">
             {servicesData.map((service, index) => (
               <div
                 onClick={() => navigate(`/service/${service.url}`)}
                 key={index}
-                className="bg-white rounded-lg p-4 shadow transition duration-300 ease-in-out hover:shadow-xl hover:brightness-110 text-center cursor-pointer"
+                className="bg-white rounded-lg shadow transition duration-300 ease-in-out hover:shadow-xl hover:brightness-110 text-center cursor-pointer"
               >
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="rounded mb-3 mx-auto object-cover transition duration-300 ease-in-out w-full sm:w-[250px] h-36 sm:h-[200px]"
+                  className="rounded mb-3 object-cover transition duration-300 ease-in-out w-full h-36 sm:h-[200px]"
                 />
-                <p className="font-semibold text-md sm:text-base">
+                <p className="font-semibold text-md sm:text-base mb-4">
                   {service.title}
                 </p>
               </div>
@@ -137,8 +135,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* website Content */}
-      <section className="bg-[#ffffff] py-8 px-4 md:px-16">
+      {/* Service Content */}
+      <section className="py-8 px-4 md:px-16">
         <div className="flex flex-col md:flex-row items-center justify-center gap-12 text-center">
           {/* Left Text Section */}
           <div className="md:w-1/2 flex flex-col items-center justify-center text-center">
@@ -166,7 +164,7 @@ export default function Home() {
       </section>
 
       {/* Steps for users */}
-      <section className="gray-bg pt-5 pb-5">
+      <section className="pt-5 pb-5">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 leading-snug">
             Your perfect massage, made simple in 3 steps
@@ -281,7 +279,7 @@ export default function Home() {
       </section>
 
       {/* Customer Reviews */}
-      <section className="bg-white pt-5">
+      <section className="pt-5">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-7 col-md-10 text-center">
@@ -297,6 +295,6 @@ export default function Home() {
       <FooterTop bg="theme-bg" />
 
       <Footer />
-    </>
+    </div>
   );
 }

@@ -1,24 +1,32 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
-export default function FooterTop({bg}:{bg:any}) {
+export default function FooterTop({ bg }: { bg: any }) {
   return (
-        <section className={`call-to-act-wrap ${bg}`}>
-            <div className="container">
-                <div className="row">
-                    <div className="col-lg-12">
-                        
-                        <div className="call-to-act">
-                            <div className="call-to-act-head">
-                                <h3>Want to Become a Practitioner?</h3>
-                                <span>We'll help you to grow your career and growth.</span>
-                            </div>
-                            <Link to="/submit-property" className="btn btn-call-to-act">SignUp Today</Link>
-                        </div>
-                        
-                    </div>
-                </div>
+    <section className={`${bg}`}>
+      <div className="w-full">
+        <div className="w-full">
+          <div className="bg-blue-500 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 p-8">
+            
+            {/* Left Content */}
+            <div className="text-center md:text-left">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2">
+                Want to Become a Practitioner?
+              </h3>
+              <span className="text-lg opacity-90">
+                We'll help you to grow your career and growth.
+              </span>
             </div>
-        </section>
-  )
+
+            {/* Button */}
+            <Link
+              to="/register"
+              className="bg-white text-blue-600 font-semibold px-6 py-3 rounded-xl shadow hover:bg-gray-100 transition"
+            >
+              Sign Up Today
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
