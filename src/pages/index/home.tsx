@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import CustomerReviews from "../../components/customerReviews";
 import FooterTop from "../../components/footer-top";
 import Footer from "../../components/footer";
-import bg from "../../assets/img/banner-6.png";
 import oneImg from "../../assets/img/one.webp";
 import twoImg from "../../assets/img/two.webp";
 import threeImg from "../../assets/img/three.webp";
@@ -13,7 +12,6 @@ import axios from "axios";
 import { useSearchLocation } from "../../store/searchLocation";
 import { setStorageItem } from "../../utils/sessionStorage";
 import { useServiceStore } from "../../store/serviceStore";
-import toast from "react-hot-toast";
 import { MapPin, Locate } from "lucide-react";
 import homeBg from "../../assets/img/background/pexels-olly-3757952.jpg";
 
