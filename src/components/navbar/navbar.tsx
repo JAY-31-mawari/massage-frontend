@@ -22,15 +22,15 @@ export default function Navbar() {
   const navbarItems = [
     {
       to:"/",
-      name:"HOME"
+      name:"Home"
     },
     {
       to:"/serviceList",
-      name:"BOOK AN APPOINTMENT"
+      name:"Book an Appointment"
     },
     {
       to:"/contact",
-      name:'CONTACT'
+      name:'Contact'
     }
   ]
 

@@ -50,6 +50,13 @@ export default function Contact() {
   };
 
   const sendMessage = async () => {
+    if(isLoading){
+      return
+    }
+    if(!fullName || !email || !message){
+      toast.error("Please fill required fields")
+      return
+    }
     setIsLoading(true);
 
     try {
@@ -67,11 +74,13 @@ export default function Contact() {
       const res = await axios(contactPayload);
 
       if (res.data.success) {
-        toast.success(res.data.msg);
         setFullName("");
         setEmail("");
         setMessage("");
         setPhoneNo("");
+        setTimeout(()=>{
+          toast.success("Message Sent")
+        },1500)
       } else {
         toast.error(res.data.msg);
       }
@@ -79,7 +88,9 @@ export default function Contact() {
       toast.error("Error in sending Information");
       console.error("Error in sending Information", error);
     } finally {
-      setIsLoading(false); // always runs (success or error)
+      setTimeout(()=>{
+        setIsLoading(false)
+      }, 1500)
     }
   };
 
@@ -124,7 +135,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number
+                    Phone Number (optional)
                   </label>
                   <input
                     type="text"
@@ -174,14 +185,16 @@ export default function Contact() {
                 ></textarea>
               </div>
 
-              {/* Button */}
               <button
                 type="button"
                 onClick={sendMessage}
-                disabled={isLoading}
-                className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg px-6 py-3 text-sm sm:text-base transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50"
+                className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg px-6 py-3 text-sm sm:text-base transition-all duration-200 shadow-md hover:shadow-lg flex justify-center items-center disabled:opacity-50"
               >
-                {isLoading ? "Sending..." : "Send Message"}
+                {isLoading ? (
+                  <span className="animate-spin rounded-full h-6 w-6 border-3 border-t-blue-500"></span>
+                ) : (
+                  "Send Message"
+                )}
               </button>
             </form>
           </div>
