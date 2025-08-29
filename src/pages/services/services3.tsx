@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../components/navbar/navbar";
-import ServiceMainComponent from "./components/main";
+import ServiceMainComponent from "./components/layout";
 import { servicesData } from "../../data/servicesData";
 
 interface ServiceData {

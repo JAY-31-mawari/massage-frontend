@@ -97,7 +97,7 @@ export default function ClassicalProperty() {
         switch (error.code) {
           case error.PERMISSION_DENIED:
             errorMessage =
-              "Location access denied. Please enable location services.";
+              "Click the 🔒 icon in the URL → Reset Permissions → Reload";
             break;
           case error.POSITION_UNAVAILABLE:
             errorMessage = "Location information unavailable.";
@@ -110,7 +110,9 @@ export default function ClassicalProperty() {
             break;
         }
 
-        alert(errorMessage);
+        toast.success(errorMessage,{
+          duration: 5000
+        });
         setIsLoadingLocation(false);
       },
       {
