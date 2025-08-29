@@ -12,7 +12,7 @@ export default function Contact() {
   const [phoneNo, setPhoneNo] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneNoError, setphoneNoError] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,39 +51,40 @@ export default function Contact() {
   };
 
   const sendMessage = async () => {
-  setIsLoading(true);
+    setIsLoading(true);
 
-  try {
-    const contactPayload = {
-      method: "POST",
-      url: global.config.ROOTURL.prod + `/contact/`,
-      data: {
-        fullName,
-        email,
-        message,
-        phoneNo,
-      },
-    };
+    try {
+      const contactPayload = {
+        method: "POST",
+        url: global.config.ROOTURL.prod + `/contact/`,
+        data: {
+          fullName,
+          email,
+          message,
+          phoneNo,
+        },
+      };
 
-    const res = await axios(contactPayload);
+      const res = await axios(contactPayload);
 
-    if (res.data.success) {
-      toast.success(res.data.msg);
-      setFullName("");
-      setEmail("");
-      setMessage("");
-      setPhoneNo("");
-    } else {
-      toast.error(res.data.msg);
+      if (res.data.success) {
+        toast.success(res.data.msg);
+        setFullName("");
+        setEmail("");
+        setMessage("");
+        setPhoneNo("");
+      } else {
+        toast.error(res.data.msg);
+      }
+    } catch (error) {
+      toast.error("Error in sending Information");
+      console.error("Error in sending Information", error);
+    } finally {
+      setTimeout(()=>{
+        setIsLoading(false)
+      }, 1500)
     }
-  } catch (error) {
-    toast.error("Error in sending Information");
-    console.error("Error in sending Information", error);
-  } finally {
-    setIsLoading(false); // always runs (success or error)
-  }
-};
-
+  };
 
   return (
     <>
@@ -91,7 +92,7 @@ export default function Contact() {
         <div className="text-center">
           <motion.h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
             <span className="bg-gradient-to-r from-[#B056F2] to-[#D389F4] bg-clip-text text-transparent">
-              Contact{" "}Us
+              Contact Us
             </span>
           </motion.h1>
           <motion.p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
@@ -176,7 +177,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone Number
+                      Phone Number (optional)
                     </label>
                     <input
                       type="text"
@@ -225,14 +226,17 @@ export default function Contact() {
                 ></textarea>
               </div>
 
-              {/* Button */}
               <button
                 type="button"
                 onClick={sendMessage}
                 disabled={isLoading}
-                className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg px-6 py-3 transition-all duration-200 shadow-md hover:shadow-lg"
+                className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg px-6 py-3 transition-all duration-200 shadow-md hover:shadow-lg flex justify-center items-center"
               >
-                Send Message
+                {isLoading ? (
+                  <span className="animate-spin rounded-full h-6 w-6 border-3 border-t-blue-500"></span>
+                ) : (
+                  "Send Message"
+                )}
               </button>
             </form>
           </div>
