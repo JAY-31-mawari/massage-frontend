@@ -1,103 +1,64 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { clientReviewData } from "../data/servicesData";
-import TinySlider from "tiny-slider-react";
 import "../../node_modules/tiny-slider/dist/tiny-slider.css";
-import { Star } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function CustomerReviews() {
-  // Track expanded reviews by index
-  const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const toggleExpand = (index: number) => {
-    setExpanded((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
-
-  const settings = {
-    controls: false,
-    mouseDrag: true,
-    loop: true,
-    autoplay: true,
-    nav: false,
-    speed: 400,
-    gutter: 20,
-    items: 3,
-    responsive: {
-      0: { items: 1 },
-      768: { items: 2 },
-      1024: { items: 3 },
-    },
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const { clientWidth } = scrollRef.current;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -clientWidth : clientWidth,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
-    <section className="py-40 px-6">
-      <div className="container mx-auto max-w-7xl">
-        {/* Section Header */}
-        <div className="text-center mb-24">
-          <h2 className="font-black text-foreground mb-8 tracking-tight">
-            Transformative Stories
-          </h2>
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-medium">
-            Discover how our clients have found healing, relaxation, and renewal
-            through our signature treatments.
-          </p>
-        </div>
+    <>
+      <div className="flex justify-end mb-6">
+        <button
+          onClick={() => scroll("left")}
+          className="bg-[#fff] rounded-full shadow p-1 mr-1"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={() => scroll("right")}
+          className="bg-white rounded-full shadow p-1 ml-1"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      </div>
+      <div
+        ref={scrollRef}
+        className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 px-2 scrollbar-hide"
+      >
+        {clientReviewData.map((client, i) => (
+          <div
+            key={i}
+            className="flex-shrink-0 w-[350px] md:w-[430px] bg-white rounded-2xl border border-gray-200 p-6 text-left snap-start"
+          >
+            <p
+              className="text-gray-800 text-lg"
+              dangerouslySetInnerHTML={{ __html: client.desc }}
+            ></p>
 
-        {/* Carousel */}
-        <TinySlider settings={settings}>
-          {clientReviewData.map((client, index) => (
-            <div key={index} className="px-3 tns-item">
-              <div className="border p-8 rounded-3xl transform transition-all duration-500 bg-white shadow-md min-h-[350px] flex flex-col">
-                <div>
-                  {/* Stars */}
-                  <div className="flex items-center mb-6">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="h-6 w-6 text-yellow-400 fill-current"
-                      />
-                    ))}
-                  </div>
-
-                  {/* Review Content */}
-                  <blockquote
-                    className={`text-lg text-muted-foreground leading-relaxed italic font-medium ${
-                      expanded[index] ? "" : "line-clamp-4"
-                    }`}
-                    dangerouslySetInnerHTML={{ __html: client.desc }}
-                  />
-
-                  {/* Show More / Show Less */}
-                  <button
-                    onClick={() => toggleExpand(index)}
-                    className="mt-3 text-primary font-medium hover:underline"
-                  >
-                    {expanded[index] ? "Show Less" : "Show More"}
-                  </button>
-                </div>
-
-                {/* User Info */}
-                <div className="flex items-center space-x-4 mt-6">
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${
-                      client?.name || "User"
-                    }&background=random`}
-                    alt="Profile"
-                    className="h-12 w-12 rounded-full border"
-                  />
-                  <div>
-                    <div className="font-bold text-foreground text-lg">
-                      {client.name}
-                    </div>
-                  </div>
-                </div>
+            <div className="flex items-center gap-3 mt-6">
+              <img
+                src={client.image}
+                alt={client.name}
+                className="w-10 h-10 rounded-full"
+              />
+              <div>
+                <h4 className="font-semibold text-gray-900">{client.name}</h4>
               </div>
             </div>
-          ))}
-        </TinySlider>
+          </div>
+        ))}
       </div>
-    </section>
+    </>
   );
 }

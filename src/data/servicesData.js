@@ -69,10 +69,6 @@ export const clientReviewData = [
         I especially appreciate that the staff take the time to understand your needs — they listen attentively, 
         offer personalized recommendations, and check in throughout the session to ensure everything is going well. 
       </p>
-      <p>
-        Special kudos to Mike and Robbie, both of whom gave exceptional massages that left me feeling 
-        noticeably better and completely stress-free.
-      </p>
     `,
     name: "Sebastian Botero",
   },
@@ -100,11 +96,6 @@ export const clientReviewData = [
         best massage I’ve ever had!  
       </p>
       <p>
-        I was paired with Jan, who somehow knew the perfect amount of pressure to apply and 
-        was communicative throughout the massage — especially on the deeper stretches, making sure 
-        it was comfortable for me.  
-      </p>
-      <p>
         It was such a relaxing experience. I will definitely return. Thank you!  
       </p>
     `,
@@ -119,8 +110,47 @@ export const clientReviewData = [
         Dr. Moh was knowledgeable, professional & reassuring.  
       </p>
       <p>
-        He made the experience both comfortable and informative.  
-        I've already noticed a decrease in pain as well as <b>improved posture</b>.  
+        I would highly recommend Dr. Moh if you are looking for a Chiropractor.  
+      </p>
+    `,
+    name: "Robyn Court",
+  },
+  {
+    image: client3,
+    quote: "bg-purple",
+    desc: `
+      <p>
+        Good place for a nice massage... Would recommend a different and relaxing massage
+        with lots of stretching and pulse point acupuncture.  
+      </p>
+      <p>
+        The ambience is nice and calming. Loved the epsom salt given at the end of it, 
+        and the lemongrass tea was also a lovely touch.
+      </p>
+    `,
+    name: "Shaurya Ratna",
+  },
+  {
+    image: client4,
+    quote: "bg-seegreen",
+    desc: `
+      <p>
+        My husband brought me for a couples massage for my birthday, and I think this is the 
+        best massage I’ve ever had!  
+      </p>
+      <p>
+        It was such a relaxing experience. I will definitely return. Thank you!  
+      </p>
+    `,
+    name: "Tara K",
+  },
+  {
+    image: client5,
+    quote: "bg-danger",
+    desc: `
+      <p>
+        I was skeptical about seeing a Chiropractor but I'm thankful I finally gave in.  
+        Dr. Moh was knowledgeable, professional & reassuring.  
       </p>
       <p>
         I would highly recommend Dr. Moh if you are looking for a Chiropractor.  

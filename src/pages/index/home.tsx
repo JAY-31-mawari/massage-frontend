@@ -150,7 +150,7 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Right Card + Testimonials Section */}
+          {/* Right div + Testimonials Section */}
           <div className="relative group md:w-1/2 flex justify-center">
             <img
               src={reviewsImg}
@@ -276,16 +276,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Customer Reviews */}
-      <section className="pt-5">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-7 col-md-10 text-center">
-              <div className="sec-heading center">
-                <h2>Our Customer Reviews</h2>
-              </div>
-            </div>
-          </div>
+        {/* Customer Review */}
+      <section className="bg-[#fafbff] py-12 px-4 sm:px-6 md:px-12 lg:!px-28 lg:py-24 relative">
+        <div className="max-w-6xl">
+          {/* Heading */}
+          <h2 className="text-4xl md:text-5xl font-bold">
+            See what our community says
+          </h2>
+          <p className="mt-3 text-gray-600 text-lg">
+            Learn firsthand from our clients on how they've grown their
+            experience with Last minute wellness.
+          </p>
+        </div>
+
+        {/* Carousel wrapper */}
+        <div className="relative mt-4">
+          {/* Left Arrow */}
           <CustomerReviews />
         </div>
       </section>

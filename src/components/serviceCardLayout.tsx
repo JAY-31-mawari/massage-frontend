@@ -75,7 +75,7 @@ export default function ServiceCardLayout({ item }: { item: Service }) {
         </div>
 
         {/* Price & Icons */}
-        <div className="flex items-center justify-between my-2">
+        {/* <div className="flex items-center justify-between my-2">
           <h6 className="text-blue-600 font-semibold text-base">$150</h6>
           <div className="flex items-center space-x-2">
             <Link
@@ -97,10 +97,10 @@ export default function ServiceCardLayout({ item }: { item: Service }) {
               <i className="fa-solid fa-heart-circle-check"></i>
             </Link>
           </div>
-        </div>
+        </div> */}
 
         {/* Footer: Rating */}
-        <div className="flex items-center justify-between border-t pt-2">
+        {/* <div className="flex items-center justify-between border-t pt-2">
           <div>
             <div className="flex mb-1">
               {[...Array(5)].map((_, i) => (
@@ -112,7 +112,7 @@ export default function ServiceCardLayout({ item }: { item: Service }) {
             </div>
             <span className="text-gray-500 text-xs">47 Reviews</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
