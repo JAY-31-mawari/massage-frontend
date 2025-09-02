@@ -10,18 +10,14 @@ import axios from "axios";
 export default function SinglePropertyOne() {
   let params = useParams();
   let id: any = params.id;
-  const [serviceCountMap, setServiceCountMap] = useState<
-    Record<string, number>
-  >({});
   const [merchant, setMerchant] = useState<any>();
-  const timesDuration = [30, 45, 60];
   const [userSelectedService, setUserSelectedService] = useState("");
-  const [userSelectedPractitionerId, setUserSelectedPractitionerId] =
-    useState("");
+  const [userSelectedPractitionerId, setUserSelectedPractitionerId] = useState("");
   const [userSelectedTimeDuration, setUserSelectedTimeDuration] = useState(15);
-  const timeDuration = [15, 30, 45 ,60]
   const selectedServiceData = useMerchantStore((state) => state.merchant);
   const [selectedImage, setSelectedImage] = useState("");
+  const timeDuration = [15, 30, 45 ,60]
+
 
   const getSpecificBusinessById = async () => {
     const payload = {
@@ -51,6 +47,12 @@ export default function SinglePropertyOne() {
       }
     }
   }, [id]);
+
+  useEffect(() => {
+  if (selectedServiceData?.practitioners?.length) {
+    setUserSelectedPractitionerId(selectedServiceData.practitioners[0]._id);
+  }
+}, [selectedServiceData]);
 
   return (
     <>

@@ -60,7 +60,7 @@ export default function Footer() {
               {services.map((service) => (
                 <li
                   onClick={() => navigate(service.path)}
-                  className="hover:text-background transition-colors cursor-pointer font-medium"
+                  className="hover:text-background transition-colors cursor-pointer font-medium inline-block hover:underline hover:decoration-white hover:decoration-2"
                 >
                   {service.name}
                 </li>
@@ -74,7 +74,7 @@ export default function Footer() {
               {connects.map((type) => (
                 <li
                   onClick={() => navigate(type.path)}
-                  className="hover:text-background transition-colors cursor-pointer font-medium"
+                  className="hover:text-background transition-colors cursor-pointer font-medium inline-block hover:underline hover:decoration-white hover:decoration-2"
                 >
                   {type.name}
                 </li>

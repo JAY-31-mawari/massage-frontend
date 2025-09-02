@@ -33,32 +33,8 @@ export default function ServiceBookingDetail({
   const [appointmentDateTime, setAppointmentDateTime] = useState(new Date());
   const [bookedSlots, setBookedSlots] = useState([]);
   const accessToken = getStorageItem("token");
-  const [isOpen, setIsOpen] = useState(false);
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   let [open2, setOpen2] = useState<boolean>(false);
-  let [open4, setOpen4] = useState<boolean>(false);
-  let [open5, setOpen5] = useState<boolean>(false);
-  let [open6, setOpen6] = useState<boolean>(false);
-  let [open7, setOpen7] = useState<boolean>(false);
-  let [show, setShow] = useState<boolean>(false);
-  let [show2, setShow2] = useState<boolean>(false);
-  let [show3, setShow3] = useState<boolean>(false);
-
-  let [activeIndex, setActiveIndex] = useState<number>(0);
-  let [photo, setPhoto] = useState<boolean>(false);
-
-  const onImageClick = (index: number) => {
-    setActiveIndex(index);
-    setPhoto(true);
-  };
-
-  const rating = [
-    { value: "1", label: "01 Star" },
-    { value: "1", label: "02 Star" },
-    { value: "1", label: "03 Star" },
-    { value: "1", label: "04 Star" },
-    { value: "1", label: "05 Star" },
-  ];
 
   const BookAppointment = async () => {
     if (!user?._id) {
