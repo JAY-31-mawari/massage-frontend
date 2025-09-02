@@ -117,13 +117,9 @@ export default function SubmitProperty() {
         getLocation();
         // Next getLocation() will show prompt
       } else if (status.state === "denied") {
-        console.log(
-          "permision denied go to browser url and change the location settings"
-        );
         toast.success(
-          "please change the settings, go to url and under location tab, allow us to take you location to provide best services"
+          "Click the 🔒 icon in the URL → Reset Permissions → Reload"
         );
-        // Show UI: ask user to enable location in settings
       }
     });
   };
@@ -159,6 +155,9 @@ export default function SubmitProperty() {
   };
 
   useEffect(() => {
+    toast.success("Allow location access to help customers find your service location easily",{
+      duration: 6000
+    })
     checkPermission();
   }, []);
 

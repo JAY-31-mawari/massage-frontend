@@ -1,4 +1,3 @@
-import React from "react";
 import { Leaf, Heart, Sun, Timer as Relax, Hand, Bone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../../components/footer";

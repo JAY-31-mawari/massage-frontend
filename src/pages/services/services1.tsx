@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import Navbar from "../../components/navbar/navbar";
-import ServiceMainComponent from "./components/main";
+import { useEffect, useState } from "react";
+import ServiceMainComponent from "./components/layout";
 import { servicesData } from "../../data/servicesData";
 
 interface LocationState {
