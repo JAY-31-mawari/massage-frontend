@@ -16,10 +16,11 @@ interface Availability{
 }
 
 interface PractitionerDetails{
+  _id: string
   practitionerName: string
   profilePicture: string
   areaOfExpertise: string[]
-  _id: string
+  slots:[TimeSlot]
 }
 
 export interface Service {

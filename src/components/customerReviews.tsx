@@ -1,81 +1,103 @@
-import React from "react";
+import { useState } from "react";
 import { clientReviewData } from "../data/servicesData";
 import TinySlider from "tiny-slider-react";
 import "../../node_modules/tiny-slider/dist/tiny-slider.css";
-
-interface Client {
-  image: string;
-  quote: string;
-  desc: string;
-  name: string;
-}
-
-const settings = {
-  controls: false,
-  mouseDrag: true,
-  loop: true,
-  rewind: true,
-  autoplay: true,
-  autoplayButtonOutput: false,
-  autoplayTimeout: 3000,
-  navPosition: "bottom",
-  nav: false,
-  speed: 400,
-  gutter: 0,
-  responsive: {
-    992: {
-      items: 3,
-    },
-
-    767: {
-      items: 2,
-    },
-
-    320: {
-      items: 1,
-    },
-  },
-};
+import { Star } from "lucide-react";
 
 export default function CustomerReviews() {
+  // Track expanded reviews by index
+  const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
+
+  const toggleExpand = (index: number) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  const settings = {
+    controls: false,
+    mouseDrag: true,
+    loop: true,
+    autoplay: true,
+    nav: false,
+    speed: 400,
+    gutter: 20,
+    items: 3,
+    responsive: {
+      0: { items: 1 },
+      768: { items: 2 },
+      1024: { items: 3 },
+    },
+  };
+
   return (
-    <div className="row justify-content-center">
-      <div className="col-lg-12 col-md-12">
-        <div
-          className="smart-textimonials smart-center"
-          id="smart-textimonials"
-        >
-          <TinySlider settings={settings}>
-            {clientReviewData.map((item: Client, index: number) => {
-              return (
-                <div className="item" key={index}>
-                  <div className="item-box">
-                    <div className="smart-tes-author">
-                      <div className="st-author-box">
-                        <div className="st-author-thumb">
-                          <div className={`quotes ${item.quote}`}>
-                            <i className="fa-solid fa-quote-left"></i>
-                          </div>
-                          <img src={item.image} className="img-fluid" alt="" />
-                        </div>
-                      </div>
-                    </div>
+    <section className="py-40 px-6">
+      <div className="container mx-auto max-w-7xl">
+        {/* Section Header */}
+        <div className="text-center mb-24">
+          <h2 className="font-black text-foreground mb-8 tracking-tight">
+            Transformative Stories
+          </h2>
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-medium">
+            Discover how our clients have found healing, relaxation, and renewal
+            through our signature treatments.
+          </p>
+        </div>
 
-                    <div
-                      className="smart-tes-content"
-                      dangerouslySetInnerHTML={{ __html: item.desc }}
-                    />
+        {/* Carousel */}
+        <TinySlider settings={settings}>
+          {clientReviewData.map((client, index) => (
+            <div key={index} className="px-3 tns-item">
+              <div className="border p-8 rounded-3xl transform transition-all duration-500 bg-white shadow-md min-h-[350px] flex flex-col">
+                <div>
+                  {/* Stars */}
+                  <div className="flex items-center mb-6">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="h-6 w-6 text-yellow-400 fill-current"
+                      />
+                    ))}
+                  </div>
 
-                    <div className="st-author-info">
-                      <h4 className="st-author-title">{item.name}</h4>
+                  {/* Review Content */}
+                  <blockquote
+                    className={`text-lg text-muted-foreground leading-relaxed italic font-medium ${
+                      expanded[index] ? "" : "line-clamp-4"
+                    }`}
+                    dangerouslySetInnerHTML={{ __html: client.desc }}
+                  />
+
+                  {/* Show More / Show Less */}
+                  <button
+                    onClick={() => toggleExpand(index)}
+                    className="mt-3 text-primary font-medium hover:underline"
+                  >
+                    {expanded[index] ? "Show Less" : "Show More"}
+                  </button>
+                </div>
+
+                {/* User Info */}
+                <div className="flex items-center space-x-4 mt-6">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${
+                      client?.name || "User"
+                    }&background=random`}
+                    alt="Profile"
+                    className="h-12 w-12 rounded-full border"
+                  />
+                  <div>
+                    <div className="font-bold text-foreground text-lg">
+                      {client.name}
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </TinySlider>
-        </div>
+              </div>
+            </div>
+          ))}
+        </TinySlider>
       </div>
-    </div>
+    </section>
   );
 }

@@ -18,7 +18,7 @@ export default function Page() {
       <div className="prose prose-slate max-w-4xl text-justify leading-relaxed space-y-6">
         <p>
           These Terms of Use set out the terms and conditions for use of this
-          Homeosetu Website (“Website”) and any content, Public Forums, or
+          Last minute wellness Website (“Website”) and any content, Public Forums, or
           services offered on or through the Website. These Terms of Use apply
           to end users of the Website (referred to as “Learners”, “You”, “Your”).
         </p>
@@ -33,7 +33,7 @@ export default function Page() {
         </p>
         <p>
           When we speak of “Creator”, ‘we’, ‘us’, and ‘our’, we collectively
-          mean The Homeosetu Team being the creator of this Platform and the
+          mean The Last minute wellness Team being the creator of this Platform and the
           content/materials/services contained therein. By accessing this
           Platform, You are agreeing to be bound by the terms of this Agreement,
           all applicable laws and regulations.
@@ -165,10 +165,10 @@ export default function Page() {
           If You’ve have concerns or queries regarding this Agreement, You may
           write to us by email at{" "}
           <a
-            href="mailto:homeosetu@gmail.com"
+            href="mailto:lastminutewellness@gmail.com"
             className="text-blue-600 underline"
           >
-            homeosetu@gmail.com
+            lastminutewellness@gmail.com
           </a>
         </p>
       </div>

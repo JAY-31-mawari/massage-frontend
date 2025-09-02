@@ -181,16 +181,18 @@ export default function ClassicalProperty() {
 
   return (
     <>
-      <section className="relative bg-blue-600">
+      <section className="relative bg-blue-600 min-h-[200px] flex items-center">
         {/* Decorative Pills */}
         <div className="absolute left-0 top-0 w-1/4 h-10 bg-white rounded-r-full opacity-25 mt-4"></div>
         <div className="absolute left-0 bottom-0 w-[15%] h-10 bg-white rounded-t-full opacity-25 ml-4"></div>
         <div className="absolute right-0 top-0 w-[15%] h-10 bg-white rounded-b-full opacity-25 mr-4"></div>
         <div className="absolute right-0 bottom-0 w-1/4 h-10 bg-white rounded-l-full opacity-25 mb-4"></div>
 
-        <div className="py-1"></div>
+        {/* Spacing Top */}
+        <div className="py-2"></div>
+
         {/* Container */}
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-center">
             <div className="w-full max-w-2xl">
               <div className="bg-white rounded-2xl p-4 md:p-6 shadow-md">
@@ -261,7 +263,7 @@ export default function ClassicalProperty() {
                     </button>
                   </div>
 
-                  {/* Service Select (kept as extra feature) */}
+                  {/* Service Select */}
                   <div className="flex-1 md:max-w-xs">
                     <select
                       className="w-full border border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-[#d4a373] outline-none"
@@ -294,7 +296,9 @@ export default function ClassicalProperty() {
             </div>
           </div>
         </div>
-        <div className="py-1"></div>
+
+        {/* Spacing Bottom */}
+        <div className="py-2"></div>
       </section>
 
       <div className="w-full px-1 py-10">
