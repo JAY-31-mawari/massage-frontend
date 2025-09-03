@@ -162,7 +162,7 @@ export default function Home() {
       </section>
 
       {/* Steps for users */}
-      <section className="pt-5 pb-5">
+      <section className="py-5 bg-[rgb(255,255,255)]">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 leading-snug">
             Your perfect massage, made simple in 3 steps
@@ -276,7 +276,7 @@ export default function Home() {
         </div>
       </section>
 
-        {/* Customer Review */}
+      {/* Customer Review */}
       <section className="bg-[#fafbff] py-12 px-4 sm:px-6 md:px-12 lg:!px-28 lg:py-24 relative">
         <div className="max-w-6xl">
           {/* Heading */}

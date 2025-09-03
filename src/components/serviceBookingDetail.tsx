@@ -88,8 +88,11 @@ export default function ServiceBookingDetail({
     };
     await axios(bookingPayload)
       .then((res) => {
-        if(res.data.message === "Practitioner is not available at the requested time"){
-          toast.error(res.data.message)
+        if (
+          res.data.message ===
+          "Practitioner is not available at the requested time"
+        ) {
+          toast.error(res.data.message);
         }
         getAllBookings();
         toast.success("Your Appointment is Booked");
@@ -98,9 +101,13 @@ export default function ServiceBookingDetail({
       })
       .catch((error) => {
         if (error.response) {
-          toast.error(error.response.data?.msg);
-        }else{
-          toast.error("Please Login First")
+          if (error.response.status === 401) {
+            toast.error("Session expired, please login again.");
+          } else {
+            toast.error(error.response.data?.msg || "Something went wrong");
+          }
+        } else {
+          toast.error("Please Login First");
         }
         console.log("handleBookAppointment Error", error);
       });
