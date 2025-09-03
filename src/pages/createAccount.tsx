@@ -6,7 +6,7 @@ import { setStorageItem } from "../utils/sessionStorage";
 import { useUserStore } from "../store/userStore";
 import OTPSection from "../components/OTPSection";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import bg from "../assets/img/createAccount.jpeg";
 
 export default function RegisterAccount() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function RegisterAccount() {
   const [showOTP, setShowOTP] = useState(false);
   const [isOTPLoading, setIsOTPLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
-  const lastLoggedInTime = new Date().toISOString()
+  const lastLoggedInTime = new Date().toISOString();
   const updateUserDetails = useUserStore((state) => state.fullUpdate);
 
   const validateEmail = (email: string) => {
@@ -65,13 +65,13 @@ export default function RegisterAccount() {
 
   const handleUserRegistration = async () => {
     try {
-      if(emailError){
-        toast.error("Invalid Email")
-        return
+      if (emailError) {
+        toast.error("Invalid Email");
+        return;
       }
-      if(phoneNoError){
-        toast.error("Invalid Phone Number")
-        return
+      if (phoneNoError) {
+        toast.error("Invalid Phone Number");
+        return;
       }
       if (!fullName || !userName || !email || !phone) {
         toast.error("All Fields are required");
@@ -96,7 +96,7 @@ export default function RegisterAccount() {
         setUserData(res.data?.data);
         toast.success(res.data.msg);
         setShowOTP(true);
-        setStorageItem('lastLoggedIn', lastLoggedInTime)
+        setStorageItem("lastLoggedIn", lastLoggedInTime);
       } else {
         toast.error("Failed to create account! Please try once again:");
         console.error("Error! Please try once again:", res.data.message);
@@ -109,13 +109,13 @@ export default function RegisterAccount() {
 
   const handleUserLogin = async () => {
     try {
-      if(!email){
-        toast.error("Email is required")
-        return
+      if (!email) {
+        toast.error("Email is required");
+        return;
       }
 
-      if(emailError){
-        toast.error("Invalid Email")
+      if (emailError) {
+        toast.error("Invalid Email");
         return;
       }
 
@@ -126,7 +126,7 @@ export default function RegisterAccount() {
         toast.success(res.data.msg);
         setUserData(res.data?.data);
         setShowOTP(true);
-        setStorageItem('lastLoggedIn', lastLoggedInTime)
+        setStorageItem("lastLoggedIn", lastLoggedInTime);
       } else {
         toast.error("Something went wrong, please try again");
       }
@@ -179,15 +179,15 @@ export default function RegisterAccount() {
           }, 2000);
         })
         .catch((error) => {
-          if(error.response){
-            toast.error(error.response.data?.msg)
+          if (error.response) {
+            toast.error(error.response.data?.msg);
           }
-          setIsOTPLoading(false)
+          setIsOTPLoading(false);
           console.error("handleOTPVerification Error", error);
         });
-    } catch (error:any) {
-      if(error.response){
-        toast.error(error.response.data?.msg)
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data?.msg);
       }
       console.error("Invalid OTP. Please try again.");
     } finally {
@@ -197,9 +197,12 @@ export default function RegisterAccount() {
 
   const handleResendOTP = async () => {
     try {
-      const res = await axios.post(global.config.ROOTURL.prod + "/user/resendOTP", {
-        email,
-      });
+      const res = await axios.post(
+        global.config.ROOTURL.prod + "/user/resendOTP",
+        {
+          email,
+        }
+      );
       if (res.status === 200) {
         toast.success(res.data.msg);
       } else {
@@ -227,8 +230,10 @@ export default function RegisterAccount() {
 
   return (
     <>
-      <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
-        <div className="flex flex-col items-center justify-center p-8 bg-white overflow-y-auto">
+      <div className="bg-no-repeat bg-cover bg-center overflow-hidden lg:flex items-center py-3"
+        style={{ backgroundImage: `url(${bg})` }}
+      >
+        <div className="flex flex-col items-center lg:w-[34vw] lg:h-[84vh] justify-center rounded-xl bg-white px-4 lg:!px-16 py-4 mx-2  lg:!mx-8">
           {/* Left Section - Forms */}
           <AnimatePresence mode="wait">
             {!showOTP ? (
@@ -287,7 +292,7 @@ export default function RegisterAccount() {
                         />
                       </motion.div>
 
-                      <motion.div
+                      {/* <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.4 }}
@@ -307,7 +312,7 @@ export default function RegisterAccount() {
                           onChange={(e) => setUserName(e.target.value)}
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
-                      </motion.div>
+                      </motion.div> */}
 
                       <motion.div
                         initial={{ opacity: 0 }}
@@ -485,59 +490,9 @@ export default function RegisterAccount() {
           </AnimatePresence>
         </div>
 
-        {/* Right Section - Image (Hidden on mobile) */}
-        <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-8 overflow-hidden">
-          <div className="text-center space-y-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-              layout
-              className="w-64 h-64 mx-auto bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center"
-            >
-              <svg
-                className="w-32 h-32 text-white"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
-              layout
-              className="space-y-4"
-            >
-              <h2 className="text-2xl font-bold text-gray-800">
-                Welcome to Our Platform
-              </h2>
-              <p className="text-gray-600 max-w-md mx-auto">
-                Join thousands of users who trust our platform for their needs.
-                Create your account today and start your journey with us.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.4 }}
-              layout
-            >
-              <Link
-                to="/"
-                className="inline-block px-2 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-none hover:bg-blue-700 transition duration-200"
-              >
-                Back To Home
-              </Link>
-            </motion.div>
-          </div>
+        <div className=" hidden lg:block text-white text-center lg:w-[66vw] px-40">
+          <h1 className="font-bold text-5xl">Welcome to Our Platform</h1>
+          <p>Join thousands of users who trust our platform for their needs. Create your account today and start your journey with us</p>
         </div>
       </div>
     </>
