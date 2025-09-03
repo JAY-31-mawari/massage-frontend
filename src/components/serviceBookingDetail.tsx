@@ -19,10 +19,10 @@ export default function ServiceBookingDetail({
   practitionerId: string;
   serviceName: string;
   duration: number;
-  setDuration:(time:number)=>void;
+  setDuration: (time: number) => void;
 }) {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const merchant = useMerchantStore((state) => state.merchant);
   const user = useUserStore((state) => state.user);
   const clearUserAppoinmentHistory = useAppointmentStore(
@@ -66,7 +66,7 @@ export default function ServiceBookingDetail({
       toast.error("Please select a future Time for your appointment");
       return;
     }
-    setIsLoading(true)
+    setIsLoading(true);
     const bookingPayload = {
       method: "POST",
       url: global.config.ROOTURL.prod + `/appointment`,
@@ -88,17 +88,24 @@ export default function ServiceBookingDetail({
     };
     await axios(bookingPayload)
       .then((res) => {
+        if(res.data.message === "Practitioner is not available at the requested time"){
+          toast.error(res.data.message)
+        }
         getAllBookings();
         toast.success("Your Appointment is Booked");
-        setDuration(15)
+        setDuration(15);
         clearUserAppoinmentHistory();
       })
       .catch((error) => {
-        toast.error("This Slot is already Booked")
+        if (error.response) {
+          toast.error(error.response.data?.msg);
+        }else{
+          toast.error("Please Login First")
+        }
         console.log("handleBookAppointment Error", error);
       });
 
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const getAllBookings = async () => {
@@ -124,7 +131,6 @@ export default function ServiceBookingDetail({
       console.error("getAllBookings Error", err);
     }
   };
-
 
   useEffect(() => {
     getAllBookings();

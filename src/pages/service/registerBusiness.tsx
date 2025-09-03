@@ -11,6 +11,7 @@ import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
 import ProgressSidebar from "../../components/progress-sidebar";
+import { X } from "lucide-react";
 
 interface LocationState {
   lat: number | null;
@@ -155,9 +156,12 @@ export default function SubmitProperty() {
   };
 
   useEffect(() => {
-    toast.success("Allow location access to help customers find your service location easily",{
-      duration: 6000
-    })
+    toast.success(
+      "Allow location access to help customers find your service location easily",
+      {
+        duration: 6000,
+      }
+    );
     checkPermission();
   }, []);
 
@@ -215,6 +219,44 @@ export default function SubmitProperty() {
     }));
     setActiveTab(nextId);
   };
+
+  const removeTab = (id: number) => {
+  setTabs((prevTabs) => {
+    // 1. Remove the target tab
+    const filteredTabs = prevTabs.filter((tab) => tab.id !== id);
+
+    // 2. Keep the old data of remaining tabs
+    const oldData = { ...tabData };
+
+    // 3. Renumber the remaining tabs (1,2,3...)
+    const renumberedTabs = filteredTabs.map((tab, index) => ({
+      ...tab,
+      id: index + 1,
+    }));
+
+    // 4. Rebuild tabData with correct mapping
+    const newData: { [key: number]: any } = {};
+    renumberedTabs.forEach((tab, index) => {
+      const oldTab = filteredTabs[index]; // original tab object before renumber
+      newData[index + 1] = oldData[oldTab.id]; // map old ID data to new ID
+    });
+
+    setTabData(newData);
+
+    // 5. Handle active tab
+    if (activeTab === id) {
+      if (renumberedTabs.length > 0) {
+        setActiveTab(renumberedTabs[Math.min(id - 1, renumberedTabs.length - 1)].id);
+      } else {
+        setActiveTab(1);
+      }
+    }
+
+    return renumberedTabs;
+  });
+};
+
+
 
   const handleTabInputChange = (
     field: keyof PractitionerData,
@@ -298,12 +340,16 @@ export default function SubmitProperty() {
 
   return (
     <>
-      <div className="page-title">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12 col-md-12">
-              <h2 className="ipt-title">Submit Property</h2>
-              <span className="ipn-subtitle">Just Submit Your Property</span>
+      <div className="bg-gray-100 py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Become a Practitioner
+              </h2>
+              <span className="block mt-2 text-lg text-gray-600">
+                Just Submit Your Service Details
+              </span>
             </div>
           </div>
         </div>
@@ -331,158 +377,196 @@ export default function SubmitProperty() {
                         transition={{ duration: 0.4 }}
                         layout
                       >
-                        <div className="form-submit">
-                          <h3>Basic Information</h3>
-                          <div className="submit-section">
-                            <div className="row">
-                              <div className="form-group col-md-12">
-                                <label className="mb-2">Business Name</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Full Name/Business Name"
-                                  value={businessName}
+                        {/* Basic Information */}
+                        <div className="mb-8">
+                          <h3 className="text-xl font-semibold mb-4">
+                            Basic Information
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Business Name */}
+                            <div className="col-span-2">
+                              <label className="block text-sm font-medium mb-2">
+                                Business Name
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Full Name/Business Name"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={businessName}
+                                onChange={(e) =>
+                                  setBusinessName(e.target.value)
+                                }
+                              />
+                            </div>
+
+                            {/* Business Type */}
+                            <div className="col-span-2">
+                              <label className="block text-sm font-medium mb-2">
+                                Business Type
+                              </label>
+                              <Select
+                                options={businessTypeList}
+                                className="w-full"
+                                classNamePrefix="react-select"
+                                placeholder="Business Type"
+                                value={businessTypeList.find(
+                                  (option) => option.value === businessType
+                                )}
+                                onChange={(selectedOption) =>
+                                  setBusinessType(selectedOption?.value)
+                                }
+                              />
+                            </div>
+
+                            {/* Description (if Other) */}
+                            {businessType === "Other" && (
+                              <div className="col-span-2">
+                                <label className="block text-sm font-medium mb-2">
+                                  Description
+                                </label>
+                                <textarea
+                                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none h-20"
+                                  placeholder="Enter a short description (max 40 characters)"
+                                  rows={4}
+                                  maxLength={40}
+                                  value={description}
                                   onChange={(e) =>
-                                    setBusinessName(e.target.value)
+                                    setDescription(e.target.value)
                                   }
                                 />
                               </div>
+                            )}
 
-                              <div className="form-group col-md-12">
-                                <label className="mb-2">Business Type</label>
-                                <Select
-                                  options={businessTypeList}
-                                  className="form-control"
-                                  classNamePrefix="react-select"
-                                  placeholder="Business Type"
-                                  value={businessTypeList.find(
-                                    (option) => option.value === businessType
-                                  )}
-                                  onChange={(selectedOption) =>
-                                    setBusinessType(selectedOption?.value)
-                                  }
-                                />
-                              </div>
-
-                              {businessType === "Other" && (
-                                <div className="form-group col-md-12">
-                                  <label className="mb-7">Description</label>
-                                  <textarea
-                                    className="form-control h-20"
-                                    placeholder="Enter a short description (max 40 characters)"
-                                    rows={4}
-                                    maxLength={40}
-                                    value={description}
-                                    onChange={(e) =>
-                                      setDescription(e.target.value)
-                                    }
-                                  ></textarea>
-                                </div>
+                            {/* Email */}
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Email Address
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Email Address"
+                                value={email}
+                                onChange={handleEmailChange}
+                                className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-2 focus:outline-none ${
+                                  emailError
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-indigo-500"
+                                }`}
+                              />
+                              {emailError && (
+                                <p className="mt-1 text-sm text-red-600">
+                                  {emailError}
+                                </p>
                               )}
+                            </div>
 
-                              <div className="form-group col-md-6">
-                                <label className="mb-2">Email Address</label>
-                                <input
-                                  type="text"
-                                  className={`form-control ${
-                                    emailError ? "is-invalid" : ""
-                                  }`}
-                                  placeholder="Email Address"
-                                  value={email}
-                                  onChange={handleEmailChange}
-                                />
-                                {emailError && (
-                                  <div className="invalid-feedback">
-                                    {emailError}
-                                  </div>
-                                )}
-                              </div>
+                            {/* Phone Number */}
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Phone Number
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Phone No"
+                                value={phone}
+                                onChange={handlePhoneNoChange}
+                                className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-2 focus:outline-none ${
+                                  phoneNoError
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-indigo-500"
+                                }`}
+                              />
+                              {phoneNoError && (
+                                <p className="mt-1 text-sm text-red-600">
+                                  {phoneNoError}
+                                </p>
+                              )}
+                            </div>
 
-                              <div className="form-group col-md-6">
-                                <label className="mb-2">Phone Number</label>
-                                <input
-                                  type="text"
-                                  className={`form-control ${
-                                    phoneNoError ? "is-invalid" : ""
-                                  }`}
-                                  placeholder="Phone No"
-                                  value={phone}
-                                  onChange={handlePhoneNoChange}
-                                />
-                                {phoneNoError && (
-                                  <div className="invalid-feedback">
-                                    {phoneNoError}
-                                  </div>
-                                )}
-                              </div>
-
-                              <div className="form-group col-md-12">
-                                <label className="mb-2">Banking Details</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Banking Details"
-                                  value={bankingDetails}
-                                  onChange={(e) =>
-                                    setBankingDetails(e.target.value)
-                                  }
-                                />
-                              </div>
+                            {/* Banking Details */}
+                            <div className="col-span-2">
+                              <label className="block text-sm font-medium mb-2">
+                                Banking Details
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Banking Details"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankingDetails}
+                                onChange={(e) =>
+                                  setBankingDetails(e.target.value)
+                                }
+                              />
                             </div>
                           </div>
                         </div>
-                        <div className="form-submit">
-                          <h3>Business Address</h3>
-                          <div className="submit-section">
-                            <div className="row">
-                              <div className="form-group col-md-6">
-                                <label className="mb-2">Street Address</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={merchantAddress}
-                                  onChange={(e) =>
-                                    setMerchantAddress(e.target.value)
-                                  }
-                                />
-                              </div>
-                              <div className="form-group col-md-6">
-                                <label className="mb-2">City</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={merchantCity}
-                                  onChange={(e) =>
-                                    setMerchantCity(e.target.value)
-                                  }
-                                />
-                              </div>
-                              <div className="form-group col-md-6">
-                                <label className="mb-2">Province/State</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={merchantState}
-                                  onChange={(e) =>
-                                    setMerchantState(e.target.value)
-                                  }
-                                />
-                              </div>
-                              <div className="form-group col-md-6">
-                                <label className="mb-2">
-                                  Postal Code / Zip Code (For mobile
-                                  practitioners, this is their main location or
-                                  office)
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={merchantZipCode}
-                                  onChange={(e) =>
-                                    setMerchantZipCode(e.target.value)
-                                  }
-                                />
-                              </div>
+
+                        {/* Business Address */}
+                        <div className="mb-8">
+                          <h3 className="text-xl font-semibold mb-4">
+                            Business Address
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Street Address */}
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Street Address
+                              </label>
+                              <input
+                                type="text"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={merchantAddress}
+                                onChange={(e) =>
+                                  setMerchantAddress(e.target.value)
+                                }
+                              />
+                            </div>
+
+                            {/* City */}
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                City
+                              </label>
+                              <input
+                                type="text"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={merchantCity}
+                                onChange={(e) =>
+                                  setMerchantCity(e.target.value)
+                                }
+                              />
+                            </div>
+
+                            {/* State */}
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Province/State
+                              </label>
+                              <input
+                                type="text"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={merchantState}
+                                onChange={(e) =>
+                                  setMerchantState(e.target.value)
+                                }
+                              />
+                            </div>
+
+                            {/* Zip Code */}
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Postal Code / Zip Code (For mobile
+                                practitioners, this is their main location or
+                                office)
+                              </label>
+                              <input
+                                type="text"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={merchantZipCode}
+                                onChange={(e) =>
+                                  setMerchantZipCode(e.target.value)
+                                }
+                              />
                             </div>
                           </div>
                         </div>
@@ -498,195 +582,101 @@ export default function SubmitProperty() {
                         transition={{ duration: 0.4 }}
                         layout
                       >
-                        <div className="form-submit">
+                        <div>
                           <h3 className="mb-3 text-xl font-semibold text-gray-800">
                             Business Photos
                           </h3>
-                          <div className="submit-section">
-                            <div className="row">
-                              <div className="form-group col-md-12">
-                                <label className="mb-2 font-medium text-gray-600">
-                                  Upload Business Photos{" "}
-                                  <span className="text-sm text-gray-400">
-                                    (Maximum 3)
-                                  </span>
-                                </label>
-                              </div>
 
-                              {/* Upload button with dropzone look */}
-                              <div
-                                style={{
-                                  padding: "60px",
-                                  border: "2px dashed #d0d5dd",
-                                  borderRadius: "12px",
-                                  backgroundColor: "#fafafa",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  minHeight: "200px",
-                                  transition: "all 0.3s ease-in-out",
-                                  cursor: "pointer",
-                                  width: "100%",
-                                }}
-                              >
-                                <UploadButton
-                                  endpoint="practitionerMedia"
-                                  onClientUploadComplete={(res) => {
-                                    const uploadedUrl = res?.[0]?.ufsUrl;
-                                    if (
-                                      uploadedUrl &&
-                                      businessPhotos.length < 3
-                                    ) {
-                                      setBusinessPhotos((prev) => [
-                                        ...prev,
-                                        uploadedUrl,
-                                      ]);
-                                    }
-                                  }}
-                                  onUploadError={(error) =>
-                                    console.error("Upload failed", error)
+                          {/* Upload Section */}
+                          <div className="mb-6">
+                            <label className="block mb-2 font-medium text-gray-600">
+                              Upload Business Photos{" "}
+                              <span className="text-sm text-gray-400">
+                                (Maximum 3)
+                              </span>
+                            </label>
+
+                            {/* Dropzone */}
+                            <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center transition hover:bg-gray-100 cursor-pointer p-10">
+                              <UploadButton
+                                endpoint="practitionerMedia"
+                                onClientUploadComplete={(res) => {
+                                  const uploadedUrl = res?.[0]?.ufsUrl;
+                                  if (
+                                    uploadedUrl &&
+                                    businessPhotos.length < 3
+                                  ) {
+                                    setBusinessPhotos((prev) => [
+                                      ...prev,
+                                      uploadedUrl,
+                                    ]);
                                   }
-                                  content={{
-                                    button: (
-                                      <div
-                                        className="dropzone dz-clickable primary-dropzone"
-                                        style={{
-                                          border: "0px",
-                                          borderRadius: "12px",
-                                          backgroundColor: "#fafafa",
-                                          display: "flex",
-                                          alignItems: "center",
-                                          justifyContent: "center",
-                                          transition: "all 0.3s ease-in-out",
-                                          cursor: "pointer",
-                                          width: "100%",
-                                          
-                                        }}
-                                        onMouseEnter={(e) =>
-                                          (e.currentTarget.style.backgroundColor =
-                                            "#f9fafb")
-                                        }
-                                        onMouseLeave={(e) =>
-                                          (e.currentTarget.style.backgroundColor =
-                                            "#fafafa")
-                                        }
-                                      >
-                                        {businessPhotos.length === 0 ? (
-                                          <div
-                                            className="dz-message text-center"
-                                            style={{ color: "#667085" }}
-                                          >
-                                            <p
-                                              style={{
-                                                margin: 0,
-                                                fontWeight: 600,
-                                                fontSize: "16px",
-                                              }}
-                                            >
-                                              Click or Drag to Upload Business
-                                              Photos
-                                            </p>
-                                          </div>
-                                        ) : (
-                                          <p
-                                            style={{
-                                              color: "#667085",
-                                              fontWeight: 500,
-                                            }}
-                                          >
-                                            Click to Upload More Photos
-                                          </p>
-                                        )}
-                                      </div>
-                                    ),
-                                  }}
-                                />
+                                }}
+                                onUploadError={(error) =>
+                                  console.error("Upload failed", error)
+                                }
+                                content={{
+                                  button: (
+                                    <div className="w-full flex items-center justify-center cursor-pointer">
+                                      {businessPhotos.length === 0 ? (
+                                        <p className="text-gray-600 font-semibold text-base">
+                                          Click or Drag to Upload Business
+                                          Photos
+                                        </p>
+                                      ) : (
+                                        <p className="text-gray-600 font-medium">
+                                          Click to Upload More Photos
+                                        </p>
+                                      )}
+                                    </div>
+                                  ),
+                                }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Preview Section */}
+                          {businessPhotos.length > 0 && (
+                            <div className="w-full mt-6">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                {businessPhotos.map((photo, index) => (
+                                  <div
+                                    key={index}
+                                    className="relative rounded-lg shadow-md overflow-hidden"
+                                  >
+                                    <img
+                                      src={photo}
+                                      alt={`Business Photo ${index + 1}`}
+                                      className="w-full h-44 object-cover"
+                                    />
+                                    <button
+                                      type="button"
+                                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center shadow-md hover:bg-red-600"
+                                      onClick={() =>
+                                        setBusinessPhotos((prev) =>
+                                          prev.filter((_, i) => i !== index)
+                                        )
+                                      }
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ))}
                               </div>
 
-                              {/* Preview section */}
-                              {businessPhotos.length > 0 && (
-                                <div
-                                  style={{ width: "100%", marginTop: "24px" }}
-                                >
-                                  <div className="row">
-                                    {businessPhotos.map((photo, index) => (
-                                      <div
-                                        key={index}
-                                        className="col-md-4 mb-4"
-                                      >
-                                        <div
-                                          style={{
-                                            position: "relative",
-                                            borderRadius: "10px",
-                                            overflow: "hidden",
-                                            boxShadow:
-                                              "0 2px 6px rgba(0,0,0,0.1)",
-                                          }}
-                                        >
-                                          <img
-                                            src={photo}
-                                            alt={`Business Photo ${index + 1}`}
-                                            style={{
-                                              width: "100%",
-                                              height: "180px",
-                                              objectFit: "cover",
-                                              display: "block",
-                                            }}
-                                          />
-                                          <button
-                                            type="button"
-                                            className="btn btn-sm btn-danger"
-                                            style={{
-                                              position: "absolute",
-                                              top: "10px",
-                                              right: "10px",
-                                              borderRadius: "50%",
-                                              width: "32px",
-                                              height: "32px",
-                                              padding: 0,
-                                              display: "flex",
-                                              alignItems: "center",
-                                              justifyContent: "center",
-                                              boxShadow:
-                                                "0 2px 4px rgba(0,0,0,0.2)",
-                                            }}
-                                            onClick={() =>
-                                              setBusinessPhotos((prev) =>
-                                                prev.filter(
-                                                  (_, i) => i !== index
-                                                )
-                                              )
-                                            }
-                                          >
-                                            <i className="fa-solid fa-times"></i>
-                                          </button>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-
-                                  {/* Remaining uploads */}
-                                  {businessPhotos.length < 3 && (
-                                    <div className="text-center mt-2">
-                                      <p
-                                        style={{
-                                          color: "#667085",
-                                          fontSize: "14px",
-                                        }}
-                                      >
-                                        You can upload{" "}
-                                        <strong>
-                                          {3 - businessPhotos.length}
-                                        </strong>{" "}
-                                        more photo
-                                        {businessPhotos.length < 2 ? "" : "s"}
-                                      </p>
-                                    </div>
-                                  )}
+                              {/* Remaining uploads */}
+                              {businessPhotos.length < 3 && (
+                                <div className="text-center mt-4">
+                                  <p className="text-sm text-gray-500">
+                                    You can upload{" "}
+                                    <strong>{3 - businessPhotos.length}</strong>{" "}
+                                    more photo
+                                    {businessPhotos.length < 2 ? "" : "s"}
+                                  </p>
                                 </div>
                               )}
                             </div>
-                          </div>
+                          )}
                         </div>
                       </motion.div>
                     )}
@@ -700,28 +690,43 @@ export default function SubmitProperty() {
                         transition={{ duration: 0.4 }}
                         layout
                       >
-                        <div className="form-submit">
-                          <h3>Practitioner Details</h3>
+                        <div>
+                          <h3 className="text-xl font-semibold mb-4">
+                            Practitioner Details
+                          </h3>
+
+                          {/* Tabs Section */}
                           {businessType !== "Home-Based Practice" &&
                             businessType !== "Mobile Practitioner" && (
-                              <div className="form-group col-md-12 d-flex justify-content-between align-items-center mb-3">
-                                <ul className="nav nav-tabs">
+                              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-3">
+                                <ul className="flex border-b border-gray-200">
                                   {tabs.map((tab) => (
-                                    <li key={tab.id} className="nav-item">
+                                    <li key={tab.id} className="relative">
                                       <button
-                                        className={`nav-link ${
-                                          activeTab === tab.id ? "active" : ""
+                                        className={`px-4 py-2 text-sm font-medium border-b-2 transition ${
+                                          activeTab === tab.id
+                                            ? "border-indigo-500 text-indigo-600"
+                                            : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                                         }`}
                                         onClick={() => setActiveTab(tab.id)}
                                       >
                                         Practitioner {tab.id}
                                       </button>
+
+                                      {/* Cross Button */}
+                                      {tabs.length > 1 && <button
+                                        onClick={()=>removeTab(tab.id)}
+                                        className="absolute -top-2 -right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
+                                      >
+                                        <X className="w-3 h-3 text-gray-600" />
+                                      </button>}
                                     </li>
                                   ))}
                                 </ul>
+
                                 <button
                                   type="button"
-                                  className="btn btn-sm btn-outline-primary"
+                                  className="px-3 py-1 text-sm rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50"
                                   onClick={addTab}
                                 >
                                   + Add Practitioner
@@ -729,196 +734,145 @@ export default function SubmitProperty() {
                               </div>
                             )}
 
-                          <div>
-                            <div className="form-group col-md-12">
-                              <label className="mb-2">Practitioner Name</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Practitioner Name"
-                                value={
-                                  tabData[activeTab]?.practitionerName || ""
-                                }
-                                onChange={(e) =>
-                                  handleTabInputChange(
-                                    "practitionerName",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                              <div className="row">
-                                <div className="form-group col-md-6">
-                                  <label className="mb-2">
-                                    Areas of Expertise
-                                  </label>
-                                  <Select
-                                    isMulti
-                                    options={expertiseList}
-                                    className="form-control"
-                                    classNamePrefix="react-select"
-                                    placeholder="Areas of Expertise"
-                                    value={expertiseList.filter((option) =>
-                                      tabData[
-                                        activeTab
-                                      ]?.areaOfExpertise?.includes(option.value)
-                                    )}
-                                    onChange={(selectedOptions) =>
-                                      handleTabInputChange(
-                                        "areaOfExpertise",
-                                        selectedOptions
-                                          ? selectedOptions.map(
-                                              (option) => option.value
-                                            )
-                                          : []
-                                      )
-                                    }
-                                  />
-                                </div>
-                                <div className="form-group col-md-6">
-                                  <label className="mb-2">
-                                    License/Registration Number
-                                  </label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="License No"
-                                    value={tabData[activeTab]?.license || ""}
-                                    onChange={(e) =>
-                                      handleTabInputChange(
-                                        "license",
-                                        e.target.value
-                                      )
-                                    }
-                                  />
-                                </div>
+                          {/* Practitioner Name + Expertise + License */}
+                          <div className="mb-6">
+                            <label className="block text-sm font-medium mb-2">
+                              Practitioner Name
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Practitioner Name"
+                              value={tabData[activeTab]?.practitionerName || ""}
+                              onChange={(e) =>
+                                handleTabInputChange(
+                                  "practitionerName",
+                                  e.target.value
+                                )
+                              }
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            />
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                              <div>
+                                <label className="block text-sm font-medium mb-2">
+                                  Areas of Expertise
+                                </label>
+                                <Select
+                                  isMulti
+                                  options={expertiseList}
+                                  className="w-full"
+                                  classNamePrefix="react-select"
+                                  placeholder="Areas of Expertise"
+                                  value={expertiseList.filter((option) =>
+                                    tabData[
+                                      activeTab
+                                    ]?.areaOfExpertise?.includes(option.value)
+                                  )}
+                                  onChange={(selectedOptions) =>
+                                    handleTabInputChange(
+                                      "areaOfExpertise",
+                                      selectedOptions
+                                        ? selectedOptions.map(
+                                            (option) => option.value
+                                          )
+                                        : []
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">
+                                  License/Registration Number
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="License No"
+                                  value={tabData[activeTab]?.license || ""}
+                                  onChange={(e) =>
+                                    handleTabInputChange(
+                                      "license",
+                                      e.target.value
+                                    )
+                                  }
+                                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                />
                               </div>
                             </div>
-                            {(
-                              [
-                                "treatmentSpace",
-                                "insurance",
-                                "governmentId",
-                                "qualification",
-                                "profilePicture",
-                              ] as (keyof PractitionerData)[]
-                            ).map((field) => (
-                              <div
-                                key={field}
-                                className="form-group col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3"
-                              >
-                                <label
-                                  className="mb-0"
-                                  style={{
-                                    minWidth: "180px",
-                                    textTransform: "capitalize",
-                                  }}
-                                >
-                                  {field === "profilePicture"
-                                    ? "Profile Picture"
-                                    : field === "governmentId"
-                                    ? "Government ID"
-                                    : field === "treatmentSpace"
-                                    ? "Photos of Treatment Space"
-                                    : field === "qualification"
-                                    ? "Proof of Qualification"
-                                    : field}
-                                </label>
-
-                                <div
-                                  className="dropzone dz-clickable primary-dropzone flex-grow-1"
-                                  style={{
-                                    position: "relative",
-                                    padding: "20px",
-                                    border: "2px dashed #d0d5dd",
-                                    borderRadius: "12px",
-                                    backgroundColor: "#fafafa",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    minHeight: "120px",
-                                    transition: "all 0.3s ease-in-out",
-                                  }}
-                                >
-                                  <UploadButton
-                                    endpoint="practitionerMedia"
-                                    onClientUploadComplete={(res) => {
-                                      const uploadedUrl = res?.[0]?.ufsUrl;
-                                      if (uploadedUrl) {
-                                        setTabData((prev) => ({
-                                          ...prev,
-                                          [activeTab]: {
-                                            ...prev[activeTab],
-                                            [field]: uploadedUrl,
-                                          },
-                                        }));
-                                      }
-                                    }}
-                                    onUploadError={(error) =>
-                                      console.error("Upload failed", error)
-                                    }
-                                  />
-
-                                  {tabData[activeTab]?.[field] ? (
-                                    <div
-                                      style={{ zIndex: 1, textAlign: "center" }}
-                                    >
-                                      <img
-                                        src={tabData[activeTab][field]}
-                                        alt={field}
-                                        style={{
-                                          width: "100px",
-                                          height: "100px",
-                                          borderRadius: "8px",
-                                          objectFit: "cover",
-                                          marginBottom: "8px",
-                                        }}
-                                      />
-                                      <p
-                                        style={{
-                                          fontSize: "14px",
-                                          color: "#475467",
-                                          margin: 0,
-                                        }}
-                                      >
-                                        Uploaded
-                                      </p>
-                                    </div>
-                                  ) : (
-                                    <div
-                                      className="dz-message"
-                                      style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        zIndex: 1,
-                                        color: "#667085",
-                                      }}
-                                    >
-                                      <i
-                                        className="fa-solid fa-image"
-                                        style={{
-                                          fontSize: "32px",
-                                          marginBottom: "8px",
-                                          color: "#9ca3af",
-                                        }}
-                                      ></i>
-                                      <p style={{ margin: 0, fontWeight: 500 }}>
-                                        Click or Drag to Upload
-                                      </p>
-                                      <span
-                                        style={{
-                                          fontSize: "12px",
-                                          color: "#98a2b3",
-                                        }}
-                                      >
-                                        Image (max 4MB)
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
                           </div>
+
+                          {/* Upload Sections */}
+                          {(
+                            [
+                              "treatmentSpace",
+                              "insurance",
+                              "governmentId",
+                              "qualification",
+                              "profilePicture",
+                            ] as (keyof PractitionerData)[]
+                          ).map((field) => (
+                            <div
+                              key={field}
+                              className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6"
+                            >
+                              {/* Label */}
+                              <label className="text-sm font-medium text-gray-700 min-w-[180px] capitalize">
+                                {field === "profilePicture"
+                                  ? "Profile Picture"
+                                  : field === "governmentId"
+                                  ? "Government ID"
+                                  : field === "treatmentSpace"
+                                  ? "Photos of Treatment Space"
+                                  : field === "qualification"
+                                  ? "Proof of Qualification"
+                                  : field}
+                              </label>
+
+                              {/* Dropzone */}
+                              <div className="relative flex-grow rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center min-h-[120px] cursor-pointer transition hover:bg-gray-100 p-5">
+                                <UploadButton
+                                  endpoint="practitionerMedia"
+                                  onClientUploadComplete={(res) => {
+                                    const uploadedUrl = res?.[0]?.ufsUrl;
+                                    if (uploadedUrl) {
+                                      setTabData((prev) => ({
+                                        ...prev,
+                                        [activeTab]: {
+                                          ...prev[activeTab],
+                                          [field]: uploadedUrl,
+                                        },
+                                      }));
+                                    }
+                                  }}
+                                  onUploadError={(error) =>
+                                    console.error("Upload failed", error)
+                                  }
+                                />
+
+                                {tabData[activeTab]?.[field] ? (
+                                  <div className="text-center z-10">
+                                    <img
+                                      src={tabData[activeTab][field]}
+                                      alt={field}
+                                      className="w-24 h-24 rounded-md object-cover mb-2"
+                                    />
+                                    <p className="text-sm text-gray-600">
+                                      Uploaded
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <div className="flex flex-col items-center text-gray-500 z-10">
+                                    <i className="fa-solid fa-image text-3xl text-gray-400 mb-2"></i>
+                                    <p className="font-medium">
+                                      Click or Drag to Upload
+                                    </p>
+                                    <span className="text-xs text-gray-400">
+                                      Image (max 4MB)
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </motion.div>
                     )}
@@ -929,9 +883,9 @@ export default function SubmitProperty() {
                   </AnimatePresence>
                 </motion.div>
                 <div>
-                  <div className="form-group col-lg-12 mt-3 d-flex justify-content-between">
+                  <div className="flex justify-between items-center mt-3 w-full">
                     <button
-                      className="btn btn-outline-secondary"
+                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 disabled:opacity-50"
                       disabled={currentStep === 1}
                       onClick={() =>
                         currentStep - 1 > 0
@@ -941,9 +895,10 @@ export default function SubmitProperty() {
                     >
                       Previous
                     </button>
+
                     <button
-                      className="btn btn-primary fw-medium px-5"
                       type="button"
+                      className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
                       // disabled={!isPractitionerDetailsValid}
                       onClick={() =>
                         currentStep === 4
