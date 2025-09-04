@@ -7,7 +7,11 @@ import { useUserStore } from "../../store/userStore";
 import toast from "react-hot-toast";
 import { AppointmentHistory } from "../../components/interfaces";
 import { useAppointmentStore } from "../../store/appointmentHistoryStore";
-import TinySlider from "tiny-slider-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination } from "swiper/modules";
 
 const settings = {
   items: 1,
@@ -36,9 +40,12 @@ export default function UserBookings() {
   const user = useUserStore((state) => state.user);
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const accessToken = getStorageItem("token");
-  const [pastAppointments, setPastAppointments] = useState<AppointmentHistory[]>([])
-  const [upcomingAppointments, setUpcomingAppointments] = useState<AppointmentHistory[]>([])
-
+  const [pastAppointments, setPastAppointments] = useState<
+    AppointmentHistory[]
+  >([]);
+  const [upcomingAppointments, setUpcomingAppointments] = useState<
+    AppointmentHistory[]
+  >([]);
 
   const fetchUserAppointments = async () => {
     if (!user?._id || !accessToken) {
@@ -83,38 +90,40 @@ export default function UserBookings() {
     }
   }, []);
 
-  useEffect(()=>{
-    if(appointmenthistory.length !== 0) {
-      const now = new Date()
-      let index = 0
-      for(const appointment of appointmenthistory){
-        if(new Date(appointment.appointmentDate) < now){
+  useEffect(() => {
+    if (appointmenthistory.length !== 0) {
+      const now = new Date();
+      let index = 0;
+      for (const appointment of appointmenthistory) {
+        if (new Date(appointment.appointmentDate) < now) {
           break;
         }
-        index += 1
+        index += 1;
       }
-      setUpcomingAppointments(appointmenthistory.slice(0, index))
-      setPastAppointments(appointmenthistory.slice(index))
+      setUpcomingAppointments(appointmenthistory.slice(0, index));
+      setPastAppointments(appointmenthistory.slice(index));
     }
-  },[appointmenthistory])
+  }, [appointmenthistory]);
 
   return (
     <>
       <div className="flex min-h-screen bg-gray-50">
         {/* Main Content */}
         <main className="flex-1 p-6">
-          <div className="bg-white rounded-lg p-6">
+          <div className="bg-white rounded-xl shadow-md p-6">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              {/* <div className="form-submit mb-4">
-                <h4>My Orders</h4>
-              </div> */}
+              <div className="space-y-8">
+                {/* Upcoming Appointments */}
+                {upcomingAppointments.length !== 0 && (
+                  <h4 className="text-xl font-semibold text-gray-800 border-b pb-2">
+                    Upcoming Appointments
+                  </h4>
+                )}
 
-              <div className="row">
-                {upcomingAppointments.length !== 0 && <h4 className="py-4">Upcoming Apppointments</h4>}
                 {upcomingAppointments.length !== 0 &&
                   upcomingAppointments.map((appointment, index: number) => {
                     const date = new Date(appointment?.appointmentDate);
@@ -125,79 +134,124 @@ export default function UserBookings() {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: true,
-                      timeZone: userTimeZone, // changes to your user timezone
+                      timeZone: userTimeZone,
                     };
-
                     const formatted = date.toLocaleString("en-US", options);
 
                     return (
                       <motion.div
-                        className="col-md-12 col-sm-12"
                         key={appointment?._id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1, duration: 0.4 }}
                       >
-                        <div className="singles-dashboard-list">
-                          <div className="sd-list-left">
-                            <TinySlider settings={settings}>
-                              {appointment?.businessId?.businessPhotos &&
-                                appointment.businessId.businessPhotos.map(
+                        <div className="flex flex-col md:flex-row gap-4 p-4 border rounded-lg shadow-sm hover:shadow-md transition">
+                          {/* Left - Image slider */}
+                          <div className="md:w-1/3 w-full rounded-lg overflow-hidden">
+                            <div className="w-full h-48 md:h-64">
+                              {" "}
+                              {/* Constrains the Swiper */}
+                              <Swiper
+                                modules={[Navigation, Pagination]}
+                                navigation
+                                pagination={{ clickable: true }}
+                                loop
+                                className="!w-full !h-full rounded-lg" // force fill
+                              >
+                                {appointment?.businessId?.businessPhotos?.map(
                                   (el, index) => (
-                                    <div key={index} className="h-full">
+                                    <SwiperSlide
+                                      key={index}
+                                      className="!w-full !h-full"
+                                    >
+                                      {" "}
+                                      {/* force slide to fit */}
                                       <img
                                         src={el}
-                                        alt=""
-                                        className="w-full h-full object-cover"
+                                        alt={`Business Photo ${index + 1}`}
+                                        className="w-full h-full object-cover rounded-lg"
                                       />
-                                    </div>
+                                    </SwiperSlide>
                                   )
                                 )}
-                            </TinySlider>
+                              </Swiper>
+                            </div>
                           </div>
-                          <div className="sd-list-right">
-                            <h4 className="listing_dashboard_title">
+
+                          {/* Right - Details */}
+                          <div className="flex-1 space-y-2">
+                            <h4 className="text-lg font-bold text-gray-900">
                               {appointment?.businessId?.businessName}
                             </h4>
-                            <div className="user_dashboard_listed">
+
+                            <div className="text-gray-700">
                               Practitioner Name:{" "}
-                              <Link to="#" className="text-primary">
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.practitionerId?.practitionerName}
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
+
+                            <div className="text-gray-700">
                               Appointment Date & Time:{" "}
-                              <Link to="#" className="text-primary">
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {formatted}
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
-                              Service Type :{" "}
-                              <Link to="#" className="text-primary">
+
+                            <div className="text-gray-700">
+                              Service Type:{" "}
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.serviceType}
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
-                              Service Duration :{" "}
-                              <Link to="#" className="text-primary">
+
+                            <div className="text-gray-700">
+                              Service Duration:{" "}
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.duration} minutes
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
+
+                            <div className="text-gray-700">
                               Area of Expertise:{" "}
-                              <Link to="#" className="text-primary">
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.serviceName}
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
+
+                            <div className="text-gray-700">
                               Price:{" "}
-                              <Link to="#" className="text-primary">
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.price}
                               </Link>
                             </div>
-                            <div className="action">
-                              <Link to={`${`/service/${appointment?.businessId?._id}`}`} title="Book Another Appointment">
-                                <i className="fa-solid fa-pen-to-square"></i>
+
+                            <div className="pt-2">
+                              <Link
+                                to={`/service/${appointment?.businessId?._id}`}
+                                title="Book Another Appointment"
+                                className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition"
+                              >
+                                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                                Book Again
                               </Link>
                             </div>
                           </div>
@@ -206,9 +260,14 @@ export default function UserBookings() {
                     );
                   })}
 
-                {pastAppointments.length !== 0 && <h4 className="py-4">Past Apppointments</h4>}
+                {/* Past Appointments */}
+                {pastAppointments.length !== 0 && (
+                  <h4 className="text-xl font-semibold text-gray-800 border-b pb-2">
+                    Past Appointments
+                  </h4>
+                )}
 
-                  {pastAppointments.length !== 0 &&
+                {pastAppointments.length !== 0 &&
                   pastAppointments.map((appointment, index: number) => {
                     const date = new Date(appointment?.appointmentDate);
                     const options: Intl.DateTimeFormatOptions = {
@@ -218,79 +277,120 @@ export default function UserBookings() {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: true,
-                      timeZone: userTimeZone, // changes to your user timezone
+                      timeZone: userTimeZone,
                     };
-
                     const formatted = date.toLocaleString("en-US", options);
 
                     return (
                       <motion.div
-                        className="col-md-12 col-sm-12"
                         key={appointment?._id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1, duration: 0.4 }}
                       >
-                        <div className="singles-dashboard-list">
-                          <div className="sd-list-left">
-                            <TinySlider settings={settings}>
-                              {appointment?.businessId?.businessPhotos &&
-                                appointment.businessId.businessPhotos.map(
-                                  (el, index) => (
-                                    <div key={index} className="h-full">
-                                      <img
-                                        src={el}
-                                        alt=""
-                                        className="w-full h-full object-cover"
-                                      />
-                                    </div>
-                                  )
-                                )}
-                            </TinySlider>
+                        <div className="flex flex-col md:flex-row gap-4 p-4 border rounded-lg shadow-sm hover:shadow-md transition">
+                          {/* Left - Image slider */}
+                          <div className="md:w-1/3 w-full rounded-lg overflow-hidden">
+                            <Swiper
+                              modules={[Navigation, Pagination]}
+                              navigation
+                              pagination={{ clickable: true }}
+                              loop
+                              className="!w-full !h-48 md:!h-64 rounded-lg" // force width & height
+                            >
+                              {appointment?.businessId?.businessPhotos?.map(
+                                (el, index) => (
+                                  <SwiperSlide
+                                    key={index}
+                                    className="!w-full !h-full"
+                                  >
+                                    {" "}
+                                    {/* force each slide */}
+                                    <img
+                                      src={el}
+                                      alt={`Business Photo ${index + 1}`}
+                                      className="w-full h-full object-cover rounded-lg"
+                                    />
+                                  </SwiperSlide>
+                                )
+                              )}
+                            </Swiper>
                           </div>
-                          <div className="sd-list-right">
-                            <h4 className="listing_dashboard_title">
+
+                          {/* Right - Details */}
+                          <div className="flex-1 space-y-2">
+                            <h4 className="text-lg font-bold text-gray-900">
                               {appointment?.businessId?.businessName}
                             </h4>
-                            <div className="user_dashboard_listed">
+
+                            <div className="text-gray-700">
                               Practitioner Name:{" "}
-                              <Link to="#" className="text-primary">
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.practitionerId?.practitionerName}
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
+
+                            <div className="text-gray-700">
                               Appointment Date & Time:{" "}
-                              <Link to="#" className="text-primary">
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {formatted}
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
-                              Service Type :{" "}
-                              <Link to="#" className="text-primary">
+
+                            <div className="text-gray-700">
+                              Service Type:{" "}
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.serviceType}
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
-                              Service Duration :{" "}
-                              <Link to="#" className="text-primary">
+
+                            <div className="text-gray-700">
+                              Service Duration:{" "}
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.duration} minutes
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
+
+                            <div className="text-gray-700">
                               Area of Expertise:{" "}
-                              <Link to="#" className="text-primary">
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.serviceName}
                               </Link>
                             </div>
-                            <div className="user_dashboard_listed">
+
+                            <div className="text-gray-700">
                               Price:{" "}
-                              <Link to="#" className="text-primary">
+                              <Link
+                                to="#"
+                                className="text-blue-600 hover:underline"
+                              >
                                 {appointment?.price}
                               </Link>
                             </div>
-                            <div className="action">
-                              <Link to={`${`/service/${appointment?.businessId?._id}`}`} title="Book Another Appointment">
-                                <i className="fa-solid fa-pen-to-square"></i>
+
+                            <div className="pt-2">
+                              <Link
+                                to={`/service/${appointment?.businessId?._id}`}
+                                title="Book Another Appointment"
+                                className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition"
+                              >
+                                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                                Book Again
                               </Link>
                             </div>
                           </div>

@@ -17,7 +17,7 @@ root.render(
     <div id="main-wrapper">
       <App />
       <Toaster
-        position="top-center"
+        position="top-right"
         reverseOrder={false}
         toastOptions={{ style: { fontSize: "18px", textAlign: "center" } }}
       />
