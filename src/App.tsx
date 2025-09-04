@@ -2,10 +2,12 @@ import { AppRoutes } from "./appRoutes";
 import ScrollToTop from "./components/scroll-to-top";
 import Navbar from "./components/navbar/navbar";
 import Footer from "./components/footer";
+import { useLocation } from "react-router-dom";
 
 function App() {
 
-  const path = window.location.pathname
+  const location = useLocation()
+  const path = location.pathname
 
   return (
     <>
