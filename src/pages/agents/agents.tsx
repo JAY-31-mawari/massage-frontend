@@ -1,10 +1,4 @@
-import React from "react";
 import { Link } from "react-router-dom";
-
-import Navbar from "../../components/navbar/navbar";
-import FooterTop from "../../components/footer-top";
-import Footer from "../../components/footer";
-
 import { agentData } from "../../data/data";
 
 interface AgentData {
@@ -197,9 +191,6 @@ export default function Agents() {
           </div>
         </div>
       </section>
-
-      <FooterTop bg="theme-bg" />
-      <Footer />
     </>
   );
 }

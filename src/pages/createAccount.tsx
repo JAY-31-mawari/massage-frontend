@@ -6,7 +6,7 @@ import { setStorageItem } from "../utils/sessionStorage";
 import { useUserStore } from "../store/userStore";
 import OTPSection from "../components/OTPSection";
 import { motion, AnimatePresence } from "framer-motion";
-import bg from "../assets/img/createAccount.jpeg";
+import { Link } from "react-router-dom";
 
 export default function RegisterAccount() {
   const navigate = useNavigate();
@@ -230,10 +230,8 @@ export default function RegisterAccount() {
 
   return (
     <>
-      <div className="bg-no-repeat bg-cover bg-center overflow-hidden lg:flex items-center py-3"
-        style={{ backgroundImage: `url(${bg})` }}
-      >
-        <div className="flex flex-col items-center lg:w-[34vw] lg:h-[84vh] justify-center rounded-xl bg-white px-4 lg:!px-16 py-4 mx-2  lg:!mx-8">
+      <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+        <div className="flex flex-col items-center justify-center p-8 bg-white overflow-y-auto">
           {/* Left Section - Forms */}
           <AnimatePresence mode="wait">
             {!showOTP ? (
@@ -292,7 +290,7 @@ export default function RegisterAccount() {
                         />
                       </motion.div>
 
-                      {/* <motion.div
+                      <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.4 }}
@@ -312,7 +310,7 @@ export default function RegisterAccount() {
                           onChange={(e) => setUserName(e.target.value)}
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
-                      </motion.div> */}
+                      </motion.div>
 
                       <motion.div
                         initial={{ opacity: 0 }}
@@ -392,8 +390,8 @@ export default function RegisterAccount() {
                 {isLogin && (
                   <div className="space-y-4">
                     <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       transition={{ delay: 0.2, duration: 0.5 }}
                       className="text-center"
                     >
@@ -406,8 +404,8 @@ export default function RegisterAccount() {
                     </motion.div>
 
                     <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       transition={{ delay: 0.3, duration: 0.5 }}
                       className="space-y-4"
                     >
@@ -434,8 +432,8 @@ export default function RegisterAccount() {
                       )}
 
                       <motion.button
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.5 }}
                         type="button"
                         onClick={handleUserLogin}
@@ -490,9 +488,59 @@ export default function RegisterAccount() {
           </AnimatePresence>
         </div>
 
-        <div className=" hidden lg:block text-white text-center lg:w-[66vw] px-40">
-          <h1 className="font-bold text-5xl">Welcome to Our Platform</h1>
-          <p>Join thousands of users who trust our platform for their needs. Create your account today and start your journey with us</p>
+        {/* Right Section - Image (Hidden on mobile) */}
+        <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-8 overflow-hidden">
+          <div className="text-center space-y-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              layout
+              className="w-64 h-64 mx-auto bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center"
+            >
+              <svg
+                className="w-32 h-32 text-white"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+              layout
+              className="space-y-4"
+            >
+              <h2 className="text-2xl font-bold text-gray-800">
+                Welcome to Our Platform
+              </h2>
+              <p className="text-gray-600 max-w-md mx-auto">
+                Join thousands of users who trust our platform for their needs.
+                Create your account today and start your journey with us.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.4 }}
+              layout
+            >
+              <Link
+                to="/"
+                className="inline-block px-2 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-none hover:bg-blue-700 transition duration-200"
+              >
+                Back To Home
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </div>
     </>
