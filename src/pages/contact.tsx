@@ -1,6 +1,4 @@
 import { useState } from "react";
-import FooterTop from "../components/footer-top";
-import Footer from "../components/footer";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -200,9 +198,6 @@ export default function Contact() {
           </div>
         </div>
       </section>
-
-      <FooterTop bg="theme-bg" />
-      <Footer />
     </>
   );
 }

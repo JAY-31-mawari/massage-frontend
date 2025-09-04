@@ -1,12 +1,6 @@
-import React from "react";
-import Navbar from "../components/navbar/navbar";
-
 import aboutImg from "../assets/img/sb.png";
 import aboutImg2 from "../assets/img/vec-2.png";
-
 import TeamSliderTwo from "../components/team-slider-two";
-import FooterTop from "../components/footer-top";
-import Footer from "../components/footer";
 
 export default function AboutUs() {
   const data = [
@@ -110,9 +104,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
-      <FooterTop bg="theme-bg" />
-      <Footer />
     </>
   );
 }

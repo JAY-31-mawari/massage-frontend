@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import SideFilter from "../../components/side-filter";
-import FooterTop from "../../components/footer-top";
-import Footer from "../../components/footer";
 import axios from "axios";
 import ServiceCardLayout from "../../components/serviceCardLayout";
 import { useSearchLocation } from "../../store/searchLocation";
@@ -433,9 +430,6 @@ export default function ClassicalProperty() {
           </div>
         </div>
       </div>
-
-      <FooterTop bg="theme-bg" />
-      <Footer />
     </>
   );
 }

@@ -1,9 +1,4 @@
-import React from "react";
-
-import Navbar from "../components/navbar/navbar";
 import PricingOne from "../components/pricing-one";
-import FooterTop from "../components/footer-top";
-import Footer from "../components/footer";
 
 export default function Pricing() {
   return (
@@ -38,10 +33,6 @@ export default function Pricing() {
           <PricingOne />
         </div>
       </section>
-
-      <FooterTop bg="theme-bg" />
-
-      <Footer />
     </>
   );
 }

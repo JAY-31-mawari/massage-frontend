@@ -1,10 +1,4 @@
-import React from "react";
 import { Link } from "react-router-dom";
-
-import Navbar from "../components/navbar/navbar";
-import FooterTop from "../components/footer-top";
-import Footer from "../components/footer";
-
 import error from "../assets/img/404.png";
 import ScrollToTop from "../components/scroll-to-top";
 
@@ -30,8 +24,6 @@ export default function Error() {
           </div>
         </div>
       </section>
-      <FooterTop bg="theme-bg" />
-      <Footer />
       <ScrollToTop />
     </>
   );

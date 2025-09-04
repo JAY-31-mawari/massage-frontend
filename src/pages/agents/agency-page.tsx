@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
-import Navbar from "../../components/navbar/navbar";
 import GridProperty from "../../components/grid-property";
 import DetailSidebarThree from "../../components/detail-sidebar-three";
-import FooterTop from "../../components/footer-top";
-import Footer from "../../components/footer";
+
 
 import {
   agencyData,
@@ -328,10 +325,6 @@ export default function AgencyPage() {
           </div>
         </div>
       </section>
-
-      <FooterTop bg="theme-bg" />
-
-      <Footer />
     </>
   );
 }

@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import bg from "../assets/img/bg-2.jpg";
-
-import Navbar from "../components/navbar/navbar";
 import Faqs from "../components/faq";
-import FooterTop from "../components/footer-top";
-import Footer from "../components/footer";
 
 import { faqData, faqAbout, faq2, faq3 } from "../data/data";
 
@@ -128,10 +124,6 @@ export default function Faq() {
           </div>
         </div>
       </section>
-
-      <FooterTop bg="theme-bg" />
-
-      <Footer />
     </>
   );
 }

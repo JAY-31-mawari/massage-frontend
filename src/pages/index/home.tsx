@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomerReviews from "../../components/customerReviews";
 import FooterTop from "../../components/footer-top";
-import Footer from "../../components/footer";
 import oneImg from "../../assets/img/one.webp";
 import twoImg from "../../assets/img/two.webp";
 import threeImg from "../../assets/img/three.webp";
@@ -297,8 +296,6 @@ export default function Home() {
       </section>
 
       <FooterTop bg="theme-bg" />
-
-      <Footer />
     </div>
   );
 }

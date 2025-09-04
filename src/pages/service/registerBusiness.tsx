@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import Select from "react-select";
-
-import Navbar from "../../components/navbar/navbar";
-import FooterTop from "../../components/footer-top";
-import Footer from "../../components/footer";
 import { UploadButton } from "../../utils/uploadthing";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
@@ -915,10 +910,6 @@ export default function SubmitProperty() {
           </div>
         </div>
       </section>
-
-      <FooterTop bg="theme-bg" />
-
-      <Footer />
     </>
   );
 }

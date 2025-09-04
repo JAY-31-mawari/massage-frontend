@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ServiceBookingDetail from "../../components/serviceBookingDetail";
-import FooterTop from "../../components/footer-top";
-import Footer from "../../components/footer";
 import { useMerchantStore } from "../../store/merchantStore";
 import { serviceNames } from "../../data/servicesData";
 import axios from "axios";
@@ -207,8 +205,6 @@ export default function SinglePropertyOne() {
           />
         </div>
       </div>
-      <FooterTop bg="theme-bg" />
-      <Footer />
     </>
   );
 }
