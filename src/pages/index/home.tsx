@@ -111,7 +111,7 @@ export default function Home() {
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-10">
           {/* Service Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 w-full max-w-[1200px]">
+          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-6 w-full">
             {servicesData.map((service, index) => (
               <div
                 onClick={() => navigate(`/service/${service.url}`)}
