@@ -85,6 +85,11 @@ export default function Navbar() {
                   </Link>
                 </li>
               ))}
+              {showSignUpSignIn && location.pathname === '/' && (
+                <li>
+                  <Link to="/about-service" className="p-2 hover:bg-cyan-600">JOIN AS A PROVIDER</Link>
+                </li>
+              )}
             </ul>
           </div>
 

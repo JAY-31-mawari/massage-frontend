@@ -21,6 +21,7 @@ import Service4 from "../pages/services/services4";
 import AdminMainLayout from "../pages/admin/main";
 import RegisterAccount from "../pages/createAccount";
 import TermsNConditions from "../pages/others/terms&conditions"
+import { MerchantAboutUs } from "../pages/others/merchantAboutUs";
 
 export function AppRoutes() {
     return (
@@ -49,6 +50,7 @@ export function AppRoutes() {
             <Route path='/faq' element={<Faq />} />
             <Route path='/my-account' element={<AdminMainLayout />} />
             <Route path='/create-account' element={<RegisterAccount />} />
+            <Route path='/about-service' element={<MerchantAboutUs />} />
         </Routes>
     )
 }

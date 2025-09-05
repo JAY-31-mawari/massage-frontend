@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 
 import send from '../assets/img/svg/send.svg'
 import map from '../assets/img/svg/map-1.svg'
-import moon from '../assets/img/svg/moon.svg'
-import verified from '../assets/img/svg/verified.svg'
-import user from '../assets/img/svg/user-1.svg'
-import Paypal from '../assets/img/partners/Paypal-light.png'
 
 import TinySlider from "tiny-slider-react";
 import '../../node_modules/tiny-slider/dist/tiny-slider.css'
@@ -64,7 +60,7 @@ export default function GridProperty({item,border}:{item:any, border:any}) {
                       <TinySlider settings={settings}>
                         {/* {item.image.map((el:any, index:number) => { */}
                           {/* // return( */}
-                            <div><Link to={`/single-property-1/${item._id}`}><img src={Paypal} className="img-fluid" alt="" /></Link></div>
+                            <div><Link to={`/single-property-1/${item._id}`}></Link></div>
                           {/* // ) */}
                         {/* // })} */}
                       </TinySlider>
