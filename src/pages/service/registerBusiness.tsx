@@ -216,42 +216,42 @@ export default function SubmitProperty() {
   };
 
   const removeTab = (id: number) => {
-  setTabs((prevTabs) => {
-    // 1. Remove the target tab
-    const filteredTabs = prevTabs.filter((tab) => tab.id !== id);
+    setTabs((prevTabs) => {
+      // 1. Remove the target tab
+      const filteredTabs = prevTabs.filter((tab) => tab.id !== id);
 
-    // 2. Keep the old data of remaining tabs
-    const oldData = { ...tabData };
+      // 2. Keep the old data of remaining tabs
+      const oldData = { ...tabData };
 
-    // 3. Renumber the remaining tabs (1,2,3...)
-    const renumberedTabs = filteredTabs.map((tab, index) => ({
-      ...tab,
-      id: index + 1,
-    }));
+      // 3. Renumber the remaining tabs (1,2,3...)
+      const renumberedTabs = filteredTabs.map((tab, index) => ({
+        ...tab,
+        id: index + 1,
+      }));
 
-    // 4. Rebuild tabData with correct mapping
-    const newData: { [key: number]: any } = {};
-    renumberedTabs.forEach((tab, index) => {
-      const oldTab = filteredTabs[index]; // original tab object before renumber
-      newData[index + 1] = oldData[oldTab.id]; // map old ID data to new ID
-    });
+      // 4. Rebuild tabData with correct mapping
+      const newData: { [key: number]: any } = {};
+      renumberedTabs.forEach((tab, index) => {
+        const oldTab = filteredTabs[index]; // original tab object before renumber
+        newData[index + 1] = oldData[oldTab.id]; // map old ID data to new ID
+      });
 
-    setTabData(newData);
+      setTabData(newData);
 
-    // 5. Handle active tab
-    if (activeTab === id) {
-      if (renumberedTabs.length > 0) {
-        setActiveTab(renumberedTabs[Math.min(id - 1, renumberedTabs.length - 1)].id);
-      } else {
-        setActiveTab(1);
+      // 5. Handle active tab
+      if (activeTab === id) {
+        if (renumberedTabs.length > 0) {
+          setActiveTab(
+            renumberedTabs[Math.min(id - 1, renumberedTabs.length - 1)].id
+          );
+        } else {
+          setActiveTab(1);
+        }
       }
-    }
 
-    return renumberedTabs;
-  });
-};
-
-
+      return renumberedTabs;
+    });
+  };
 
   const handleTabInputChange = (
     field: keyof PractitionerData,
@@ -335,10 +335,11 @@ export default function SubmitProperty() {
 
   return (
     <>
-      <div className="bg-gray-100 py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center">
-            <div className="text-center">
+      {/* Header Section */}
+      <div className="bg-gray-50 py-8">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex justify-center text-center">
+            <div>
               <h2 className="text-3xl font-bold text-gray-900">
                 Become a Practitioner
               </h2>
@@ -350,16 +351,20 @@ export default function SubmitProperty() {
         </div>
       </div>
 
-      <section className="gray-simple">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-3 col-md-4 d-none d-md-block">
+      {/* Main Section */}
+      <section className="bg-white py-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Sidebar */}
+            <div className="hidden md:block md:w-1/4">
               <ProgressSidebar
                 currentStep={currentStep}
                 setCurrentStep={(index) => setCurrentStep(index)}
               />
             </div>
-            <div className="col-lg-9 col-md-8">
+
+            {/* Main Content */}
+            <div className="w-full md:w-3/4">
               <div className="submit-page">
                 <motion.div layout>
                   <AnimatePresence mode="wait">
@@ -550,9 +555,7 @@ export default function SubmitProperty() {
                             {/* Zip Code */}
                             <div>
                               <label className="block text-sm font-medium mb-2">
-                                Postal Code / Zip Code (For mobile
-                                practitioners, this is their main location or
-                                office)
+                                Postal Code / Zip Code
                               </label>
                               <input
                                 type="text"
@@ -709,12 +712,14 @@ export default function SubmitProperty() {
                                       </button>
 
                                       {/* Cross Button */}
-                                      {tabs.length > 1 && <button
-                                        onClick={()=>removeTab(tab.id)}
-                                        className="absolute -top-2 -right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
-                                      >
-                                        <X className="w-3 h-3 text-gray-600" />
-                                      </button>}
+                                      {tabs.length > 1 && (
+                                        <button
+                                          onClick={() => removeTab(tab.id)}
+                                          className="absolute -top-2 -right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
+                                        >
+                                          <X className="w-3 h-3 text-gray-600" />
+                                        </button>
+                                      )}
                                     </li>
                                   ))}
                                 </ul>
@@ -871,12 +876,10 @@ export default function SubmitProperty() {
                         </div>
                       </motion.div>
                     )}
-
-                    {/* <div className="form-group col-lg-12 col-md-12">
-                                    <button className="btn btn-primary fw-medium px-5" type="button" onClick={handleMerchantFormSubmit}>Submit & Preview</button>
-                                </div> */}
                   </AnimatePresence>
                 </motion.div>
+
+                {/* Navigation Buttons */}
                 <div>
                   <div className="flex justify-between items-center mt-3 w-full">
                     <button
@@ -894,7 +897,6 @@ export default function SubmitProperty() {
                     <button
                       type="button"
                       className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                      // disabled={!isPractitionerDetailsValid}
                       onClick={() =>
                         currentStep === 4
                           ? handleMerchantFormSubmit()
