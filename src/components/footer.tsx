@@ -4,7 +4,7 @@ export default function Footer() {
 
   const connects = [
     { name: "Book an Appointment", path: "/serviceList" },
-    { name: "Become a Practitioner", path: "/register" },
+    { name: "Become a Practitioner", path: "/about-service" },
     { name: "Terms & Conditions", path: "/tnc" },
     { name: "Contact Us", path: "/contact" },
 
@@ -34,13 +34,13 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#090a13] text-gray-100 pt-10 pb-4 px-6">
+    <footer className="bg-[#090a13] text-gray-100 pt-10 pb-4 px-6 tracking-widest">
       <div className="container mx-auto max-w-7xl">
-        <div className="grid md:grid-cols-4 gap-16 mb-12">
+        <div className="grid md:grid-cols-4 gap-14 mb-12">
           <div className="md:col-span-2">
             <div className="flex items-center space-x-4 mb-8">
               <div>
-                <span className="font-black text-3xl tracking-tight">
+                <span className="font-bold text-3xl tracking-wider">
                   Last Minute Wellness
                 </span>
                 {/* <div className="text-sm text-background/70 font-bold tracking-widest uppercase">
@@ -55,12 +55,12 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-black text-xl mb-8">Signature Treatments</h4>
+            <h4 className="font-bold text-xl mb-8">Signature Treatments</h4>
             <ul className="space-y-4 text-background/80 text-lg">
               {services.map((service) => (
                 <li
                   onClick={() => navigate(service.path)}
-                  className="hover:text-background transition-colors cursor-pointer font-medium inline-block hover:underline hover:decoration-white hover:decoration-2"
+                  className="hover:text-background transition-colors cursor-pointer font-medium hover:underline hover:decoration-white hover:decoration-2"
                 >
                   {service.name}
                 </li>
@@ -69,12 +69,12 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-black text-xl mb-8">Connect</h4>
+            <h4 className="font-bold text-xl mb-8">Connect</h4>
             <ul className="space-y-4 text-background/80 text-lg">
               {connects.map((type) => (
                 <li
                   onClick={() => navigate(type.path)}
-                  className="hover:text-background transition-colors cursor-pointer font-medium inline-block hover:underline hover:decoration-white hover:decoration-2"
+                  className="hover:text-background transition-colors cursor-pointer font-medium hover:underline hover:decoration-white hover:decoration-2"
                 >
                   {type.name}
                 </li>

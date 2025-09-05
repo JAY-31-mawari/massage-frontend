@@ -80,7 +80,7 @@ export default function Navbar() {
               ))}
               {showSignUpSignIn && location.pathname === '/' && (
                 <li>
-                  <Link to="/register" className="p-2 hover:bg-cyan-600">JOIN AS A PROVIDER</Link>
+                  <Link to="/about-service" className="p-2 hover:bg-cyan-600">JOIN AS A PROVIDER</Link>
                 </li>
               )}
             </ul>

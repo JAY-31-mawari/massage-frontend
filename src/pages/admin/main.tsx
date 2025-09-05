@@ -40,10 +40,6 @@ export default function AdminMainLayout() {
         <main className="flex-1">{renderPage()}</main>
       </div>
 
-      {/* Footer */}
-      <div className="w-full">
-        <Footer />
-      </div>
     </div>
   );
 }
