@@ -96,7 +96,7 @@ export function MerchantAboutUs() {
             New Opportunities from top clients
           </h1>
           {aboutServiceLists.map((service) => (
-            <div className="flex items-center" key={service.id}>
+            <div className="flex items-center my-2" key={service.id}>
               <img
                 src={service.icon}
                 alt={`service-${service.id}`}
