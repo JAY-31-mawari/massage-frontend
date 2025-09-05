@@ -50,17 +50,17 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/50"></div>
 
         {/* Content */}
-        <div className="relative max-w-8xl mx-12 px-6 h-full flex flex-col justify-center items-start">
+        <div className="relative max-w-8xl mx-auto px-12 sm:px-6 md:px-12 h-full flex flex-col justify-center items-start">
           {/* Hero Text */}
-          <p className="text-lg md:text-xl text-white mb-4 font-medium">
+          <p className="text-base sm:text-md md:text-xl text-white mb-3 sm:mb-4 font-medium">
             Feel Better, Even on Your Busiest Days
           </p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 leading-tight max-w-2xl">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-6 sm:mb-8 leading-tight max-w-md sm:max-w-lg md:max-w-2xl">
             Last-Minute Appointments, First-Class Care
           </h2>
 
           {/* Search Box */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-white rounded-2xl p-3 w-full max-w-2xl border border-gray-200 shadow-md sm:w-full">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-white rounded-2xl p-4 w-full max-w-xl sm:max-w-2xl border border-gray-200 shadow-md">
             {/* Input */}
             <div className="flex items-center flex-1 bg-blue-50 rounded-xl px-3 py-3 focus-within:ring-2 focus-within:ring-blue-500 transition">
               <MapPin className="text-blue-500 w-5 h-5 mr-2" />
@@ -69,7 +69,7 @@ export default function Home() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Enter City, State or Zipcode"
-                className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400 lg:text-lg sm:text-xs"
+                className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400 text-sm sm:text-base lg:text-lg"
               />
             </div>
 
@@ -83,7 +83,7 @@ export default function Home() {
               disabled={isLoadingLocation}
               title="Use my current location"
             >
-              <Locate className="w-6 h-6" />
+              <Locate className="w-5 h-5 sm:w-6 sm:h-6" />
               <span className="sm:hidden">Use Location</span>
             </button>
 
@@ -111,7 +111,7 @@ export default function Home() {
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-10">
           {/* Service Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 w-full max-w-[1200px]">
+          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-6 w-full">
             {servicesData.map((service, index) => (
               <div
                 onClick={() => navigate(`/service/${service.url}`)}
