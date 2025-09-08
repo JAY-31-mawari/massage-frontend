@@ -177,11 +177,11 @@ export function MerchantAboutUs() {
                 </div>
               ))}
               <div className="bg-[#f6edfd] max-w-2xl mx-1 p-4 my-4 mb-6 rounded-3xl text-lg text-center">
-                <p>Ready to Grow your practice?</p>
-                <button className="bg-blue-700 text-white my-3 py-2 px-3 rounded-xl">
+                <p className="mb-2">Ready to Grow your practice?</p>
+                <Link to="/register"  className="bg-blue-700 text-white py-2 px-3 rounded-xl">
                   Get Started in minutes
-                </button>
-                <p>
+                </Link>
+                <p className="mt-3">
                   It only takes a few minutes to list your first availability
                   and start getting clients.
                 </p>
