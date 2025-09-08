@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { clientReviewData } from "../data/servicesData";
-import "../../node_modules/tiny-slider/dist/tiny-slider.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function CustomerReviews() {
@@ -17,32 +16,27 @@ export default function CustomerReviews() {
   };
 
   return (
-    <>
-      <div className="flex justify-end mb-6">
-        <button
-          onClick={() => scroll("left")}
-          className="bg-[#fff] rounded-full shadow p-1 mr-1"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        <button
-          onClick={() => scroll("right")}
-          className="bg-white rounded-full shadow p-1 ml-1"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-      </div>
+    <div className="relative w-full">
+      {/* Left Arrow */}
+      <button
+        onClick={() => scroll("left")}
+        className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full shadow p-2 z-10 hover:scale-105 transition"
+      >
+        <ChevronLeft className="w-6 h-6" />
+      </button>
+
+      {/* Carousel Container */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 px-2 scrollbar-hide"
+        className="flex overflow-hidden snap-x snap-mandatory scroll-smooth gap-4 px-10"
       >
         {clientReviewData.map((client, i) => (
           <div
             key={i}
-            className="flex-shrink-0 w-[350px] md:w-[430px] bg-white rounded-2xl border border-gray-200 p-6 text-left snap-start"
+            className="flex-shrink-0 w-[300px] md:w-[400px] bg-white rounded-2xl border border-gray-200 p-6 text-left snap-start shadow-sm"
           >
             <p
-              className="text-gray-800 text-lg"
+              className="text-gray-800 text-md"
               dangerouslySetInnerHTML={{ __html: client.desc }}
             ></p>
 
@@ -53,12 +47,20 @@ export default function CustomerReviews() {
                 className="w-10 h-10 rounded-full"
               />
               <div>
-                <h4 className="font-semibold text-gray-900">{client.name}</h4>
+                <h6 className="font-semibold text-gray-900">{client.name}</h6>
               </div>
             </div>
           </div>
         ))}
       </div>
-    </>
+
+      {/* Right Arrow */}
+      <button
+        onClick={() => scroll("right")}
+        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full shadow p-2 z-10 hover:scale-105 transition"
+      >
+        <ChevronRight className="w-6 h-6" />
+      </button>
+    </div>
   );
 }

@@ -151,7 +151,7 @@ export default function Navbar() {
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="block px-3 py-2 rounded-md hover:bg-gray-100 transition"
+                    className="block px-3 py-2 rounded-md hover:bg-gray-100 transition" 
                     onClick={() => setIsToggle(false)}
                   >
                     {item.name}
