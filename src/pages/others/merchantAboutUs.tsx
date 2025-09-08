@@ -213,7 +213,7 @@ export function MerchantAboutUs() {
                     onClick={() => toggle(index)}
                     className="w-full text-left px-6 py-2 flex justify-between items-center focus:outline-none"
                   >
-                    <span className="font-medium text-black text-xl">
+                    <span className="font-medium text-black text-xl w-10/12 break-words whitespace-normal">
                       {item.question}
                     </span>
                     <div
@@ -238,13 +238,13 @@ export function MerchantAboutUs() {
                   </button>
 
                   <div
-                    className={`transition-all duration-300 ease-in-out px-6 overflow-hidden ${
+                    className={`max-w-2xl transition-all duration-300 ease-in-out px-6 overflow-hidden ${
                       isOpen
                         ? "max-h-96 opacity-100 py-2"
                         : "max-h-0 opacity-0 py-0"
                     }`}
                   >
-                    <p className="text-gray-600 text-lg">{item.answer}</p>
+                    <p className="text-gray-600 text-lg w-11/12 break-words whitespace-normal">{item.answer}</p>
                   </div>
                 </div>
               );
