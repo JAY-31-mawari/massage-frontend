@@ -5,6 +5,7 @@ export default function Footer() {
   const connects = [
     { name: "Book an Appointment", path: "/serviceList" },
     { name: "Become a Practitioner", path: "/about-service" },
+    { name: "FAQ", path:"/faq"},
     { name: "Terms & Conditions", path: "/tnc" },
     { name: "Contact Us", path: "/contact" },
 
