@@ -28,6 +28,18 @@ export default function Navbar() {
       to: "/serviceList",
       name: "Book an Appointment",
     },
+    {
+      to: "/about-us",
+      name: "About",
+    },
+    {
+      to: "/contact",
+      name: "Contact",
+    },
+    {
+      to: "/faq",
+      name: "FAQ",
+    },
   ];
 
   useEffect(() => {
@@ -58,8 +70,9 @@ export default function Navbar() {
     <div className="w-full sticky top-0 bg-white text-gray-900 shadow-md z-50">
       <div className="w-auto mx-5">
         <nav className="h-20 flex items-center justify-between">
-          {/* Left: Logo */}
-          <div className="flex items-center gap-2 min-w-0">
+          {/* Left: Logo + Nav Links */}
+          <div className="flex items-center gap-10 min-w-0">
+            {/* Logo */}
             <Link to="/" className="flex items-center gap-2 min-w-0">
               <img
                 src={logo}
@@ -70,27 +83,22 @@ export default function Navbar() {
                 Last Minute Wellness
               </h6>
             </Link>
-          </div>
 
-          {/* Center: Nav Links (Desktop) */}
-          <div className="hidden lg:flex flex-1 justify-center">
-            <ul className="flex items-center gap-8 font-medium">
-              {navbarItems.map((item) => (
-                <li key={item.to}>
-                  <Link
-                    to={item.to}
-                    className="p-2 hover:bg-gray-100 rounded-md transition"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-              {showSignUpSignIn && location.pathname === '/' && (
-                <li>
-                  <Link to="/about-service" className="p-2 hover:bg-cyan-600">JOIN AS A PROVIDER</Link>
-                </li>
-              )}
-            </ul>
+            {/* Nav Links (Desktop) */}
+            <div className="hidden lg:flex">
+              <ul className="flex items-center gap-8 font-medium">
+                {navbarItems.map((item) => (
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className="p-2 hover:bg-white rounded-md transition"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Right: Profile or Auth Buttons (Desktop) */}
@@ -151,7 +159,7 @@ export default function Navbar() {
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="block px-3 py-2 rounded-md hover:bg-gray-100 transition" 
+                    className="block px-3 py-2 rounded-md hover:bg-gray-100 transition"
                     onClick={() => setIsToggle(false)}
                   >
                     {item.name}
@@ -168,12 +176,14 @@ export default function Navbar() {
                   >
                     <img
                       src={`https://ui-avatars.com/api/?name=${
-                        user.fullName || user.userName || "User"
+                        user?.fullName || user?.userName || "User"
                       }&background=random`}
                       alt="Profile"
                       className="h-10 w-10 rounded-full border shadow-sm"
                     />
-                    <span>{user.fullName || "Profile"}</span>
+                    <h6 className="font-medium text-gray-800">
+                      {user?.fullName || user?.userName || "Profile"}
+                    </h6>
                   </Link>
                 </li>
               ) : (

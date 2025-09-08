@@ -1,6 +1,4 @@
 export default function Payment() {
-  
-
   return (
     <section className="bg-gray-100 py-10">
       <div className="max-w-6xl mx-auto px-4">

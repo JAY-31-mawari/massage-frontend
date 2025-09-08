@@ -40,7 +40,7 @@ export default function Home() {
   }, [services]);
 
   return (
-    <div className="bg-gradient-to-r from-cyan-100 via-white to-purple-200">
+    <div className="bg-white">
       {/* Search Section */}
       <div
         className="relative bg-no-repeat bg-cover bg-center w-full h-[600px] lg:h-[700px]"
