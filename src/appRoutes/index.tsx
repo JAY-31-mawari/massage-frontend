@@ -13,7 +13,6 @@ import Error from '../pages/error';
 import Contact from '../pages/contact';
 import AboutUs from '../pages/about-us';
 import Checkout from '../pages/admin/checkout';
-import Faq from '../pages/faq';
 import Service1 from "../pages/services/services1";
 import Service2 from "../pages/services/services2";
 import Service3 from "../pages/services/services3";
@@ -21,6 +20,7 @@ import Service4 from "../pages/services/services4";
 import AdminMainLayout from "../pages/admin/main";
 import RegisterAccount from "../pages/createAccount";
 import TermsNConditions from "../pages/others/terms&conditions"
+import { ClientFAQ } from "../pages/others/clientFAQ";
 import { MerchantAboutUs } from "../pages/others/merchantAboutUs";
 
 export function AppRoutes() {
@@ -47,7 +47,7 @@ export function AppRoutes() {
             <Route path='/about-us' element={<AboutUs />} />
             <Route path='/tnc' element={<TermsNConditions />} />
             <Route path='/checkout' element={<Checkout />} />
-            <Route path='/faq' element={<Faq />} />
+            <Route path='/faq' element={<ClientFAQ />} />
             <Route path='/my-account' element={<AdminMainLayout />} />
             <Route path='/create-account' element={<RegisterAccount />} />
             <Route path='/about-service' element={<MerchantAboutUs />} />
