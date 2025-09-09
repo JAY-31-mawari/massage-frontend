@@ -104,15 +104,21 @@ export default function Navbar() {
           {/* Right: Profile or Auth Buttons (Desktop) */}
           <div className="hidden lg:flex items-center gap-6">
             {!showSignUpSignIn ? (
-              <Link to="/my-account" className="flex items-center gap-2">
-                <img
-                  src={`https://ui-avatars.com/api/?name=${
-                    user?.fullName || "User"
-                  }&background=random`}
-                  alt="Profile"
-                  className="h-10 w-10 rounded-full border shadow-sm"
-                />
-              </Link>
+              <div className="rounded-full border border-gray-300">
+                <Link
+                  to="/my-account"
+                  className="flex items-center gap-1 p-1 rounded-full transition-colors duration-300 hover:bg-gray-100"
+                >
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${
+                      user?.fullName || "User"
+                    }&background=random`}
+                    alt="Profile"
+                    className="h-9 w-9 rounded-full border border-gray-300"
+                  />
+                  <p className="font-semibold text-gray-700">Profile</p>
+                </Link>
+              </div>
             ) : (
               <>
                 <Link

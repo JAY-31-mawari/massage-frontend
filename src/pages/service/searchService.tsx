@@ -107,8 +107,8 @@ export default function ClassicalProperty() {
             break;
         }
 
-        toast.success(errorMessage,{
-          duration: 5000
+        toast.success(errorMessage, {
+          duration: 5000,
         });
         setIsLoadingLocation(false);
       },
@@ -178,34 +178,66 @@ export default function ClassicalProperty() {
 
   return (
     <>
-      <section className="relative bg-blue-600 min-h-[200px] flex items-center">
-        {/* Decorative Pills */}
-        <div className="absolute left-0 top-0 w-1/4 h-10 bg-white rounded-r-full opacity-25 mt-4"></div>
-        <div className="absolute left-0 bottom-0 w-[15%] h-10 bg-white rounded-t-full opacity-25 ml-4"></div>
-        <div className="absolute right-0 top-0 w-[15%] h-10 bg-white rounded-b-full opacity-25 mr-4"></div>
-        <div className="absolute right-0 bottom-0 w-1/4 h-10 bg-white rounded-l-full opacity-25 mb-4"></div>
+      <div className="w-full p-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          {/* Sidebar (Fixed/Sticky) */}
+          <div className="lg:col-span-3 col-span-12">
+            <div className="sticky top-6 space-y-6">
+              {/* Search Feature Block */}
+              <div className="flex flex-col gap-4 bg-white border border-gray-200 rounded-xl shadow-sm p-3">
+                {/* Location Input */}
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    className="w-full border border-blue-300 rounded-lg pl-10 pr-12 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    placeholder="Enter city, state or zipcode"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                  />
 
-        {/* Spacing Top */}
-        <div className="py-2"></div>
+                  {/* Left Icon */}
+                  <div className="absolute top-1/2 left-3 -translate-y-1/2 text-blue-600">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
+                  </div>
 
-        {/* Container */}
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-center">
-            <div className="w-full max-w-2xl">
-              <div className="bg-white rounded-2xl p-4 md:p-6 shadow-md">
-                <div className="flex flex-col md:flex-row items-stretch gap-3">
-                  {/* Location Input */}
-                  <div className="relative flex-1">
-                    <input
-                      type="text"
-                      className="w-full border border-blue-300 rounded-lg pl-10 pr-12 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                      placeholder="Enter city, state or zipcode"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                    />
-
-                    {/* Left Icon */}
-                    <div className="absolute top-1/2 left-3 -translate-y-1/2 text-blue-600">
+                  {/* Live Location Button */}
+                  <button
+                    type="button"
+                    className="absolute top-1/2 right-2 -translate-y-1/2 p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-300 transition disabled:opacity-50"
+                    onClick={getCurrentLocation}
+                    disabled={isLoadingLocation}
+                    title="Use my current location"
+                  >
+                    {isLoadingLocation ? (
+                      <svg
+                        className="animate-spin h-4 w-4 text-blue-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8H4z"
+                        />
+                      </svg>
+                    ) : (
                       <svg
                         width="18"
                         height="18"
@@ -215,95 +247,42 @@ export default function ClassicalProperty() {
                       >
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                       </svg>
-                    </div>
+                    )}
+                  </button>
+                </div>
 
-                    {/* Live Location Button */}
-                    <button
-                      type="button"
-                      className="absolute top-1/2 right-2 -translate-y-1/2 p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-300 transition disabled:opacity-50"
-                      onClick={getCurrentLocation}
-                      disabled={isLoadingLocation}
-                      title="Use my current location"
-                    >
-                      {isLoadingLocation ? (
-                        <svg
-                          className="animate-spin h-4 w-4 text-blue-600"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8v8H4z"
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
+                {/* Service Select */}
+                <div className="w-full">
+                  <select
+                    className="w-full border border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-[#d4a373] outline-none"
+                    onChange={(e) => setUserSelectedService(e.target.value)}
+                  >
+                    <option value="">Select Service</option>
+                    {serviceNames.map((name, index) => (
+                      <option key={index} value={name}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                  {/* Service Select */}
-                  <div className="flex-1 md:max-w-xs">
-                    <select
-                      className="w-full border border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-[#d4a373] outline-none"
-                      onChange={(e) => setUserSelectedService(e.target.value)}
-                    >
-                      <option value="">Select Service</option>
-                      {serviceNames.map((name, index) => (
-                        <option key={index} value={name}>
-                          {name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Search Button */}
-                  <div className="w-full md:w-auto">
-                    <button
-                      type="button"
-                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-lg shadow-md transition font-medium"
-                      onClick={() => {
-                        liveLocation.current = false;
-                        getSearchBusinesses();
-                      }}
-                    >
-                      Search
-                    </button>
-                  </div>
+                {/* Search Button */}
+                <div className="w-full">
+                  <button
+                    type="button"
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-lg shadow-md transition font-medium"
+                    onClick={() => {
+                      liveLocation.current = false;
+                      getSearchBusinesses();
+                    }}
+                  >
+                    Search
+                  </button>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Spacing Bottom */}
-        <div className="py-2"></div>
-      </section>
-
-      <div className="w-full px-1 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Sidebar (Fixed/Sticky) */}
-          <div className="lg:col-span-3 col-span-12">
-            <div className="sticky top-6">
-              <div className="bg-gray-50 rounded-2xl shadow pl-6 h-fit">
+              {/* Side Filter */}
+              <div>
                 <SideFilter
                   show={show}
                   setShow={setShow}
@@ -318,55 +297,55 @@ export default function ClassicalProperty() {
           {/* Services + Pagination (Scrollable) */}
           <div className="lg:col-span-9 col-span-12">
             <div className="pl-10">
-              <h3>Search Results</h3>
+              <p className="font-semibold text-gray-950 text-xl">
+                Search Results
+              </p>
             </div>
 
-            <div className="relative max-h-[80vh] overflow-y-auto pr-2">
-              {/* Services List */}
-              <div className="grid gap-6 relative z-0">
-                {servicesData.length > 0 ? (
-                  servicesData
-                    .filter(
-                      (item) =>
-                        (selectService === "" ||
-                          item.businessType === selectService) &&
-                        (userSelectedService === "" ||
-                          item.services?.includes(userSelectedService))
-                    )
-                    .map((item, index) => (
-                      <div
-                        key={index}
-                        className="bg-white rounded-xl shadow hover:shadow-md transition mx-10 my-2"
-                      >
-                        <ServiceCardLayout item={item} />
-                      </div>
-                    ))
-                ) : (
-                  <div className="flex flex-col items-center justify-center text-gray-600 bg-gray-50 py-12 rounded-xl mx-10 my-6">
-                    <svg
-                      className="w-12 h-12 text-gray-400 mb-3"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
+            {/* Services List */}
+            <div className="grid gap-6 relative z-0">
+              {servicesData.length > 0 ? (
+                servicesData
+                  .filter(
+                    (item) =>
+                      (selectService === "" ||
+                        item.businessType === selectService) &&
+                      (userSelectedService === "" ||
+                        item.services?.includes(userSelectedService))
+                  )
+                  .map((item, index) => (
+                    <div
+                      key={index}
+                      className="bg-white border border-gray-200 rounded-xl hover:shadow-md transition mx-10 my-2"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 17v-2a4 4 0 014-4h6M9 13h.01M9 9h.01M9 5h.01"
-                      />
-                    </svg>
-                    <p className="text-lg font-medium">No services found</p>
-                    <p>
-                      Please Enter correct city, state or zipcode for better
-                      results
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Try adjusting your filters or search again.
-                    </p>
-                  </div>
-                )}
-              </div>
+                      <ServiceCardLayout item={item} />
+                    </div>
+                  ))
+              ) : (
+                <div className="flex flex-col items-center justify-center text-gray-600 bg-gray-50 py-12 rounded-xl mx-10 my-6">
+                  <svg
+                    className="w-12 h-12 text-gray-400 mb-3"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 17v-2a4 4 0 014-4h6M9 13h.01M9 9h.01M9 5h.01"
+                    />
+                  </svg>
+                  <p className="text-lg font-medium">No services found</p>
+                  <p>
+                    Please Enter correct city, state or zipcode for better
+                    results
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Try adjusting your filters or search again.
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Pagination

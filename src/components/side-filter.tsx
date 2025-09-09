@@ -15,7 +15,7 @@ export default function SideFilter({
   serviceTypes: string[];
 }) {
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow p-4 space-y-6">
+    <div className="w-full max-w-md mx-auto bg-white border border-gray-200 rounded-xl p-4 space-y-6">
       <div className="flex items-center justify-between">
         <h4 className="text-lg font-semibold text-gray-800">
           Select your Service-Type

@@ -35,7 +35,7 @@ export default function ServiceCardLayout({ item }: { item: Service }) {
   return (
     <div
       onClick={handleSelectService}
-      className="flex flex-row rounded-2xl shadow bg-red hover:shadow-md transition cursor-pointer h-[250px] overflow-hidden p-3"
+      className="flex flex-row rounded-2xl bg-red hover:shadow-md transition cursor-pointer h-[250px] overflow-hidden p-3"
     >
       {/* Left: Image Section */}
       <div className="w-[250px] h-full flex-shrink-0">
