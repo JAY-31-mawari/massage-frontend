@@ -66,10 +66,10 @@ export function ClientFAQ() {
   return (
     <div className="container py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="font-bold mb-8 text-5xl text-blue-500">FAQs</h1>
+        <h1 className="font-bold mb-8 text-5xl text-blue-500 text-center">FAQs</h1>
 
         {clientFAQ.map((faq, index) => (
-          <div key={index} className=" mb-8">
+          <div key={index} className="mb-8">
             <h1 className="font-semibold text-2xl mb-2">{faq.question}</h1>
 
             <div>
