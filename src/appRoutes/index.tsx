@@ -21,7 +21,8 @@ import AdminMainLayout from "../pages/admin/main";
 import RegisterAccount from "../pages/createAccount";
 import TermsNConditions from "../pages/others/terms&conditions"
 import { ClientFAQ } from "../pages/others/clientFAQ";
-import { MerchantAboutUs } from "../pages/others/merchantAboutUs";
+import { MerchantAboutUs } from "../pages/others/merchantLandingPage";
+import { Refund } from "../pages/others/refund";
 
 export function AppRoutes() {
     return (
@@ -51,6 +52,7 @@ export function AppRoutes() {
             <Route path='/my-account' element={<AdminMainLayout />} />
             <Route path='/create-account' element={<RegisterAccount />} />
             <Route path='/about-service' element={<MerchantAboutUs />} />
+            <Route path='/refund' element={<Refund />} />
         </Routes>
     )
 }

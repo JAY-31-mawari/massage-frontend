@@ -6,6 +6,7 @@ export default function Footer() {
     { name: "Book an Appointment", path: "/serviceList" },
     { name: "Become a Practitioner", path: "/about-service" },
     { name: "FAQ", path:"/faq"},
+    { name: "Refund", path:"/refund"},
     { name: "Terms & Conditions", path: "/tnc" },
     { name: "Contact Us", path: "/contact" },
 
