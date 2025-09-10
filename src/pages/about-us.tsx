@@ -5,7 +5,7 @@ export default function AboutUs() {
         <div className="max-w-4xl mx-auto">
           <h1 className="font-bold mb-8 text-5xl text-blue-500 text-center">About Us</h1>
 
-          <div className="space-y-6 text-2xl">
+          <div className="space-y-6 text-xl lg:text-2xl">
             <p className="font-bold">
               At Last Minute Wellness, we make accessing wellness services in
               Canada simple, fast, and stress-free.
