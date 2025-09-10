@@ -5,9 +5,11 @@ import axios from "axios";
 import { useUserStore } from "../../store/userStore";
 import toast from "react-hot-toast";
 import { PaymentCard } from "../../components/interfaces";
+import Loading from "../../components/loader";
 
 export default function Payment() {
   const [paymentCard, setPaymentCard] = useState<PaymentCard>();
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
   const user = useUserStore((state) => state.user);
   const accessToken = getStorageItem("token");
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ export default function Payment() {
         }, 2000);
         return;
       }
-
+      setIsPaymentLoading(true);
       try {
         const paymentRes = await axios.get(
           global.config.ROOTURL.prod + "/payment/default",
@@ -44,6 +46,8 @@ export default function Payment() {
             navigate("/create-account");
           }, 2000);
         }
+      } finally {
+        setIsPaymentLoading(false);
       }
     }
     getPayment();
@@ -54,90 +58,63 @@ export default function Payment() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="space-y-10">
           {/* Payment Card Info */}
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h4 className="text-lg font-semibold mb-4">Payment Information</h4>
+          {isPaymentLoading ? (
+            <Loading />
+          ) : (
+            <div className="bg-white rounded-2xl shadow p-6">
+              <h4 className="text-lg font-semibold mb-4">
+                Payment Information
+              </h4>
 
-            {/* Payment Options */}
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="pay-method" defaultChecked />
-                <span>Pay with Credit card</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="pay-method" />
-                <span>Pay with PayPal</span>
-              </label>
-            </div> */}
-
-            {/* Card Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Card Holder Name
-                </label>
-                <input
-                  type="text"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2"
-                  value={paymentCard?.cardHolderName || ""}
-                  readOnly
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Card Number
-                </label>
-                <input
-                  type="text"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2"
-                  value={paymentCard?.cardNumber || ""}
-                  readOnly
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Expire Date
-                </label>
-                <input
-                  type="text"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2"
-                  value={paymentCard?.expiryDate || ""}
-                  readOnly
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Card Type
-                </label>
-                <input
-                  type="text"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2"
-                  value={paymentCard?.cardType || ""}
-                  readOnly
-                />
+              {/* Card Details */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Card Holder Name
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                    value={paymentCard?.cardHolderName || ""}
+                    readOnly
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Card Number
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                    value={paymentCard?.cardNumber || ""}
+                    readOnly
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Expire Date
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                    value={paymentCard?.expiryDate || ""}
+                    readOnly
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Card Type
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                    value={paymentCard?.cardType || ""}
+                    readOnly
+                  />
+                </div>
               </div>
             </div>
-
-            {/* Agreement */}
-            {/* <div className="mt-4 flex items-center gap-2">
-              <input
-                id="agree"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <label htmlFor="agree" className="text-sm">
-                By continuing, you agree to conditions
-              </label>
-            </div> */}
-
-            {/* <div className="mt-6 text-center">
-              <Link
-                to="#"
-                className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 w-full"
-              >
-                Confirm Booking
-              </Link>
-            </div> */}
-          </div>
+          )}
         </div>
       </div>
     </section>
