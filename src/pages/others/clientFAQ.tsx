@@ -70,10 +70,10 @@ export function ClientFAQ() {
 
         {clientFAQ.map((faq, index) => (
           <div key={index} className="mb-8">
-            <h1 className="font-semibold text-2xl mb-2">{faq.question}</h1>
+            <h1 className="font-semibold text-xl lg:text-2xl">{faq.question}</h1>
 
             <div>
-              <p className="text-xl">
+              <p className="text-lg lg:text-xl mt-2 mb-4 ml-8">
                 {faq.answer}
               </p>
             </div>
