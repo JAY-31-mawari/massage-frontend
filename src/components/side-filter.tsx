@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
 export default function SideFilter({
   show,
   setShow,
   selectService,
   setSelectService,
   serviceTypes,
+  userSelectedService
 }: {
   show: any;
   setShow: any;
   selectService: string;
   setSelectService: any;
   serviceTypes: string[];
+  userSelectedService: string
 }) {
   return (
     <div className="w-full max-w-md mx-auto bg-white border border-gray-200 rounded-xl p-4 space-y-6">
@@ -35,6 +34,9 @@ export default function SideFilter({
           All
         </label>
         {serviceTypes.map((service, index) => {
+          if(service === "Home-Based Practice" && userSelectedService !== "Massage Therapy"){
+            return null;
+          }
           const checked = service === selectService;
           return (
             <label
@@ -52,16 +54,6 @@ export default function SideFilter({
             </label>
           );
         })}
-      </div>
-
-      {/* Bottom Button */}
-      <div>
-        <button
-          type="submit"
-          className="w-full py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
-        >
-          22 Results Show
-        </button>
       </div>
     </div>
   );

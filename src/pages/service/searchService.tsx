@@ -286,6 +286,7 @@ export default function ClassicalProperty() {
                 <SideFilter
                   show={show}
                   setShow={setShow}
+                  userSelectedService={userSelectedService}
                   selectService={selectService}
                   setSelectService={handleSelectService}
                   serviceTypes={serviceTypes}
@@ -304,48 +305,84 @@ export default function ClassicalProperty() {
 
             {/* Services List */}
             <div className="grid gap-6 relative z-0">
-              {servicesData.length > 0 ? (
-                servicesData
-                  .filter(
-                    (item) =>
-                      (selectService === "" ||
-                        item.businessType === selectService) &&
-                      (userSelectedService === "" ||
-                        item.services?.includes(userSelectedService))
-                  )
-                  .map((item, index) => (
-                    <div
-                      key={index}
-                      className="bg-white border border-gray-200 rounded-xl hover:shadow-md transition mx-10 my-2"
-                    >
-                      <ServiceCardLayout item={item} />
+              {(() => {
+                if (servicesData.length === 0) {
+                  // Case 1: servicesData is empty
+                  return (
+                    <div className="flex flex-col items-center justify-center text-gray-600 bg-gray-50 py-12 rounded-xl mx-10 my-6">
+                      <svg
+                        className="w-12 h-12 text-gray-400 mb-3"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 17v-2a4 4 0 014-4h6M9 13h.01M9 9h.01M9 5h.01"
+                        />
+                      </svg>
+                      <p className="text-lg font-medium">
+                        No services available
+                      </p>
+                      <p>
+                        Please check back later or contact support for
+                        assistance.
+                      </p>
                     </div>
-                  ))
-              ) : (
-                <div className="flex flex-col items-center justify-center text-gray-600 bg-gray-50 py-12 rounded-xl mx-10 my-6">
-                  <svg
-                    className="w-12 h-12 text-gray-400 mb-3"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
+                  );
+                }
+
+                // Case 2: servicesData is not empty, but filtering results in no items
+                const filteredData = servicesData.filter(
+                  (item) =>
+                    (selectService === "" ||
+                      item.businessType === selectService) &&
+                    (userSelectedService === "" ||
+                      item.services?.includes(userSelectedService))
+                );
+
+                if (filteredData.length === 0) {
+                  return (
+                    <div className="flex flex-col items-center justify-center text-gray-600 bg-gray-50 py-12 rounded-xl mx-10 my-6">
+                      <svg
+                        className="w-12 h-12 text-gray-400 mb-3"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 17v-2a4 4 0 014-4h6M9 13h.01M9 9h.01M9 5h.01"
+                        />
+                      </svg>
+                      <p className="text-lg font-medium">
+                        No services match your filters
+                      </p>
+                      <p>
+                        Please enter correct city, state or zipcode for better
+                        results.
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Try adjusting your filters or search again.
+                      </p>
+                    </div>
+                  );
+                }
+
+                // Case 3: filteredData has results → display them
+                return filteredData.map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-white border border-gray-200 rounded-xl hover:shadow-md transition mx-10 my-2"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 17v-2a4 4 0 014-4h6M9 13h.01M9 9h.01M9 5h.01"
-                    />
-                  </svg>
-                  <p className="text-lg font-medium">No services found</p>
-                  <p>
-                    Please Enter correct city, state or zipcode for better
-                    results
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Try adjusting your filters or search again.
-                  </p>
-                </div>
-              )}
+                    <ServiceCardLayout item={item} />
+                  </div>
+                ));
+              })()}
             </div>
 
             {/* Pagination

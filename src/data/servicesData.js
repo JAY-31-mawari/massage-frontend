@@ -38,7 +38,7 @@ export const servicesData = [
 
 export const serviceNames = ["Physiotherapy","Chiropractic Care","Massage Therapy","Acupuncture"]
 
-export const serviceTypes = ["Clinic-Based Practice", "Home-Based Practice"]
+export const serviceTypes = ["Clinic-Based Practice", "Home-Based Practice", "Mobile Practitioner"]
 
 export const clientReviewData = [
   {
