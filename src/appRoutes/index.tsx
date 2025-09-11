@@ -19,10 +19,14 @@ import Service3 from "../pages/services/services3";
 import Service4 from "../pages/services/services4";
 import AdminMainLayout from "../pages/admin/main";
 import RegisterAccount from "../pages/createAccount";
-import TermsNConditions from "../pages/others/terms&conditions"
 import { ClientFAQ } from "../pages/others/clientFAQ";
 import { MerchantAboutUs } from "../pages/others/merchantLandingPage";
 import { Refund } from "../pages/others/refund";
+import { PrivacyPolicy } from "../pages/others/privacyPolicy";
+import { ContractorAgreement } from "../pages/others/contractorsAgreement";
+import { TermsOfService } from "../pages/others/termsOfService";
+import { WebsiteTermsOfUse } from "../pages/others/websiteTermsOfUse";
+import ConsentForm from "../pages/others/consentForm";
 
 export function AppRoutes() {
     return (
@@ -46,13 +50,17 @@ export function AppRoutes() {
             <Route path='/404' element={<Error />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/about-us' element={<AboutUs />} />
-            <Route path='/tnc' element={<TermsNConditions />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/faq' element={<ClientFAQ />} />
             <Route path='/my-account' element={<AdminMainLayout />} />
             <Route path='/create-account' element={<RegisterAccount />} />
             <Route path='/about-service' element={<MerchantAboutUs />} />
-            <Route path='/refund' element={<Refund />} />
-        </Routes>
+            <Route path='/refund-&-cancellation' element={<Refund />} />
+            <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+            <Route path='/terms-of-use' element={<WebsiteTermsOfUse />} />
+            <Route path='/consent-form' element={<ConsentForm />} />
+            <Route path='/contractor-agreement' element={<ContractorAgreement />} />
+            <Route path='/terms-of-service' element={<TermsOfService />} />
+        </Routes>   
     )
 }
