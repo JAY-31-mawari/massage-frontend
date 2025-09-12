@@ -44,14 +44,14 @@ export function Refund() {
           Cancellation & No-Show Policy
         </h1>
 
-        <p className="mb-4">
+        <p className="mb-4 text-base md:text-lg lg:text-xl">
           At LastMinuteWellness, we respect both our clients’ time and our
           practitioners’ schedules. To ensure fairness and availability for
           everyone, the following cancellation policy applies to all
           appointments booked through our platform:
         </p>
 
-        <div className="mb-8">
+        <div className="mb-8 text-base md:text-lg lg:text-xl">
           {refundPoints.map((refund) => (
             <div>
               <h1 className="font-semibold">{refund.header}</h1>
