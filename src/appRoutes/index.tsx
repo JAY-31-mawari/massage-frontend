@@ -11,7 +11,7 @@ import RegisterBusiness from '../pages/service/registerBusiness';
 import Pricing from '../pages/pricing';
 import Error from '../pages/error';
 import Contact from '../pages/contact';
-import AboutUs from '../pages/about-us';
+import AboutUs from '../pages/admin/about-us';
 import Checkout from '../pages/admin/checkout';
 import Service1 from "../pages/services/services1";
 import Service2 from "../pages/services/services2";

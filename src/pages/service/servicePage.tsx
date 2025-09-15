@@ -48,7 +48,7 @@ export default function SinglePropertyOne() {
 
   useEffect(() => {
   if (selectedServiceData?.practitioners?.length) {
-    setUserSelectedPractitionerId(selectedServiceData.practitioners[0]._id);
+    setUserSelectedPractitionerId(selectedServiceData.practitioners[0].id);
   }
 }, [selectedServiceData]);
 
@@ -139,10 +139,10 @@ export default function SinglePropertyOne() {
                       <div
                         key={index}
                         onClick={() =>
-                          setUserSelectedPractitionerId(practitioner._id)
+                          setUserSelectedPractitionerId(practitioner.id)
                         }
                         className={`flex flex-col items-center cursor-pointer group ${
-                          userSelectedPractitionerId === practitioner._id
+                          userSelectedPractitionerId === practitioner.id
                             ? "scale-105"
                             : ""
                         }`}
@@ -151,7 +151,7 @@ export default function SinglePropertyOne() {
                           src={practitioner?.profilePicture}
                           alt={practitioner.practitionerName}
                           className={`w-16 h-16 object-cover rounded-full border-2 transition-all duration-300 ${
-                            userSelectedPractitionerId === practitioner._id
+                            userSelectedPractitionerId === practitioner.id
                               ? "border-[#d4a373]"
                               : "border-transparent"
                           }`}
@@ -172,10 +172,10 @@ export default function SinglePropertyOne() {
                       <div
                         key={index}
                         onClick={() =>
-                          setUserSelectedPractitionerId(practitioner._id)
+                          setUserSelectedPractitionerId(practitioner.id)
                         }
                         className={`flex flex-col items-center cursor-pointer group ${
-                          userSelectedPractitionerId === practitioner._id
+                          userSelectedPractitionerId === practitioner.id
                             ? "scale-105"
                             : ""
                         }`}
@@ -184,7 +184,7 @@ export default function SinglePropertyOne() {
                           src={practitioner?.profilePicture}
                           alt={practitioner.practitionerName}
                           className={`w-16 h-16 object-cover rounded-full border-2 transition-all duration-300 ${
-                            userSelectedPractitionerId === practitioner._id
+                            userSelectedPractitionerId === practitioner.id
                               ? "border-[#d4a373]"
                               : "border-transparent"
                           }`}

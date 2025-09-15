@@ -50,7 +50,7 @@ export default function UserBookings() {
   >([]);
 
   const fetchUserAppointments = async () => {
-    if (!user?._id || !accessToken) {
+    if (!user?.id || !accessToken) {
       toast.error("Please Login First");
       setTimeout(() => {
         navigate("/create-account");
@@ -60,7 +60,7 @@ export default function UserBookings() {
     setIsAppointmentLoading(true);
     const appointmentPayload = {
       method: "GET",
-      url: global.config.ROOTURL.prod + `/appointment/user/${user._id}`,
+      url: global.config.ROOTURL.prod + `/appointment/user/${user.id}`,
       headers: {
         Authorization: "Bearer " + accessToken,
         "Content-type": "application/json",
@@ -150,7 +150,7 @@ export default function UserBookings() {
 
                       return (
                         <motion.div
-                          key={appointment?._id}
+                          key={appointment?.id}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.1, duration: 0.4 }}
@@ -168,7 +168,7 @@ export default function UserBookings() {
                                   loop
                                   className="!w-full !h-full rounded-lg" // force fill
                                 >
-                                  {appointment?.businessId?.businessPhotos?.map(
+                                  {appointment?.business?.businessPhotos?.map(
                                     (el, index) => (
                                       <SwiperSlide
                                         key={index}
@@ -191,7 +191,7 @@ export default function UserBookings() {
                             {/* Right - Details */}
                             <div className="flex-1 space-y-2">
                               <h4 className="text-lg font-bold text-gray-900">
-                                {appointment?.businessId?.businessName}
+                                {appointment?.business?.businessName}
                               </h4>
 
                               <div className="text-gray-700">
@@ -201,7 +201,7 @@ export default function UserBookings() {
                                   className="text-blue-600 hover:underline"
                                 >
                                   {
-                                    appointment?.practitionerId
+                                    appointment?.practitioner
                                       ?.practitionerName
                                   }
                                 </Link>
@@ -259,7 +259,7 @@ export default function UserBookings() {
 
                               <div className="pt-2">
                                 <Link
-                                  to={`/service/${appointment?.businessId?._id}`}
+                                  to={`/service/${appointment?.businessId}`}
                                   title="Book Another Appointment"
                                   className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition"
                                 >
@@ -296,7 +296,7 @@ export default function UserBookings() {
 
                       return (
                         <motion.div
-                          key={appointment?._id}
+                          key={appointment?.id}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.1, duration: 0.4 }}
@@ -311,7 +311,7 @@ export default function UserBookings() {
                                 loop
                                 className="!w-full !h-48 md:!h-64 rounded-lg" // force width & height
                               >
-                                {appointment?.businessId?.businessPhotos?.map(
+                                {appointment?.business?.businessPhotos?.map(
                                   (el, index) => (
                                     <SwiperSlide
                                       key={index}
@@ -333,7 +333,7 @@ export default function UserBookings() {
                             {/* Right - Details */}
                             <div className="flex-1 space-y-2">
                               <h4 className="text-lg font-bold text-gray-900">
-                                {appointment?.businessId?.businessName}
+                                {appointment?.business?.businessName}
                               </h4>
 
                               <div className="text-gray-700">
@@ -343,7 +343,7 @@ export default function UserBookings() {
                                   className="text-blue-600 hover:underline"
                                 >
                                   {
-                                    appointment?.practitionerId
+                                    appointment?.practitioner
                                       ?.practitionerName
                                   }
                                 </Link>
@@ -401,7 +401,7 @@ export default function UserBookings() {
 
                               <div className="pt-2">
                                 <Link
-                                  to={`/service/${appointment?.businessId?._id}`}
+                                  to={`/service/${appointment?.businessId}`}
                                   title="Book Another Appointment"
                                   className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition"
                                 >

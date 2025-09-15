@@ -16,7 +16,7 @@ export default function Payment() {
 
   useEffect(() => {
     async function getPayment() {
-      if (!user?._id || !accessToken) {
+      if (!user?.id || !accessToken) {
         toast.error("Please Login First");
         setTimeout(() => {
           navigate("/create-account");

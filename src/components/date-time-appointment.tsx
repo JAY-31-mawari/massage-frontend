@@ -87,15 +87,14 @@ export default function DateTimeComponent({
   }, []);
 
   function combineDateAndTime(date: Date, timeStr: string): Date {
-  // timeStr is like "09:00"
-  const [hours, minutes] = timeStr.split(":").map(Number);
+    // timeStr is like "09:00"
+    const [hours, minutes] = timeStr.split(":").map(Number);
 
-  const combined = new Date(date); // copy selectedDate
-  combined.setHours(hours, minutes, 0, 0);
+    const combined = new Date(date); // copy selectedDate
+    combined.setHours(hours, minutes, 0, 0);
 
-  return combined;
-}
-
+    return combined;
+  }
 
   // Generate time slots from according to practitioner timeslots with 30-minute intervals
   const generateTimeSlots = () => {
@@ -121,45 +120,25 @@ export default function DateTimeComponent({
 
       return { startLocal, endLocal };
     });
+    
+    console.log("sdads",bookedRanges)
 
-    let practitionerAvailability = selectedServiceData?.availabilities?.find(
-      (a: any) =>
-        a.practitionerId === selectedPractitionerId &&
-        new Date(a.date).toDateString() ===
-          new Date(selectedDate).toDateString()
+    const practitioner = selectedServiceData?.practitioners?.find(
+      (p) => p.id === selectedPractitionerId
     );
 
-    if (!practitionerAvailability) {
-      const practitionerDefaultTimeSlot =
-        selectedServiceData?.practitioners?.find(
-          (practitioner) => practitioner._id === selectedPractitionerId
-        )?.slots;
-      practitionerDefaultTimeSlot?.forEach((range) => {
-        const startLocal = combineDateAndTime(selectedDate, range.startTime);
-        const endLocal = combineDateAndTime(selectedDate, range.endTime);
-        for (
-          let time = new Date(startLocal);
-          time < endLocal;
-          time.setMinutes(time.getMinutes() + interval)
-        ) {
-          const slotStart = new Date(time);
-          const slotEnd = new Date(time);
-          slotEnd.setMinutes(slotEnd.getMinutes() + serviceDuration);
-          // skip past slots if today
-          if (isToday && slotStart <= now) continue;
-          // check time slot is conflicting with appointment time
-          const isConflicting = bookedRanges.some(
-            (range) => slotStart < range.endLocal && slotEnd > range.startLocal
-          );
+    if (!practitioner) {
+      return [];
+    }
 
-          if (isConflicting) continue;
-          
+    const practitionerAvailability = practitioner.Availability.find(
+      (a) =>
+        new Date(a.date).toDateString() ===
+        new Date(selectedDate).toDateString()
+    );
 
-          slots.push(slotStart);
-        }
-      });
-    
-    } else {
+    if (practitionerAvailability && practitionerAvailability.slots.length > 0) {
+      // Use availab ility slots if available
       practitionerAvailability.slots.forEach((range) => {
         const startUTC = new Date(range.startTime);
         const endUTC = new Date(range.endTime);
@@ -170,6 +149,7 @@ export default function DateTimeComponent({
         const endLocal = new Date(
           endUTC.toLocaleString("en-US", { timeZone: userTimeZone })
         );
+        console.log(startLocal," ",endLocal)
         for (
           let time = new Date(startLocal);
           time < endLocal;
@@ -179,10 +159,8 @@ export default function DateTimeComponent({
           const slotEnd = new Date(time);
           slotEnd.setMinutes(slotEnd.getMinutes() + serviceDuration);
 
-          // skip past slots if today
           if (isToday && slotStart <= now) continue;
 
-          // check time slot is conflicting with appointment time
           const isConflicting = bookedRanges.some(
             (range) => slotStart < range.endLocal && slotEnd > range.startLocal
           );
@@ -192,7 +170,34 @@ export default function DateTimeComponent({
           slots.push(slotStart);
         }
       });
-    }
+    } 
+    // else if (practitioner.slots.length > 0) {
+    //   // If no availability set, use default slots
+    //   practitioner.slots.forEach((range) => {
+    //     const startLocal = combineDateAndTime(selectedDate, range.startTime);
+    //     const endLocal = combineDateAndTime(selectedDate, range.endTime);
+
+    //     for (
+    //       let time = new Date(startLocal);
+    //       time < endLocal;
+    //       time.setMinutes(time.getMinutes() + interval)
+    //     ) {
+    //       const slotStart = new Date(time);
+    //       const slotEnd = new Date(time);
+    //       slotEnd.setMinutes(slotEnd.getMinutes() + serviceDuration);
+
+    //       if (isToday && slotStart <= now) continue;
+
+    //       const isConflicting = bookedRanges.some(
+    //         (range) => slotStart < range.endLocal && slotEnd > range.startLocal
+    //       );
+
+    //       if (isConflicting) continue;
+
+    //       slots.push(slotStart);
+    //     }
+    //   });
+    // }
 
     return slots;
   };
