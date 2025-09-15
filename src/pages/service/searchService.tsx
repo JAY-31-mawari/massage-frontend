@@ -327,8 +327,8 @@ export default function ClassicalProperty() {
                         No services available
                       </p>
                       <p>
-                        Please check back later or contact support for
-                        assistance.
+                        Please enter correct city, state or zipcode for better
+                        results.
                       </p>
                     </div>
                   );

@@ -10,12 +10,12 @@ export default function SinglePropertyOne() {
   let id: any = params.id;
   const [merchant, setMerchant] = useState<any>();
   const [userSelectedService, setUserSelectedService] = useState("");
-  const [userSelectedPractitionerId, setUserSelectedPractitionerId] = useState("");
+  const [userSelectedPractitionerId, setUserSelectedPractitionerId] =
+    useState("");
   const [userSelectedTimeDuration, setUserSelectedTimeDuration] = useState(15);
   const selectedServiceData = useMerchantStore((state) => state.merchant);
   const [selectedImage, setSelectedImage] = useState("");
-  const timeDuration = [15, 30, 45 ,60]
-
+  const timeDuration = [15, 30, 45, 60];
 
   const getSpecificBusinessById = async () => {
     const payload = {
@@ -47,38 +47,40 @@ export default function SinglePropertyOne() {
   }, [id]);
 
   useEffect(() => {
-  if (selectedServiceData?.practitioners?.length) {
-    setUserSelectedPractitionerId(selectedServiceData.practitioners[0]._id);
-  }
-}, [selectedServiceData]);
+    if (selectedServiceData?.practitioners?.length) {
+      setUserSelectedPractitionerId(selectedServiceData.practitioners[0]._id);
+    }
+  }, [selectedServiceData]);
 
   return (
     <>
-      <div className="min-h-screen bg-[#f6f6f6] p-4 md:p-8 flex flex-col md:flex-row gap-6">
+      <div className="min-h-screen bg-[#f6f6f6] p-4 md:p-8 flex flex-col lg:flex-row gap-6">
         {/* Left - Side (Sticky) */}
-        <div className="md:w-1/2 lg:w-5/12 relative">
-          <div className="sticky top-[100px]">
-            {" "}
-            {/* 👈 This keeps it in view */}
-            <div className="overflow-hidden rounded-2xl">
+        <div className="w-full lg:w-[40%] relative mx-auto px-4">
+          <div className="sticky top-30">
+            {/* Main Image */}
+            <div className="overflow-hidden rounded-2xl shadow-lg">
               <img
                 src={selectedImage}
                 alt="Service"
-                className="w-full h-[350px] object-cover transition-transform duration-500 hover:scale-105"
+                className="w-full h-64 sm:h-80 md:h-72 object-cover transition-transform duration-500 hover:scale-105"
               />
             </div>
-            <div className="flex gap-3 mt-4 flex-wrap">
+
+            {/* Thumbnails */}
+            <div className="flex gap-3 mt-4 flex-wrap justify-center sm:justify-start">
               {merchant?.businessPhotos.map((img: string, idx: number) => (
-                <img
-                  key={idx}
-                  src={img}
-                  onClick={() => setSelectedImage(img)}
-                  className={`w-20 h-20 object-cover rounded-xl cursor-pointer transition-transform duration-300 hover:scale-105 border-2 ${
-                    selectedImage === img
-                      ? "border-[#d4a373]"
-                      : "border-transparent"
-                  }`}
-                />
+                <div key={idx} className="group">
+                  <img
+                    src={img}
+                    onClick={() => setSelectedImage(img)}
+                    className={`w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl cursor-pointer transition-transform duration-300 hover:scale-105 border-2 ${
+                      selectedImage === img
+                        ? "border-[#d4a373]"
+                        : "border-transparent"
+                    } group-hover:opacity-80`}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -119,11 +121,13 @@ export default function SinglePropertyOne() {
             <select
               className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-[#d4a373] outline-none"
               value={userSelectedTimeDuration}
-              onChange={(e) => setUserSelectedTimeDuration(parseInt(e.target.value,10))}
+              onChange={(e) =>
+                setUserSelectedTimeDuration(parseInt(e.target.value, 10))
+              }
             >
               {timeDuration.map((time, index) => (
                 <option key={index} value={time}>
-                  {time}{' '}minutes
+                  {time} minutes
                 </option>
               ))}
             </select>

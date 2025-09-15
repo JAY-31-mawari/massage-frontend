@@ -145,7 +145,7 @@ export default function ServiceBookingDetail({
 
   return (
     <>
-      <div className="property_block_wrap style-2">
+      <div>
         <DateTimeComponent
           isLoading={isLoading}
           bookedSlots={bookedSlots}
@@ -159,41 +159,6 @@ export default function ServiceBookingDetail({
           handleBookingAppointment={BookAppointment}
           serviceDuration={duration}
         />
-      </div>
-
-      <div className="property_block_wrap style-2">
-        <div className="property_block_wrap_header">
-          <Link
-            to="#"
-            onClick={() => setOpen2(!open2)}
-            className={open2 ? "" : "collapsed"}
-          >
-            <h4 className="property_block_title">Description</h4>
-          </Link>
-        </div>
-        <div
-          id="clTwo"
-          className={`panel-collapse collapse ${open2 ? "show" : ""}`}
-        >
-          <div className="block-body">
-            <p>
-              There are many variations of passages of Lorem Ipsum available,
-              but the majority have suffered alteration in some form, by
-              injected humour, or randomised words which don't look even
-              slightly believable. If you are going to use a passage of Lorem
-              Ipsum, you need to be sure there isn't anything embarrassing
-              hidden in the middle of text. All the Lorem Ipsum generators on
-              the Internet tend to repeat predefined chunks as necessary, making
-              this the first true generator on the Internet.
-            </p>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo.
-            </p>
-          </div>
-        </div>
       </div>
     </>
   );
