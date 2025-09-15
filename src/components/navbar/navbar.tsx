@@ -86,7 +86,7 @@ export default function Navbar() {
 
             {/* Nav Links (Desktop) */}
             <div className="hidden lg:flex">
-              <ul className="flex items-center gap-8 font-medium">
+              <ul className="flex items-center gap-8 font-medium text-medium lg:text-lg">
                 {navbarItems.map((item) => (
                   <li key={item.to}>
                     <Link
