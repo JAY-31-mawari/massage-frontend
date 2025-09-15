@@ -95,7 +95,7 @@ export default function SinglePropertyOne() {
           </div>
 
           {/* Service Selection */}
-          <div>
+          {/* <div>
             <label className="block mb-2 font-medium text-[#3d2b1f]">
               Choose Service
             </label>
@@ -110,8 +110,9 @@ export default function SinglePropertyOne() {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
+          {/* SELECT SERVICE DURATION  */}
           <div>
             <label className="block mb-2 font-medium text-[#3d2b1f]">
               Choose Duration

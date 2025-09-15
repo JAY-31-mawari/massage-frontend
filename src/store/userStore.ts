@@ -14,12 +14,22 @@ interface User {
   __v: number
 }
 
+interface UserChoice {
+  selectedService: string
+}
+
 interface UserStore {
   user: Partial<User> | null
   setUser: (data: Partial<User>) => void
   fullUpdate: (data: Partial<User>) => void
   updateUser: (data: Partial<User>) => void
   clearUser: () => void
+}
+
+interface UserChoiceStore {
+  userChoice: Partial<UserChoice> | null
+  setUserChoice: (data: Partial<UserChoice>) => void
+  clearUserChoice: () => void
 }
 
 export const useUserStore = create<UserStore>()(
@@ -40,3 +50,9 @@ export const useUserStore = create<UserStore>()(
     }
   )
 )
+
+export const useUserChoiceStore = create<UserChoiceStore>((set)=>({
+  userChoice:null,
+  setUserChoice: (data) => set({userChoice: data}),
+  clearUserChoice: () => set({userChoice: null})
+}))

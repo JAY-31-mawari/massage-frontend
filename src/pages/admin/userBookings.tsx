@@ -13,6 +13,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import Loading from "../../components/loader";
+import { useUserChoiceStore } from "../../store/userStore";
 
 const settings = {
   items: 1,
@@ -31,6 +32,7 @@ const settings = {
 
 export default function UserBookings() {
   const navigate = useNavigate();
+  const setUserChoice = useUserChoiceStore((state) => state.setUserChoice)
   const appointmenthistory = useAppointmentStore((state) => state.appointments);
   const updateAppointmentHistory = useAppointmentStore(
     (state) => state.updateAppointments
@@ -262,6 +264,7 @@ export default function UserBookings() {
                                   to={`/service/${appointment?.businessId}`}
                                   title="Book Another Appointment"
                                   className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition"
+                                  onClick={()=> setUserChoice({selectedService:appointment.serviceName})}
                                 >
                                   <i className="fa-solid fa-pen-to-square mr-2"></i>
                                   Book Again
@@ -404,6 +407,7 @@ export default function UserBookings() {
                                   to={`/service/${appointment?.businessId}`}
                                   title="Book Another Appointment"
                                   className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition"
+                                  onClick={()=> setUserChoice({selectedService: appointment.serviceName})}
                                 >
                                   <i className="fa-solid fa-pen-to-square mr-2"></i>
                                   Book Again

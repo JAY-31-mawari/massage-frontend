@@ -121,8 +121,6 @@ export default function DateTimeComponent({
       return { startLocal, endLocal };
     });
     
-    console.log("sdads",bookedRanges)
-
     const practitioner = selectedServiceData?.practitioners?.find(
       (p) => p.id === selectedPractitionerId
     );
@@ -149,7 +147,6 @@ export default function DateTimeComponent({
         const endLocal = new Date(
           endUTC.toLocaleString("en-US", { timeZone: userTimeZone })
         );
-        console.log(startLocal," ",endLocal)
         for (
           let time = new Date(startLocal);
           time < endLocal;
