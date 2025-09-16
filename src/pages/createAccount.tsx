@@ -12,7 +12,6 @@ export default function RegisterAccount() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
   const [fullName, setFullName] = useState("");
-  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phone, setPhone] = useState("");
@@ -73,13 +72,12 @@ export default function RegisterAccount() {
         toast.error("Invalid Phone Number");
         return;
       }
-      if (!fullName || !userName || !email || !phone) {
+      if (!fullName || !email || !phone) {
         toast.error("All Fields are required");
         return;
       }
       const userPayload = {
         fullName,
-        userName,
         email,
         phone,
       };
@@ -161,7 +159,6 @@ export default function RegisterAccount() {
           toast.success(res.data.msg);
           setStorageItem("uid", userData._id);
           setStorageItem("fullName", userData.fullName);
-          setStorageItem("userName", userData.userName);
           setStorageItem("email", userData.email);
           setStorageItem("phoneNo", userData.phone);
           setStorageItem("token", res.data?.token);
@@ -170,7 +167,6 @@ export default function RegisterAccount() {
           setUserData(null);
 
           setFullName("");
-          setUserName("");
           setEmail("");
           setPhone("");
 
@@ -223,14 +219,41 @@ export default function RegisterAccount() {
     setUserData(null);
     // Clear form when going back
     setFullName("");
-    setUserName("");
     setEmail("");
     setPhone("");
   };
 
+  const loginPage = [
+    {
+      id:1,
+      header:"Real-Time Wait Time Management",
+      point:"Update and display current wait times to help patients plan their visits with updated timeZones"
+    },
+    {
+      id:2,
+      header:"Patient Check-in System",
+      point:"Streamline patient arrivals with digital check-in and queue management"
+    },
+    {
+      id:3,
+      header:"Appointment Scheduling",
+      point:"Manage bookings, availability, and patient appointments efficiently according to your timeZone"
+    },
+    {
+      id:4,
+      header:"Analytics & Reporting",
+      point:"Track patient flow, popular services, and clinic performance metrics"
+    },
+    {
+      id:5,
+      header:"Multi-Location Management",
+      point:"Manage multiple clinic location and staff from a single dashboard"
+    }
+  ]
+
   return (
     <>
-      <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+      <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 overflow-hidden">
         <div className="flex flex-col items-center justify-center p-8 bg-white overflow-y-auto">
           {/* Left Section - Forms */}
           <AnimatePresence mode="wait">
@@ -286,28 +309,6 @@ export default function RegisterAccount() {
                           value={fullName}
                           placeholder="Enter your full name"
                           onChange={(e) => setFullName(e.target.value)}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                      </motion.div>
-
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.4 }}
-                        layout
-                      >
-                        <label
-                          htmlFor="userName"
-                          className="block text-sm font-medium text-gray-700 mb-1"
-                        >
-                          User Name
-                        </label>
-                        <input
-                          type="text"
-                          id="userName"
-                          value={userName}
-                          placeholder="Enter your userName"
-                          onChange={(e) => setUserName(e.target.value)}
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       </motion.div>
@@ -489,39 +490,19 @@ export default function RegisterAccount() {
         </div>
 
         {/* Right Section - Image (Hidden on mobile) */}
-        <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-8 overflow-hidden">
-          <div className="text-center space-y-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-              layout
-              className="w-64 h-64 mx-auto bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center"
-            >
-              <svg
-                className="w-32 h-32 text-white"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </motion.div>
-
+        <div className="hidden md:flex flex-row justify-center bg-[#4999f2] md:py-8 md:px-11 overflow-hidden pt-8">
+          <div className="space-y-3 lg:space-y-6">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.4 }}
               layout
-              className="space-y-4"
+              className="space-y-4 text-white text-center"
             >
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-3xl lg:text-4xl font-bold ">
                 Welcome to Our Platform
               </h2>
-              <p className="text-gray-600 max-w-md mx-auto">
+              <p className="max-w-md mx-auto text-lg lg:text-xl">
                 Join thousands of users who trust our platform for their needs.
                 Create your account today and start your journey with us.
               </p>
@@ -531,14 +512,27 @@ export default function RegisterAccount() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.4 }}
-              layout
+              className="text-center"
             >
               <Link
                 to="/"
-                className="inline-block px-2 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-none hover:bg-blue-700 transition duration-200"
+                className="inline-block p-3 bg-blue-600 text-white font-medium rounded-lg shadow-none hover:bg-blue-700 transition duration-200"
               >
                 Back To Home
               </Link>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration:0.3 }}
+              className="text-white"
+            >
+              {loginPage.map((login)=>(
+                <div className="mt-3">
+                  <li className="list-disc marker:text-xl font-semibold">{login.header}</li>
+                  <p className="text-gray-300 my-1">{login.point}</p>
+                </div>
+              ))}
             </motion.div>
           </div>
         </div>

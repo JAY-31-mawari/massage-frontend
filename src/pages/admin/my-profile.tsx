@@ -28,7 +28,6 @@ const MyProfile = () => {
       url: global.config.ROOTURL.prod + `/user/${user?.id}`,
       data: {
         fullName: userData?.fullName,
-        userName: userData?.userName,
         email: userData?.email,
         phone: userData?.phone,
       },
@@ -43,7 +42,6 @@ const MyProfile = () => {
         setIsEditing(false);
         toast.success("Details Updated")
         setStorageItem("fullName", res.data.data?.fullName);
-        setStorageItem("userName", res.data.data?.userName);
         setStorageItem("email", res.data.data?.email);
         setStorageItem("phoneNo", res.data.data?.phone);
         setStorageItem("user-data", JSON.stringify(res.data.data));
@@ -93,12 +91,6 @@ const MyProfile = () => {
                         label: "Your Name",
                         type: "text",
                         value: userData?.fullName || "Calvin Carlo",
-                      },
-                      {
-                        key: "userName",
-                        label: "User Name",
-                        type: "text",
-                        value: userData?.userName || "Web Designer",
                       },
                       {
                         key: "email",

@@ -87,8 +87,8 @@ export default function DateTimeComponent({
   }, []);
 
   function combineDateAndTime(date: Date, timeStr: string): Date {
-    // timeStr is like "09:00"
-    const [hours, minutes] = timeStr.split(":").map(Number);
+      // timeStr is like "09:00"
+      const [hours, minutes] = timeStr.split(":").map(Number);
 
     const combined = new Date(date); // copy selectedDate
     combined.setHours(hours, minutes, 0, 0);
@@ -373,14 +373,7 @@ export default function DateTimeComponent({
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: "#f9fafb",
-        minHeight: "100vh",
-        fontFamily:
-          "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif",
-      }}
-    >
+    <div className="bg-[#f9fafb]">
       <div className="container-fluid py-3 px-4">
         <div className="mb-5">
           <h1 className="h3 fw-bold mb-2" style={{ color: "#111827" }}>

@@ -10,12 +10,12 @@ export default function SinglePropertyOne() {
   let id: any = params.id;
   const [merchant, setMerchant] = useState<any>();
   const [userSelectedService, setUserSelectedService] = useState("");
-  const [userSelectedPractitionerId, setUserSelectedPractitionerId] = useState("");
+  const [userSelectedPractitionerId, setUserSelectedPractitionerId] =
+    useState("");
   const [userSelectedTimeDuration, setUserSelectedTimeDuration] = useState(15);
   const selectedServiceData = useMerchantStore((state) => state.merchant);
   const [selectedImage, setSelectedImage] = useState("");
-  const timeDuration = [15, 30, 45 ,60]
-
+  const timeDuration = [15, 30, 45, 60];
 
   const getSpecificBusinessById = async () => {
     const payload = {
@@ -54,31 +54,33 @@ export default function SinglePropertyOne() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#f6f6f6] p-4 md:p-8 flex flex-col md:flex-row gap-6">
+      <div className="min-h-screen bg-[#f6f6f6] p-4 md:p-8 flex flex-col lg:flex-row gap-6">
         {/* Left - Side (Sticky) */}
-        <div className="md:w-1/2 lg:w-5/12 relative">
-          <div className="sticky top-[100px]">
-            {" "}
-            {/* 👈 This keeps it in view */}
-            <div className="overflow-hidden rounded-2xl">
+        <div className="w-full lg:w-[40%] relative mx-auto px-4">
+          <div className="sticky top-20">
+            {/* Main Image */}
+            <div className="overflow-hidden rounded-2xl shadow-lg">
               <img
                 src={selectedImage}
                 alt="Service"
-                className="w-full h-[350px] object-cover transition-transform duration-500 hover:scale-105"
+                className="w-full h-64 sm:h-80 md:h-72 object-cover transition-transform duration-500 hover:scale-105"
               />
             </div>
-            <div className="flex gap-3 mt-4 flex-wrap">
+
+            {/* Thumbnails */}
+            <div className="flex gap-3 mt-4 flex-wrap justify-center sm:justify-start">
               {merchant?.businessPhotos.map((img: string, idx: number) => (
-                <img
-                  key={idx}
-                  src={img}
-                  onClick={() => setSelectedImage(img)}
-                  className={`w-20 h-20 object-cover rounded-xl cursor-pointer transition-transform duration-300 hover:scale-105 border-2 ${
-                    selectedImage === img
-                      ? "border-[#d4a373]"
-                      : "border-transparent"
-                  }`}
-                />
+                <div key={idx} className="group">
+                  <img
+                    src={img}
+                    onClick={() => setSelectedImage(img)}
+                    className={`w-20 h-20 p-0.5 sm:w-24 sm:h-24 object-cover rounded-xl cursor-pointer transition-transform duration-300 hover:scale-105 border-2 ${
+                      selectedImage === img
+                        ? "border-blue-700"
+                        : "border-transparent"
+                    } group-hover:opacity-80`}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -91,7 +93,32 @@ export default function SinglePropertyOne() {
             <h1 className="text-2xl font-bold text-[#3d2b1f]">
               {merchant?.businessName}
             </h1>
-            <p className="text-[#6b4f3f] mb-0">{merchant?.merchantAddress}</p>
+            <div className="items-center text-xl mt-1 text-gray-600">
+              <div className="flex">
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+                <p className="mb-0">{merchant?.merchantAddress}</p>
+              </div>
+            </div>
+            <div className="text-lg mt-3 lg:mt-4 text-gray-900">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci
+              similique laborum magni nesciunt, necessitatibus, repudiandae
+              repellat, reprehenderit nam ab inventore maxime. Numquam quis,
+              iusto optio quibusdam harum voluptate debitis eius sit dolores
+              aliquid saepe iure sequi nesciunt odio nostrum labore. Lorem
+              ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur
+              quam minus, ea dignissimos reiciendis quod maxime nostrum unde
+              assumenda doloribus obcaecati consectetur excepturi alias
+              consequatur beatae fugit dolor magni cum iusto earum deserunt
+              voluptates voluptatem! Laborum sit quidem porro rem obcaecati,
+              odio quis quaerat. Labore illo quaerat accusamus facere quam?
+            </div>
           </div>
 
           {/* Service Selection */}
@@ -120,11 +147,13 @@ export default function SinglePropertyOne() {
             <select
               className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-[#d4a373] outline-none"
               value={userSelectedTimeDuration}
-              onChange={(e) => setUserSelectedTimeDuration(parseInt(e.target.value,10))}
+              onChange={(e) =>
+                setUserSelectedTimeDuration(parseInt(e.target.value, 10))
+              }
             >
               {timeDuration.map((time, index) => (
                 <option key={index} value={time}>
-                  {time}{' '}minutes
+                  {time} minutes
                 </option>
               ))}
             </select>
@@ -157,7 +186,7 @@ export default function SinglePropertyOne() {
                               : "border-transparent"
                           }`}
                         />
-                        <span className="mt-1 text-sm text-[#3d2b1f]">
+                        <span className="mt-1 text-sm">
                           {practitioner.practitionerName}
                         </span>
                       </div>
