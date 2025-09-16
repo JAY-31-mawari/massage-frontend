@@ -9,14 +9,15 @@ interface TimeSlot{
 }
 
 interface Availability{
-  _id: string,
+  id: string,
   date: string,
   practitionerId: string
   slots: TimeSlot[]
 }
 
 interface PractitionerDetails{
-  _id: string
+  id: string
+  Availability: Availability[]
   practitionerName: string
   profilePicture: string
   areaOfExpertise: string[]
@@ -24,7 +25,7 @@ interface PractitionerDetails{
 }
 
 export interface Service {
-    _id: string
+    id: string
     location: Location
     businessName: string
     businessType: string
@@ -46,11 +47,11 @@ export interface Service {
     businessPhotos: string[]
     business_phone: string
     merchantAddress: string
-    _id: string
+    id: string
 }
 
 interface PractitionerData {
-    _id: string
+    id: string
     practitionerName: string
     areaOfExpertise: string[]
 }
@@ -58,15 +59,17 @@ interface PractitionerData {
 export interface AppointmentHistory {
     active: boolean
     appointmentDate: string
-    businessId: BusinessData
-    practitionerId: PractitionerData
+    businessId: string
+    practitionerId: string
+    business: BusinessData
+    practitioner: PractitionerData
     duration: number
     price: number
     reminderSend: boolean
     serviceName: string
     serviceType: string
     userId: string
-    _id: string
+    id: string
 }
 
 
@@ -84,7 +87,7 @@ export interface Booking {
   serviceName: string;
   serviceType: string;
   status: string;
-  _id: string;
+  id: string;
 }
 
 export interface PaymentCard {
