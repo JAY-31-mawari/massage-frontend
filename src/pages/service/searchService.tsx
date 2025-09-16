@@ -20,13 +20,16 @@ export default function ClassicalProperty() {
   const [show, setShow] = useState(true);
   const user = useUserStore((state) => state.user);
   const servicesData = useServiceStore((state) => state.services);
-  const userChoice = useUserChoiceStore((state) => state.userChoice)
-  const setUserChoice = useUserChoiceStore((state)=> state.setUserChoice)
+  const userChoice = useUserChoiceStore((state) => state.userChoice);
+  const setUserChoice = useUserChoiceStore((state) => state.setUserChoice);
   const updateUser = useUserStore((state) => state.updateUser);
   const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
   const setservicesData = useServiceStore((state) => state.setServices);
   const [selectService, setSelectService] = useState(user?.serviceType || "");
   const [userSelectedService, setUserSelectedService] = useState("");
+  const [selectServiceError, setSelectServiceError] = useState<string | null>(
+    null
+  );
   const [location, setLocation] = useState("");
   const liveLocation = useRef(false);
   const latitudeRef = useRef(0);
@@ -124,9 +127,15 @@ export default function ClassicalProperty() {
   };
 
   async function getSearchBusinesses() {
+    if (userSelectedService === "") {
+      setSelectServiceError(
+        "Please enter a service to find clinics and services"
+      );
+      return;
+    }
     const searchBusinessData = await axios.get(
       global.config.ROOTURL.prod +
-        `/business/search?q=${searchLocation.current}&latitude=${latitudeRef.current}&longitude=${longitudeRef.current}&radius=${radius}&liveLocation=${liveLocation.current}`
+        `/business/search?q=${searchLocation.current}&latitude=${latitudeRef.current}&longitude=${longitudeRef.current}&radius=${radius}&liveLocation=${liveLocation.current}&service=${userSelectedService}`
     );
     setservicesData(searchBusinessData.data.businesses);
     updateSearch({
@@ -147,6 +156,15 @@ export default function ClassicalProperty() {
     );
     setservicesData(businessData.data.businesses);
   }
+
+  useEffect(() => {
+    if (selectServiceError) {
+      const timer = setTimeout(() => {
+        setSelectServiceError(null);
+      }, 3000); // 3000ms = 3 seconds
+      return () => clearTimeout(timer); // cleanup if errorMessage changes before timeout ends
+    }
+  }, [selectServiceError]);
 
   useEffect(() => {
     searchLocation.current = location;
@@ -259,8 +277,8 @@ export default function ClassicalProperty() {
                   <select
                     className="w-full border border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-[#d4a373] outline-none"
                     onChange={(e) => {
-                      setUserSelectedService(e.target.value)
-                      setUserChoice({selectedService:e.target.value})
+                      setUserSelectedService(e.target.value);
+                      setUserChoice({ selectedService: e.target.value });
                     }}
                   >
                     <option value="">Select Service</option>
@@ -285,6 +303,11 @@ export default function ClassicalProperty() {
                     Search
                   </button>
                 </div>
+                {selectServiceError && (
+                  <div className="text-red-600 text-sm p-2 border-1 border-red-700 ">
+                    {selectServiceError}
+                  </div>
+                )}
               </div>
 
               {/* Side Filter */}
