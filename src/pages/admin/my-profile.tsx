@@ -16,7 +16,7 @@ const MyProfile = () => {
   const updateUserDetails = useUserStore((state) => state.fullUpdate);
 
   const updateUserProfile = async () => {
-    if (!user?._id || !accessToken) {
+    if (!user?.id || !accessToken) {
       toast.error("Please Login First");
       setTimeout(() => {
         navigate("/create-account");
@@ -25,7 +25,7 @@ const MyProfile = () => {
     }
     const userUpdatedData = {
       method: "PATCH",
-      url: global.config.ROOTURL.prod + `/user/${user?._id}`,
+      url: global.config.ROOTURL.prod + `/user/${user?.id}`,
       data: {
         fullName: userData?.fullName,
         email: userData?.email,
@@ -62,7 +62,8 @@ const MyProfile = () => {
   };
 
   useEffect(()=>{
-    if(!user?._id || !accessToken){
+    console.log(userData)
+    if(!user?.id || !accessToken){
       toast.success('Please Login First')
     }
   },[user])

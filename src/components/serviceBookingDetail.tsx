@@ -37,14 +37,14 @@ export default function ServiceBookingDetail({
   let [open2, setOpen2] = useState<boolean>(false);
 
   const BookAppointment = async () => {
-    if (!user?._id) {
+    if (!user?.id) {
       toast.error("Please Login First");
       setTimeout(() => {
         navigate("/create-account");
       }, 2000);
       return;
     }
-    if (!merchant?._id) {
+    if (!merchant?.id) {
       toast.error("Please select service first for booking");
       return;
     }
@@ -75,8 +75,8 @@ export default function ServiceBookingDetail({
         "Content-type": "application/json",
       },
       data: {
-        userId: user._id,
-        businessId: merchant._id,
+        userId: user.id,
+        businessId: merchant.id,
         serviceName,
         practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
@@ -116,7 +116,7 @@ export default function ServiceBookingDetail({
   };
 
   const getAllBookings = async () => {
-    if (!merchant?._id) {
+    if (!merchant?.id) {
       toast.error("Select a business first");
       return;
     }
@@ -124,7 +124,7 @@ export default function ServiceBookingDetail({
       method: "GET",
       url:
         global.config.ROOTURL.prod +
-        `/appointment/business/${merchant._id}?appointmentDate=${appointmentDateTime}`,
+        `/appointment/business/${merchant.id}?appointmentDate=${appointmentDateTime}`,
     };
     try {
       await axios(getBookingPayload)

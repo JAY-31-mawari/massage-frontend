@@ -298,7 +298,7 @@ export default function SubmitProperty() {
 
           const response = await axios.post(
             global.config.ROOTURL.prod + "/practitioner",
-            { ...practitioner, businessId: businessResponse?.data?.data?._id }
+            { ...practitioner, businessId: businessResponse?.data?.data?.id }
           );
         }
         setBusinessName("");

@@ -47,10 +47,10 @@ export default function SinglePropertyOne() {
   }, [id]);
 
   useEffect(() => {
-    if (selectedServiceData?.practitioners?.length) {
-      setUserSelectedPractitionerId(selectedServiceData.practitioners[0]._id);
-    }
-  }, [selectedServiceData]);
+  if (selectedServiceData?.practitioners?.length) {
+    setUserSelectedPractitionerId(selectedServiceData.practitioners[0].id);
+  }
+}, [selectedServiceData]);
 
   return (
     <>
@@ -122,7 +122,7 @@ export default function SinglePropertyOne() {
           </div>
 
           {/* Service Selection */}
-          <div>
+          {/* <div>
             <label className="block mb-2 font-medium text-[#3d2b1f]">
               Choose Service
             </label>
@@ -137,8 +137,9 @@ export default function SinglePropertyOne() {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
+          {/* SELECT SERVICE DURATION  */}
           <div>
             <label className="block mb-2 font-medium text-[#3d2b1f]">
               Choose Duration
@@ -168,10 +169,10 @@ export default function SinglePropertyOne() {
                       <div
                         key={index}
                         onClick={() =>
-                          setUserSelectedPractitionerId(practitioner._id)
+                          setUserSelectedPractitionerId(practitioner.id)
                         }
                         className={`flex flex-col items-center cursor-pointer group ${
-                          userSelectedPractitionerId === practitioner._id
+                          userSelectedPractitionerId === practitioner.id
                             ? "scale-105"
                             : ""
                         }`}
@@ -179,9 +180,9 @@ export default function SinglePropertyOne() {
                         <img
                           src={practitioner?.profilePicture}
                           alt={practitioner.practitionerName}
-                          className={`w-[70px] h-[70px] lg:w-[80px] lg:h-[80px] p-0.5 object-cover rounded-full border-2 transition-all duration-300 ${
-                            userSelectedPractitionerId === practitioner._id
-                              ? "border-blue-600"
+                          className={`w-16 h-16 object-cover rounded-full border-2 transition-all duration-300 ${
+                            userSelectedPractitionerId === practitioner.id
+                              ? "border-[#d4a373]"
                               : "border-transparent"
                           }`}
                         />
@@ -201,10 +202,10 @@ export default function SinglePropertyOne() {
                       <div
                         key={index}
                         onClick={() =>
-                          setUserSelectedPractitionerId(practitioner._id)
+                          setUserSelectedPractitionerId(practitioner.id)
                         }
                         className={`flex flex-col items-center cursor-pointer group ${
-                          userSelectedPractitionerId === practitioner._id
+                          userSelectedPractitionerId === practitioner.id
                             ? "scale-105"
                             : ""
                         }`}
@@ -212,9 +213,9 @@ export default function SinglePropertyOne() {
                         <img
                           src={practitioner?.profilePicture}
                           alt={practitioner.practitionerName}
-                          className={`w-[70px] h-[70px] lg:w-[80px] lg:h-[80px] p-0.5 object-cover rounded-full border-2 transition-all duration-300 ${
-                            userSelectedPractitionerId === practitioner._id
-                              ? "border-blue-600"
+                          className={`w-16 h-16 object-cover rounded-full border-2 transition-all duration-300 ${
+                            userSelectedPractitionerId === practitioner.id
+                              ? "border-[#d4a373]"
                               : "border-transparent"
                           }`}
                         />

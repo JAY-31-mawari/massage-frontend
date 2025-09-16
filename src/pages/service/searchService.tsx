@@ -10,6 +10,7 @@ import { serviceTypes } from "../../data/servicesData";
 import { useUserStore } from "../../store/userStore";
 import toast from "react-hot-toast";
 import { serviceNames } from "../../data/servicesData";
+import { useUserChoiceStore } from "../../store/userStore";
 
 export default function ClassicalProperty() {
   const search = useSearchLocation((state) => state.searchLocation);
@@ -19,6 +20,8 @@ export default function ClassicalProperty() {
   const [show, setShow] = useState(true);
   const user = useUserStore((state) => state.user);
   const servicesData = useServiceStore((state) => state.services);
+  const userChoice = useUserChoiceStore((state) => state.userChoice)
+  const setUserChoice = useUserChoiceStore((state)=> state.setUserChoice)
   const updateUser = useUserStore((state) => state.updateUser);
   const updateSearch = useSearchLocation((state) => state.updateSearchLocation);
   const setservicesData = useServiceStore((state) => state.setServices);
@@ -255,7 +258,10 @@ export default function ClassicalProperty() {
                 <div className="w-full">
                   <select
                     className="w-full border border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-[#d4a373] outline-none"
-                    onChange={(e) => setUserSelectedService(e.target.value)}
+                    onChange={(e) => {
+                      setUserSelectedService(e.target.value)
+                      setUserChoice({selectedService:e.target.value})
+                    }}
                   >
                     <option value="">Select Service</option>
                     {serviceNames.map((name, index) => (
