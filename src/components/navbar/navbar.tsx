@@ -182,13 +182,13 @@ export default function Navbar() {
                   >
                     <img
                       src={`https://ui-avatars.com/api/?name=${
-                        user?.fullName || user?.userName || "User"
+                        user?.fullName || "User"
                       }&background=random`}
                       alt="Profile"
                       className="h-10 w-10 rounded-full border shadow-sm"
                     />
                     <h6 className="font-medium text-gray-800">
-                      {user?.fullName || user?.userName || "Profile"}
+                      {user?.fullName || "Profile"}
                     </h6>
                   </Link>
                 </li>
