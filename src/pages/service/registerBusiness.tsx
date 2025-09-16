@@ -114,7 +114,7 @@ export default function SubmitProperty() {
         // Next getLocation() will show prompt
       } else if (status.state === "denied") {
         toast.success(
-          "Click the 🔒 icon in the URL → Reset Permissions → Reload"
+                "Allow location access to help customers find your service location easily. Click the 🔒 icon in the URL → Reset Permissions → Reload"
         );
       }
     });
@@ -150,15 +150,15 @@ export default function SubmitProperty() {
     );
   };
 
-  useEffect(() => {
-    toast.success(
-      "Allow location access to help customers find your service location easily",
-      {
-        duration: 6000,
-      }
-    );
-    checkPermission();
-  }, []);
+  // useEffect(() => {
+  //   toast.success(
+  //     "Allow location access to help customers find your service location easily",
+  //     {
+  //       duration: 6000,
+  //     }
+  //   );
+  //   checkPermission();
+  // }, []);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -356,7 +356,7 @@ export default function SubmitProperty() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Sidebar */}
-            <div className="hidden md:block md:w-1/4">
+            <div className="hidden lg:block md:w-1/4">
               <ProgressSidebar
                 currentStep={currentStep}
                 setCurrentStep={(index) => setCurrentStep(index)}
@@ -364,7 +364,7 @@ export default function SubmitProperty() {
             </div>
 
             {/* Main Content */}
-            <div className="w-full md:w-3/4">
+            <div className="w-full md:w-3/4 mx-auto">
               <div className="submit-page">
                 <motion.div layout>
                   <AnimatePresence mode="wait">
@@ -379,13 +379,13 @@ export default function SubmitProperty() {
                       >
                         {/* Basic Information */}
                         <div className="mb-8">
-                          <h3 className="text-xl font-semibold mb-4">
+                          <h3 className="text-xl font-bold mb-4">
                             Basic Information
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Business Name */}
                             <div className="col-span-2">
-                              <label className="block text-sm font-medium mb-2">
+                              <label className="block text-base font-medium mb-2">
                                 Business Name
                               </label>
                               <input
@@ -401,7 +401,7 @@ export default function SubmitProperty() {
 
                             {/* Business Type */}
                             <div className="col-span-2">
-                              <label className="block text-sm font-medium mb-2">
+                              <label className="block text-base font-medium mb-2">
                                 Business Type
                               </label>
                               <Select
@@ -421,7 +421,7 @@ export default function SubmitProperty() {
                             {/* Description (if Other) */}
                             {businessType === "Other" && (
                               <div className="col-span-2">
-                                <label className="block text-sm font-medium mb-2">
+                                <label className="block text-base font-medium mb-2">
                                   Description
                                 </label>
                                 <textarea
@@ -438,8 +438,8 @@ export default function SubmitProperty() {
                             )}
 
                             {/* Email */}
-                            <div>
-                              <label className="block text-sm font-medium mb-2">
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
                                 Email Address
                               </label>
                               <input
@@ -454,15 +454,15 @@ export default function SubmitProperty() {
                                 }`}
                               />
                               {emailError && (
-                                <p className="mt-1 text-sm text-red-600">
+                                <p className="mt-1 text-base text-red-600">
                                   {emailError}
                                 </p>
                               )}
                             </div>
 
                             {/* Phone Number */}
-                            <div>
-                              <label className="block text-sm font-medium mb-2">
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
                                 Phone Number
                               </label>
                               <input
@@ -477,7 +477,7 @@ export default function SubmitProperty() {
                                 }`}
                               />
                               {phoneNoError && (
-                                <p className="mt-1 text-sm text-red-600">
+                                <p className="mt-1 text-base text-red-600">
                                   {phoneNoError}
                                 </p>
                               )}
@@ -485,7 +485,7 @@ export default function SubmitProperty() {
 
                             {/* Banking Details */}
                             <div className="col-span-2">
-                              <label className="block text-sm font-medium mb-2">
+                              <label className="block text-base font-medium mb-2">
                                 Banking Details
                               </label>
                               <input
@@ -509,7 +509,7 @@ export default function SubmitProperty() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Street Address */}
                             <div>
-                              <label className="block text-sm font-medium mb-2">
+                              <label className="block text-base font-medium mb-2">
                                 Street Address
                               </label>
                               <input
@@ -524,7 +524,7 @@ export default function SubmitProperty() {
 
                             {/* City */}
                             <div>
-                              <label className="block text-sm font-medium mb-2">
+                              <label className="block text-base font-medium mb-2">
                                 City
                               </label>
                               <input
@@ -539,7 +539,7 @@ export default function SubmitProperty() {
 
                             {/* State */}
                             <div>
-                              <label className="block text-sm font-medium mb-2">
+                              <label className="block text-base font-medium mb-2">
                                 Province/State
                               </label>
                               <input
@@ -554,7 +554,7 @@ export default function SubmitProperty() {
 
                             {/* Zip Code */}
                             <div>
-                              <label className="block text-sm font-medium mb-2">
+                              <label className="block text-base font-medium mb-2">
                                 Postal Code / Zip Code
                               </label>
                               <input
@@ -589,7 +589,7 @@ export default function SubmitProperty() {
                           <div className="mb-6">
                             <label className="block mb-2 font-medium text-gray-600">
                               Upload Business Photos{" "}
-                              <span className="text-sm text-gray-400">
+                              <span className="text-base text-gray-400">
                                 (Maximum 3)
                               </span>
                             </label>
@@ -665,7 +665,7 @@ export default function SubmitProperty() {
                               {/* Remaining uploads */}
                               {businessPhotos.length < 3 && (
                                 <div className="text-center mt-4">
-                                  <p className="text-sm text-gray-500">
+                                  <p className="text-base text-gray-500">
                                     You can upload{" "}
                                     <strong>{3 - businessPhotos.length}</strong>{" "}
                                     more photo
@@ -701,7 +701,7 @@ export default function SubmitProperty() {
                                   {tabs.map((tab) => (
                                     <li key={tab.id} className="relative">
                                       <button
-                                        className={`px-4 py-2 text-sm font-medium border-b-2 transition ${
+                                        className={`px-4 py-2 text-base font-medium border-b-2 transition ${
                                           activeTab === tab.id
                                             ? "border-indigo-500 text-indigo-600"
                                             : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -726,7 +726,7 @@ export default function SubmitProperty() {
 
                                 <button
                                   type="button"
-                                  className="px-3 py-1 text-sm rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50"
+                                  className="px-3 py-1 text-base rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50"
                                   onClick={addTab}
                                 >
                                   + Add Practitioner
@@ -736,7 +736,7 @@ export default function SubmitProperty() {
 
                           {/* Practitioner Name + Expertise + License */}
                           <div className="mb-6">
-                            <label className="block text-sm font-medium mb-2">
+                            <label className="block text-base font-medium mb-2">
                               Practitioner Name
                             </label>
                             <input
@@ -754,7 +754,7 @@ export default function SubmitProperty() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                               <div>
-                                <label className="block text-sm font-medium mb-2">
+                                <label className="block text-base font-medium mb-2">
                                   Areas of Expertise
                                 </label>
                                 <Select
@@ -781,7 +781,7 @@ export default function SubmitProperty() {
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium mb-2">
+                                <label className="block text-base font-medium mb-2">
                                   License/Registration Number
                                 </label>
                                 <input
@@ -815,7 +815,7 @@ export default function SubmitProperty() {
                               className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6"
                             >
                               {/* Label */}
-                              <label className="text-sm font-medium text-gray-700 min-w-[180px] capitalize">
+                              <label className="text-base font-medium text-gray-700 min-w-[180px] capitalize">
                                 {field === "profilePicture"
                                   ? "Profile Picture"
                                   : field === "governmentId"
@@ -828,7 +828,7 @@ export default function SubmitProperty() {
                               </label>
 
                               {/* Dropzone */}
-                              <div className="relative flex-grow rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center min-h-[120px] cursor-pointer transition hover:bg-gray-100 p-5">
+                              <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center transition hover:bg-gray-100 cursor-pointer p-10">
                                 <UploadButton
                                   endpoint="practitionerMedia"
                                   onClientUploadComplete={(res) => {
@@ -848,14 +848,14 @@ export default function SubmitProperty() {
                                   }
                                 />
 
-                                {tabData[activeTab]?.[field] ? (
+                                {/* {tabData[activeTab]?.[field] ? (
                                   <div className="text-center z-10">
                                     <img
                                       src={tabData[activeTab][field]}
                                       alt={field}
                                       className="w-24 h-24 rounded-md object-cover mb-2"
                                     />
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-base text-gray-600">
                                       Uploaded
                                     </p>
                                   </div>
@@ -869,7 +869,7 @@ export default function SubmitProperty() {
                                       Image (max 4MB)
                                     </span>
                                   </div>
-                                )}
+                                )} */}
                               </div>
                             </div>
                           ))}

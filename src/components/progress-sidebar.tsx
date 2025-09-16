@@ -21,11 +21,11 @@ const ProgressSidebar: React.FC<ProgressSidebarProps> = ({
   setCurrentStep,
 }) => {
   return (
-    <div className="w-72 h-[550px] p-4 bg-white rounded-xl border border-gray-200 flex flex-col">
+    <div className="w-80 h-[510px] p-4 bg-white rounded-xl border border-gray-200 flex flex-col">
       {/* Header */}
       <div className="mb-4">
         <h2 className="text-lg font-bold text-gray-800">Setup Progress</h2>
-        <p className="text-xs text-gray-600">
+        <p className="text-xs md:text-base text-gray-600">
           Finish all steps to complete registration
         </p>
       </div>
@@ -61,7 +61,7 @@ const ProgressSidebar: React.FC<ProgressSidebarProps> = ({
               <li
                 key={step.title}
                 onClick={() => isClickable && setCurrentStep(stepNumber)}
-                className={`flex items-start space-x-3 group relative transition-transform duration-300 ease-in-out ${
+                className={`flex items-start space-x-2 group relative transition-transform duration-300 ease-in-out ${
                   isClickable
                     ? "cursor-pointer hover:scale-[1.02]"
                     : "cursor-not-allowed opacity-60"
@@ -88,7 +88,7 @@ const ProgressSidebar: React.FC<ProgressSidebarProps> = ({
                 {/* Step content */}
                 <div className="flex-1 min-w-0">
                   <div
-                    className={`text-sm font-semibold ${
+                    className={`text-sm md:text-base font-semibold ${
                       isActive
                         ? "text-indigo-700"
                         : isCompleted
@@ -99,7 +99,7 @@ const ProgressSidebar: React.FC<ProgressSidebarProps> = ({
                     {step.title}
                   </div>
                   <div
-                    className={`text-xs ${
+                    className={`text-xs md:text-base ${
                       isActive
                         ? "text-indigo-600"
                         : isCompleted
