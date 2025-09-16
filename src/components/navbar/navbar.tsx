@@ -196,7 +196,7 @@ export default function Navbar() {
                 <>
                   <li>
                     <Link
-                      to="/sign-in"
+                      to="/create-account"
                       className="block px-3 py-2 rounded-md hover:bg-gray-100 transition"
                       onClick={() => setIsToggle(false)}
                     >
