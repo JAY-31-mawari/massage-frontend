@@ -7,6 +7,7 @@ body{
   font-size: 16px;
 }
 
+/* to hide increase decrease in input box in numbers */
 /* Hide both spinner buttons in Chrome, Safari, Edge, Opera */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
