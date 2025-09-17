@@ -30,9 +30,13 @@ export default function SubmitProperty() {
   const [businessName, setBusinessName] = useState("");
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [businessType, setBusinessType] = useState<string | undefined>("");
-  // const [areaOfExpertise, setAreaOfExpertise] = useState<string | undefined>('')
-  // const [license, setLicense] = useState('')
-  const [bankingDetails, setBankingDetails] = useState("");
+  const [gender, setGender] = useState("both")
+  const [association, setAssociation] = useState<string | undefined>("")
+  const [customAssociation, setCustomAssociation] = useState("")
+  const [bankName, setBankName] = useState("");
+  const [bankTransitNumber, setBankTransitNumber] = useState(0)
+  const [bankInstitutionNumber, setBankInstitutionNumber] = useState(0)
+  const [bankAccountNumber, setBankAccountNumber] = useState(0)
   const [merchantAddress, setMerchantAddress] = useState("");
   const [merchantCity, setMerchantCity] = useState("");
   const [merchantState, setMerchantState] = useState("");
@@ -70,7 +74,7 @@ export default function SubmitProperty() {
     !emailError &&
     phone &&
     !phoneNoError &&
-    bankingDetails &&
+    bankName &&
     (businessType !== "Other" || description);
 
   const isBusinessAddressValid =
@@ -95,6 +99,40 @@ export default function SubmitProperty() {
     { value: "Mobile Practitioner", label: "Mobile Practitioner" },
     { value: "Other", label: "Other" },
   ];
+
+  const genderList = [
+    {value: "male", label: "Male"},
+    {value: "female", label: "Female"},
+    {value: "both", label: "Both"}
+  ]
+
+  const associationList = [
+  { value: "Certified Registered Massage Therapist Association (CRMTA)", label: "Certified Registered Massage Therapist Association (CRMTA)" },
+  { value: "Massage Therapist Association of Alberta (MTAA)", label: "Massage Therapist Association of Alberta (MTAA)" },
+  { value: "Natural Health Practitioners of Canada (NHPC)", label: "Natural Health Practitioners of Canada (NHPC)" },
+  { value: "Chinese Medicine and Acupuncture Association of Canada (CMAAC)", label: "Chinese Medicine and Acupuncture Association of Canada (CMAAC)" },
+  { value: "College of Alberta Physiotherapists (CAP)", label: "College of Alberta Physiotherapists (CAP)" },
+  { value: "Alberta College and Association of Chiropractors (ACAC)", label: "Alberta College and Association of Chiropractors (ACAC)" },
+  { value: "Massage Therapists Association of BC (MTABC)", label: "Massage Therapists Association of BC (MTABC)" },
+  { value: "British Columbia Association of Traditional Chinese Medicine & Acupuncture", label: "British Columbia Association of Traditional Chinese Medicine & Acupuncture" },
+  { value: "College of Physical Therapists of British Columbia (CPTBC)", label: "College of Physical Therapists of British Columbia (CPTBC)" },
+  { value: "College of Chiropractors of British Columbia (CCBC)", label: "College of Chiropractors of British Columbia (CCBC)" },
+  { value: "Massage Therapist Association of Saskatchewan (MTAS)", label: "Massage Therapist Association of Saskatchewan (MTAS)" },
+  { value: "Saskatchewan Acupuncture Association (SAA)", label: "Saskatchewan Acupuncture Association (SAA)" },
+  { value: "Saskatchewan College of Physical Therapy (SCPT)", label: "Saskatchewan College of Physical Therapy (SCPT)" },
+  { value: "Chiropractors’ Association of Saskatchewan", label: "Chiropractors’ Association of Saskatchewan" },
+  { value: "Manitoba Massage Therapy Association", label: "Manitoba Massage Therapy Association" },
+  { value: "Manitoba branch or chapter of CMAAC", label: "Manitoba branch or chapter of CMAAC" },
+  { value: "College of Physical Therapists of Manitoba", label: "College of Physical Therapists of Manitoba" },
+  { value: "Manitoba Chiropractors’ Association", label: "Manitoba Chiropractors’ Association" },
+  { value: "College of Massage Therapists of Ontario (CMTO)", label: "College of Massage Therapists of Ontario (CMTO)" },
+  { value: "Traditional Chinese Medicine practitioners’ associations—CMAAC or provincial", label: "Traditional Chinese Medicine practitioners’ associations—CMAAC or provincial" },
+  { value: "College of Physiotherapists of Ontario (CPO) / Ontario Physiotherapy Association", label: "College of Physiotherapists of Ontario (CPO) / Ontario Physiotherapy Association" },
+  { value: "College of Chiropractors of Ontario (CCO)", label: "College of Chiropractors of Ontario (CCO)" },
+  { value: "Other", label: "Other" }
+];
+
+
 
   const [location, setLocation] = useState<LocationState>({ lat: 0, lng: 0 });
   const [error, setError] = useState<string | null>(null);
@@ -273,7 +311,7 @@ export default function SubmitProperty() {
         businessType,
         business_email: email,
         business_phone: phone,
-        bankingDetails,
+        bankingDetails:bankName,
         timeZone: userTimeZone,
         merchantAddress,
         merchantCity,
@@ -305,7 +343,7 @@ export default function SubmitProperty() {
         setBusinessType("");
         setEmail("");
         setPhone("");
-        setBankingDetails("");
+        setBankName("");
         setMerchantAddress("");
         setMerchantCity("");
         setMerchantState("");
@@ -400,7 +438,7 @@ export default function SubmitProperty() {
                             </div>
 
                             {/* Business Type */}
-                            <div className="col-span-2">
+                            <div className="col-span-2 md:col-span-1">
                               <label className="block text-base font-medium mb-2">
                                 Business Type
                               </label>
@@ -411,6 +449,24 @@ export default function SubmitProperty() {
                                 placeholder="Business Type"
                                 value={businessTypeList.find(
                                   (option) => option.value === businessType
+                                )}
+                                onChange={(selectedOption) =>
+                                  setBusinessType(selectedOption?.value)
+                                }
+                              />
+                            </div>
+
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Gender
+                              </label>
+                              <Select
+                                options={genderList}
+                                className="w-full"
+                                classNamePrefix="react-select"
+                                placeholder="Business Type"
+                                value={genderList.find(
+                                  (option) => option.value === gender
                                 )}
                                 onChange={(selectedOption) =>
                                   setBusinessType(selectedOption?.value)
@@ -483,18 +539,96 @@ export default function SubmitProperty() {
                               )}
                             </div>
 
-                            {/* Banking Details */}
                             <div className="col-span-2">
                               <label className="block text-base font-medium mb-2">
-                                Banking Details
+                                Association Affiliated To
+                              </label>
+                              <Select
+                                options={associationList}
+                                className="w-full"
+                                classNamePrefix="react-select"
+                                placeholder="Business Type"
+                                value={associationList.find(
+                                  (option) => option.value === association
+                                )}
+                                onChange={(selectedOption) =>
+                                  setAssociation(selectedOption?.value)
+                                }
+                              />
+                            </div>
+                              
+                            {association === "Other" && <div className="col-span-2">
+                              <label className="block text-base font-medium mb-2">
+                                Please mention association name(other)
                               </label>
                               <input
                                 type="text"
-                                placeholder="Banking Details"
+                                placeholder="Enter other association name"
                                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankingDetails}
+                                value={customAssociation}
                                 onChange={(e) =>
-                                  setBankingDetails(e.target.value)
+                                  setCustomAssociation(e.target.value)
+                                }
+                              />
+                            </div>}
+
+                            {/* Banking Details */}
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Bank Name
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Bank name"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankName}
+                                onChange={(e) =>
+                                  setBankName(e.target.value)
+                                }
+                              />
+                            </div>
+
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Branch Transit Number (5 digits)
+                              </label>
+                              <input
+                                type="number"
+                                placeholder="Bank transit number"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankTransitNumber}
+                                onChange={(e) =>
+                                  setBankTransitNumber(parseInt(e.target.value,10))
+                                }
+                              />
+                            </div>
+
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Institution Number (3 digits)
+                              </label>
+                              <input
+                                type="number"
+                                placeholder="Bank institution number"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankInstitutionNumber}
+                                onChange={(e) =>
+                                  setBankInstitutionNumber(parseInt(e.target.value,10))
+                                }
+                              />
+                            </div>
+
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Account Number (7–12 digits, depending on the bank)
+                              </label>
+                              <input
+                                type="number"
+                                placeholder="Account number(7-12) digits"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankAccountNumber}
+                                onChange={(e) =>
+                                  setBankAccountNumber(parseInt(e.target.value,10))
                                 }
                               />
                             </div>
@@ -502,7 +636,7 @@ export default function SubmitProperty() {
                         </div>
 
                         {/* Business Address */}
-                        <div className="mb-8">
+                        {businessType !== "Home-Based Practice" && <div className="mb-8">
                           <h3 className="text-xl font-semibold mb-4">
                             Business Address
                           </h3>
@@ -567,7 +701,7 @@ export default function SubmitProperty() {
                               />
                             </div>
                           </div>
-                        </div>
+                        </div>}
                       </motion.div>
                     )}
 
