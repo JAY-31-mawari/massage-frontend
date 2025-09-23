@@ -23,7 +23,7 @@ export default function Home() {
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const services = useServiceStore((state) => state.services);
   const setServicesData = useServiceStore((state) => state.setServices);
-
+  console.log(process.env.REACT_APP_prod)
   useEffect(() => {
     async function getDefultBusinesses() {
       const businessData = await axios.get(
