@@ -35,6 +35,7 @@ export default function SubmitProperty() {
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [businessType, setBusinessType] = useState<string | undefined>("");
   const [confirmationMode, setConfirmationMode] = useState("business_email");
+  const [appointmentApprovalType, setAppointmentApprovalType] = useState("AUTO")
   const [bankName, setBankName] = useState("");
   const [bankTransitNumber, setBankTransitNumber] = useState(0);
   const [bankInstitutionNumber, setBankInstitutionNumber] = useState(0);
@@ -459,22 +460,6 @@ export default function SubmitProperty() {
 
   return (
     <>
-      {/* Header Section */}
-      {/* <div className="bg-gray-50 py-8">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-center text-center">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900">
-                Become a Practitioner
-              </h2>
-              <span className="block mt-2 text-lg text-gray-600">
-                Just Submit Your Service Details
-              </span>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       {/* Main Section */}
       <section className="bg-white py-8">
         <div className="max-w-7xl mx-auto px-4 space-y-0">
@@ -589,8 +574,7 @@ export default function SubmitProperty() {
 
                         {/* Appointment Confirmation + Duplicate */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {[1, 2].map((i) => (
-                            <div key={i}>
+                            <div>
                               <label className="block text-base font-medium mb-3">
                                 How would you like to receive appointment
                                 confirmation?
@@ -608,7 +592,7 @@ export default function SubmitProperty() {
                                 >
                                   <input
                                     type="radio"
-                                    name={`confirmation-${i}`}
+                                    name={`confirmation-business_email`}
                                     checked={
                                       confirmationMode === "business_email"
                                     }
@@ -631,7 +615,7 @@ export default function SubmitProperty() {
                                 >
                                   <input
                                     type="radio"
-                                    name={`confirmation-${i}`}
+                                    name={`confirmation-business_phone`}
                                     checked={
                                       confirmationMode === "business_phone"
                                     }
@@ -643,7 +627,64 @@ export default function SubmitProperty() {
                                 </label>
                               </div>
                             </div>
-                          ))}
+                          
+                        </div>
+
+                        {/* Appointment Approval Type */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <label className="block text-base font-medium mb-3">
+                                Appointment Approval Type?
+                              </label>
+                              <div className="flex gap-4">
+                                <label
+                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                                    appointmentApprovalType === "AUTO"
+                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                  }`}
+                                  onClick={() =>
+                                    setAppointmentApprovalType("AUTO")
+                                  }
+                                >
+                                  <input
+                                    type="radio"
+                                    name={`confirmation-auto`}
+                                    checked={
+                                      appointmentApprovalType === "AUTO"
+                                    }
+                                    onChange={() =>
+                                      setAppointmentApprovalType("AUTO")
+                                    }
+                                  />
+                                  Auto-Approval
+                                </label>
+
+                                <label
+                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                                    appointmentApprovalType === "MANUAL"
+                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                  }`}
+                                  onClick={() =>
+                                    setAppointmentApprovalType("MANUAL")
+                                  }
+                                >
+                                  <input
+                                    type="radio"
+                                    name={`confirmation-manual`}
+                                    checked={
+                                      appointmentApprovalType === "MANUAL"
+                                    }
+                                    onChange={() =>
+                                      setAppointmentApprovalType("MANUAL")
+                                    }
+                                  />
+                                  Manually
+                                </label>
+                              </div>
+                            </div>
+                          
                         </div>
 
                         {/* Working Hours */}
