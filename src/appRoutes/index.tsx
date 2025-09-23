@@ -37,7 +37,7 @@ export function AppRoutes() {
             <Route path='/my-account' element={<AdminMainLayout />} />
             <Route path='/service' element={<ServicePage />} />
             <Route path='/service/:id' element={<ServicePage />} />
-            <Route path='/register' element={<RegisterBusiness />} />
+            <Route path='/practitioner-register' element={<RegisterBusiness />} />
             <Route path='/contact' element={<Contact />} /> 
             <Route path='/about-service' element={<MerchantAboutUs />} />
 

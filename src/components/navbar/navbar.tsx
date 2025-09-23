@@ -129,7 +129,7 @@ export default function Navbar() {
                 </Link>
                 {showSignUpSignIn && (
                   <Link
-                    to="/register"
+                    to="/practitioner-register"
                     className="flex items-center gap-2 px-4 py-3 rounded-md bg-blue-600 text-white font-semibold shadow-sm hover:bg-blue-700 transition"
                   >
                     <img src={loginImg} alt="Join Icon" className="h-5 w-5" />
@@ -205,7 +205,7 @@ export default function Navbar() {
                   </li>
                   <li>
                     <Link
-                      to="/register"
+                      to="/practitioner-register"
                       className="flex items-center gap-2 px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
                       onClick={() => setIsToggle(false)}
                     >

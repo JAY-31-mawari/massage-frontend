@@ -39,8 +39,8 @@ export default function SubmitProperty() {
   const [bankTransitNumber, setBankTransitNumber] = useState(0);
   const [bankInstitutionNumber, setBankInstitutionNumber] = useState(0);
   const [bankAccountNumber, setBankAccountNumber] = useState(0);
-  const [startTime, setStartTime] = useState("")
-  const [endTime, setEndTime] = useState("")
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [merchantAddress, setMerchantAddress] = useState("");
   const [merchantCity, setMerchantCity] = useState("");
   const [merchantState, setMerchantState] = useState("");
@@ -426,8 +426,8 @@ export default function SubmitProperty() {
         setBankInstitutionNumber(0);
         setMerchantAddress("");
         setMerchantCity("");
-        setStartTime("")
-        setEndTime("")
+        setStartTime("");
+        setEndTime("");
         setMerchantState("");
         setMerchantZipCode("");
         setBusinessPhotos([]);
@@ -460,7 +460,7 @@ export default function SubmitProperty() {
   return (
     <>
       {/* Header Section */}
-      <div className="bg-gray-50 py-8">
+      {/* <div className="bg-gray-50 py-8">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-center text-center">
             <div>
@@ -473,433 +473,508 @@ export default function SubmitProperty() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Section */}
-      <section className="bg-white py-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Sidebar */}
-            <div className="hidden lg:block md:w-1/4">
-              <ProgressSidebar
-                currentStep={currentStep}
-                setCurrentStep={(index) => setCurrentStep(index)}
-              />
-            </div>
+      <section className="bg-white py-8">
+        <div className="max-w-7xl mx-auto px-4 space-y-0">
+          {/* Progress Section */}
+          <div className="w-full">
+            <ProgressSidebar
+              currentStep={currentStep}
+              setCurrentStep={(index) => setCurrentStep(index)}
+            />
+          </div>
 
-            {/* Main Content */}
-            <div className="w-full md:w-3/4 mx-auto">
-              <div className="submit-page">
-                <motion.div layout>
-                  <AnimatePresence mode="wait">
-                    {(currentStep === 1 || currentStep === 4) && (
-                      <motion.div
-                        key="step1"
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 50 }}
-                        transition={{ duration: 0.4 }}
-                        layout
-                      >
-                        {/* Basic Information */}
-                        <div className="mb-8">
-                          <h3 className="text-xl font-bold mb-4">
-                            Basic Information
-                          </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Business Name */}
-                            <div className="col-span-2">
-                              <label className="block text-base font-medium mb-2">
-                                Business Name
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Full Name/Business Name"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={businessName}
-                                onChange={(e) =>
-                                  setBusinessName(e.target.value)
-                                }
-                              />
-                            </div>
+          {/* Main Content */}
+          <div className="w-full max-w-5xl mx-auto">
+            <div className="submit-page p-4">
+              <motion.div layout>
+                <AnimatePresence mode="wait">
+                  {(currentStep === 1 || currentStep === 4) && (
+                    <motion.div
+                      key="step1"
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 50 }}
+                      transition={{ duration: 0.4 }}
+                      layout
+                    >
+                      {/* Basic Information */}
+                      <div className="mb-8 p-6 space-y-10 rounded-xl border border-gray-200 bg-white shadow-sm mt-4">
+                        <h3 className="text-xl font-bold mb-6 text-gray-800">
+                          Basic Information
+                        </h3>
 
-                            {/* Business Type */}
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Business Type
-                              </label>
-                              <Select
-                                options={businessTypeList}
-                                className="w-full"
-                                classNamePrefix="react-select"
-                                placeholder="Business Type"
-                                value={businessTypeList.find(
-                                  (option) => option.value === businessType
-                                )}
-                                onChange={(selectedOption) =>
-                                  setBusinessType(selectedOption?.value)
-                                }
-                              />
-                            </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          {/* Business Name (full width) */}
+                          <div className="col-span-3">
+                            <label className="block text-base font-medium mb-2">
+                              Business Name
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Full Name/Business Name"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={businessName}
+                              onChange={(e) => setBusinessName(e.target.value)}
+                            />
+                          </div>
 
-                            {/* Email */}
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Email Address
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Email Address"
-                                value={email}
-                                onChange={handleEmailChange}
-                                className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-2 focus:outline-none ${
-                                  emailError
-                                    ? "border-red-500 focus:ring-red-500"
-                                    : "border-gray-300 focus:ring-indigo-500"
-                                }`}
-                              />
-                              {emailError && (
-                                <p className="mt-1 text-base text-red-600">
-                                  {emailError}
-                                </p>
+                          {/* Business Type */}
+                          <div>
+                            <label className="block text-base font-medium mb-2">
+                              Business Type
+                            </label>
+                            <Select
+                              options={businessTypeList}
+                              className="w-full"
+                              classNamePrefix="react-select"
+                              placeholder="Business Type"
+                              value={businessTypeList.find(
+                                (option) => option.value === businessType
                               )}
-                            </div>
+                              onChange={(selectedOption) =>
+                                setBusinessType(selectedOption?.value)
+                              }
+                            />
+                          </div>
 
-                            {/* Phone Number */}
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Phone Number
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Phone No"
-                                value={phone}
-                                onChange={handlePhoneNoChange}
-                                className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-2 focus:outline-none ${
-                                  phoneNoError
-                                    ? "border-red-500 focus:ring-red-500"
-                                    : "border-gray-300 focus:ring-indigo-500"
-                                }`}
-                              />
-                              {phoneNoError && (
-                                <p className="mt-1 text-base text-red-600">
-                                  {phoneNoError}
-                                </p>
-                              )}
-                            </div>
+                          {/* Email */}
+                          <div>
+                            <label className="block text-base font-medium mb-2">
+                              Email Address
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Email Address"
+                              value={email}
+                              onChange={handleEmailChange}
+                              className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-2 focus:outline-none ${
+                                emailError
+                                  ? "border-red-500 focus:ring-red-500"
+                                  : "border-gray-300 focus:ring-indigo-500"
+                              }`}
+                            />
+                            {emailError && (
+                              <p className="mt-1 text-sm text-red-600">
+                                {emailError}
+                              </p>
+                            )}
+                          </div>
 
-                            <div className="col-span-2 md:col-span-1 mt-3">
-                              <label className="block text-base font-medium mt-2">
+                          {/* Phone Number */}
+                          <div>
+                            <label className="block text-base font-medium mb-2">
+                              Phone Number
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Phone No"
+                              value={phone}
+                              onChange={handlePhoneNoChange}
+                              className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-2 focus:outline-none ${
+                                phoneNoError
+                                  ? "border-red-500 focus:ring-red-500"
+                                  : "border-gray-300 focus:ring-indigo-500"
+                              }`}
+                            />
+                            {phoneNoError && (
+                              <p className="mt-1 text-sm text-red-600">
+                                {phoneNoError}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Appointment Confirmation + Duplicate */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {[1, 2].map((i) => (
+                            <div key={i}>
+                              <label className="block text-base font-medium mb-3">
                                 How would you like to receive appointment
                                 confirmation?
                               </label>
-                              <div className="flex justify-around mt-2">
-                                <div
+                              <div className="flex gap-4">
+                                <label
+                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                                    confirmationMode === "business_email"
+                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                  }`}
                                   onClick={() =>
                                     setConfirmationMode("business_email")
                                   }
                                 >
                                   <input
                                     type="radio"
-                                    name="Email"
+                                    name={`confirmation-${i}`}
                                     checked={
                                       confirmationMode === "business_email"
                                     }
+                                    onChange={() =>
+                                      setConfirmationMode("business_email")
+                                    }
                                   />
-                                  <label className="mx-1 cursor-pointer">
-                                    Email
-                                  </label>
-                                </div>
-                                <div
+                                  Email
+                                </label>
+
+                                <label
+                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                                    confirmationMode === "business_phone"
+                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                  }`}
                                   onClick={() =>
                                     setConfirmationMode("business_phone")
                                   }
                                 >
                                   <input
                                     type="radio"
-                                    name="phone"
+                                    name={`confirmation-${i}`}
                                     checked={
                                       confirmationMode === "business_phone"
                                     }
+                                    onChange={() =>
+                                      setConfirmationMode("business_phone")
+                                    }
                                   />
-                                  <label className="mx-1 cursor-pointer">
-                                    Phone Number
-                                  </label>
-                                </div>
+                                  Phone
+                                </label>
                               </div>
                             </div>
-
-
-                           <div className="col-span-2 md:col-span-1 mt-3">
-  <label className="block text-base font-medium mt-2">
-    Working Hours
-  </label>
-  <div className="flex justify-around mt-2">
-    <div className="flex items-center">
-      <label className="mx-1 cursor-pointer">Start</label>
-      <input
-        type="time"
-        className="border rounded-md px-2 py-1 cursor-pointer"
-        value={startTime}
-        onChange={(e) => setStartTime(e.target.value)}
-      />
-    </div>
-    <div className="flex items-center">
-      <label className="mx-1 cursor-pointer">End</label>
-      <input
-        type="time"
-        className="border rounded-md px-2 py-1 cursor-pointer"
-        value={endTime}
-        onChange={(e) => setEndTime(e.target.value)}
-      />
-    </div>
-  </div>
-</div>
-
-                          </div>
+                          ))}
                         </div>
 
-                        {/* Business Address */}
-                        <div className="mb-8">
-                          <h3 className="text-xl font-semibold mb-4">
-                            Business Address
-                          </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Street Address */}
-                            <div>
-                              <label className="block text-base font-medium mb-2">
-                                Street Address
-                              </label>
-                              <input
-                                type="text"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={merchantAddress}
-                                onChange={(e) =>
-                                  setMerchantAddress(e.target.value)
-                                }
-                              />
-                            </div>
-
-                            {/* City */}
-                            <div>
-                              <label className="block text-base font-medium mb-2">
-                                City
-                              </label>
-                              <input
-                                type="text"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={merchantCity}
-                                onChange={(e) =>
-                                  setMerchantCity(e.target.value)
-                                }
-                              />
-                            </div>
-
-                            {/* State */}
-                            <div>
-                              <label className="block text-base font-medium mb-2">
-                                Province/State
-                              </label>
-                              <input
-                                type="text"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={merchantState}
-                                onChange={(e) =>
-                                  setMerchantState(e.target.value)
-                                }
-                              />
-                            </div>
-
-                            {/* Zip Code */}
-                            <div>
-                              <label className="block text-base font-medium mb-2">
-                                Postal Code / Zip Code
-                              </label>
-                              <input
-                                type="text"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={merchantZipCode}
-                                onChange={(e) =>
-                                  setMerchantZipCode(e.target.value)
-                                }
-                              />
-                            </div>
-                          </div>
-                        </div>
-
+                        {/* Working Hours */}
                         <div>
-                          <h3 className="mb-3 text-xl font-semibold text-gray-800">
-                            Business Photos
-                          </h3>
-
-                          {/* Upload Section */}
-                          <div className="mb-6">
-                            <label className="block mb-2 font-medium text-gray-600">
-                              Upload Business Photos{" "}
-                              <span className="text-base text-gray-400">
-                                (Maximum 3)
-                              </span>
-                            </label>
-
-                            {/* Dropzone */}
-                            <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center transition hover:bg-gray-100 cursor-pointer p-10">
-                              <UploadButton
-                                endpoint="practitionerMedia"
-                                onClientUploadComplete={(res) => {
-                                  const uploadedUrl = res?.[0]?.ufsUrl;
-                                  if (
-                                    uploadedUrl &&
-                                    businessPhotos.length < 3
-                                  ) {
-                                    setBusinessPhotos((prev) => [
-                                      ...prev,
-                                      uploadedUrl,
-                                    ]);
-                                  }
-                                }}
-                                onUploadError={(error) =>
-                                  console.error("Upload failed", error)
-                                }
-                                content={{
-                                  button: (
-                                    <div className="w-full flex items-center justify-center cursor-pointer">
-                                      {businessPhotos.length === 0 ? (
-                                        <p className="text-gray-600 font-semibold text-base">
-                                          Click or Drag to Upload Business
-                                          Photos
-                                        </p>
-                                      ) : (
-                                        <p className="text-gray-600 font-medium">
-                                          Click to Upload More Photos
-                                        </p>
-                                      )}
-                                    </div>
-                                  ),
-                                }}
+                          <label className="block text-base font-medium mb-3">
+                            Working Hours
+                          </label>
+                          <div className="flex flex-col sm:flex-row gap-6">
+                            <div className="flex items-center gap-2">
+                              <span className="text-gray-700">Start</span>
+                              <input
+                                type="time"
+                                className="border rounded-md px-3 py-2 cursor-pointer focus:ring-2 focus:ring-indigo-500"
+                                value={startTime}
+                                onChange={(e) => setStartTime(e.target.value)}
+                              />
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-gray-700">End</span>
+                              <input
+                                type="time"
+                                className="border rounded-md px-3 py-2 cursor-pointer focus:ring-2 focus:ring-indigo-500"
+                                value={endTime}
+                                onChange={(e) => setEndTime(e.target.value)}
                               />
                             </div>
                           </div>
-
-                          {/* Preview Section */}
-                          {businessPhotos.length > 0 && (
-                            <div className="w-full mt-6">
-                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                                {businessPhotos.map((photo, index) => (
-                                  <div
-                                    key={index}
-                                    className="relative rounded-lg shadow-md overflow-hidden"
-                                  >
-                                    <img
-                                      src={photo}
-                                      alt={`Business Photo ${index + 1}`}
-                                      className="w-full h-44 object-cover"
-                                    />
-                                    <button
-                                      type="button"
-                                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center shadow-md hover:bg-red-600"
-                                      onClick={() =>
-                                        setBusinessPhotos((prev) =>
-                                          prev.filter((_, i) => i !== index)
-                                        )
-                                      }
-                                    >
-                                      ✕
-                                    </button>
-                                  </div>
-                                ))}
-                              </div>
-
-                              {/* Remaining uploads */}
-                              {businessPhotos.length < 3 && (
-                                <div className="text-center mt-4">
-                                  <p className="text-base text-gray-500">
-                                    You can upload{" "}
-                                    <strong>{3 - businessPhotos.length}</strong>{" "}
-                                    more photo
-                                    {businessPhotos.length < 2 ? "" : "s"}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          )}
                         </div>
-                      </motion.div>
-                    )}
+                      </div>
 
-                    {(currentStep === 2 || currentStep === 4) && (
-                      <motion.div
-                        key="step4"
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 50 }}
-                        transition={{ duration: 0.4 }}
-                        layout
-                      >
-                        <div>
-                          <h3 className="text-xl font-semibold mb-4">
-                            Practitioner Details
-                          </h3>
-
-                          {/* Tabs Section */}
-                          {businessType === "Clinic-Based Practice" && (
-                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-3">
-                              <ul className="flex border-b border-gray-200">
-                                {tabs.map((tab) => (
-                                  <li key={tab.id} className="relative">
-                                    <button
-                                      className={`px-4 py-2 text-base font-medium border-b-2 transition ${
-                                        activeTab === tab.id
-                                          ? "border-indigo-500 text-indigo-600"
-                                          : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                                      }`}
-                                      onClick={() => setActiveTab(tab.id)}
-                                    >
-                                      Practitioner {tab.id}
-                                    </button>
-
-                                    {/* Cross Button */}
-                                    {tabs.length > 1 && (
-                                      <button
-                                        onClick={() => removeTab(tab.id)}
-                                        className="absolute -top-2 -right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
-                                      >
-                                        <X className="w-3 h-3 text-gray-600" />
-                                      </button>
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-
-                              <button
-                                type="button"
-                                className="px-3 py-1 text-base rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50"
-                                onClick={addTab}
-                              >
-                                + Add Practitioner
-                              </button>
-                            </div>
-                          )}
-
-                          {/* Practitioner Name + Expertise + License */}
-                          <div className="mb-6">
+                      {/* Business Address */}
+                      <div className="mb-8 p-4 space-y-8 rounded-xl border border-gray-200">
+                        <h3 className="text-xl font-semibold mb-4">
+                          Business Address
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
                             <label className="block text-base font-medium mb-2">
-                              Practitioner Name
+                              Street Address
                             </label>
                             <input
                               type="text"
-                              placeholder="Practitioner Name"
-                              value={tabData[activeTab]?.practitionerName || ""}
-                              onChange={(e) =>
-                                handleTabInputChange(
-                                  "practitionerName",
-                                  e.target.value
-                                )
-                              }
                               className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={merchantAddress}
+                              onChange={(e) =>
+                                setMerchantAddress(e.target.value)
+                              }
                             />
+                          </div>
 
-                            <div className="col-span-2">
-                              <label className="block text-base font-medium mt-2">
+                          <div>
+                            <label className="block text-base font-medium mb-2">
+                              City
+                            </label>
+                            <input
+                              type="text"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={merchantCity}
+                              onChange={(e) => setMerchantCity(e.target.value)}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-base font-medium mb-2">
+                              Province/State
+                            </label>
+                            <input
+                              type="text"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={merchantState}
+                              onChange={(e) => setMerchantState(e.target.value)}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-base font-medium mb-2">
+                              Postal Code / Zip Code
+                            </label>
+                            <input
+                              type="text"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={merchantZipCode}
+                              onChange={(e) =>
+                                setMerchantZipCode(e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 space-y-8 rounded-xl border border-gray-200">
+                        <h3 className="mb-3 text-xl font-semibold text-gray-800">
+                          Business Photos
+                        </h3>
+
+                        {/* Upload Section */}
+                        <div className="mb-6">
+                          <label className="block mb-2 font-medium text-gray-600">
+                            Upload Business Photos{" "}
+                            <span className="text-base text-gray-400">
+                              (Maximum 3)
+                            </span>
+                          </label>
+
+                          {/* Dropzone */}
+                          <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-100 flex items-center justify-center p-10">
+                            <style>
+                              {`
+                                input[type="file"] {
+                                  display: none !important;
+                                }
+                              `}
+                            </style>
+
+                            <UploadButton
+                              endpoint="practitionerMedia"
+                              onClientUploadComplete={(res) => {
+                                const uploadedUrl = res?.[0]?.ufsUrl;
+                                if (uploadedUrl && businessPhotos.length < 3) {
+                                  setBusinessPhotos((prev) => [
+                                    ...prev,
+                                    uploadedUrl,
+                                  ]);
+                                }
+                              }}
+                              onUploadError={(error) =>
+                                console.error("Upload failed", error)
+                              }
+                              appearance={{
+                                button:
+                                  "bg-blue-600 text-black px-4 py-2 rounded-lg cursor-pointer",
+                                allowedContent: "hidden",
+                                container: "space-y-3",
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Preview Section */}
+                        {businessPhotos.length > 0 && (
+                          <div className="w-full mt-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                              {businessPhotos.map((photo, index) => (
+                                <div
+                                  key={index}
+                                  className="relative rounded-lg shadow-md overflow-hidden"
+                                >
+                                  <img
+                                    src={photo}
+                                    alt={`Business Photo ${index + 1}`}
+                                    className="w-full h-44 object-cover"
+                                  />
+                                  <button
+                                    type="button"
+                                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center shadow-md hover:bg-red-600"
+                                    onClick={() =>
+                                      setBusinessPhotos((prev) =>
+                                        prev.filter((_, i) => i !== index)
+                                      )
+                                    }
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Remaining uploads */}
+                            {businessPhotos.length < 3 && (
+                              <div className="text-center mt-4">
+                                <p className="text-base text-gray-500">
+                                  You can upload{" "}
+                                  <strong>{3 - businessPhotos.length}</strong>{" "}
+                                  more photo
+                                  {businessPhotos.length < 2 ? "" : "s"}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {(currentStep === 2 || currentStep === 4) && (
+                    <motion.div
+                      key="step4"
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 50 }}
+                      transition={{ duration: 0.4 }}
+                      layout
+                    >
+                      <div className="p-4 space-y-8 rounded-xl border border-gray-200 mt-4">
+                        <h3 className="text-xl font-semibold mb-6">
+                          Practitioner Details
+                        </h3>
+
+                        {/* Tabs Section */}
+                        {businessType === "Clinic-Based Practice" && (
+                          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-3">
+                            <ul className="flex border-b border-gray-200 overflow-x-auto no-scrollbar">
+                              {tabs.map((tab) => (
+                                <li
+                                  key={tab.id}
+                                  className="relative flex-shrink-0 w-[150px]"
+                                >
+                                  <button
+                                    className={`px-4 py-2 text-base font-medium border-b-2 transition text-center truncate ${
+                                      activeTab === tab.id
+                                        ? "border-indigo-500 text-indigo-600"
+                                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                                    }`}
+                                    onClick={() => setActiveTab(tab.id)}
+                                  >
+                                    Practitioner {tab.id}
+                                  </button>
+
+                                  {/* Cross Button */}
+                                  {tabs.length > 1 && (
+                                    <button
+                                      onClick={() => removeTab(tab.id)}
+                                      className="absolute -top-2 -right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
+                                    >
+                                      <X className="w-3 h-3 text-gray-600" />
+                                    </button>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+
+                            <button
+                              type="button"
+                              className="px-3 py-1 text-base rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50"
+                              onClick={addTab}
+                            >
+                              + Add Practitioner
+                            </button>
+                            <style>
+                              {`
+                                /* Works on Chrome, Edge, Safari */
+                                .no-scrollbar::-webkit-scrollbar {
+                                  height: 3px;       /* horizontal scrollbar thickness */
+                                }
+
+                                .no-scrollbar::-webkit-scrollbar-track {
+                                  background: transparent;   /* or use a light gray if you want */
+                                }
+
+                                .no-scrollbar::-webkit-scrollbar-thumb {
+                                  background-color: #cbd5e0; /* Tailwind's gray-400 */
+                                  border-radius: 9999px;     /* fully rounded */
+                                }
+
+                                /* Works on Firefox */
+                                .no-scrollbar {
+                                  scrollbar-width: thin;        /* makes it thinner */
+                                  scrollbar-color: #cbd5e0 transparent;
+                                }
+                              `}
+                            </style>
+                          </div>
+                        )}
+
+                        {/* Practitioner Name + Expertise + License */}
+                        <div className="mb-6">
+                          {/* Practitioner Name */}
+                          <label className="block text-base font-medium mb-2">
+                            Practitioner Name
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Practitioner Name"
+                            value={tabData[activeTab]?.practitionerName || ""}
+                            onChange={(e) =>
+                              handleTabInputChange(
+                                "practitionerName",
+                                e.target.value
+                              )
+                            }
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                          />
+
+                          {/* Email + Gender side by side */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                            <div>
+                              <label className="block text-base font-medium mb-2">
+                                Email
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Practitioner Email"
+                                value={
+                                  tabData[activeTab]?.practitionerEmail || ""
+                                }
+                                onChange={(e) =>
+                                  handleTabInputChange(
+                                    "practitionerEmail",
+                                    e.target.value
+                                  )
+                                }
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-base font-medium mb-2">
+                                Gender
+                              </label>
+                              <Select
+                                options={genderList}
+                                className="w-full"
+                                classNamePrefix="react-select"
+                                placeholder="Select Gender"
+                                value={genderList.find(
+                                  (option) =>
+                                    tabData[activeTab]?.gender === option.value
+                                )}
+                                onChange={(selectedOption) =>
+                                  handleTabInputChange(
+                                    "preferred_gender",
+                                    selectedOption?.value || ""
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+
+                          {/* Association + Expertise side by side */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                            <div>
+                              <label className="block text-base font-medium mb-2">
                                 Association Affiliated To
                               </label>
                               <Select
@@ -920,119 +995,76 @@ export default function SubmitProperty() {
                                 }
                               />
                             </div>
-
-                            {tabData[activeTab]?.association === "Other" && (
-                              <div className="col-span-2">
-                                <label className="block text-base font-medium mb-2">
-                                  Please mention association name(other)
-                                </label>
-                                <input
-                                  type="text"
-                                  placeholder="Enter other association name"
-                                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                  value={tabData[activeTab]?.customAssociation}
-                                  onChange={(e) =>
-                                    handleTabInputChange(
-                                      "customAssociation",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                              </div>
-                            )}
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
-                              <div>
-                                <label className="block text-base font-medium mb-2">
-                                  Areas of Expertise
-                                </label>
-                                <Select
-                                  isMulti
-                                  options={expertiseList}
-                                  className="w-full"
-                                  classNamePrefix="react-select"
-                                  placeholder="Areas of Expertise"
-                                  value={expertiseList.filter((option) =>
-                                    tabData[
-                                      activeTab
-                                    ]?.areaOfExpertise?.includes(option.value)
-                                  )}
-                                  onChange={(selectedOptions) =>
-                                    handleTabInputChange(
-                                      "areaOfExpertise",
-                                      selectedOptions
-                                        ? selectedOptions.map(
-                                            (option) => option.value
-                                          )
-                                        : []
-                                    )
-                                  }
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-base font-medium mb-2">
-                                  License/Registration Number
-                                </label>
-                                <input
-                                  type="text"
-                                  placeholder="License No"
-                                  value={tabData[activeTab]?.license || ""}
-                                  onChange={(e) =>
-                                    handleTabInputChange(
-                                      "license",
-                                      e.target.value
-                                    )
-                                  }
-                                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                />
-                              </div>
+                            <div>
+                              <label className="block text-base font-medium mb-2">
+                                Areas of Expertise
+                              </label>
+                              <Select
+                                isMulti
+                                options={expertiseList}
+                                className="w-full"
+                                classNamePrefix="react-select"
+                                placeholder="Areas of Expertise"
+                                value={expertiseList.filter((option) =>
+                                  tabData[activeTab]?.areaOfExpertise?.includes(
+                                    option.value
+                                  )
+                                )}
+                                onChange={(selectedOptions) =>
+                                  handleTabInputChange(
+                                    "areaOfExpertise",
+                                    selectedOptions
+                                      ? selectedOptions.map((o) => o.value)
+                                      : []
+                                  )
+                                }
+                              />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
-                              <div>
-                                <label className="block text-base font-medium mb-2">
-                                  Email
-                                </label>
-                                <input
-                                  type="text"
-                                  placeholder="Practitioner Email"
-                                  value={
-                                    tabData[activeTab]?.practitionerEmail || ""
-                                  }
-                                  onChange={(e) =>
-                                    handleTabInputChange(
-                                      "practitionerEmail",
-                                      e.target.value
-                                    )
-                                  }
-                                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-base font-medium mb-2">
-                                  Gender
-                                </label>
-                                <Select
-                                  options={genderList}
-                                  className="w-full"
-                                  classNamePrefix="react-select"
-                                  placeholder="Areas of Expertise"
-                                  value={genderList.find(
-                                    (option) =>
-                                      tabData[activeTab]?.gender ===
-                                      option.value
-                                  )}
-                                  onChange={(selectedOption) =>
-                                    handleTabInputChange(
-                                      "preferred_gender",
-                                      selectedOption?.value || ""
-                                    )
-                                  }
-                                />
-                              </div>
+                          </div>
+
+                          {/* Custom association if "Other" */}
+                          {tabData[activeTab]?.association === "Other" && (
+                            <div className="col-span-2 mt-3">
+                              <label className="block text-base font-medium mb-2">
+                                Please mention association name (Other)
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Enter other association name"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={tabData[activeTab]?.customAssociation}
+                                onChange={(e) =>
+                                  handleTabInputChange(
+                                    "customAssociation",
+                                    e.target.value
+                                  )
+                                }
+                              />
                             </div>
-                            <div className="col-span-1">
-                              <label className="block text-base font-medium my-2">
-                                License/Registration Number Expiry date(if
+                          )}
+
+                          {/* License + Expiry date side by side */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                            <div>
+                              <label className="block text-base font-medium mb-2">
+                                License/Registration Number
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="License No"
+                                value={tabData[activeTab]?.license || ""}
+                                onChange={(e) =>
+                                  handleTabInputChange(
+                                    "license",
+                                    e.target.value
+                                  )
+                                }
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-base font-medium mb-2">
+                                License/Registration Number Expiry date (if
                                 applicable)
                               </label>
                               <input
@@ -1049,194 +1081,202 @@ export default function SubmitProperty() {
                               />
                             </div>
                           </div>
+                        </div>
 
-                          {/* Upload Sections */}
-                          {(
-                            [
-                              "profilePicture",
-                              "insurance",
-                              "governmentId",
-                              "qualification",
-                            ] as (keyof PractitionerData)[]
-                          ).map((field) => (
-                            <div
-                              key={field}
-                              className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6"
-                            >
-                              {/* Label */}
-                              <label className="text-base font-medium text-gray-700 min-w-[180px] capitalize">
-                                {field === "profilePicture"
-                                  ? "Profile Picture"
-                                  : field === "governmentId"
-                                  ? "Government ID"
-                                  : field === "qualification"
-                                  ? "Proof of Qualification"
-                                  : field}
-                              </label>
+                        {/* Upload Sections */}
+                        {(
+                          [
+                            "profilePicture",
+                            "insurance",
+                            "governmentId",
+                            "qualification",
+                          ] as (keyof PractitionerData)[]
+                        ).map((field) => (
+                          <div
+                            key={field}
+                            className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6"
+                          >
+                            {/* Label */}
+                            <label className="text-base font-medium text-gray-700 min-w-[180px] capitalize">
+                              {field === "profilePicture"
+                                ? "Profile Picture"
+                                : field === "governmentId"
+                                ? "Government ID"
+                                : field === "qualification"
+                                ? "Proof of Qualification"
+                                : field}
+                            </label>
 
-                              {/* Dropzone */}
-                              <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center transition hover:bg-gray-100 cursor-pointer p-10">
-                                <UploadButton
-                                  endpoint="practitionerMedia"
-                                  onClientUploadComplete={(res) => {
-                                    const uploadedUrl = res?.[0]?.ufsUrl;
-                                    if (uploadedUrl) {
-                                      setTabData((prev) => ({
-                                        ...prev,
-                                        [activeTab]: {
-                                          ...prev[activeTab],
-                                          [field]: uploadedUrl,
-                                        },
-                                      }));
-                                    }
-                                  }}
-                                  onUploadError={(error) =>
-                                    console.error("Upload failed", error)
+                            {/* Dropzone */}
+                            <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center transition hover:bg-gray-100 cursor-pointer p-10">
+                              <style>
+                                {`
+                                input[type="file"] {
+                                  display: none !important;
+                                }
+                              `}
+                              </style>
+
+                              <UploadButton
+                                endpoint="practitionerMedia"
+                                onClientUploadComplete={(res) => {
+                                  const uploadedUrl = res?.[0]?.ufsUrl;
+                                  if (uploadedUrl) {
+                                    setTabData((prev) => ({
+                                      ...prev,
+                                      [activeTab]: {
+                                        ...prev[activeTab],
+                                        [field]: uploadedUrl,
+                                      },
+                                    }));
                                   }
-                                />
+                                }}
+                                onUploadError={(error) =>
+                                  console.error("Upload failed", error)
+                                }
+                                appearance={{
+                                  button:
+                                    "bg-blue-600 text-black px-4 py-2 rounded-lg cursor-pointer",
+                                  allowedContent: "hidden",
+                                  container: "space-y-3",
+                                }}
+                              />
+                            </div>
 
-                                {tabData[activeTab]?.[field] ? (
-                                  <div className="text-center z-10">
+                            <>
+                              {tabData[activeTab]?.[field] && (
+                                <div className="text-center z-10">
+                                  <div className="w-[160px] h-[160px] rounded-xl border border-gray-300 overflow-hidden flex items-center justify-center">
                                     <img
                                       src={tabData[activeTab][field]}
                                       alt={field}
-                                      className="w-24 h-24 rounded-md object-cover mb-2"
+                                      className="w-full h-full object-cover"
                                     />
-                                    <p className="text-base text-gray-600">
-                                      Uploaded
-                                    </p>
                                   </div>
-                                ) : (
-                                  <div className="flex flex-col items-center text-gray-500 z-10">
-                                    <i className="fa-solid fa-image text-3xl text-gray-400 mb-2"></i>
-                                    <p className="font-medium">
-                                      Click or Drag to Upload
-                                    </p>
-                                    <span className="text-xs text-gray-400">
-                                      Image (max 4MB)
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
+                                  <p className="text-base text-gray-600 mt-2">
+                                    Uploaded
+                                  </p>
+                                </div>
+                              )}
+                            </>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
 
-                    {(currentStep === 3 || currentStep === 4) && (
-                      <motion.div
-                        key="step3"
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 50 }}
-                        transition={{ duration: 0.4 }}
-                        layout
-                      >
-                        <div className="mb-8">
-                          <h3 className="text-xl font-bold mb-4">
-                            Basic Information
-                          </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Banking Details */}
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Bank Name
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Bank name"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankName}
-                                onChange={(e) => setBankName(e.target.value)}
-                              />
-                            </div>
+                  {(currentStep === 3 || currentStep === 4) && (
+                    <motion.div
+                      key="step3"
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 50 }}
+                      transition={{ duration: 0.4 }}
+                      layout
+                    >
+                      <div className="mb-8 p-4 space-y-8 rounded-xl border border-gray-200 mt-4">
+                        <h3 className="text-xl font-bold mb-4">
+                          Basic Information
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {/* Banking Details */}
+                          <div className="col-span-2 md:col-span-1">
+                            <label className="block text-base font-medium mb-2">
+                              Bank Name
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Bank name"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={bankName}
+                              onChange={(e) => setBankName(e.target.value)}
+                            />
+                          </div>
 
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Branch Transit Number (5 digits)
-                              </label>
-                              <input
-                                type="number"
-                                placeholder="Bank transit number"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankTransitNumber}
-                                onChange={(e) =>
-                                  setBankTransitNumber(
-                                    parseInt(e.target.value, 10)
-                                  )
-                                }
-                              />
-                            </div>
+                          <div className="col-span-2 md:col-span-1">
+                            <label className="block text-base font-medium mb-2">
+                              Branch Transit Number (5 digits)
+                            </label>
+                            <input
+                              type="number"
+                              placeholder="Bank transit number"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={bankTransitNumber}
+                              onChange={(e) =>
+                                setBankTransitNumber(
+                                  parseInt(e.target.value, 10)
+                                )
+                              }
+                            />
+                          </div>
 
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Institution Number (3 digits)
-                              </label>
-                              <input
-                                type="number"
-                                placeholder="Bank institution number"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankInstitutionNumber}
-                                onChange={(e) =>
-                                  setBankInstitutionNumber(
-                                    parseInt(e.target.value, 10)
-                                  )
-                                }
-                              />
-                            </div>
+                          <div className="col-span-2 md:col-span-1">
+                            <label className="block text-base font-medium mb-2">
+                              Institution Number (3 digits)
+                            </label>
+                            <input
+                              type="number"
+                              placeholder="Bank institution number"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={bankInstitutionNumber}
+                              onChange={(e) =>
+                                setBankInstitutionNumber(
+                                  parseInt(e.target.value, 10)
+                                )
+                              }
+                            />
+                          </div>
 
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Account Number (7–12 digits, depending on the
-                                bank)
-                              </label>
-                              <input
-                                type="number"
-                                placeholder="Account number(7-12) digits"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankAccountNumber}
-                                onChange={(e) =>
-                                  setBankAccountNumber(
-                                    parseInt(e.target.value, 10)
-                                  )
-                                }
-                              />
-                            </div>
+                          <div className="col-span-2 md:col-span-1">
+                            <label className="block text-base font-medium mb-2">
+                              Account Number (7–12 digits, depending on the
+                              bank)
+                            </label>
+                            <input
+                              type="number"
+                              placeholder="Account number(7-12) digits"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              value={bankAccountNumber}
+                              onChange={(e) =>
+                                setBankAccountNumber(
+                                  parseInt(e.target.value, 10)
+                                )
+                              }
+                            />
                           </div>
                         </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
 
-                {/* Navigation Buttons */}
-                <div>
-                  <div className="flex justify-between items-center mt-3 w-full">
-                    <button
-                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 disabled:opacity-50"
-                      disabled={currentStep === 1}
-                      onClick={() =>
-                        currentStep - 1 > 0
-                          ? setCurrentStep(currentStep - 1)
-                          : null
-                      }
-                    >
-                      Previous
-                    </button>
+              {/* Navigation Buttons */}
+              <div>
+                <div className="flex justify-between items-center mt-3 w-full">
+                  <button
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 disabled:opacity-50"
+                    disabled={currentStep === 1}
+                    onClick={() =>
+                      currentStep - 1 > 0
+                        ? setCurrentStep(currentStep - 1)
+                        : null
+                    }
+                  >
+                    Previous
+                  </button>
 
-                    <button
-                      type="button"
-                      className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                      onClick={() =>
-                        currentStep === 4
-                          ? handleMerchantFormSubmit()
-                          : setCurrentStep(currentStep + 1)
-                      }
-                    >
-                      {currentStep === 4 ? "Preview & Submit" : "Next"}
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                    onClick={() =>
+                      currentStep === 4
+                        ? handleMerchantFormSubmit()
+                        : setCurrentStep(currentStep + 1)
+                    }
+                  >
+                    {currentStep === 4 ? "Preview & Submit" : "Next"}
+                  </button>
                 </div>
               </div>
             </div>
