@@ -15,9 +15,13 @@ interface LocationState {
 
 interface PractitionerData {
   practitionerName: string;
+  practitionerEmail: string;
   license: string;
+  license_expiry: string;
+  preferred_gender: string;
+  association: string;
+  customAssociation: string;
   areaOfExpertise: string[];
-  treatmentSpace: string;
   insurance: string;
   governmentId: string;
   qualification: string;
@@ -30,13 +34,13 @@ export default function SubmitProperty() {
   const [businessName, setBusinessName] = useState("");
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [businessType, setBusinessType] = useState<string | undefined>("");
-  const [gender, setGender] = useState("both")
-  const [association, setAssociation] = useState<string | undefined>("")
-  const [customAssociation, setCustomAssociation] = useState("")
+  const [confirmationMode, setConfirmationMode] = useState("business_email");
   const [bankName, setBankName] = useState("");
-  const [bankTransitNumber, setBankTransitNumber] = useState(0)
-  const [bankInstitutionNumber, setBankInstitutionNumber] = useState(0)
-  const [bankAccountNumber, setBankAccountNumber] = useState(0)
+  const [bankTransitNumber, setBankTransitNumber] = useState(0);
+  const [bankInstitutionNumber, setBankInstitutionNumber] = useState(0);
+  const [bankAccountNumber, setBankAccountNumber] = useState(0);
+  const [startTime, setStartTime] = useState("")
+  const [endTime, setEndTime] = useState("")
   const [merchantAddress, setMerchantAddress] = useState("");
   const [merchantCity, setMerchantCity] = useState("");
   const [merchantState, setMerchantState] = useState("");
@@ -53,9 +57,12 @@ export default function SubmitProperty() {
   const [tabData, setTabData] = useState<{ [key: number]: any }>({
     1: {
       practitionerName: "",
+      association: "",
+      customAssociation: "",
+      practitionerEmail: "",
+      preferred_gender: "",
+      license_expiry: "",
       areaOfExpertise: [],
-      license: "",
-      treatmentSpace: "",
       insurance: "",
       governmentId: "",
       qualification: "",
@@ -97,42 +104,111 @@ export default function SubmitProperty() {
     { value: "Clinic-Based Practice", label: "Clinic-Based Practice" },
     { value: "Home-Based Practice", label: "Home-Based Practice" },
     { value: "Mobile Practitioner", label: "Mobile Practitioner" },
-    { value: "Other", label: "Other" },
   ];
 
   const genderList = [
-    {value: "male", label: "Male"},
-    {value: "female", label: "Female"},
-    {value: "both", label: "Both"}
-  ]
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "both", label: "Both" },
+  ];
 
   const associationList = [
-  { value: "Certified Registered Massage Therapist Association (CRMTA)", label: "Certified Registered Massage Therapist Association (CRMTA)" },
-  { value: "Massage Therapist Association of Alberta (MTAA)", label: "Massage Therapist Association of Alberta (MTAA)" },
-  { value: "Natural Health Practitioners of Canada (NHPC)", label: "Natural Health Practitioners of Canada (NHPC)" },
-  { value: "Chinese Medicine and Acupuncture Association of Canada (CMAAC)", label: "Chinese Medicine and Acupuncture Association of Canada (CMAAC)" },
-  { value: "College of Alberta Physiotherapists (CAP)", label: "College of Alberta Physiotherapists (CAP)" },
-  { value: "Alberta College and Association of Chiropractors (ACAC)", label: "Alberta College and Association of Chiropractors (ACAC)" },
-  { value: "Massage Therapists Association of BC (MTABC)", label: "Massage Therapists Association of BC (MTABC)" },
-  { value: "British Columbia Association of Traditional Chinese Medicine & Acupuncture", label: "British Columbia Association of Traditional Chinese Medicine & Acupuncture" },
-  { value: "College of Physical Therapists of British Columbia (CPTBC)", label: "College of Physical Therapists of British Columbia (CPTBC)" },
-  { value: "College of Chiropractors of British Columbia (CCBC)", label: "College of Chiropractors of British Columbia (CCBC)" },
-  { value: "Massage Therapist Association of Saskatchewan (MTAS)", label: "Massage Therapist Association of Saskatchewan (MTAS)" },
-  { value: "Saskatchewan Acupuncture Association (SAA)", label: "Saskatchewan Acupuncture Association (SAA)" },
-  { value: "Saskatchewan College of Physical Therapy (SCPT)", label: "Saskatchewan College of Physical Therapy (SCPT)" },
-  { value: "Chiropractors’ Association of Saskatchewan", label: "Chiropractors’ Association of Saskatchewan" },
-  { value: "Manitoba Massage Therapy Association", label: "Manitoba Massage Therapy Association" },
-  { value: "Manitoba branch or chapter of CMAAC", label: "Manitoba branch or chapter of CMAAC" },
-  { value: "College of Physical Therapists of Manitoba", label: "College of Physical Therapists of Manitoba" },
-  { value: "Manitoba Chiropractors’ Association", label: "Manitoba Chiropractors’ Association" },
-  { value: "College of Massage Therapists of Ontario (CMTO)", label: "College of Massage Therapists of Ontario (CMTO)" },
-  { value: "Traditional Chinese Medicine practitioners’ associations—CMAAC or provincial", label: "Traditional Chinese Medicine practitioners’ associations—CMAAC or provincial" },
-  { value: "College of Physiotherapists of Ontario (CPO) / Ontario Physiotherapy Association", label: "College of Physiotherapists of Ontario (CPO) / Ontario Physiotherapy Association" },
-  { value: "College of Chiropractors of Ontario (CCO)", label: "College of Chiropractors of Ontario (CCO)" },
-  { value: "Other", label: "Other" }
-];
-
-
+    {
+      value: "Certified Registered Massage Therapist Association (CRMTA)",
+      label: "Certified Registered Massage Therapist Association (CRMTA)",
+    },
+    {
+      value: "Massage Therapist Association of Alberta (MTAA)",
+      label: "Massage Therapist Association of Alberta (MTAA)",
+    },
+    {
+      value: "Natural Health Practitioners of Canada (NHPC)",
+      label: "Natural Health Practitioners of Canada (NHPC)",
+    },
+    {
+      value: "Chinese Medicine and Acupuncture Association of Canada (CMAAC)",
+      label: "Chinese Medicine and Acupuncture Association of Canada (CMAAC)",
+    },
+    {
+      value: "College of Alberta Physiotherapists (CAP)",
+      label: "College of Alberta Physiotherapists (CAP)",
+    },
+    {
+      value: "Alberta College and Association of Chiropractors (ACAC)",
+      label: "Alberta College and Association of Chiropractors (ACAC)",
+    },
+    {
+      value: "Massage Therapists Association of BC (MTABC)",
+      label: "Massage Therapists Association of BC (MTABC)",
+    },
+    {
+      value:
+        "British Columbia Association of Traditional Chinese Medicine & Acupuncture",
+      label:
+        "British Columbia Association of Traditional Chinese Medicine & Acupuncture",
+    },
+    {
+      value: "College of Physical Therapists of British Columbia (CPTBC)",
+      label: "College of Physical Therapists of British Columbia (CPTBC)",
+    },
+    {
+      value: "College of Chiropractors of British Columbia (CCBC)",
+      label: "College of Chiropractors of British Columbia (CCBC)",
+    },
+    {
+      value: "Massage Therapist Association of Saskatchewan (MTAS)",
+      label: "Massage Therapist Association of Saskatchewan (MTAS)",
+    },
+    {
+      value: "Saskatchewan Acupuncture Association (SAA)",
+      label: "Saskatchewan Acupuncture Association (SAA)",
+    },
+    {
+      value: "Saskatchewan College of Physical Therapy (SCPT)",
+      label: "Saskatchewan College of Physical Therapy (SCPT)",
+    },
+    {
+      value: "Chiropractors’ Association of Saskatchewan",
+      label: "Chiropractors’ Association of Saskatchewan",
+    },
+    {
+      value: "Manitoba Massage Therapy Association",
+      label: "Manitoba Massage Therapy Association",
+    },
+    {
+      value: "Manitoba branch or chapter of CMAAC",
+      label: "Manitoba branch or chapter of CMAAC",
+    },
+    {
+      value: "College of Physical Therapists of Manitoba",
+      label: "College of Physical Therapists of Manitoba",
+    },
+    {
+      value: "Manitoba Chiropractors’ Association",
+      label: "Manitoba Chiropractors’ Association",
+    },
+    {
+      value: "College of Massage Therapists of Ontario (CMTO)",
+      label: "College of Massage Therapists of Ontario (CMTO)",
+    },
+    {
+      value:
+        "Traditional Chinese Medicine practitioners’ associations—CMAAC or provincial",
+      label:
+        "Traditional Chinese Medicine practitioners’ associations—CMAAC or provincial",
+    },
+    {
+      value:
+        "College of Physiotherapists of Ontario (CPO) / Ontario Physiotherapy Association",
+      label:
+        "College of Physiotherapists of Ontario (CPO) / Ontario Physiotherapy Association",
+    },
+    {
+      value: "College of Chiropractors of Ontario (CCO)",
+      label: "College of Chiropractors of Ontario (CCO)",
+    },
+    { value: "Other", label: "Other" },
+  ];
 
   const [location, setLocation] = useState<LocationState>({ lat: 0, lng: 0 });
   const [error, setError] = useState<string | null>(null);
@@ -152,7 +228,7 @@ export default function SubmitProperty() {
         // Next getLocation() will show prompt
       } else if (status.state === "denied") {
         toast.success(
-                "Allow location access to help customers find your service location easily. Click the 🔒 icon in the URL → Reset Permissions → Reload"
+          "Allow location access to help customers find your service location easily. Click the 🔒 icon in the URL → Reset Permissions → Reload"
         );
       }
     });
@@ -187,16 +263,6 @@ export default function SubmitProperty() {
       }
     );
   };
-
-  // useEffect(() => {
-  //   toast.success(
-  //     "Allow location access to help customers find your service location easily",
-  //     {
-  //       duration: 6000,
-  //     }
-  //   );
-  //   checkPermission();
-  // }, []);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -241,9 +307,13 @@ export default function SubmitProperty() {
       ...prev,
       [nextId]: {
         practitionerName: "",
+        association: "",
+        customAssociation: "",
+        practitionerEmail: "",
+        preferred_gender: "",
+        license_expiry: "",
         areaOfExpertise: [],
         license: "",
-        treatmentSpace: "",
         insurance: "",
         governmentId: "",
         qualification: "",
@@ -311,7 +381,13 @@ export default function SubmitProperty() {
         businessType,
         business_email: email,
         business_phone: phone,
-        bankingDetails:bankName,
+        confirmationMode,
+        bankName,
+        bankAccountNumber,
+        bankTransitNumber,
+        bankInstitutionNumber,
+        startTime,
+        endTime,
         timeZone: userTimeZone,
         merchantAddress,
         merchantCity,
@@ -343,18 +419,28 @@ export default function SubmitProperty() {
         setBusinessType("");
         setEmail("");
         setPhone("");
+        setConfirmationMode("business_email");
         setBankName("");
+        setBankAccountNumber(0);
+        setBankTransitNumber(0);
+        setBankInstitutionNumber(0);
         setMerchantAddress("");
         setMerchantCity("");
+        setStartTime("")
+        setEndTime("")
         setMerchantState("");
         setMerchantZipCode("");
         setBusinessPhotos([]);
         setTabData({
           1: {
             practitionerName: "",
-            areaOfExpertise: [],
+            association: "",
+            customAssociation: "",
+            practitionerEmail: "",
+            preferred_gender: "",
             license: "",
-            treatmentSpace: "",
+            license_expiry: "",
+            areaOfExpertise: [],
             insurance: "",
             governmentId: "",
             qualification: "",
@@ -456,43 +542,6 @@ export default function SubmitProperty() {
                               />
                             </div>
 
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Gender
-                              </label>
-                              <Select
-                                options={genderList}
-                                className="w-full"
-                                classNamePrefix="react-select"
-                                placeholder="Business Type"
-                                value={genderList.find(
-                                  (option) => option.value === gender
-                                )}
-                                onChange={(selectedOption) =>
-                                  setBusinessType(selectedOption?.value)
-                                }
-                              />
-                            </div>
-
-                            {/* Description (if Other) */}
-                            {businessType === "Other" && (
-                              <div className="col-span-2">
-                                <label className="block text-base font-medium mb-2">
-                                  Description
-                                </label>
-                                <textarea
-                                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none h-20"
-                                  placeholder="Enter a short description (max 40 characters)"
-                                  rows={4}
-                                  maxLength={40}
-                                  value={description}
-                                  onChange={(e) =>
-                                    setDescription(e.target.value)
-                                  }
-                                />
-                              </div>
-                            )}
-
                             {/* Email */}
                             <div className="col-span-2 md:col-span-1">
                               <label className="block text-base font-medium mb-2">
@@ -539,104 +588,79 @@ export default function SubmitProperty() {
                               )}
                             </div>
 
-                            <div className="col-span-2">
-                              <label className="block text-base font-medium mb-2">
-                                Association Affiliated To
+                            <div className="col-span-2 md:col-span-1 mt-3">
+                              <label className="block text-base font-medium mt-2">
+                                How would you like to receive appointment
+                                confirmation?
                               </label>
-                              <Select
-                                options={associationList}
-                                className="w-full"
-                                classNamePrefix="react-select"
-                                placeholder="Business Type"
-                                value={associationList.find(
-                                  (option) => option.value === association
-                                )}
-                                onChange={(selectedOption) =>
-                                  setAssociation(selectedOption?.value)
-                                }
-                              />
-                            </div>
-                              
-                            {association === "Other" && <div className="col-span-2">
-                              <label className="block text-base font-medium mb-2">
-                                Please mention association name(other)
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Enter other association name"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={customAssociation}
-                                onChange={(e) =>
-                                  setCustomAssociation(e.target.value)
-                                }
-                              />
-                            </div>}
-
-                            {/* Banking Details */}
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Bank Name
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Bank name"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankName}
-                                onChange={(e) =>
-                                  setBankName(e.target.value)
-                                }
-                              />
+                              <div className="flex justify-around mt-2">
+                                <div
+                                  onClick={() =>
+                                    setConfirmationMode("business_email")
+                                  }
+                                >
+                                  <input
+                                    type="radio"
+                                    name="Email"
+                                    checked={
+                                      confirmationMode === "business_email"
+                                    }
+                                  />
+                                  <label className="mx-1 cursor-pointer">
+                                    Email
+                                  </label>
+                                </div>
+                                <div
+                                  onClick={() =>
+                                    setConfirmationMode("business_phone")
+                                  }
+                                >
+                                  <input
+                                    type="radio"
+                                    name="phone"
+                                    checked={
+                                      confirmationMode === "business_phone"
+                                    }
+                                  />
+                                  <label className="mx-1 cursor-pointer">
+                                    Phone Number
+                                  </label>
+                                </div>
+                              </div>
                             </div>
 
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Branch Transit Number (5 digits)
-                              </label>
-                              <input
-                                type="number"
-                                placeholder="Bank transit number"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankTransitNumber}
-                                onChange={(e) =>
-                                  setBankTransitNumber(parseInt(e.target.value,10))
-                                }
-                              />
-                            </div>
 
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Institution Number (3 digits)
-                              </label>
-                              <input
-                                type="number"
-                                placeholder="Bank institution number"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankInstitutionNumber}
-                                onChange={(e) =>
-                                  setBankInstitutionNumber(parseInt(e.target.value,10))
-                                }
-                              />
-                            </div>
+                           <div className="col-span-2 md:col-span-1 mt-3">
+  <label className="block text-base font-medium mt-2">
+    Working Hours
+  </label>
+  <div className="flex justify-around mt-2">
+    <div className="flex items-center">
+      <label className="mx-1 cursor-pointer">Start</label>
+      <input
+        type="time"
+        className="border rounded-md px-2 py-1 cursor-pointer"
+        value={startTime}
+        onChange={(e) => setStartTime(e.target.value)}
+      />
+    </div>
+    <div className="flex items-center">
+      <label className="mx-1 cursor-pointer">End</label>
+      <input
+        type="time"
+        className="border rounded-md px-2 py-1 cursor-pointer"
+        value={endTime}
+        onChange={(e) => setEndTime(e.target.value)}
+      />
+    </div>
+  </div>
+</div>
 
-                            <div className="col-span-2 md:col-span-1">
-                              <label className="block text-base font-medium mb-2">
-                                Account Number (7–12 digits, depending on the bank)
-                              </label>
-                              <input
-                                type="number"
-                                placeholder="Account number(7-12) digits"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                value={bankAccountNumber}
-                                onChange={(e) =>
-                                  setBankAccountNumber(parseInt(e.target.value,10))
-                                }
-                              />
-                            </div>
                           </div>
                         </div>
 
                         {/* Business Address */}
-                        {businessType !== "Home-Based Practice" && <div className="mb-8">
+                        <div className="mb-8">
                           <h3 className="text-xl font-semibold mb-4">
                             Business Address
                           </h3>
@@ -701,19 +725,8 @@ export default function SubmitProperty() {
                               />
                             </div>
                           </div>
-                        </div>}
-                      </motion.div>
-                    )}
+                        </div>
 
-                    {(currentStep === 2 || currentStep === 4) && (
-                      <motion.div
-                        key="step3"
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 50 }}
-                        transition={{ duration: 0.4 }}
-                        layout
-                      >
                         <div>
                           <h3 className="mb-3 text-xl font-semibold text-gray-800">
                             Business Photos
@@ -813,7 +826,7 @@ export default function SubmitProperty() {
                       </motion.div>
                     )}
 
-                    {(currentStep === 3 || currentStep === 4) && (
+                    {(currentStep === 2 || currentStep === 4) && (
                       <motion.div
                         key="step4"
                         initial={{ opacity: 0, x: -50 }}
@@ -828,45 +841,44 @@ export default function SubmitProperty() {
                           </h3>
 
                           {/* Tabs Section */}
-                          {businessType !== "Home-Based Practice" &&
-                            businessType !== "Mobile Practitioner" && (
-                              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-3">
-                                <ul className="flex border-b border-gray-200">
-                                  {tabs.map((tab) => (
-                                    <li key={tab.id} className="relative">
+                          {businessType === "Clinic-Based Practice" && (
+                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-3">
+                              <ul className="flex border-b border-gray-200">
+                                {tabs.map((tab) => (
+                                  <li key={tab.id} className="relative">
+                                    <button
+                                      className={`px-4 py-2 text-base font-medium border-b-2 transition ${
+                                        activeTab === tab.id
+                                          ? "border-indigo-500 text-indigo-600"
+                                          : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                                      }`}
+                                      onClick={() => setActiveTab(tab.id)}
+                                    >
+                                      Practitioner {tab.id}
+                                    </button>
+
+                                    {/* Cross Button */}
+                                    {tabs.length > 1 && (
                                       <button
-                                        className={`px-4 py-2 text-base font-medium border-b-2 transition ${
-                                          activeTab === tab.id
-                                            ? "border-indigo-500 text-indigo-600"
-                                            : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                                        }`}
-                                        onClick={() => setActiveTab(tab.id)}
+                                        onClick={() => removeTab(tab.id)}
+                                        className="absolute -top-2 -right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
                                       >
-                                        Practitioner {tab.id}
+                                        <X className="w-3 h-3 text-gray-600" />
                                       </button>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
 
-                                      {/* Cross Button */}
-                                      {tabs.length > 1 && (
-                                        <button
-                                          onClick={() => removeTab(tab.id)}
-                                          className="absolute -top-2 -right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
-                                        >
-                                          <X className="w-3 h-3 text-gray-600" />
-                                        </button>
-                                      )}
-                                    </li>
-                                  ))}
-                                </ul>
-
-                                <button
-                                  type="button"
-                                  className="px-3 py-1 text-base rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50"
-                                  onClick={addTab}
-                                >
-                                  + Add Practitioner
-                                </button>
-                              </div>
-                            )}
+                              <button
+                                type="button"
+                                className="px-3 py-1 text-base rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50"
+                                onClick={addTab}
+                              >
+                                + Add Practitioner
+                              </button>
+                            </div>
+                          )}
 
                           {/* Practitioner Name + Expertise + License */}
                           <div className="mb-6">
@@ -886,7 +898,50 @@ export default function SubmitProperty() {
                               className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                             />
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                            <div className="col-span-2">
+                              <label className="block text-base font-medium mt-2">
+                                Association Affiliated To
+                              </label>
+                              <Select
+                                options={associationList}
+                                className="w-full"
+                                classNamePrefix="react-select"
+                                placeholder="Select association"
+                                value={associationList.find(
+                                  (option) =>
+                                    tabData[activeTab]?.association ===
+                                    option.value
+                                )}
+                                onChange={(selectedOption) =>
+                                  handleTabInputChange(
+                                    "association",
+                                    selectedOption?.value || ""
+                                  )
+                                }
+                              />
+                            </div>
+
+                            {tabData[activeTab]?.association === "Other" && (
+                              <div className="col-span-2">
+                                <label className="block text-base font-medium mb-2">
+                                  Please mention association name(other)
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter other association name"
+                                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                  value={tabData[activeTab]?.customAssociation}
+                                  onChange={(e) =>
+                                    handleTabInputChange(
+                                      "customAssociation",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
                               <div>
                                 <label className="block text-base font-medium mb-2">
                                   Areas of Expertise
@@ -932,16 +987,76 @@ export default function SubmitProperty() {
                                 />
                               </div>
                             </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                              <div>
+                                <label className="block text-base font-medium mb-2">
+                                  Email
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Practitioner Email"
+                                  value={
+                                    tabData[activeTab]?.practitionerEmail || ""
+                                  }
+                                  onChange={(e) =>
+                                    handleTabInputChange(
+                                      "practitionerEmail",
+                                      e.target.value
+                                    )
+                                  }
+                                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-base font-medium mb-2">
+                                  Gender
+                                </label>
+                                <Select
+                                  options={genderList}
+                                  className="w-full"
+                                  classNamePrefix="react-select"
+                                  placeholder="Areas of Expertise"
+                                  value={genderList.find(
+                                    (option) =>
+                                      tabData[activeTab]?.gender ===
+                                      option.value
+                                  )}
+                                  onChange={(selectedOption) =>
+                                    handleTabInputChange(
+                                      "preferred_gender",
+                                      selectedOption?.value || ""
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+                            <div className="col-span-1">
+                              <label className="block text-base font-medium my-2">
+                                License/Registration Number Expiry date(if
+                                applicable)
+                              </label>
+                              <input
+                                type="date"
+                                placeholder="Expire date"
+                                value={tabData[activeTab]?.license_expiry || ""}
+                                onChange={(e) =>
+                                  handleTabInputChange(
+                                    "license_expiry",
+                                    e.target.value
+                                  )
+                                }
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              />
+                            </div>
                           </div>
 
                           {/* Upload Sections */}
                           {(
                             [
-                              "treatmentSpace",
+                              "profilePicture",
                               "insurance",
                               "governmentId",
                               "qualification",
-                              "profilePicture",
                             ] as (keyof PractitionerData)[]
                           ).map((field) => (
                             <div
@@ -954,8 +1069,6 @@ export default function SubmitProperty() {
                                   ? "Profile Picture"
                                   : field === "governmentId"
                                   ? "Government ID"
-                                  : field === "treatmentSpace"
-                                  ? "Photos of Treatment Space"
                                   : field === "qualification"
                                   ? "Proof of Qualification"
                                   : field}
@@ -982,7 +1095,7 @@ export default function SubmitProperty() {
                                   }
                                 />
 
-                                {/* {tabData[activeTab]?.[field] ? (
+                                {tabData[activeTab]?.[field] ? (
                                   <div className="text-center z-10">
                                     <img
                                       src={tabData[activeTab][field]}
@@ -1003,10 +1116,94 @@ export default function SubmitProperty() {
                                       Image (max 4MB)
                                     </span>
                                   </div>
-                                )} */}
+                                )}
                               </div>
                             </div>
                           ))}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {(currentStep === 3 || currentStep === 4) && (
+                      <motion.div
+                        key="step3"
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 50 }}
+                        transition={{ duration: 0.4 }}
+                        layout
+                      >
+                        <div className="mb-8">
+                          <h3 className="text-xl font-bold mb-4">
+                            Basic Information
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Banking Details */}
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Bank Name
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Bank name"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankName}
+                                onChange={(e) => setBankName(e.target.value)}
+                              />
+                            </div>
+
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Branch Transit Number (5 digits)
+                              </label>
+                              <input
+                                type="number"
+                                placeholder="Bank transit number"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankTransitNumber}
+                                onChange={(e) =>
+                                  setBankTransitNumber(
+                                    parseInt(e.target.value, 10)
+                                  )
+                                }
+                              />
+                            </div>
+
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Institution Number (3 digits)
+                              </label>
+                              <input
+                                type="number"
+                                placeholder="Bank institution number"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankInstitutionNumber}
+                                onChange={(e) =>
+                                  setBankInstitutionNumber(
+                                    parseInt(e.target.value, 10)
+                                  )
+                                }
+                              />
+                            </div>
+
+                            <div className="col-span-2 md:col-span-1">
+                              <label className="block text-base font-medium mb-2">
+                                Account Number (7–12 digits, depending on the
+                                bank)
+                              </label>
+                              <input
+                                type="number"
+                                placeholder="Account number(7-12) digits"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                value={bankAccountNumber}
+                                onChange={(e) =>
+                                  setBankAccountNumber(
+                                    parseInt(e.target.value, 10)
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
                         </div>
                       </motion.div>
                     )}

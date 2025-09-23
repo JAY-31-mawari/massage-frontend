@@ -27,7 +27,8 @@ const MyProfile = () => {
       method: "PATCH",
       url: global.config.ROOTURL.prod + `/user/${user?.id}`,
       data: {
-        fullName: userData?.fullName,
+        firstName: userData?.firstName,
+        lastName: userData?.lastName,
         email: userData?.email,
         phone: userData?.phone,
       },
@@ -41,7 +42,8 @@ const MyProfile = () => {
       .then((res) => {
         setIsEditing(false);
         toast.success("Details Updated")
-        setStorageItem("fullName", res.data.data?.fullName);
+        setStorageItem("firstName", res.data.data?.firstName);
+        setStorageItem("lastName", res.data.data?.lastName);
         setStorageItem("email", res.data.data?.email);
         setStorageItem("phoneNo", res.data.data?.phone);
         setStorageItem("user-data", JSON.stringify(res.data.data));
@@ -87,10 +89,16 @@ const MyProfile = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {[
                       {
-                        key: "fullName",
+                        key: "firstName",
                         label: "Your Name",
                         type: "text",
-                        value: userData?.fullName || "Calvin Carlo",
+                        value: userData?.firstName || "Calvin Carlo",
+                      },
+                      {
+                        key: "lastName",
+                        label: "Your Name",
+                        type: "text",
+                        value: userData?.lastName || "Calvin Carlo",
                       },
                       {
                         key: "email",

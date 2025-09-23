@@ -11,8 +11,8 @@ const steps = [
     title: "Basic Information",
     description: "Company details, address, & contact info",
   },
-  { title: "Business Photos", description: "Upload your business images" },
   { title: "Practitioner Details", description: "Professional information" },
+  { title: "Banking Details", description: "Account number, and other related info"},
   { title: "Preview & Submit", description: "Review and finalize" },
 ];
 

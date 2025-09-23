@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 export default function RegisterAccount() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phone, setPhone] = useState("");
@@ -72,12 +73,13 @@ export default function RegisterAccount() {
         toast.error("Invalid Phone Number");
         return;
       }
-      if (!fullName || !email || !phone) {
+      if (!firstName || !lastName || !email || !phone) {
         toast.error("All Fields are required");
         return;
       }
       const userPayload = {
-        fullName,
+        firstName,
+        lastName,
         email,
         phone,
       };
@@ -158,7 +160,8 @@ export default function RegisterAccount() {
         .then((res) => {
           toast.success(res.data.msg);
           setStorageItem("uid", userData._id);
-          setStorageItem("fullName", userData.fullName);
+          setStorageItem("firstName", userData.firstName);
+          setStorageItem("lastName", userData.lastName)
           setStorageItem("email", userData.email);
           setStorageItem("phoneNo", userData.phone);
           setStorageItem("token", res.data?.token);
@@ -166,7 +169,8 @@ export default function RegisterAccount() {
           updateUserDetails(userData);
           setUserData(null);
 
-          setFullName("");
+          setFirstName("");
+          setLastName("");
           setEmail("");
           setPhone("");
 
@@ -218,7 +222,8 @@ export default function RegisterAccount() {
     setShowOTP(false);
     setUserData(null);
     // Clear form when going back
-    setFullName("");
+    setFirstName("");
+    setLastName("");
     setEmail("");
     setPhone("");
   };
@@ -298,17 +303,39 @@ export default function RegisterAccount() {
                         layout
                       >
                         <label
-                          htmlFor="fullName"
+                          htmlFor="firstName"
                           className="block text-sm font-medium text-gray-700 mb-1"
                         >
-                          Full Name
+                          First name
                         </label>
                         <input
                           type="text"
-                          id="fullName"
-                          value={fullName}
-                          placeholder="Enter your full name"
-                          onChange={(e) => setFullName(e.target.value)}
+                          id="firstName"
+                          value={firstName}
+                          placeholder="Enter your first name"
+                          onChange={(e) => setFirstName(e.target.value)}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </motion.div>
+
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2, duration: 0.4 }}
+                        layout
+                      >
+                        <label
+                          htmlFor="lastName"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                          Last Name
+                        </label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          value={lastName}
+                          placeholder="Enter your Last name"
+                          onChange={(e) => setLastName(e.target.value)}
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       </motion.div>

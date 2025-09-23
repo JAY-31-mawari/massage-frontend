@@ -87,8 +87,8 @@ export default function DateTimeComponent({
   }, []);
 
   function combineDateAndTime(date: Date, timeStr: string): Date {
-      // timeStr is like "09:00"
-      const [hours, minutes] = timeStr.split(":").map(Number);
+    // timeStr is like "09:00"
+    const [hours, minutes] = timeStr.split(":").map(Number);
 
     const combined = new Date(date); // copy selectedDate
     combined.setHours(hours, minutes, 0, 0);
@@ -102,6 +102,13 @@ export default function DateTimeComponent({
     const interval = 15; // 30 minutes
     const now = new Date();
     const isToday = selectedDate.toDateString() === now.toDateString();
+
+    if (
+      !selectedServiceData?.practitioners?.length ||
+      !selectedPractitionerId
+    ) {
+      return [];
+    }
 
     const practitionerBookings = bookedSlots.filter(
       (booking) => booking?.practitionerId === selectedPractitionerId
@@ -120,7 +127,7 @@ export default function DateTimeComponent({
 
       return { startLocal, endLocal };
     });
-    
+
     const practitioner = selectedServiceData?.practitioners?.find(
       (p) => p.id === selectedPractitionerId
     );
@@ -129,11 +136,13 @@ export default function DateTimeComponent({
       return [];
     }
 
-    const practitionerAvailability = practitioner.Availability.find(
+    const practitionerAvailability = (practitioner?.Availability || []).find(
       (a) =>
         new Date(a.date).toDateString() ===
         new Date(selectedDate).toDateString()
     );
+
+    console.log(practitionerAvailability)
 
     if (practitionerAvailability && practitionerAvailability.slots.length > 0) {
       // Use availab ility slots if available
@@ -167,7 +176,7 @@ export default function DateTimeComponent({
           slots.push(slotStart);
         }
       });
-    } 
+    }
     // else if (practitioner.slots.length > 0) {
     //   // If no availability set, use default slots
     //   practitioner.slots.forEach((range) => {

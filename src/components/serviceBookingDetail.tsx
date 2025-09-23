@@ -37,29 +37,29 @@ export default function ServiceBookingDetail({
   let [open2, setOpen2] = useState<boolean>(false);
 
   const BookAppointment = async () => {
-    if (!user?.id) {
-      toast.error("Please Login First");
-      setTimeout(() => {
-        navigate("/create-account");
-      }, 2000);
-      return;
-    }
-    if (!merchant?.id) {
-      toast.error("Please select service first for booking");
-      return;
-    }
-    if (selectedTimeSlot === "") {
-      toast.error("Please select time slot for your appoinment");
-      return;
-    }
-    if (!serviceName) {
-      toast.error("Please select service first");
-      return;
-    }
-    if (!practitionerId) {
-      toast.error("Please select your practitioner");
-      return;
-    }
+    // if (!user?.id) {
+    //   toast.error("Please Login First");
+    //   setTimeout(() => {
+    //     navigate("/create-account");
+    //   }, 2000);
+    //   return;
+    // }
+    // if (!merchant?.id) {
+    //   toast.error("Please select service first for booking");
+    //   return;
+    // }
+    // if (selectedTimeSlot === "") {
+    //   toast.error("Please select time slot for your appoinment");
+    //   return;
+    // }
+    // if (!serviceName) {
+    //   toast.error("Please select service first");
+    //   return;
+    // }
+    // if (!practitionerId) {
+    //   toast.error("Please select your practitioner");
+    //   return;
+    // }
 
     const currentTime = new Date();
     if (appointmentDateTime < currentTime) {
@@ -75,9 +75,9 @@ export default function ServiceBookingDetail({
         "Content-type": "application/json",
       },
       data: {
-        userId: user.id,
-        businessId: merchant.id,
-        serviceName,
+        userId: "adlasdkj",
+        businessId: merchant?.id,
+        serviceName:"dasasd",
         practitionerId,
         appointmentDate: appointmentDateTime, // Format: "2025-08-11T15:30:00" (local time without timezone)
         duration: duration,
@@ -129,7 +129,7 @@ export default function ServiceBookingDetail({
     try {
       await axios(getBookingPayload)
         .then((res) => {
-          setBookedSlots(res.data?.data);
+          setBookedSlots(res.data?.data || []);
         })
         .catch((error) => {
           console.log(error);

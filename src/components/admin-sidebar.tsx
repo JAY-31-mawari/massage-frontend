@@ -21,7 +21,6 @@ export default function AdminSidebar({
     deleteStorageItem("token");
     deleteStorageItem("user_id");
     deleteStorageItem("uid");
-    deleteStorageItem("userName");
     deleteStorageItem("user_email");
     navigate("/create-account");
   };

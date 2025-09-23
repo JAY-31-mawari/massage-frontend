@@ -66,11 +66,11 @@ export default function ServiceCardLayout({ item }: { item: Service }) {
       <div className="flex flex-col justify-between flex-grow px-4 py-2 h-full">
         {/* Top: Title & Location */}
         <div>
-          <h4 className="text-lg font-semibold mb-1">{item.businessName}</h4>
-          <h6 className="text-sm text-gray-600">{item.businessType}</h6>
+          <h4 className="text-lg font-semibold mb-1">{item?.businessName}</h4>
+          <h6 className="text-sm text-gray-600">{item?.businessType}</h6>
           <div className="flex items-center text-gray-500 text-sm mt-1">
             <img src={map} alt="" className="w-4 h-4 mr-1" />
-            {item.merchantAddress}
+            {item?.merchantAddress}
           </div>
         </div>
 

@@ -27,7 +27,7 @@ export default function SinglePropertyOne() {
       .then((res) => {
         setMerchant(res.data);
         if (res.data?.businessPhotos) {
-          setSelectedImage(res.data.businessPhotos[0]);
+          setSelectedImage(res.data?.businessPhotos[0]);
         }
       })
       .catch((err) => {
@@ -41,16 +41,20 @@ export default function SinglePropertyOne() {
     } else {
       setMerchant(selectedServiceData);
       if (selectedServiceData?.businessPhotos) {
-        setSelectedImage(selectedServiceData.businessPhotos[0]);
+        setSelectedImage(selectedServiceData?.businessPhotos?.[0]);
       }
     }
   }, [id]);
 
   useEffect(() => {
   if (selectedServiceData?.practitioners?.length) {
-    setUserSelectedPractitionerId(selectedServiceData.practitioners[0].id);
+    setUserSelectedPractitionerId(selectedServiceData?.practitioners?.[0]?.id);
   }
 }, [selectedServiceData]);
+
+useEffect(()=>{
+  console.log("user adsdasdsdasd",userSelectedPractitionerId)
+},[userSelectedPractitionerId])
 
   return (
     <>
@@ -169,25 +173,25 @@ export default function SinglePropertyOne() {
                       <div
                         key={index}
                         onClick={() =>
-                          setUserSelectedPractitionerId(practitioner.id)
+                          setUserSelectedPractitionerId(practitioner?.id)
                         }
                         className={`flex flex-col items-center cursor-pointer group ${
-                          userSelectedPractitionerId === practitioner.id
+                          userSelectedPractitionerId === practitioner?.id
                             ? "scale-105"
                             : ""
                         }`}
                       >
                         <img
                           src={practitioner?.profilePicture}
-                          alt={practitioner.practitionerName}
+                          alt={practitioner?.practitionerName}
                           className={`w-16 h-16 object-cover rounded-full border-2 transition-all duration-300 ${
-                            userSelectedPractitionerId === practitioner.id
+                            userSelectedPractitionerId === practitioner?.id
                               ? "border-[#d4a373]"
                               : "border-transparent"
                           }`}
                         />
                         <span className="mt-1 text-sm">
-                          {practitioner.practitionerName}
+                          {practitioner?.practitionerName}
                         </span>
                       </div>
                     )
@@ -202,25 +206,25 @@ export default function SinglePropertyOne() {
                       <div
                         key={index}
                         onClick={() =>
-                          setUserSelectedPractitionerId(practitioner.id)
+                          setUserSelectedPractitionerId(practitioner?.id)
                         }
                         className={`flex flex-col items-center cursor-pointer group ${
-                          userSelectedPractitionerId === practitioner.id
+                          userSelectedPractitionerId === practitioner?.id
                             ? "scale-105"
                             : ""
                         }`}
                       >
                         <img
                           src={practitioner?.profilePicture}
-                          alt={practitioner.practitionerName}
+                          alt={practitioner?.practitionerName}
                           className={`w-16 h-16 object-cover rounded-full border-2 transition-all duration-300 ${
-                            userSelectedPractitionerId === practitioner.id
+                            userSelectedPractitionerId === practitioner?.id
                               ? "border-[#d4a373]"
                               : "border-transparent"
                           }`}
                         />
                         <span className="mt-1 text-sm text-[#3d2b1f]">
-                          {practitioner.practitionerName}
+                          {practitioner?.practitionerName}
                         </span>
                       </div>
                     ))}
