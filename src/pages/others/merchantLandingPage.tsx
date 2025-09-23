@@ -107,7 +107,7 @@ export function MerchantAboutUs() {
             </h1>
           </div>
           <Link
-            to="/register"
+            to="/practitioner-register"
             className="my-6 tracking-wider inline-block px-4 py-2 sm:px-5 sm:py-3 bg-blue-600 text-white text-base sm:text-lg md:text-xl rounded-lg hover:bg-blue-700 transition duration-200"
           >
             Sign Up Today
@@ -178,7 +178,7 @@ export function MerchantAboutUs() {
               ))}
               <div className="bg-[#f6edfd] max-w-2xl mx-1 p-4 my-4 mb-6 rounded-3xl text-lg text-center">
                 <p className="mb-2">Ready to Grow your practice?</p>
-                <Link to="/register"  className="bg-blue-700 text-white py-2 px-3 rounded-xl">
+                <Link to="/practitioner-register"  className="bg-blue-700 text-white py-2 px-3 rounded-xl">
                   Get Started in minutes
                 </Link>
                 <p className="mt-3">
