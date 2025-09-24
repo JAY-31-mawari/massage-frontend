@@ -47,11 +47,9 @@ export interface Service {
     businessPhotos: string[]
     business_phone: string
     merchantAddress: string
-    id: string
 }
 
 interface PractitionerData {
-    id: string
     practitionerName: string
     areaOfExpertise: string[]
 }
@@ -65,7 +63,7 @@ export interface AppointmentHistory {
     practitioner: PractitionerData
     duration: number
     price: number
-    reminderSend: boolean
+    reminderSent: boolean
     serviceName: string
     serviceType: string
     userId: string

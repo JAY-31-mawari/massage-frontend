@@ -14,7 +14,6 @@ const MyProfile = () => {
   const [userData, setUserData] = useState(user);
   const accessToken = getStorageItem("token");
   const updateUserDetails = useUserStore((state) => state.fullUpdate);
-
   const updateUserProfile = async () => {
     if (!user?.id || !accessToken) {
       toast.error("Please Login First");
@@ -90,13 +89,13 @@ const MyProfile = () => {
                     {[
                       {
                         key: "firstName",
-                        label: "Your Name",
+                        label: "First Name",
                         type: "text",
                         value: userData?.firstName || "Calvin Carlo",
                       },
                       {
                         key: "lastName",
-                        label: "Your Name",
+                        label: "Last Name",
                         type: "text",
                         value: userData?.lastName || "Calvin Carlo",
                       },
