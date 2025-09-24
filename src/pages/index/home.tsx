@@ -8,6 +8,13 @@ import threeImg from "../../assets/img/three.webp";
 import reviewsImg from "../../assets/img/reviews.webp";
 import { servicesData } from "../../data/servicesData";
 import axios from "axios";
+import {
+  CheckCircle,
+  SearchIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  ChevronDownIcon,
+} from "lucide-react";
 import { useSearchLocation } from "../../store/searchLocation";
 import { setStorageItem } from "../../utils/sessionStorage";
 import { useServiceStore } from "../../store/serviceStore";
@@ -23,6 +30,45 @@ export default function Home() {
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const services = useServiceStore((state) => state.services);
   const setServicesData = useServiceStore((state) => state.setServices);
+  const [activeStep, setActiveStep] = useState(1);
+  const [openDropdown, setOpenDropdown] = useState(null);
+
+  const toggleDropdown = (id: any) => {
+    setOpenDropdown(openDropdown === id ? null : id);
+  };
+
+  const steps = [
+    {
+      id: 1,
+      title: "Find Your Practitioner",
+      description:
+        "Search by location and service type to find qualified professionals near you.",
+      subInfo:
+        "You can filter by specialty, availability, and user reviews to find the perfect match for your needs.",
+      icon: SearchIcon,
+      image: oneImg,
+    },
+    {
+      id: 2,
+      title: "Book Your Appointment",
+      description:
+        "Select your preferred time slot and confirm your appointment details.",
+      subInfo:
+        "Our real-time calendar shows you available slots, making scheduling quick and hassle-free.",
+      icon: ClockIcon,
+      image: twoImg,
+    },
+    {
+      id: 3,
+      title: "Get Confirmed",
+      description:
+        "Receive instant or quick confirmation from your chosen practitioner.",
+      subInfo:
+        "You'll receive a confirmation email and a reminder before your appointment.",
+      icon: CheckCircleIcon,
+      image: threeImg,
+    },
+  ];
 
   useEffect(() => {
     async function getDefultBusinesses() {
@@ -46,12 +92,8 @@ export default function Home() {
         className="relative bg-no-repeat bg-cover bg-center w-full h-[600px] lg:h-[700px]"
         style={{ backgroundImage: `url(${homeBg})` }}
       >
-        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50"></div>
-
-        {/* Content */}
         <div className="relative max-w-8xl mx-auto px-12 sm:px-6 md:px-12 h-full flex flex-col justify-center items-start">
-          {/* Hero Text */}
           <p className="text-base sm:text-md md:text-xl text-white mb-3 sm:mb-4 font-medium">
             Feel Better, Even on Your Busiest Days
           </p>
@@ -105,9 +147,15 @@ export default function Home() {
       {/* Service Details startpoint */}
       <div className="mt-2 p-6 sm:p-10 rounded-xl max-w-[1400px] mx-auto">
         {/* Main Title */}
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-5">
-          Services We Provide
-        </h2>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            Our Wellness Services
+          </h2>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            Discover a range of professional health and wellness services
+            tailored to your needs
+          </p>
+        </div>
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-10">
           {/* Service Grid */}
@@ -132,148 +180,132 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Service Content */}
-      <section className="py-8 px-4 md:px-16">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-12 text-center">
-          {/* Left Text Section */}
-          <div className="md:w-1/2 flex flex-col items-center justify-center text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-6 leading-snug">
-              Relaxation, Just a Few Clicks Away 🌿
-            </h2>
-            <p className="text-gray-500 text-base leading-relaxed max-w-md">
-              You’ll have the largest directory of Massage Therapists at your
-              fingertips. Search by business or individual therapist name,
-              massage technique, location, or review rating. Find just what you
-              need to soothe what hurts, relax tense muscles, and bring you a
-              sense of calm.
+      {/* About Section */}
+      <section
+        id="about"
+        className="py-20 bg-gradient-to-r bg-gray-50"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-slate-900 mb-6">
+                Connecting You with{" "}
+                <span className="text-teal-600">Quality Healthcare</span>
+              </h2>
+              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                WellnessBook is Canada's premier platform for connecting clients
+                with certified wellness professionals. We believe everyone
+                deserves access to quality healthcare services that promote
+                healing, wellness, and vitality.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-6 h-6 text-teal-600 flex-shrink-0" />
+                  <span className="text-slate-700">
+                    Verified and certified professionals
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-6 h-6 text-teal-600 flex-shrink-0" />
+                  <span className="text-slate-700">
+                    Instant or quick appointment confirmations
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-6 h-6 text-teal-600 flex-shrink-0" />
+                  <span className="text-slate-700">
+                    Nationwide coverage across Canada
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-6 h-6 text-teal-600 flex-shrink-0" />
+                  <span className="text-slate-700">
+                    Secure and easy online booking
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1632012643865-dadda4f2d3cd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHw0fHxtYXNzYWdlJTIwdGhlcmFweXxlbnwwfHx8dGVhbHwxNzU4NzA3NzE1fDA&ixlib=rb-4.1.0&q=85"
+                  alt="Wellness therapy"
+                  className="w-full h-96 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-teal-600/20 to-cyan-600/20"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Steps for users */}
+      
+
+      <div className="min-h-screen  font-sans text-gray-800 antialiased py-8 lg:py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-extrabold text-gray-900 md:text-5xl lg:text-6xl tracking-tight">
+              How It Works
+            </h1>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              Book your wellness appointment in three simple steps.
             </p>
           </div>
 
-          {/* Right div + Testimonials Section */}
-          <div className="relative group md:w-1/2 flex justify-center">
-            <img
-              src={reviewsImg}
-              alt="reviews"
-              className="w-[400px] h-[320px] object-cover rounded-xl shadow-lg transition-all duration-300 ease-in-out transform group-hover:-translate-y-2 group-hover:shadow-[0_0_20px_3px_rgba(86,97,246,0.4)] cursor-pointer"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Steps for users */}
-      <section className="py-5 bg-[rgb(255,255,255)]">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 leading-snug">
-            Your perfect massage, made simple in 3 steps
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 justify-items-center">
-          {/* Step 1 */}
-          <div className="text-center flex flex-col items-center h-full">
-            {/* Step Number */}
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-sky-500 text-white text-lg font-bold mb-4">
-              1
+          <div className="flex flex-col lg:flex-row lg:space-x-12 items-center">
+            {/* Step-by-Step Content */}
+            <div className="flex-1 w-full lg:w-1/2">
+              {steps.map((step) => (
+                <div
+                  key={step.id}
+                  className={`flex items-start transition-all duration-500 ease-in-out cursor-pointer mb-6 p-8 rounded-xl ${
+                    activeStep === step.id ? "bg-indigo-50" : "bg-transparent"
+                  } hover:bg-gray-100`}
+                  onMouseEnter={() => setActiveStep(step.id)}
+                >
+                  <div
+                    className={`flex-shrink-0 flex items-center justify-center h-14 w-14 rounded-full transition-colors duration-500 ${
+                      activeStep === step.id
+                        ? "bg-indigo-600 text-white"
+                        : "bg-gray-200 text-gray-500"
+                    }`}
+                  >
+                    <step.icon className="h-6 w-6" />
+                  </div>
+                  <div className="ml-6">
+                    <h3
+                      className={`text-2xl font-semibold transition-colors duration-500 ${
+                        activeStep === step.id
+                          ? "text-indigo-600"
+                          : "text-gray-900"
+                      }`}
+                    >
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 text-base text-gray-600">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            {/* Content */}
-            <div className="flex flex-col flex-grow justify-between h-full max-w-xs">
-              <div className="px-2">
-                <h3 className="text-lg md:text-xl font-bold text-gray-800 leading-snug">
-                  Step 1: Search Services
-                </h3>
-                <p className="text-gray-500 text-sm mt-2">
-                  Enter your{" "}
-                  <span className="font-semibold text-gray-700">city</span>,{" "}
-                  <span className="font-semibold text-gray-700">state</span>, or{" "}
-                  <span className="font-semibold text-gray-700">ZIP code</span>{" "}
-                  to find massage services. Want instant results? Use{" "}
-                  <span className="font-semibold text-gray-700">
-                    live location
-                  </span>{" "}
-                  to discover nearby services.
-                </p>
-              </div>
-              <img
-                src={oneImg}
-                alt="Find Therapist"
-                className="mt-6 rounded-xl w-full sm:w-[200px] md:w-[250px] h-44 sm:h-[240px] md:h-[280px] object-cover mx-auto"
-              />
-            </div>
-          </div>
-
-          {/* Step 2 */}
-          <div className="text-center flex flex-col items-center h-full">
-            {/* Step Number */}
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-sky-500 text-white text-lg font-bold mb-4">
-              2
-            </div>
-
-            {/* Content */}
-            <div className="flex flex-col flex-grow justify-between h-full max-w-xs">
-              <div className="px-2">
-                <h3 className="text-lg md:text-xl font-bold text-gray-800 leading-snug">
-                  Step 2: Choose Massage & Time
-                </h3>
-                <p className="text-gray-500 text-sm mt-2">
-                  Browse different{" "}
-                  <span className="font-semibold text-gray-700">
-                    massage types
-                  </span>
-                  , pick your{" "}
-                  <span className="font-semibold text-gray-700">
-                    preferred practitioner
-                  </span>
-                  , and select a{" "}
-                  <span className="font-semibold text-gray-700">timeslot</span>{" "}
-                  that fits your schedule.
-                </p>
-              </div>
-              <img
-                src={twoImg}
-                alt="Prices and Availability"
-                className="mt-6 rounded-xl w-full sm:w-[200px] md:w-[250px] h-44 sm:h-[240px] md:h-[280px] object-cover mx-auto"
-              />
-            </div>
-          </div>
-
-          {/* Step 3 */}
-          <div className="text-center flex flex-col items-center h-full">
-            {/* Step Number */}
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-sky-500 text-white text-lg font-bold mb-4">
-              3
-            </div>
-
-            {/* Content */}
-            <div className="flex flex-col flex-grow justify-between h-full max-w-xs">
-              <div className="px-2">
-                <h3 className="text-lg md:text-xl font-bold text-gray-800 leading-snug">
-                  Step 3: Book & Relax
-                </h3>
-                <p className="text-gray-500 text-sm mt-2">
-                  Confirm your booking with a{" "}
-                  <span className="font-semibold text-gray-700">
-                    quick & secure payment
-                  </span>
-                  . You’ll get an{" "}
-                  <span className="font-semibold text-gray-700">
-                    instant confirmation
-                  </span>
-                  and a{" "}
-                  <span className="font-semibold text-gray-700">reminder</span>{" "}
-                  day before your appointment. Now, sit back and get ready to
-                  feel amazing ✨
-                </p>
-              </div>
-              <img
-                src={threeImg}
-                alt="Online Booking"
-                className="mt-6 rounded-xl w-full sm:w-[200px] md:w-[250px] h-44 sm:h-[240px] md:h-[280px] object-cover mx-auto"
-              />
+            {/* Image Container */}
+            <div className="flex-1 w-full lg:w-1/2 mt-12 lg:mt-0 relative h-64 sm:h-80 md:h-96 rounded-3xl overflow-hidden shadow-2xl">
+              {steps.map((step) => (
+                <img
+                  key={step.id}
+                  src={step.image}
+                  alt={step.title}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+                    activeStep === step.id ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Customer Review */}
       <section className="bg-[#fafbff] py-12 px-4 sm:px-6 md:px-12 lg:!px-28 lg:py-24 relative">

@@ -36,23 +36,15 @@ export default function CustomerReviews() {
             key={i}
             className="flex-shrink-0 w-[320px] md:w-[350px] lg:w-[400px] bg-white rounded-xl sm:rounded-2xl border border-gray-200 p-4 sm:p-6 text-left snap-start shadow-sm"
           >
+            <div className="flex items-center gap-3 my-2 sm:mt-6">
+                <p className="text-gray-900 font-semibold text-xl">
+                  {client.name}
+                </p>
+            </div>
             <p
-              className="text-gray-800 text-sm sm:text-md"
+              className="text-gray-800 text-base sm:text-md"
               dangerouslySetInnerHTML={{ __html: client.desc }}
             ></p>
-
-            <div className="flex items-center gap-3 mt-4 sm:mt-6">
-              <img
-                src={client.image}
-                alt={client.name}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
-              />
-              <div>
-                <h6 className="font-semibold text-gray-900 text-sm sm:text-base">
-                  {client.name}
-                </h6>
-              </div>
-            </div>
           </div>
         ))}
       </div>

@@ -26,7 +26,7 @@ export default function Navbar() {
   const navbarItems = [
     {
       to: "/serviceList",
-      name: "Book an Appointment",
+      name: "Book",
     },
     {
       to: "/about-us",
@@ -38,7 +38,7 @@ export default function Navbar() {
     },
     {
       to: "/faq",
-      name: "FAQ",
+      name: "Faq",
     },
   ];
 
