@@ -35,7 +35,8 @@ export default function SubmitProperty() {
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [businessType, setBusinessType] = useState<string | undefined>("");
   const [confirmationMode, setConfirmationMode] = useState("business_email");
-  const [appointmentApprovalType, setAppointmentApprovalType] = useState("AUTO")
+  const [appointmentApprovalType, setAppointmentApprovalType] =
+    useState("AUTO");
   const [bankName, setBankName] = useState("");
   const [bankTransitNumber, setBankTransitNumber] = useState(0);
   const [bankInstitutionNumber, setBankInstitutionNumber] = useState(0);
@@ -458,13 +459,17 @@ export default function SubmitProperty() {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 30, behavior: "smooth" });
+  }, [currentStep]);
+
   return (
     <>
       {/* Main Section */}
       <section className="bg-white py-8">
-        <div className="max-w-7xl mx-auto px-4 space-y-0">
+        <div className="max-w-7xl mx-auto px-0 md:px-4 space-y-0">
           {/* Progress Section */}
-          <div className="w-full">
+          <div className="hidden md:block w-full">
             <ProgressSidebar
               currentStep={currentStep}
               setCurrentStep={(index) => setCurrentStep(index)}
@@ -486,26 +491,26 @@ export default function SubmitProperty() {
                       layout
                     >
                       {/* Basic Information */}
-                      <div className="mb-8 p-6 space-y-10 rounded-xl border border-gray-200 bg-white shadow-sm mt-4">
+                      <div className="mb-8 p-4 md:p-6 space-y-6 md:space-y-10 rounded-xl border border-gray-200 bg-white shadow-sm md:mt-4">
                         <h3 className="text-xl font-bold mb-6 text-gray-800">
                           Basic Information
                         </h3>
 
+                        {/* Business Name (full width) */}
+                        <div className="col-span-3">
+                          <label className="block text-base font-medium mb-2">
+                            Business Name
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Full Name/Business Name"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            value={businessName}
+                            onChange={(e) => setBusinessName(e.target.value)}
+                          />
+                        </div>
+                        
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          {/* Business Name (full width) */}
-                          <div className="col-span-3">
-                            <label className="block text-base font-medium mb-2">
-                              Business Name
-                            </label>
-                            <input
-                              type="text"
-                              placeholder="Full Name/Business Name"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                              value={businessName}
-                              onChange={(e) => setBusinessName(e.target.value)}
-                            />
-                          </div>
-
                           {/* Business Type */}
                           <div>
                             <label className="block text-base font-medium mb-2">
@@ -572,119 +577,111 @@ export default function SubmitProperty() {
                           </div>
                         </div>
 
-                        {/* Appointment Confirmation + Duplicate */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                              <label className="block text-base font-medium mb-3">
-                                How would you like to receive appointment
-                                confirmation?
-                              </label>
-                              <div className="flex gap-4">
-                                <label
-                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
+                          {/* Appointment Confirmation + Duplicate */}
+                          <div>
+                            <label className="block text-base font-medium mb-3">
+                              How would you like to receive appointment
+                              confirmation?
+                            </label>
+                            <div className="flex gap-4">
+                              <label
+                                className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                                  confirmationMode === "business_email"
+                                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                    : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                }`}
+                                onClick={() =>
+                                  setConfirmationMode("business_email")
+                                }
+                              >
+                                <input
+                                  type="radio"
+                                  name={`confirmation-business_email`}
+                                  checked={
                                     confirmationMode === "business_email"
-                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                                  }`}
-                                  onClick={() =>
+                                  }
+                                  onChange={() =>
                                     setConfirmationMode("business_email")
                                   }
-                                >
-                                  <input
-                                    type="radio"
-                                    name={`confirmation-business_email`}
-                                    checked={
-                                      confirmationMode === "business_email"
-                                    }
-                                    onChange={() =>
-                                      setConfirmationMode("business_email")
-                                    }
-                                  />
-                                  Email
-                                </label>
+                                />
+                                Email
+                              </label>
 
-                                <label
-                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                              <label
+                                className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                                  confirmationMode === "business_phone"
+                                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                    : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                }`}
+                                onClick={() =>
+                                  setConfirmationMode("business_phone")
+                                }
+                              >
+                                <input
+                                  type="radio"
+                                  name={`confirmation-business_phone`}
+                                  checked={
                                     confirmationMode === "business_phone"
-                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                                  }`}
-                                  onClick={() =>
+                                  }
+                                  onChange={() =>
                                     setConfirmationMode("business_phone")
                                   }
-                                >
-                                  <input
-                                    type="radio"
-                                    name={`confirmation-business_phone`}
-                                    checked={
-                                      confirmationMode === "business_phone"
-                                    }
-                                    onChange={() =>
-                                      setConfirmationMode("business_phone")
-                                    }
-                                  />
-                                  Phone
-                                </label>
-                              </div>
-                            </div>
-                          
-                        </div>
-
-                        {/* Appointment Approval Type */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                              <label className="block text-base font-medium mb-3">
-                                Appointment Approval Type?
+                                />
+                                Phone
                               </label>
-                              <div className="flex gap-4">
-                                <label
-                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
-                                    appointmentApprovalType === "AUTO"
-                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                                  }`}
-                                  onClick={() =>
+                            </div>
+                          </div>
+
+                          {/* Appointment Approval Type */}
+                          <div>
+                            <label className="block text-base font-medium mb-3">
+                              Appointment Approval Type?
+                            </label>
+                            <div className="flex gap-4">
+                              <label
+                                className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                                  appointmentApprovalType === "AUTO"
+                                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                    : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                }`}
+                                onClick={() =>
+                                  setAppointmentApprovalType("AUTO")
+                                }
+                              >
+                                <input
+                                  type="radio"
+                                  name={`confirmation-auto`}
+                                  checked={appointmentApprovalType === "AUTO"}
+                                  onChange={() =>
                                     setAppointmentApprovalType("AUTO")
                                   }
-                                >
-                                  <input
-                                    type="radio"
-                                    name={`confirmation-auto`}
-                                    checked={
-                                      appointmentApprovalType === "AUTO"
-                                    }
-                                    onChange={() =>
-                                      setAppointmentApprovalType("AUTO")
-                                    }
-                                  />
-                                  Auto-Approval
-                                </label>
+                                />
+                                Auto-Approval
+                              </label>
 
-                                <label
-                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
-                                    appointmentApprovalType === "MANUAL"
-                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                                  }`}
-                                  onClick={() =>
+                              <label
+                                className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
+                                  appointmentApprovalType === "MANUAL"
+                                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                    : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                }`}
+                                onClick={() =>
+                                  setAppointmentApprovalType("MANUAL")
+                                }
+                              >
+                                <input
+                                  type="radio"
+                                  name={`confirmation-manual`}
+                                  checked={appointmentApprovalType === "MANUAL"}
+                                  onChange={() =>
                                     setAppointmentApprovalType("MANUAL")
                                   }
-                                >
-                                  <input
-                                    type="radio"
-                                    name={`confirmation-manual`}
-                                    checked={
-                                      appointmentApprovalType === "MANUAL"
-                                    }
-                                    onChange={() =>
-                                      setAppointmentApprovalType("MANUAL")
-                                    }
-                                  />
-                                  Manually
-                                </label>
-                              </div>
+                                />
+                                Manually
+                              </label>
                             </div>
-                          
+                          </div>
                         </div>
 
                         {/* Working Hours */}
@@ -1298,11 +1295,9 @@ export default function SubmitProperty() {
                   <button
                     className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 disabled:opacity-50"
                     disabled={currentStep === 1}
-                    onClick={() =>
-                      currentStep - 1 > 0
-                        ? setCurrentStep(currentStep - 1)
-                        : null
-                    }
+                    onClick={() => {
+                      setCurrentStep((prev) => Math.max(prev - 1, 1));
+                    }}
                   >
                     Previous
                   </button>
@@ -1310,11 +1305,11 @@ export default function SubmitProperty() {
                   <button
                     type="button"
                     className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                    onClick={() =>
+                    onClick={() => {
                       currentStep === 4
                         ? handleMerchantFormSubmit()
-                        : setCurrentStep(currentStep + 1)
-                    }
+                        : setCurrentStep(currentStep + 1);
+                    }}
                   >
                     {currentStep === 4 ? "Preview & Submit" : "Next"}
                   </button>

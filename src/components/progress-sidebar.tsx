@@ -48,7 +48,7 @@ const ProgressSidebar: React.FC<ProgressSidebarProps> = ({
             <div
               key={step.title}
               onClick={() => isClickable && setCurrentStep(stepNumber)}
-              className={`flex items-center gap-3 ${
+              className={`flex items-center gap-3 mr-1 ${
                 isClickable ? "cursor-pointer" : "opacity-60 cursor-not-allowed"
               }`}
             >
