@@ -190,35 +190,35 @@ export default function Home() {
             <div>
               <h2 className="text-4xl font-bold text-slate-900 mb-6">
                 Connecting You with{" "}
-                <span className="text-teal-600">Quality Healthcare</span>
+                <span className="text-blue-600">Quality Healthcare</span>
               </h2>
               <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                WellnessBook is Canada's premier platform for connecting clients
+                Last minute wellness is Canada's premier platform for connecting clients
                 with certified wellness professionals. We believe everyone
                 deserves access to quality healthcare services that promote
                 healing, wellness, and vitality.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-teal-600 flex-shrink-0" />
+                  <CheckCircle className="w-6 h-6 text-blue-600 flex-shrink-0" />
                   <span className="text-slate-700">
                     Verified and certified professionals
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-teal-600 flex-shrink-0" />
+                  <CheckCircle className="w-6 h-6 text-blue-600 flex-shrink-0" />
                   <span className="text-slate-700">
                     Instant or quick appointment confirmations
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-teal-600 flex-shrink-0" />
+                  <CheckCircle className="w-6 h-6 text-blue-600 flex-shrink-0" />
                   <span className="text-slate-700">
                     Nationwide coverage across Canada
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-teal-600 flex-shrink-0" />
+                  <CheckCircle className="w-6 h-6 text-blue-600 flex-shrink-0" />
                   <span className="text-slate-700">
                     Secure and easy online booking
                   </span>
