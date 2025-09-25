@@ -450,7 +450,7 @@ export default function SubmitProperty() {
           },
         });
         setActiveTab(1);
-        navigate("/");
+        navigate("/payment");
       } else {
         console.error("Unexpected status:", businessResponse.status);
       }
