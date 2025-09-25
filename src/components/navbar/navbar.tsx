@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import logo from "../../assets/img/logo.svg";
+import logo from "../../assets/img/logo/blue.png"
 import loginImg from "../../assets/img/svg/login.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "../../store/userStore";
@@ -79,9 +79,7 @@ export default function Navbar() {
                 alt="Logo"
                 className="max-h-16 w-auto flex-shrink-0"
               />
-              <h6 className="text-xl sm:text-2xl md:text-3xl font-bold truncate">
-                Last Minute Wellness
-              </h6>
+              
             </Link>
 
             {/* Nav Links (Desktop) */}

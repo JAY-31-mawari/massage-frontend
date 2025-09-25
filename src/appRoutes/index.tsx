@@ -27,8 +27,8 @@ import { TermsOfService } from "../pages/others/termsOfService";
 import { WebsiteTermsOfUse } from "../pages/others/websiteTermsOfUse";
 import ConsentForm from "../pages/others/consentForm";
 import Payment from "../pages/stripe-payment/payment"
-import { Success } from "../pages/success";
-import { Fail } from "../pages/fail";
+import Success from "../pages/success";
+import Fail from "../pages/fail";
 
 export function AppRoutes() {
     return (

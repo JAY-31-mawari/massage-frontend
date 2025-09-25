@@ -2,121 +2,151 @@
 
 import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  CardElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import { Elements, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
 
 // ✅ Load Stripe
 const stripePromise = loadStripe(
-  global.config.STRIPE_PUBLISHABLE_KEY as string
+  process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY as string
 );
 
 const CheckoutForm: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  // Customer details state
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const makePayment = async (e:React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    const stripe = await loadStripe(global.config.STRIPE_PUBLISHABLE_KEY as string)
-
-    const paymentBody = {
-        method:"POST",
-        url: global.config.ROOTURL.prod + '/create-checkout-session',
-        headers:{
-            "Content-type":"application/json"
-        },
-        data:{
-            checkout_price:3500
-        }
-    }
-
-    try{const paymentResponse = await axios(paymentBody)
-
-    const result = stripe?.redirectToCheckout({
-        sessionId: paymentResponse.data.id
-    })
-    }catch(err){
-        console.log("Payment failed",err)
-    }
-    setLoading(false)
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  console.log("dadn,sjdn",process.env.REACT_APP_STRIPE_PUBLISABLE_KEY)
+  const makePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessage(null);
+    const stripe = await loadStripe(
+      process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY as string
+    );
 
-    if (!stripe || !elements) return;
-
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) return;
+    const paymentBody = {
+      method: "POST",
+      url: global.config.ROOTURL.prod + "/create-checkout-session",
+      headers: {
+        "Content-type": "application/json",
+      },
+      data: {
+        checkout_price: 3500,
+      },
+    };
 
     try {
-      // ✅ Call backend to create PaymentIntent ($35 fixed)
-      const res = await fetch("/api/create-payment-intent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: 3500, // Stripe works in cents (35.00 USD = 3500)
-          currency: "usd",
-        }),
+      const paymentResponse = await axios(paymentBody);
+
+      await stripe?.redirectToCheckout({
+        sessionId: paymentResponse.data.id,
       });
-
-      const { clientSecret } = await res.json();
-
-      // ✅ Confirm Card Payment with Stripe
-      const result = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardElement,
-        },
-      });
-
-      if (result.error) {
-        setErrorMessage(result.error.message ?? "Payment failed");
-      } else if (result.paymentIntent?.status === "succeeded") {
-        alert("✅ Payment Successful! $35 charged.");
-      }
-    } catch (err: any) {
-      setErrorMessage(err.message);
+    } catch (err) {
+      console.log("Payment failed", err);
     }
-
     setLoading(false);
   };
 
   return (
-    <form
-      onSubmit={makePayment}
-      className="max-w-md mx-auto mt-10 p-6 border rounded-lg shadow"
-    >
-      <h2 className="text-xl font-bold mb-4 text-center">Pay $35</h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex flex-col">
+      <section className="flex-1 flex flex-col justify-center items-center text-center px-6 py-20 bg-gradient-to-b from-white to-blue-100">
+        <h1 className="text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
+          Checkout Securely
+        </h1>
+        <p className="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl">
+          Make payments with confidence. Your transactions are encrypted and
+          safe.
+        </p>
 
-      {/* Card Element */}
-      {/* <label className="block mb-2 text-sm font-medium">Card Details</label> */}
-      {/* <div className="p-3 border rounded mb-4 bg-gray-50">
-        <CardElement options={{ hidePostalCode: true }} />
-      </div>
+          <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-all duration-300 scale-100 hover:scale-[1.01] flex flex-col items-center text-center">
+            <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-8">
+              Your information is fully encrypted and protected. We use Stripe’s
+              industry-leading security to ensure your data is safe and your
+              transaction is seamless.
+            </p>
 
-      {errorMessage && (
-        <p className="text-red-500 text-sm mb-2">{errorMessage}</p>
-      )} */}
+            {/* Payment details - Fixed amount from your provided code */}
+            <div className="w-full mb-8">
+              <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700 p-4 rounded-xl">
+                <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  Total Amount
+                </span>
+                <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">
+                  $35.00
+                </span>
+              </div>
+            </div>
 
-      <button
-        type="submit"
-        disabled={!stripe || loading}
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-      >
-        {loading ? "Processing..." : "Pay $35"}
-      </button>
-    </form>
+            {/* Payment Button */}
+            <form onSubmit={makePayment} className="w-full">
+              <button
+                type="submit"
+                disabled={loading || !stripe}
+                className={`
+              w-full py-4 rounded-xl text-lg font-bold text-white transition-all duration-300
+              ${
+                loading || !stripe
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700 shadow-lg hover:shadow-xl"
+              }
+            `}
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <svg
+                      className="animate-spin h-5 w-5 mr-3 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Processing...
+                  </div>
+                ) : (
+                  "Pay Now"
+                )}
+              </button>
+            </form>
+          </div>
+      </section>
+
+      {/* Features / Benefits */}
+      <section className="py-20 bg-white px-6 md:px-20 grid md:grid-cols-3 gap-12 text-center">
+        <div className="p-6 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100">
+          <div className="text-blue-600 text-5xl mb-4">⚡</div>
+          <h3 className="text-xl font-semibold mb-2">Lightning Fast</h3>
+          <p className="text-gray-600">
+            Transactions are processed in seconds without hassle.
+          </p>
+        </div>
+        <div className="p-6 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100">
+          <div className="text-blue-600 text-5xl mb-4">🔒</div>
+          <h3 className="text-xl font-semibold mb-2">Highly Secure</h3>
+          <p className="text-gray-600">
+            We use Stripe’s industry-leading encryption to protect you.
+          </p>
+        </div>
+        <div className="p-6 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100">
+          <div className="text-blue-600 text-5xl mb-4">🌍</div>
+          <h3 className="text-xl font-semibold mb-2">Global Trust</h3>
+          <p className="text-gray-600">
+            Trusted by businesses and customers worldwide.
+          </p>
+        </div>
+      </section>
+    </div>
   );
 };
 
