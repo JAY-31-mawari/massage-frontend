@@ -43,7 +43,6 @@ export default function CustomerReviews() {
 
             <div className="flex items-center gap-3 mt-4 sm:mt-6">
               <img
-                src={client.image}
                 alt={client.name}
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
               />
