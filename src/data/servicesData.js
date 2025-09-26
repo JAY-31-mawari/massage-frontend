@@ -2,12 +2,6 @@ import physiotheraphy from "../assets/img/physiotherapy.png";
 import chiropracticCare from "../assets/img/Chiropractic Care.jpeg";
 import massage from "../assets/img/massage.webp";
 import acupuncture from "../assets/img/acupuncture.webp";
-import client1 from "../assets/img/user-1.jpg";
-import client2 from "../assets/img/user-2.jpg";
-import client3 from "../assets/img/user-3.jpg";
-import client4 from "../assets/img/user-4.jpg";
-import client5 from "../assets/img/user-5.jpg";
-
 
 export const servicesData = [
     {
@@ -42,7 +36,6 @@ export const serviceTypes = ["Clinic-Based Practice", "Home-Based Practice", "Mo
 
 export const clientReviewData = [
   {
-    image: client1,
     quote: "bg-primary",
     desc: `
       <p>Amazing massage!!</p>
@@ -58,7 +51,6 @@ export const clientReviewData = [
     name: "Andy Anthony",
   },
   {
-    image: client2,
     quote: "bg-primary",
     desc: `
       <p>
@@ -73,7 +65,6 @@ export const clientReviewData = [
     name: "Sebastian Botero",
   },
   {
-    image: client3,
     quote: "bg-purple",
     desc: `
       <p>
@@ -88,7 +79,6 @@ export const clientReviewData = [
     name: "Shaurya Ratna",
   },
   {
-    image: client4,
     quote: "bg-seegreen",
     desc: `
       <p>
@@ -102,7 +92,6 @@ export const clientReviewData = [
     name: "Tara K",
   },
   {
-    image: client5,
     quote: "bg-danger",
     desc: `
       <p>
@@ -116,7 +105,6 @@ export const clientReviewData = [
     name: "Robyn Court",
   },
   {
-    image: client3,
     quote: "bg-purple",
     desc: `
       <p>
@@ -131,7 +119,6 @@ export const clientReviewData = [
     name: "Shaurya Ratna",
   },
   {
-    image: client4,
     quote: "bg-seegreen",
     desc: `
       <p>
@@ -145,7 +132,6 @@ export const clientReviewData = [
     name: "Tara K",
   },
   {
-    image: client5,
     quote: "bg-danger",
     desc: `
       <p>

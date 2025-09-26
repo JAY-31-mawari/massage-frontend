@@ -5,7 +5,6 @@ import ServicePage from '../pages/service/servicePage';
 import Agents from '../pages/agents/agents';
 import AgentPage from '../pages/agents/agent-page';
 import AgencyPage from '../pages/agents/agency-page';
-import Payment from '../pages/admin/payment';
 import ChangePassword from '../pages/admin/change-password';
 import RegisterBusiness from '../pages/service/registerBusiness';
 import Pricing from '../pages/pricing';
@@ -27,6 +26,9 @@ import { ContractorAgreement } from "../pages/others/contractorsAgreement";
 import { TermsOfService } from "../pages/others/termsOfService";
 import { WebsiteTermsOfUse } from "../pages/others/websiteTermsOfUse";
 import ConsentForm from "../pages/others/consentForm";
+import Payment from "../pages/stripe-payment/payment"
+import Success from "../pages/success";
+import Fail from "../pages/fail";
 
 export function AppRoutes() {
     return (
@@ -40,6 +42,7 @@ export function AppRoutes() {
             <Route path='/practitioner-register' element={<RegisterBusiness />} />
             <Route path='/contact' element={<Contact />} /> 
             <Route path='/about-service' element={<MerchantAboutUs />} />
+            <Route path='/payment' element={<Payment />} />
 
             {/* SERVICES */}
             <Route path='/service/physiotherapy' element={<Service1 />} />
@@ -57,6 +60,8 @@ export function AppRoutes() {
             <Route path='/change-password' element={<ChangePassword />} />
             <Route path='/pricing' element={<Pricing />} /> */}
             <Route path='/404' element={<Error />} />
+            <Route path='/paymentSuccess' element={<Success /> } />
+            <Route path='/paymentFailed' element={<Fail /> } />
             <Route path='/about-us' element={<AboutUs />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/faq' element={<ClientFAQ />} />

@@ -89,10 +89,10 @@ export default function Home() {
     <div className="bg-white">
       {/* Search Section */}
       <div
-        className="relative bg-no-repeat bg-cover bg-center w-full h-[600px] lg:h-[700px]"
+        className="relative bg-no-repeat bg-cover bg-center w-full h-[600px] lg:h-[480px]"
         style={{ backgroundImage: `url(${homeBg})` }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-emerald-700/70 backdrop-blur-[1px]"></div> {/* Deep Teal Overlay */}
         <div className="relative max-w-8xl mx-auto px-12 sm:px-6 md:px-12 h-full flex flex-col justify-center items-start">
           <p className="text-base sm:text-md md:text-xl text-white mb-3 sm:mb-4 font-medium">
             Feel Better, Even on Your Busiest Days
@@ -183,7 +183,7 @@ export default function Home() {
       {/* About Section */}
       <section
         id="about"
-        className="py-20 bg-gradient-to-r bg-gray-50"
+        className="py-20 bg-gradient-to-r bg-[#ecfeff]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
