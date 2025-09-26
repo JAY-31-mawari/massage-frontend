@@ -89,16 +89,17 @@ export default function Home() {
     <div className="bg-white">
       {/* Search Section */}
       <div
-        className="relative bg-no-repeat bg-cover bg-center w-full h-[600px] lg:h-[480px]"
+        className="relative bg-no-repeat bg-cover bg-center w-full h-[600px] lg:h-[620px]"
         style={{ backgroundImage: `url(${homeBg})` }}
       >
-        <div className="absolute inset-0 bg-emerald-700/70 backdrop-blur-[1px]"></div> {/* Deep Teal Overlay */}
+        <div className="absolute inset-0 bg-black/60"></div>{" "}
+        {/* Deep Teal Overlay */}
         <div className="relative max-w-8xl mx-auto px-12 sm:px-6 md:px-12 h-full flex flex-col justify-center items-start">
-          <p className="text-base sm:text-md md:text-xl text-white mb-3 sm:mb-4 font-medium">
+          <p className="text-lg sm:text-xl md:text-2xl text-emerald-200 mb-3 sm:mb-4 font-light tracking-wider">
             Feel Better, Even on Your Busiest Days
           </p>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-6 sm:mb-8 leading-tight max-w-md sm:max-w-lg md:max-w-2xl">
-            Last-Minute Appointments, First-Class Care
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-8 sm:mb-10 leading-tight max-w-xl sm:max-w-2xl md:max-w-3xl drop-shadow-lg">
+            Last-Minute Appointments, <span className="text-emerald-300">First-Class Care</span>
           </h2>
 
           {/* Search Box */}
@@ -145,33 +146,34 @@ export default function Home() {
       </div>
 
       {/* Service Details startpoint */}
-      <div className="mt-2 p-6 sm:p-10 rounded-xl max-w-[1400px] mx-auto">
+      <div className="mt-[-30px] p-6 sm:p-10 rounded-t-[40px] bg-gray-100  mx-auto relative z-10 shadow-2xl shadow-gray-200/50">
         {/* Main Title */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">
-            Our Wellness Services
+        <div className="text-center mb-16 pt-12">
+          <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">
+            Our <span className="text-emerald-600">Premium</span> Wellness
+            Services
           </h2>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light">
             Discover a range of professional health and wellness services
-            tailored to your needs
+            tailored to your needs.
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-center gap-10">
-          {/* Service Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-6 w-full">
+        <div className="flex flex-col mb-10 md:flex-row items-center justify-center">
+          {/* Service Grid - Modern Card Design */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
             {servicesData.map((service, index) => (
               <div
                 onClick={() => navigate(`/service/${service.url}`)}
                 key={index}
-                className="bg-white rounded-lg shadow transition duration-300 ease-in-out hover:shadow-xl hover:brightness-110 text-center cursor-pointer"
+                className="group bg-white rounded-2xl shadow-lg border border-gray-100 transition duration-500 ease-in-out hover:shadow-2xl hover:border-emerald-300 text-center cursor-pointer overflow-hidden transform hover:-translate-y-1"
               >
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="rounded mb-3 object-cover transition duration-300 ease-in-out w-full h-36 sm:h-[200px]"
+                  className="rounded-t-2xl mb-0 object-cover w-full h-48 transition duration-500 ease-in-out group-hover:scale-105"
                 />
-                <p className="font-semibold text-md sm:text-base mb-4">
+                <p className="font-bold text-lg text-gray-800 p-4 group-hover:text-emerald-700 transition">
                   {service.title}
                 </p>
               </div>
@@ -180,23 +182,101 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Steps for users */}
+      <div className="min-h-screen bg-white font-sans text-gray-800 antialiased py-10 lg:py-16">
+        <div className="container mx-auto !px-24 sm:px-12">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 md:text-5xl lg:text-5xl tracking-tight">
+              Our <span className="text-emerald-600">Simple</span> Process
+            </h1>
+            <p className="mt-4 text-2xl text-gray-800 max-w-3xl mx-auto font-light">
+              Book your wellness appointment in three simple, stress-free steps.
+            </p>
+          </div>
+
+          <div className="flex flex-col lg:flex-row lg:space-x-20 items-center">
+            {/* Step-by-Step Content */}
+            <div className="flex-1 w-full lg:w-1/2 space-y-4">
+              {steps.map((step) => (
+                <div
+                  key={step.id}
+                  className={`flex items-start transition-all duration-500 ease-in-out cursor-pointer p-4 rounded-3xl border ${
+                    activeStep === step.id
+                      ? "bg-emerald-50 border-emerald-300 shadow-xl"
+                      : "bg-white border-gray-100"
+                  } hover:bg-emerald-50/50 hover:border-emerald-200`}
+                  onMouseEnter={() => setActiveStep(step.id)}
+                >
+                  <div
+                    className={`flex-shrink-0 flex items-center justify-center p-3 rounded-xl transition-colors duration-500 ${
+                      activeStep === step.id
+                        ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/30"
+                        : "bg-gray-100 text-emerald-500"
+                    }`}
+                  >
+                    <step.icon className="h-5 w-5" />
+                  </div>
+                  <div className="ml-8">
+                    <h3
+                      className={`text-2xl font-bold transition-colors duration-500 ${
+                        activeStep === step.id
+                          ? "text-emerald-700"
+                          : "text-gray-900"
+                      }`}
+                    >
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 text-lg text-gray-700 font-normal">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Image Container */}
+            <div className="flex-1 w-full lg:w-1/2 mt-16 lg:mt-0 relative h-96 md:h-[380px] rounded-3xl overflow-hidden shadow-2xl border-4 border-emerald-100">
+              {steps.map((step) => (
+                <img
+                  key={step.id}
+                  src={step.image}
+                  alt={step.title}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+                    activeStep === step.id ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+              ))}
+              <div className="absolute inset-0 bg-black/10"></div>{" "}
+              {/* Subtle gradient overlay for polish */}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* About Section */}
-      <section
-        id="about"
-        className="py-20 bg-gradient-to-r bg-[#ecfeff]"
-      >
+      <section id="about" className="py-20 bg-gradient-to-r bg-[#ecfeff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="relative">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1632012643865-dadda4f2d3cd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHw0fHxtYXNzYWdlJTIwdGhlcmFweXxlbnwwfHx8dGVhbHwxNzU4NzA3NzE1fDA&ixlib=rb-4.1.0&q=85"
+                  alt="Wellness therapy"
+                  className="w-full h-96 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-teal-600/20 to-cyan-600/20"></div>
+              </div>
+            </div>
             <div>
               <h2 className="text-4xl font-bold text-slate-900 mb-6">
                 Connecting You with{" "}
                 <span className="text-blue-600">Quality Healthcare</span>
               </h2>
               <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                Last minute wellness is Canada's premier platform for connecting clients
-                with certified wellness professionals. We believe everyone
-                deserves access to quality healthcare services that promote
-                healing, wellness, and vitality.
+                Last minute wellness is Canada's premier platform for connecting
+                clients with certified wellness professionals. We believe
+                everyone deserves access to quality healthcare services that
+                promote healing, wellness, and vitality.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
@@ -225,87 +305,11 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1632012643865-dadda4f2d3cd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHw0fHxtYXNzYWdlJTIwdGhlcmFweXxlbnwwfHx8dGVhbHwxNzU4NzA3NzE1fDA&ixlib=rb-4.1.0&q=85"
-                  alt="Wellness therapy"
-                  className="w-full h-96 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-teal-600/20 to-cyan-600/20"></div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </section>
-      {/* Steps for users */}
-      
 
-      <div className="min-h-screen  font-sans text-gray-800 antialiased py-8 lg:py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-extrabold text-gray-900 md:text-5xl lg:text-6xl tracking-tight">
-              How It Works
-            </h1>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Book your wellness appointment in three simple steps.
-            </p>
-          </div>
-
-          <div className="flex flex-col lg:flex-row lg:space-x-12 items-center">
-            {/* Step-by-Step Content */}
-            <div className="flex-1 w-full lg:w-1/2">
-              {steps.map((step) => (
-                <div
-                  key={step.id}
-                  className={`flex items-start transition-all duration-500 ease-in-out cursor-pointer mb-6 p-8 rounded-xl ${
-                    activeStep === step.id ? "bg-indigo-50" : "bg-transparent"
-                  } hover:bg-gray-100`}
-                  onMouseEnter={() => setActiveStep(step.id)}
-                >
-                  <div
-                    className={`flex-shrink-0 flex items-center justify-center h-14 w-14 rounded-full transition-colors duration-500 ${
-                      activeStep === step.id
-                        ? "bg-indigo-600 text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    <step.icon className="h-6 w-6" />
-                  </div>
-                  <div className="ml-6">
-                    <h3
-                      className={`text-2xl font-semibold transition-colors duration-500 ${
-                        activeStep === step.id
-                          ? "text-indigo-600"
-                          : "text-gray-900"
-                      }`}
-                    >
-                      {step.title}
-                    </h3>
-                    <p className="mt-2 text-base text-gray-600">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Image Container */}
-            <div className="flex-1 w-full lg:w-1/2 mt-12 lg:mt-0 relative h-64 sm:h-80 md:h-96 rounded-3xl overflow-hidden shadow-2xl">
-              {steps.map((step) => (
-                <img
-                  key={step.id}
-                  src={step.image}
-                  alt={step.title}
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
-                    activeStep === step.id ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Customer Review */}
       <section className="bg-[#fafbff] py-12 px-4 sm:px-6 md:px-12 lg:!px-28 lg:py-24 relative">
