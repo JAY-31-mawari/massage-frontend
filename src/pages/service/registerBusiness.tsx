@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
 import ProgressSidebar from "../../components/progress-sidebar";
 import { X } from "lucide-react";
+import { setStorageItem } from "../../utils/sessionStorage";
 
 interface LocationState {
   lat: number | null;
@@ -417,6 +418,8 @@ export default function SubmitProperty() {
             { ...practitioner, businessId: businessResponse?.data?.data?.id }
           );
         }
+        setStorageItem("business_id", businessResponse?.data?.data?.id)
+        setStorageItem("business_email", email)
         setBusinessName("");
         setBusinessType("");
         setEmail("");

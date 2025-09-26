@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
+import { setStorageItem } from "../../utils/sessionStorage";
 
 // ✅ Load Stripe
 const stripePromise = loadStripe(
@@ -15,7 +16,7 @@ const CheckoutForm: React.FC = () => {
   const elements = useElements();
 
   const [loading, setLoading] = useState(false);
-  console.log("dadn,sjdn",process.env.REACT_APP_STRIPE_PUBLISABLE_KEY)
+  
   const makePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -25,7 +26,7 @@ const CheckoutForm: React.FC = () => {
 
     const paymentBody = {
       method: "POST",
-      url: global.config.ROOTURL.prod + "/create-checkout-session",
+      url: global.config.ROOTURL.prod + "/stripe/create-checkout-session",
       headers: {
         "Content-type": "application/json",
       },
@@ -36,6 +37,8 @@ const CheckoutForm: React.FC = () => {
 
     try {
       const paymentResponse = await axios(paymentBody);
+
+      setStorageItem("paySessionId", paymentResponse.data.id)
 
       await stripe?.redirectToCheckout({
         sessionId: paymentResponse.data.id,

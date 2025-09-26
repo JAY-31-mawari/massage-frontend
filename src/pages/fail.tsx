@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // if using react-router
+import axios from "axios";
+import { getStorageItem } from "../utils/sessionStorage";
 
 const PaymentFailed = () => {
   const navigate = useNavigate(); // for redirect
@@ -13,6 +15,36 @@ const PaymentFailed = () => {
     const timer = setTimeout(() => setSeconds(prev => prev - 1), 1000);
     return () => clearTimeout(timer);
   }, [seconds, navigate]);
+
+  useEffect(() => {
+      const fetchSessionDetails = async () => {
+        const session_id = getStorageItem("paySessionId");
+        const business_email = getStorageItem("business_email")
+        const business_id = getStorageItem("business_id")
+  
+        const saveStripeSessionBody = {
+          method: "POST",
+          url: global.config.ROOTURL.prod + "/stripe/session-details",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: {
+            session_id,
+            pay_status:"Fail",
+            business_email,
+            business_id
+          },
+        };
+  
+        try {
+          const sessionResponse = await axios(saveStripeSessionBody);
+        } catch (err) {
+          console.error("Payment failed", err);
+        }
+      };
+  
+      fetchSessionDetails();
+    }, []);
 
   return (
     <div className="flex flex-col items-center min-h-screen px-4">
