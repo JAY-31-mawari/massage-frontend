@@ -6,24 +6,20 @@ export function PrivacyPolicy() {
           LAST MINUTE WELLNESS INC. PRIVACY POLICY
         </p>
         <p className="text-gray-700">
-          This privacy policy ("<strong>Policy</strong>")
-          describes the information that Last Minute Wellness Inc. and its
-          affiliates (collectively, "<strong>We</strong>", "
-          <strong>us</strong>", "
-          <strong>our</strong>" or “
-          <strong>Last Minute Wellness</strong>”) collects
-          through its websites and any affiliated mobile applications or
-          communication platforms related to the website, or in connection with
-          any goods or services rendered through or related to any of the
-          foregoing (collectively, the "
-          <strong>Website</strong>") including from both end
-          users and independent contractors or service providers who provide
-          services via the Website ("
-          <strong>Service Providers</strong>" or "
-          <strong>Contractors</strong>"), and how we use and
-          protect it and the choices you can make about your information.
-          Throughout this Policy, “information” includes personal information we
-          may collect about you.
+          This privacy policy ("<strong>Policy</strong>") describes the
+          information that Last Minute Wellness Inc. and its affiliates
+          (collectively, "<strong>We</strong>", "<strong>us</strong>", "
+          <strong>our</strong>" or “<strong>Last Minute Wellness</strong>”)
+          collects through its websites and any affiliated mobile applications
+          or communication platforms related to the website, or in connection
+          with any goods or services rendered through or related to any of the
+          foregoing (collectively, the "<strong>Website</strong>") including
+          from both end users and independent contractors or service providers
+          who provide services via the Website ("
+          <strong>Service Providers</strong>" or "<strong>Contractors</strong>
+          "), and how we use and protect it and the choices you can make about
+          your information. Throughout this Policy, “information” includes
+          personal information we may collect about you.
         </p>
         <p className="my-4">
           By accepting this Policy and our Terms of Service, you consent to
@@ -41,8 +37,9 @@ export function PrivacyPolicy() {
           PROVIDER’S SERVICES.
         </p>
         <p className="mb-2">
-          <strong>CONTACT INFORMATION: </strong>Please contact
-          us with any inquiry as follows: <a className="text-blue-700">lastminutewellness.ca@email.com</a>
+          <strong>CONTACT INFORMATION: </strong>Please contact us with any
+          inquiry as follows:{" "}
+          <a className="text-blue-700">lastminutewellness.ca@email.com</a>
         </p>
       </div>
 
@@ -52,7 +49,7 @@ export function PrivacyPolicy() {
           We may collect the following types of information in the manner
           described below.
         </p>
-        <ol className="list-decimal list-inside space-y-2">
+        <ol className="list-decimal list-inside ml-2 space-y-2">
           <li>
             We collect information from and about you when you visit or use the
             Website. The following are examples of ways in which you can visit
@@ -118,7 +115,7 @@ export function PrivacyPolicy() {
             browsing to the Website; The Website pages that you visit and the
             time of your visits; and Aggregate Information (defined below) that
             cannot be used to specifically identify you when you use or visit
-            the Website.{" "}
+            the Website.
           </li>
           <li>
             We can collect information about you from publicly accessible
@@ -279,7 +276,9 @@ export function PrivacyPolicy() {
       </div>
 
       <div>
-        <h1 className="font-bold">Legal Basis for Processing Personal Information</h1>
+        <h1 className="font-bold">
+          Legal Basis for Processing Personal Information
+        </h1>
         <p>
           In jurisdictions where a legal basis for processing is required (such
           as under the European Union's General Data Protection Regulation or
@@ -361,7 +360,7 @@ export function PrivacyPolicy() {
           Policy:
         </p>
 
-        <ol className="list-decimal list-inside space-y-2">
+        <ol className="list-decimal list-inside ml-2 space-y-2">
           <li>
             Third Parties and Service Providers. We can use third parties or
             service providers to perform functions in connection with the
@@ -461,7 +460,7 @@ export function PrivacyPolicy() {
           </li>
 
           <li>
-            Payment Processors. We use third-party payment processors to process
+            We use third-party payment processors to process
             payments securely on our behalf. These processors may collect and
             store payment information and are responsible for ensuring the
             security and confidentiality of such information. We encourage you
@@ -486,7 +485,7 @@ export function PrivacyPolicy() {
           personalization, and optimization of the Website.
         </p>
 
-        <ol className="list-decimal list-inside space-y-2">
+        <ol className="list-decimal list-inside ml-2 space-y-2">
           <li>
             Cookies. Cookies are small text files that are stored on your
             computer (for greater certainty, “computer” shall also refer to any
@@ -529,6 +528,8 @@ export function PrivacyPolicy() {
             over time and across third party Internet services.
           </li>
         </ol>
+
+        <p className="mt-2">By continuing to use the Website, you consent to the use of cookies and similar technologies as described in this section. You may manage your cookie preferences through your browser settings.</p>
       </div>
 
       <div>
@@ -576,8 +577,8 @@ export function PrivacyPolicy() {
         <p>
           You can ask to see your personal information. If you want to review,
           verify or correct your personal information, please contact us at
-          <a className="text-blue-700">lastminutewellness.ca@email.com</a>. Please note that any such communication must be in
-          email form.
+          <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+          Please note that any such communication must be in email form.
         </p>
         <p>
           When requesting access, we may request specific information to confirm
@@ -585,7 +586,8 @@ export function PrivacyPolicy() {
           provide your personal information. We may charge a fee to access your
           personal information; however, we will advise you of any fee in
           advance. If you require assistance in preparing your request, please
-          contact us at <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+          contact us at{" "}
+          <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
         </p>
         <p>
           Your right to access personal information is not absolute. There are
@@ -600,15 +602,17 @@ export function PrivacyPolicy() {
         <h2 className="font-bold mt-2">
           Your Choices Regarding Your Information
         </h2>
-        <ol>
+        <ol className="list-decimal list-inside ml-2 space-y-2">
           <li>
             Changing Your Information – You can make changes to your
             information, including accessing, correcting, or updating it by
-            contacting us at <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+            contacting us at{" "}
+            <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
           </li>
           <li>
             Email Communications – You can make changes regarding receiving
-            email communications from us by contacting us at <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+            email communications from us by contacting us at{" "}
+            <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
           </li>
           <li>
             Cookies and Other Technologies; Do Not Track – Please see Cookies
@@ -627,7 +631,8 @@ export function PrivacyPolicy() {
           under age 18. If you are under 18, please do not access, use, or
           submit any personal information through the Website. If you believe we
           may have accidentally received information from someone under 18,
-          please contact us immediately at <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+          please contact us immediately at{" "}
+          <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
         </p>
 
         <h2>Revisions to This Privacy Policy</h2>
