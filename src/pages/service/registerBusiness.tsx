@@ -55,6 +55,7 @@ export default function SubmitProperty() {
   const [description, setDescription] = useState("");
   const [tabs, setTabs] = useState([{ id: 1 }]);
   const [activeTab, setActiveTab] = useState(1);
+  const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
   // Optional: Store data per tab if needed later
   const [tabData, setTabData] = useState<{ [key: number]: any }>({
@@ -75,6 +76,7 @@ export default function SubmitProperty() {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [businessPhotos, setBusinessPhotos] = useState<string[]>([]);
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   // validations AFTER all state is declared
   const isBasicInfoValid =
@@ -303,6 +305,12 @@ export default function SubmitProperty() {
     }
   };
 
+  const handleToggle = (day: string) => {
+    setSelectedDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
+  };
+
   const addTab = () => {
     const nextId = tabs.length + 1;
     setTabs([...tabs, { id: nextId }]);
@@ -418,8 +426,8 @@ export default function SubmitProperty() {
             { ...practitioner, businessId: businessResponse?.data?.data?.id }
           );
         }
-        setStorageItem("business_id", businessResponse?.data?.data?.id)
-        setStorageItem("business_email", email)
+        setStorageItem("business_id", businessResponse?.data?.data?.id);
+        setStorageItem("business_email", email);
         setBusinessName("");
         setBusinessType("");
         setEmail("");
@@ -512,7 +520,7 @@ export default function SubmitProperty() {
                             onChange={(e) => setBusinessName(e.target.value)}
                           />
                         </div>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                           {/* Business Type */}
                           <div>
@@ -684,6 +692,31 @@ export default function SubmitProperty() {
                                 Manually
                               </label>
                             </div>
+                          </div>
+                        </div>
+
+                        {/* working days */}
+                        <div>
+                          <label className="block text-base font-medium mb-3">
+                            Working Days
+                          </label>
+                          <div className="flex gap-4 flex-wrap">
+                            {days.map((day) => (
+                              <label
+                                key={day}
+                                className="flex items-center gap-2 cursor-pointer select-none"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={selectedDays.includes(day)}
+                                  onChange={() => handleToggle(day)}
+                                  className="w-4 h-4 accent-blue-600 rounded"
+                                />
+                                <span className="text-gray-700 font-medium">
+                                  {day}
+                                </span>
+                              </label>
+                            ))}
                           </div>
                         </div>
 
