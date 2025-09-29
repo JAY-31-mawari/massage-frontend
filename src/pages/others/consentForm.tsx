@@ -1,36 +1,22 @@
 export default function ConsentForm() {
   return (
-    <div className="container py-12 px-8 lg:px-4">
-      <div className="lg:max-w-6xl mx-auto">
-        <h1 className="font-bold mb-8 text-4xl lg:text-6xl text-blue-500 text-center">
-          Client Waiver & Consent Form
-        </h1>
-
-        <div className="mb-8">
-          <div>
-            <h1 className="font-bold text-xl md:text-2xl lg:text-3xl mt-2 lg:mt-10">
-              5. Client Waiver & Consent Form
-            </h1>
-            <div>
-              <p className="ml-6 md:ml-7 lg:ml-8 my-1 md:!my-2 lg:!my-3 text-lg md:text-xl lg:text-2xl">
-                By booking an appointment through LastMinuteWellness, you acknowledge and agree:
-              </p>
-              <ol className="ml-12 md:ml-16 lg:ml-20 my-1 mb-4 list-decimal text-base md:text-lg lg:text-xl">
-                <li className="my-1">I understand that LastMinuteWellness is a booking platform, not a healthcare provider.</li>
-                <li className="my-1">I accept the risks associated with receiving wellness treatments, including but not limited to:</li>
-                <ul className="list-disc ml-7 my-1">
-                  <li className="my-1">Slips, falls, or accidents at the treatment location (home, clinic, etc.).</li>
-                  <li className="my-1">Adverse reactions to treatment.</li>
-                  <li className="my-1">Environmental risks (e.g., pets at home visits, uneven driveways).</li>
-                </ul>
-                <li className="my-1">I release and hold harmless LastMinuteWellness, its directors, employees, and affiliates from any claims, injuries, or damages related to my appointment.</li>
-                <li className="my-1">Any legal claims must be made directly against the practitioner providing the service.</li>
-                <li className="my-1">I confirm I am voluntarily choosing to receive treatment and have disclosed all relevant medical conditions to the practitioner.</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="text-base max-w-7xl mx-auto px-6 my-4 md:px-10 lg:px-6  space-y-2 text-gray-900">
+      <p>
+        This Waiver, Release of Liability, and Assumption of Risk Agreement (this “Agreement”) is entered into by the undersigned individual (“Client”) in consideration of being permitted to use the Services (as defined in Last Minute Wellness Inc.’s (“Last Minute Wellness”) terms of service (“Terms of Service”)) by Last Minute Wellness, a company that connects Clients with independent wellness practitioners, and other providers of wellness Services for last minute appointments (“Practitioners”).
+      </p>
+      <p>By booking an appointment through Last Minute Wellness, I expressly acknowledge, understand, and agree as follows:</p>
+      <p>I acknowledge and agree that Last Minute Wellness is solely a booking platform that facilitates appointments between clients and Practitioners and does not itself provide any healthcare or wellness Services. Last Minute Wellness does not employ, supervise, or control the Practitioners and while does conduct verification outlined in the Terms of Service, is not responsible for ensuring ongoing validity of credentials, professional qualifications, or compliance with applicable laws, regulations, or professional standards. I further acknowledge that the Practitioners are independent contractors who are solely responsible for the Services they provide and for any acts or omissions that may occur in connection with those Services.</p>
+      <p>I am aware and fully understand that receiving the Services involves inherent risks, both known and unknown, which cannot be eliminated, and I voluntarily accept and assume full responsibility for these risks. Such risks include, without limitation, physical injuries such as slips, trips, falls, broken bones, strokes, bruises, dislocations, head/neck injuries, and in some cases more serious injuries, including paralysis or death, or other accidents or conditions occurring at the location where the Services are provided, whether in a home, clinic, hotel, or other venue; treatment-related risks including allergic or adverse reactions, unexpected pain or discomfort, or aggravation of pre-existing medical conditions; environmental risks such as hazards posed by pets, uneven driveways, stairs, or other conditions present at a location where mobile services are rendered; and travel-related risks arising from transportation to and from the location of the Services. I acknowledge that while Practitioners are expected to exercise reasonable care, they cannot guarantee specific outcomes or eliminate all risks associated with wellness treatments.</p>
+      <p>I represent and warrant that I am voluntarily choosing to receive, and participate in, the Services from a Practitioner and that, prior to receiving treatment, I have fully disclosed to the Practitioner all relevant medical conditions, injuries, allergies, medications, or other information necessary to allow the Practitioner to provide Services in a safe and appropriate manner. I understand that failure to disclose such information may increase the risk of harm, and I assume full responsibility for any resulting injury or adverse outcome. I further acknowledge that the Services booked through Last Minute Wellness are not a substitute for medical diagnosis or treatment, that Practitioners do not provide emergency medical care, and that if I experience pain, discomfort, or a medical emergency, I am solely responsible for seeking care from a licensed healthcare provider or contacting emergency services.</p>
+      <p className="font-bold">I HEREBY EXPRESSLY WAIVE, RELEASE, ACQUIT, AND FOREVER DISCHARGE LAST MINUTE WELLNESS, AND EACH OF THEIR RESPECTIVE OWNERS, DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, REPRESENTATIVES, SHAREHOLDERS, SUCCESSORS, AFFILIATES, AND ASSIGNS (COLLECTIVELY, THE “RELEASEES”), FROM ANY AND ALL CLAIMS, DEMANDS, CAUSES OF ACTION, DAMAGES, LIABILITIES, COSTS, OR EXPENSES OF ANY KIND OR NATURE, WHETHER IN LAW OR EQUITY, WHICH I HAVE OR MAY IN THE FUTURE HAVE, ARISING OUT OF, RESULTING FROM, OR ATTRIBUTABLE TO MY BOOKING OF AN APPOINTMENT THROUGH LAST MINUTE WELLNESS OR MY RECEIPT OF SERVICES, INCLUDING, WITHOUT LIMITATION, ANY CLAIMS RELATING TO PERSONAL INJURY, ILLNESS, DEATH, OR PROPERTY DAMAGE, WHETHER CAUSED BY THE NEGLIGENCE OF ANY RELEASEE, A BREACH OF ANY STATUTORY OR OTHER DUTY OF CARE (INCLUDING UNDER OCCUPIERS LIABILITY LEGISLATION OR OTHERWISE), OR OTHERWISE EXCEPT FOR THE GROSS NEGLIGENCE, FRAUDULENT CONDUCT, OR WILLFUL MISCONDUCT OF LAST MINUTE WELLNESS.</p>
+      <p className="font-bold">LAST MINUTE WELLNESS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, REVENUE, DATA, OR USE, INCURRED BY THE CLIENT OR ANY THIRD PARTY, WHETHER IN AN ACTION IN CONTRACT OR TORT (INCLUDING NEGLIGENCE) OR OTHERWISE, EVEN IF LAST MINUTE WELLNESS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES</p>
+      <p className="font-bold">I COVENANT NOT TO MAKE OR BRING ANY CLAIM AGAINST LAST MINUTE WELLNESS OR ANY OTHER RELEASEE AND FOREVER RELEASE AND DISCHARGE THE RELEASEES FROM LIABILITY UNDER SUCH CLAIMS. THIS WAIVER AND RELEASE IS INTENDED TO BE AS BROAD AND INCLUSIVE AS PERMITTED BY APPLICABLE LAW.</p>
+      <p className="font-bold">I FURTHER AGREE TO DEFEND, INDEMNIFY, AND HOLD HARMLESS LAST MINUTE WELLNESS AND ALL OTHER RELEASEES FROM AND AGAINST ANY AND ALL LOSSES, DAMAGES, LIABILITIES, DEFICIENCIES, CLAIMS, ACTIONS, DEMANDS, JUDGMENTS, SETTLEMENTS, INTEREST, AWARDS, PENALTIES, FINES, COSTS, OR EXPENSES OF ANY KIND OR NATURE WHATSOEVER, INCLUDING WITHOUT LIMITATION REASONABLE LEGAL FEES, THE COSTS OF ENFORCING ANY RIGHT TO INDEMNIFICATION UNDER THIS AGREEMENT, AND THE COSTS OF PURSUING INSURANCE PROVIDERS, INCURRED BY ANY RELEASEE IN CONNECTION WITH ANY CLAIM, SUIT, ACTION, OR PROCEEDING ARISING OUT OF, RESULTING FROM, OR ATTRIBUTABLE TO (A) MY BOOKING OF AN APPOINTMENT THROUGH LAST MINUTE WELLNESS, (B) MY RECEIPT OF SERVICES, OR (C) MY BREACH OF ANY REPRESENTATION, WARRANTY, OR OBLIGATION UNDER THIS AGREEMENT.</p>
+      <p>I further agree that any legal claim, dispute, or cause of action relating to the Services must be brought directly against the Practitioner who provided the Services and not against Last Minute Wellness or any of the Releasee’s. I expressly acknowledge that Last Minute Wellness is not a party to the Client-Practitioner relationship beyond the provision of its booking platform and has no liability for the actions or omissions of any Practitioner.</p>
+      <p>This Agreement shall be governed by and construed in accordance with the laws of the Province of Alberta, without regard to its conflict of laws rules. Any dispute, claim, or controversy arising out of or relating to this Agreement, including the determination of the scope or applicability of this agreement to arbitrate, shall be determined by arbitration in accordance with the arbitration provisions outlined in the Terms of Service. Nothing in this agreement is intended to exclude, restrict, or modify any rights that the Client may have under any applicable consumer protection laws that cannot be lawfully excluded, restricted, or modified. To the extent that any provision of this Agreement is inconsistent with such laws, that provision shall be deemed to be modified to the extent necessary to comply with such laws.</p>
+      <p>If any provision of this Agreement is determined to be invalid, illegal, or unenforceable, the remaining provisions shall continue in full force and effect. This Agreement is binding upon me and my heirs, executors, administrators, legal representatives, successors, and assigns.</p>
+      <p>This Agreement is intended to supplement the Terms of Service. </p>
+      <p>By signing below, or by electronically accepting this Agreement when booking an appointment through the Last Minute Wellness platform, I confirm that I have read and fully understand this Agreement, that I have had the opportunity to ask questions and seek independent legal advice, and that I voluntarily agree to be bound by its terms. I further acknowledge that I am at least 18 years of age and legally competent to execute this Agreement.</p>
     </div>
   );
 }
