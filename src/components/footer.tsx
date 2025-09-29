@@ -31,7 +31,7 @@ export default function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center space-x-1 mb-8">
               <div>
-                <span className="font-bold text-2xl tracking-wider">
+                <span className="font-bold text-white text-2xl tracking-wider">
                   Last Minute Wellness
                 </span>
               </div>
@@ -43,7 +43,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold text-[#5EEAD4] text-lg lg:text-xl mb-8">Signature Treatments</h4>
+            <h4 className="font-bold text-white text-lg lg:text-xl mb-8">Signature Treatments</h4>
             <ul className="space-y-3 lg:space-y-4 text-background/80">
               {services.map((service) => (
                 <li
@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
 
           <div className="md:pl-4">
-            <h4 className="font-bold text-[#5EEAD4] text-lg lg:text-xl mb-8">Connect</h4>
+            <h4 className="font-bold text-white text-lg lg:text-xl mb-8">Connect</h4>
             <ul className="space-y-3 lg:space-y-4 text-background/80">
               {connects.map((type) => (
                 <li
@@ -71,7 +71,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-[#82f9e7] text-lg lg:text-xxl mb-8">Get To Know Us</h4>
+            <h4 className="font-semibold text-white text-lg lg:text-xxl mb-8">Get To Know Us</h4>
             <ul className="space-y-3 lg:space-y-4 text-background/80">
               {getToKnowUs.map((type) => (
                 <li

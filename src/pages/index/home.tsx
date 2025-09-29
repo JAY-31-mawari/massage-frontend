@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomerReviews from "../../components/customerReviews";
 import FooterTop from "../../components/footer-top";
-import oneImg from "../../assets/img/one.webp";
+import oneImg from "../../assets/img/steps/one.png";
 import twoImg from "../../assets/img/two.webp";
-import threeImg from "../../assets/img/three.webp";
+import threeImg from "../../assets/img/steps/three.jpeg";
 import reviewsImg from "../../assets/img/reviews.webp";
 import { servicesData } from "../../data/servicesData";
 import axios from "axios";
@@ -95,11 +95,11 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/60"></div>{" "}
         {/* Deep Teal Overlay */}
         <div className="relative max-w-8xl mx-auto px-12 sm:px-6 md:px-12 h-full flex flex-col justify-center items-start">
-          <p className="text-lg sm:text-xl md:text-2xl text-emerald-200 mb-3 sm:mb-4 font-light tracking-wider">
+          <p className="text-lg sm:text-xl md:text-2xl text-white mb-3 sm:mb-4 font-light tracking-wider">
             Feel Better, Even on Your Busiest Days
           </p>
           <h2 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-8 sm:mb-10 leading-tight max-w-xl sm:max-w-2xl md:max-w-3xl drop-shadow-lg">
-            Last-Minute Appointments, <span className="text-emerald-300">First-Class Care</span>
+            Last-Minute Appointments, <span className="text-white-300">First-Class Care</span>
           </h2>
 
           {/* Search Box */}
@@ -150,7 +150,7 @@ export default function Home() {
         {/* Main Title */}
         <div className="text-center mb-16 pt-12">
           <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">
-            Our <span className="text-emerald-600">Premium</span> Wellness
+            Our <span className="text-white-600">Premium</span> Wellness
             Services
           </h2>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light">
@@ -187,7 +187,7 @@ export default function Home() {
         <div className="container mx-auto !px-24 sm:px-12">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-gray-900 md:text-5xl lg:text-5xl tracking-tight">
-              Our <span className="text-emerald-600">Simple</span> Process
+              Our <span className="text-white-600">Simple</span> Process
             </h1>
             <p className="mt-4 text-2xl text-gray-800 max-w-3xl mx-auto font-light">
               Book your wellness appointment in three simple, stress-free steps.
