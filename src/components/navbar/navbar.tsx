@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import logo from "../../assets/img/logo/blue.png"
+import logo from "../../assets/img/logo/green.png"
 import loginImg from "../../assets/img/svg/login.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "../../store/userStore";
