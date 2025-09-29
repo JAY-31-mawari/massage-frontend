@@ -39,7 +39,7 @@ export function PrivacyPolicy() {
         <p className="mb-2">
           <strong>CONTACT INFORMATION: </strong>Please contact us with any
           inquiry as follows:{" "}
-          <a className="text-blue-700">lastminutewellness.ca@email.com</a>
+          <a className="text-blue-700">lastminutewellness.ca</a>
         </p>
       </div>
 
@@ -577,7 +577,7 @@ export function PrivacyPolicy() {
         <p>
           You can ask to see your personal information. If you want to review,
           verify or correct your personal information, please contact us at
-          <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+          <a className="text-blue-700">lastminutewellness.ca</a>.
           Please note that any such communication must be in email form.
         </p>
         <p>
@@ -587,7 +587,7 @@ export function PrivacyPolicy() {
           personal information; however, we will advise you of any fee in
           advance. If you require assistance in preparing your request, please
           contact us at{" "}
-          <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+          <a className="text-blue-700">lastminutewellness.ca</a>.
         </p>
         <p>
           Your right to access personal information is not absolute. There are
@@ -607,12 +607,12 @@ export function PrivacyPolicy() {
             Changing Your Information – You can make changes to your
             information, including accessing, correcting, or updating it by
             contacting us at{" "}
-            <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+            <a className="text-blue-700">lastminutewellness.ca</a>.
           </li>
           <li>
             Email Communications – You can make changes regarding receiving
             email communications from us by contacting us at{" "}
-            <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+            <a className="text-blue-700">lastminutewellness.ca</a>.
           </li>
           <li>
             Cookies and Other Technologies; Do Not Track – Please see Cookies
@@ -632,7 +632,7 @@ export function PrivacyPolicy() {
           submit any personal information through the Website. If you believe we
           may have accidentally received information from someone under 18,
           please contact us immediately at{" "}
-          <a className="text-blue-700">lastminutewellness.ca@email.com</a>.
+          <a className="text-blue-700">lastminutewellness.ca</a>.
         </p>
 
         <h2>Revisions to This Privacy Policy</h2>
