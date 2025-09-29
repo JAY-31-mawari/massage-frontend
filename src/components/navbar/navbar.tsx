@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import logo from "../../assets/img/logo/blue.png"
+import logo from "../../assets/img/logo/green.png"
 import loginImg from "../../assets/img/svg/login.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "../../store/userStore";
@@ -26,7 +26,7 @@ export default function Navbar() {
   const navbarItems = [
     {
       to: "/serviceList",
-      name: "Book an Appointment",
+      name: "Book",
     },
     {
       to: "/about-us",
@@ -38,7 +38,7 @@ export default function Navbar() {
     },
     {
       to: "/faq",
-      name: "FAQ",
+      name: "Faq",
     },
   ];
 
@@ -77,7 +77,7 @@ export default function Navbar() {
               <img
                 src={logo}
                 alt="Logo"
-                className="max-h-16 w-auto flex-shrink-0"
+                className="h-52 w-56 flex-shrink-0"
               />
               
             </Link>
