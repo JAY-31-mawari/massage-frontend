@@ -393,12 +393,14 @@ export default function SubmitProperty() {
         business_email: email,
         business_phone: phone,
         confirmationMode,
+        appointmentApprovalType,
+        selectedDays,
+        startTime,
+        endTime,
         bankName,
         bankAccountNumber,
         bankTransitNumber,
         bankInstitutionNumber,
-        startTime,
-        endTime,
         timeZone: userTimeZone,
         merchantAddress,
         merchantCity,
@@ -433,14 +435,15 @@ export default function SubmitProperty() {
         setEmail("");
         setPhone("");
         setConfirmationMode("business_email");
+        setAppointmentApprovalType("AUTO");
+        setStartTime("");
+        setEndTime("");
         setBankName("");
         setBankAccountNumber(0);
         setBankTransitNumber(0);
         setBankInstitutionNumber(0);
         setMerchantAddress("");
         setMerchantCity("");
-        setStartTime("");
-        setEndTime("");
         setMerchantState("");
         setMerchantZipCode("");
         setBusinessPhotos([]);

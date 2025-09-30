@@ -125,86 +125,90 @@ export function MerchantAboutUs() {
 
       {/* Benefits secton, cta sign up button*/}
       <section className="flex flex-col">
-  <div className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-6 md:pt-10 lg:pt-14 items-center gap-6 md:gap-10">
-    <div className="px-2 sm:px-4">
-      <div className="text-center lg:text-left">
-        {/* Tagline */}
-        <p className="text-[#0057FF] text-lg sm:text-xl md:text-2xl font-semibold">
-          Get Discovered
-        </p>
+        <div className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-6 md:pt-10 lg:pt-14 items-center gap-6 md:gap-10">
+          <div className="px-2 sm:px-4">
+            <div className="text-center lg:text-left">
+              {/* Tagline */}
+              <p className="text-[#0057FF] text-lg sm:text-xl md:text-2xl font-semibold">
+                Get Discovered
+              </p>
 
-        {/* Heading */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-snug sm:leading-tight mt-3 mb-5">
-          Why Practitioners Love Last Minute Wellness
-        </h1>
+              {/* Heading */}
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-snug sm:leading-tight mt-3 mb-5">
+                Why Practitioners Love Last Minute Wellness
+              </h1>
 
-        {/* Table Section */}
-        <section className="pt-10 sm:pt-12">
-          <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6">
-            <div className="overflow-x-auto">
-              <div className="inline-block min-w-full align-middle">
-                <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-md bg-white">
-                  <table className="w-full border-collapse text-left">
-                    <thead className="bg-gray-50 text-gray-800 text-sm sm:text-base">
-                      <tr>
-                        <th className="p-3 sm:p-4 font-semibold">Features</th>
-                        <th className="p-3 sm:p-4 font-semibold">
-                          Traditional Marketing
-                        </th>
-                        <th className="p-3 sm:p-4 font-semibold text-blue-700">
-                          Last Minute Wellness
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 text-gray-700 text-sm sm:text-base">
-                      <tr>
-                        <td className="p-3 sm:p-4 font-medium text-gray-800">
-                          Monthly Fees
-                        </td>
-                        <td className="p-3 sm:p-4">$500–$2,000</td>
-                        <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
-                          <Check size={18} /> $0
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 sm:p-4 font-medium text-gray-800">
-                          Contracts
-                        </td>
-                        <td className="p-3 sm:p-4">Long-term commitments</td>
-                        <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
-                          <Check size={18} /> None
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 sm:p-4 font-medium text-gray-800">
-                          Payment Model
-                        </td>
-                        <td className="p-3 sm:p-4">Upfront costs</td>
-                        <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
-                          <Check size={18} /> Only when booked
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 sm:p-4 font-medium text-gray-800">
-                          Flexibility
-                        </td>
-                        <td className="p-3 sm:p-4">Limited</td>
-                        <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
-                          <Check size={18} /> Set your own rates & pause anytime
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+              {/* Table Section */}
+              <section className="pt-10 sm:pt-12">
+                <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6">
+                  <div className="overflow-x-auto">
+                    <div className="inline-block min-w-full align-middle">
+                      <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-md bg-white">
+                        <table className="w-full border-collapse text-left">
+                          <thead className="bg-gray-50 text-gray-800 text-sm sm:text-base">
+                            <tr>
+                              <th className="p-3 sm:p-4 font-semibold">
+                                Features
+                              </th>
+                              <th className="p-3 sm:p-4 font-semibold">
+                                Traditional Marketing
+                              </th>
+                              <th className="p-3 sm:p-4 font-semibold text-blue-700">
+                                Last Minute Wellness
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-100 text-gray-700 text-sm sm:text-base">
+                            <tr>
+                              <td className="p-3 sm:p-4 font-medium text-gray-800">
+                                Monthly Fees
+                              </td>
+                              <td className="p-3 sm:p-4">$500–$2,000</td>
+                              <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                                <Check size={18} /> $0
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="p-3 sm:p-4 font-medium text-gray-800">
+                                Contracts
+                              </td>
+                              <td className="p-3 sm:p-4">
+                                Long-term commitments
+                              </td>
+                              <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                                <Check size={18} /> None
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="p-3 sm:p-4 font-medium text-gray-800">
+                                Payment Model
+                              </td>
+                              <td className="p-3 sm:p-4">Upfront costs</td>
+                              <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                                <Check size={18} /> Only when booked
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="p-3 sm:p-4 font-medium text-gray-800">
+                                Flexibility
+                              </td>
+                              <td className="p-3 sm:p-4">Limited</td>
+                              <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                                <Check size={18} /> Set your own rates & pause
+                                anytime
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </section>
             </div>
           </div>
-        </section>
-      </div>
-    </div>
-  </div>
-</section>
-
+        </div>
+      </section>
 
       {/* CTA button for practitioner sign up */}
       <div className="flex justify-center">

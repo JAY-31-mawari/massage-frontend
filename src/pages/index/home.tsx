@@ -146,7 +146,7 @@ export default function Home() {
       </div>
 
       {/* Service Details startpoint */}
-      <div className="mt-[-30px] p-6 sm:p-10 rounded-t-[40px] bg-gray-100  mx-auto relative z-10 shadow-2xl shadow-gray-200/50">
+      <div className="mt-[-30px] p-6 sm:p-10 rounded-t-[40px] bg-[#fafbff]  mx-auto relative z-10">
         {/* Main Title */}
         <div className="text-center mb-16 pt-12">
           <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">
@@ -166,7 +166,7 @@ export default function Home() {
               <div
                 onClick={() => navigate(`/service/${service.url}`)}
                 key={index}
-                className="group bg-white rounded-2xl shadow-lg border border-gray-100 transition duration-500 ease-in-out hover:shadow-2xl hover:border-emerald-300 text-center cursor-pointer overflow-hidden transform hover:-translate-y-1"
+                className="group bg-white rounded-2xl shadow-sm border border-gray-100 transition duration-500 ease-in-out hover:shadow-2xl hover:border-emerald-300 text-center cursor-pointer overflow-hidden transform hover:-translate-y-1"
               >
                 <img
                   src={service.image}
@@ -183,7 +183,7 @@ export default function Home() {
       </div>
 
       {/* Steps for users */}
-      <div className="min-h-screen bg-white font-sans text-gray-800 antialiased py-10 lg:py-16">
+      <div className="min-h-screen font-sans text-gray-800 antialiased py-10 lg:py-16">
         <div className="container mx-auto !px-24 sm:px-12">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-gray-900 md:text-5xl lg:text-5xl tracking-tight">
