@@ -1,63 +1,33 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import aboutService from "../../assets/img/city-2.png";
-import ListIcon from "../../assets/img/svg/list-icon.svg";
-import Availability from "../../assets/img/svg/availability.svg";
-import PriceTag from "../../assets/img/svg/priceTag.svg";
-import SuitCase from "../../assets/img/svg/suitcase.svg";
 import AboutSerivceBg from "../../assets/img/background/aboutService.png";
 import Testimony1 from "../../assets/img/partners/emma-make-2x.webp";
 import Testimony2 from "../../assets/img/partners/harbor-bickmore-2x.webp";
 import Testimony3 from "../../assets/img/partners/batzorig-regzen-2x.webp";
+import { Check, X } from "lucide-react";
 
 export function MerchantAboutUs() {
-  const aboutServiceLists = [
-    {
-      id: 1,
-      icon: Availability,
-      text: "Fill last-minute slots and reduce cancellations",
-    },
-    {
-      id: 2,
-      icon: ListIcon,
-      text: "Attract new clients without extra marketing",
-    },
-    {
-      id: 3,
-      icon: SuitCase,
-      text: "Focus on providing care, not administrative tasks",
-    },
-    {
-      id: 4,
-      icon: PriceTag,
-      text: "Easy-to-use, mobile-friendly platform",
-    },
-  ];
-
   const testimonials = [
     {
       id: 1,
       image: Testimony1,
       imageText: "Clinic based practitioner",
       header: "Get discovered by clients",
-      testimony:
-        "Illustrator Emma Makeopens in a new tab creates commissioned work for clients like Anthropologie and Penguin Random House.",
+      testimony: `“Fill gaps in your schedule with new clients who are already nearby.”`,
     },
     {
       id: 2,
       image: Testimony2,
       imageText: "Home based practitioner",
-      header: "Offer freelance services",
-      testimony:
-        "Font designer Harbor Bickmoreopens in a new tab crafts custom fonts for clients on demand as a freelance service.",
+      header: "Offer great services",
+      testimony: `“Turn your spare room into a steady client flow without spending on ads.”`,
     },
     {
       id: 3,
       image: Testimony3,
       imageText: "Mobile practitioner",
-      header: "Sell creative assets",
-      testimony:
-        "Self-taught designer Batzorig Regzenopens in a new tab designs top-selling presentation templates made with small businesses in mind.",
+      header: "Keep More of Your Earnings",
+      testimony: `“Make the most of your travel time by getting matched with local last-minute clients.”`,
     },
   ];
 
@@ -121,7 +91,7 @@ export function MerchantAboutUs() {
           <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-5xl sm:mx-12 md:mx-24 lg:mx-32">
             Getting Started is Simple
           </h1>
-          <p className="text-gray-700 mt-3 text-base sm:text-lg md:text-xl lg:text-2xl sm:mx-12 md:mx-32 lg:mx-96">
+          <p className="text-gray-700 mt-3 text-base max-w-4xl mx-auto sm:text-lg md:text-xl lg:text-2xl sm:mx-12 md:mx-32">
             Last minute wellness is a community of over 50 million members
             across the world. See how they use our platform to grow their
             careers on our blog
@@ -155,55 +125,110 @@ export function MerchantAboutUs() {
 
       {/* Benefits secton, cta sign up button*/}
       <section className="flex flex-col">
-        <div className="px-4 sm:px-8 md:px-12 lg:!px-24 py-4 md:py-6 lg:!py-10 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] items-center gap-6 md:gap-8">
-          <div className="p-2 sm:p-4">
-            <div>
-              <p className="text-[#0057FF] text-xl sm:text-2xl font-semibold">
-                Get Discovered
-              </p>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold leading-tight mt-2 mb-3">
-                Why Practitioners Love Last Minute Wellness
-              </h1>
-              {aboutServiceLists.map((service) => (
-                <div className="flex items-center my-2" key={service.id}>
-                  <img
-                    src={service.icon}
-                    alt={`service-${service.id}`}
-                    className="py-2 w-8 h-8 sm:w-10 sm:h-10"
-                  />
-                  <p className="ml-3 text-base sm:text-lg md:text-xl">
-                    {service.text}
-                  </p>
+  <div className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-6 md:pt-10 lg:pt-14 items-center gap-6 md:gap-10">
+    <div className="px-2 sm:px-4">
+      <div className="text-center lg:text-left">
+        {/* Tagline */}
+        <p className="text-[#0057FF] text-lg sm:text-xl md:text-2xl font-semibold">
+          Get Discovered
+        </p>
+
+        {/* Heading */}
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-snug sm:leading-tight mt-3 mb-5">
+          Why Practitioners Love Last Minute Wellness
+        </h1>
+
+        {/* Table Section */}
+        <section className="pt-10 sm:pt-12">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6">
+            <div className="overflow-x-auto">
+              <div className="inline-block min-w-full align-middle">
+                <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-md bg-white">
+                  <table className="w-full border-collapse text-left">
+                    <thead className="bg-gray-50 text-gray-800 text-sm sm:text-base">
+                      <tr>
+                        <th className="p-3 sm:p-4 font-semibold">Features</th>
+                        <th className="p-3 sm:p-4 font-semibold">
+                          Traditional Marketing
+                        </th>
+                        <th className="p-3 sm:p-4 font-semibold text-blue-700">
+                          Last Minute Wellness
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 text-gray-700 text-sm sm:text-base">
+                      <tr>
+                        <td className="p-3 sm:p-4 font-medium text-gray-800">
+                          Monthly Fees
+                        </td>
+                        <td className="p-3 sm:p-4">$500–$2,000</td>
+                        <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                          <Check size={18} /> $0
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 sm:p-4 font-medium text-gray-800">
+                          Contracts
+                        </td>
+                        <td className="p-3 sm:p-4">Long-term commitments</td>
+                        <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                          <Check size={18} /> None
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 sm:p-4 font-medium text-gray-800">
+                          Payment Model
+                        </td>
+                        <td className="p-3 sm:p-4">Upfront costs</td>
+                        <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                          <Check size={18} /> Only when booked
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 sm:p-4 font-medium text-gray-800">
+                          Flexibility
+                        </td>
+                        <td className="p-3 sm:p-4">Limited</td>
+                        <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                          <Check size={18} /> Set your own rates & pause anytime
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-              ))}
-              <div className="bg-[#f6edfd] max-w-2xl mx-1 p-4 my-4 mb-6 rounded-3xl text-lg text-center">
-                <p className="mb-2">Ready to Grow your practice?</p>
-                <Link to="/practitioner-register"  className="bg-blue-700 text-white py-2 px-3 rounded-xl">
-                  Get Started in minutes
-                </Link>
-                <p className="mt-3">
-                  It only takes a few minutes to list your first availability
-                  and start getting clients.
-                </p>
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <img
-              src={aboutService}
-              alt="illustration"
-              className="max-w-[220px] sm:max-w-xs md:max-w-sm w-full h-auto"
-            />
-          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      {/* CTA button for practitioner sign up */}
+      <div className="flex justify-center">
+        <div className="max-w-2xl mx-1 p-4 rounded-3xl text-lg text-center ">
+          <p className="mb-4">Ready to Grow your practice?</p>
+          <Link
+            to="/practitioner-register"
+            className="bg-blue-600 text-white py-3 px-6 rounded-lg font-medium shadow hover:bg-blue-700 transition"
+          >
+            Get Started in minutes
+          </Link>
+          <p className="mt-4 text-base text-gray-500">
+            It only takes a few minutes to list your first availability and
+            start getting clients.
+          </p>
         </div>
-      </section>
+      </div>
 
       {/* PRACTITIONER FAQ SECTION */}
-      <div>
+      <div className="mt-24">
         <h2 className="text-3xl font-bold text-center mb-8 my-4">
           Questions? We’ve Got You Covered
         </h2>
-        <div className="max-w-2xl lg:mx-auto py-2 px-2 lg:py-10 lg:px-4">
+        <div className="max-w-3xl lg:mx-auto py-2 px-2 lg:py-10 lg:px-4">
           <div className="space-y-4 mb-20">
             {faqData.map((item, index) => {
               const isOpen = openIndex === index;
@@ -244,7 +269,9 @@ export function MerchantAboutUs() {
                         : "max-h-0 opacity-0 py-0"
                     }`}
                   >
-                    <p className="text-gray-600 text-lg w-11/12 break-words whitespace-normal">{item.answer}</p>
+                    <p className="text-gray-600 text-lg w-11/12 break-words whitespace-normal">
+                      {item.answer}
+                    </p>
                   </div>
                 </div>
               );

@@ -2,12 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from '../pages/index/home';
 import ServiceSearchPage from '../pages/service/searchService';
 import ServicePage from '../pages/service/servicePage';
-import Agents from '../pages/agents/agents';
-import AgentPage from '../pages/agents/agent-page';
-import AgencyPage from '../pages/agents/agency-page';
-import ChangePassword from '../pages/admin/change-password';
 import RegisterBusiness from '../pages/service/registerBusiness';
-import Pricing from '../pages/pricing';
 import Error from '../pages/error';
 import Contact from '../pages/contact';
 import AboutUs from '../pages/admin/about-us';
@@ -51,14 +46,7 @@ export function AppRoutes() {
             <Route path='/service/acupuncture' element={<Service4 />} />
 
             {/* STATIC PAGES */}
-            
-            {/* <Route path='/agents' element={<Agents />} />
-            <Route path='/agent-page' element={<AgentPage />} />
-            <Route path='/agent-page/:id' element={<AgentPage />} />
-            <Route path='/agency-page' element={<AgencyPage />} />
             <Route path='/payment' element={<Payment />} />
-            <Route path='/change-password' element={<ChangePassword />} />
-            <Route path='/pricing' element={<Pricing />} /> */}
             <Route path='/404' element={<Error />} />
             <Route path='/paymentSuccess' element={<Success /> } />
             <Route path='/paymentFailed' element={<Fail /> } />
