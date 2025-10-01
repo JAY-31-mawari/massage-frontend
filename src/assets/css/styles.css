@@ -1,9 +1,10 @@
 body {
-  font-family: sans, sans-serif;
+  font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   font-size: 18px;
+  /* letter-spacing: 0.1px; */
 }
 
 /* to hide increase decrease in input box in numbers */
@@ -17,4 +18,12 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Hide in Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
 }

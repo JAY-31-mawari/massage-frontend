@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import CustomerReviews from "../../components/customerReviews";
 import FooterTop from "../../components/footer-top";
 import oneImg from "../../assets/img/steps/one.png";
-import twoImg from "../../assets/img/two.webp";
+import twoImg from "../../assets/img/steps/two.png";
+import StackImg from "../../assets/img/stack.png"
 import threeImg from "../../assets/img/steps/three.jpeg";
-import reviewsImg from "../../assets/img/reviews.webp";
 import { servicesData } from "../../data/servicesData";
 import axios from "axios";
 import {
@@ -13,7 +13,6 @@ import {
   SearchIcon,
   ClockIcon,
   CheckCircleIcon,
-  ChevronDownIcon,
 } from "lucide-react";
 import { useSearchLocation } from "../../store/searchLocation";
 import { setStorageItem } from "../../utils/sessionStorage";
@@ -95,11 +94,12 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/60"></div>{" "}
         {/* Deep Teal Overlay */}
         <div className="relative max-w-8xl mx-auto px-12 sm:px-6 md:px-12 h-full flex flex-col justify-center items-start">
-          <p className="text-lg sm:text-xl md:text-2xl text-white mb-3 sm:mb-4 font-light tracking-wider">
-            Feel Better, Even on Your Busiest Days
+          <p className="text-lg sm:text-xl md:text-2xl text-white mb-3 sm:mb-4 font-light tracking-wide">
+            Feel better, Even on your busiest days
           </p>
-          <h2 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-8 sm:mb-10 leading-tight max-w-xl sm:max-w-2xl md:max-w-3xl drop-shadow-lg">
-            Last-Minute Appointments, <span className="text-white-300">First-Class Care</span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-8 sm:mb-10 leading-tight max-w-xl sm:max-w-2xl md:max-w-3xl drop-shadow-lg">
+            Last-Minute Appointments,{" "}
+            <span className="text-white-300">First-class care</span>
           </h2>
 
           {/* Search Box */}
@@ -146,14 +146,14 @@ export default function Home() {
       </div>
 
       {/* Service Details startpoint */}
-      <div className="mt-[-30px] p-6 sm:p-10 rounded-t-[40px] bg-[#fafbff]  mx-auto relative z-10">
+      <div className="p-6 sm:p-10   mx-auto relative z-10">
         {/* Main Title */}
-        <div className="text-center mb-16 pt-12">
-          <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">
+        <div className="text-center mb-6 md:mb-16 pt-6 md:pt-12">
+          <h2 className="text-2xl lg:text-5xl font-bold text-gray-700 mb-3">
             Our <span className="text-white-600">Premium</span> Wellness
             Services
           </h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto font-light">
+          <p className="text-lg md:text-2xl text-slate-600 max-w-5xl mx-auto font-medium">
             Discover a range of professional health and wellness services
             tailored to your needs.
           </p>
@@ -166,14 +166,14 @@ export default function Home() {
               <div
                 onClick={() => navigate(`/service/${service.url}`)}
                 key={index}
-                className="group bg-white rounded-2xl shadow-sm border border-gray-100 transition duration-500 ease-in-out hover:shadow-2xl hover:border-emerald-300 text-center cursor-pointer overflow-hidden transform hover:-translate-y-1"
+                className="group bg-white rounded-xl shadow-sm border border-gray-100 transition duration-500 ease-in-out hover:shadow-2xl hover:border-emerald-300 text-center cursor-pointer overflow-hidden transform hover:-translate-y-1"
               >
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="rounded-t-2xl mb-0 object-cover w-full h-48 transition duration-500 ease-in-out group-hover:scale-105"
+                  className="rounded-t-xl mb-0 object-cover w-full h-48 transition duration-500 ease-in-out group-hover:scale-100"
                 />
-                <p className="font-bold text-lg text-gray-800 p-4 group-hover:text-emerald-700 transition">
+                <p className="font-medium text-base md:text-xl text-gray-700 p-4 group-hover:text-gray-800 transition">
                   {service.title}
                 </p>
               </div>
@@ -183,24 +183,24 @@ export default function Home() {
       </div>
 
       {/* Steps for users */}
-      <div className="min-h-screen font-sans text-gray-800 antialiased py-10 lg:py-16">
-        <div className="container mx-auto !px-24 sm:px-12">
+      <div className="bg-[#fafbff] min-h-screen font-sans text-gray-800 antialiased py-10 lg:py-16 border-t-2 border-t-gray-100">
+        <div className="lg:mx-20 px-4 sm:px-6 md:px-12 lg:px-20 xl:px-24">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 md:text-5xl lg:text-5xl tracking-tight">
-              Our <span className="text-white-600">Simple</span> Process
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-700">
+              Our <span>Simple</span> Process
             </h1>
-            <p className="mt-4 text-2xl text-gray-800 max-w-3xl mx-auto font-light">
+            <p className="mt-2 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl md:max-w-3xl mx-auto">
               Book your wellness appointment in three simple, stress-free steps.
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:space-x-20 items-center">
+          <div className="flex flex-col lg:flex-row lg:space-x-16 items-center lg:items-start">
             {/* Step-by-Step Content */}
-            <div className="flex-1 w-full lg:w-1/2 space-y-4">
+            <div className="flex-1 w-full space-y-4">
               {steps.map((step) => (
                 <div
                   key={step.id}
-                  className={`flex items-start transition-all duration-500 ease-in-out cursor-pointer p-4 rounded-3xl border ${
+                  className={`flex items-start transition-all duration-500 ease-in-out cursor-pointer p-4 rounded-2xl sm:rounded-3xl border ${
                     activeStep === step.id
                       ? "bg-emerald-50 border-emerald-300 shadow-xl"
                       : "bg-white border-gray-100"
@@ -214,11 +214,11 @@ export default function Home() {
                         : "bg-gray-100 text-emerald-500"
                     }`}
                   >
-                    <step.icon className="h-5 w-5" />
+                    <step.icon className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
-                  <div className="ml-8">
+                  <div className="ml-4 sm:ml-6">
                     <h3
-                      className={`text-2xl font-bold transition-colors duration-500 ${
+                      className={`text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-500 ${
                         activeStep === step.id
                           ? "text-emerald-700"
                           : "text-gray-900"
@@ -226,7 +226,7 @@ export default function Home() {
                     >
                       {step.title}
                     </h3>
-                    <p className="mt-2 text-lg text-gray-700 font-normal">
+                    <p className="mt-1 sm:mt-2 text-sm sm:text-base md:text-lg text-gray-700 font-normal">
                       {step.description}
                     </p>
                   </div>
@@ -235,34 +235,34 @@ export default function Home() {
             </div>
 
             {/* Image Container */}
-            <div className="flex-1 w-full lg:w-1/2 mt-16 lg:mt-0 relative h-96 md:h-[380px] rounded-3xl overflow-hidden shadow-2xl border-4 border-emerald-100">
+            <div className="flex-1 w-full mt-10 lg:mt-0 relative h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[420px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-emerald-100">
               {steps.map((step) => (
                 <img
                   key={step.id}
                   src={step.image}
                   alt={step.title}
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+                  className={`absolute inset-0 w-full h-full object-contain sm:object-cover transition-opacity duration-700 ease-in-out ${
                     activeStep === step.id ? "opacity-100" : "opacity-0"
                   }`}
                 />
               ))}
-              <div className="absolute inset-0 bg-black/10"></div>{" "}
-              {/* Subtle gradient overlay for polish */}
+              <div className="absolute inset-0 bg-black/10"></div>
+              {/* Subtle gradient overlay */}
             </div>
           </div>
         </div>
       </div>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-gradient-to-r bg-[#ecfeff]">
+      <section id="about" className="py-20 bg-gradient-to-r bg-[#f5fcfc] border-t-2 border-t-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1632012643865-dadda4f2d3cd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHw0fHxtYXNzYWdlJTIwdGhlcmFweXxlbnwwfHx8dGVhbHwxNzU4NzA3NzE1fDA&ixlib=rb-4.1.0&q=85"
+                  src={StackImg}
                   alt="Wellness therapy"
-                  className="w-full h-96 object-cover"
+                  className="w-full h-96 object-contain"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-teal-600/20 to-cyan-600/20"></div>
               </div>
@@ -272,7 +272,7 @@ export default function Home() {
                 Connecting You with{" "}
                 <span className="text-blue-600">Quality Healthcare</span>
               </h2>
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              <p className="text-lg text-slate-600 mb-8">
                 Last minute wellness is Canada's premier platform for connecting
                 clients with certified wellness professionals. We believe
                 everyone deserves access to quality healthcare services that
@@ -305,14 +305,12 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       </section>
 
-
       {/* Customer Review */}
-      <section className="bg-[#fafbff] py-12 px-4 sm:px-6 md:px-12 lg:!px-28 lg:py-24 relative">
+      <section className="bg-gray-100 py-12 px-4 sm:px-6 md:px-12 lg:!px-28 lg:py-24 relative border-t-2 border-t-gray-200">
         <div className="max-w-6xl">
           {/* Heading */}
           <h2 className="text-4xl md:text-5xl font-bold">

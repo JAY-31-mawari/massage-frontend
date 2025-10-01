@@ -26,7 +26,7 @@ export default function Navbar() {
   const navbarItems = [
     {
       to: "/serviceList",
-      name: "Book",
+      name: "Book Now",
     },
     {
       to: "/about-us",
@@ -69,7 +69,7 @@ export default function Navbar() {
   return (
     <div className="w-full sticky top-0 bg-white text-gray-900 shadow-md z-50">
       <div className="w-auto mx-5">
-        <nav className="h-20 flex items-center justify-between">
+        <nav className="h-[72px] flex items-center justify-between">
           {/* Left: Logo + Nav Links */}
           <div className="flex items-center gap-10 min-w-0">
             {/* Logo */}
@@ -84,7 +84,7 @@ export default function Navbar() {
 
             {/* Nav Links (Desktop) */}
             <div className="hidden lg:flex">
-              <ul className="flex items-center gap-8 font-medium text-medium lg:text-lg">
+              <ul className="flex items-center gap-8 text-gray-700 lg:text-xl">
                 {navbarItems.map((item) => (
                   <li key={item.to}>
                     <Link
@@ -121,16 +121,15 @@ export default function Navbar() {
               <>
                 <Link
                   to="/create-account"
-                  className="flex items-center px-4 py-3 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition"
+                  className="flex items-center px-3 py-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition"
                 >
-                  Sign Up / Sign In
+                  Sign in
                 </Link>
                 {showSignUpSignIn && (
                   <Link
                     to="/practitioner-register"
-                    className="flex items-center gap-2 px-4 py-3 rounded-md bg-blue-600 text-white font-semibold shadow-sm hover:bg-blue-700 transition"
+                    className="flex items-center gap-2 px-3 py-2 rounded-md bg-teal-500 text-white font-semibold shadow-sm hover:bg-teal-600 transition"
                   >
-                    <img src={loginImg} alt="Join Icon" className="h-5 w-5" />
                     Join as a Provider
                   </Link>
                 )}

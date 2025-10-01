@@ -34,15 +34,15 @@ export default function CustomerReviews() {
         {clientReviewData.map((client, i) => (
           <div
             key={i}
-            className="flex-shrink-0 w-[320px] md:w-[350px] lg:w-[400px] bg-white rounded-xl sm:rounded-2xl border border-gray-200 p-4 sm:p-6 text-left snap-start shadow-sm"
+            className="flex-shrink-0 w-[320px] md:w-[350px] lg:w-[400px] bg-gray-50 sm:rounded-2xl border border-gray-200 p-4 sm:p-6 text-left snap-start shadow-sm !border-t-[7px] !border-t-teal-500"
           >
             <div className="flex items-center gap-3 my-2 sm:mt-6">
-                <p className="text-gray-900 font-semibold text-xl">
+                <p className="text-gray-800 font-semibold text-xl underline">
                   {client.name}
                 </p>
             </div>
             <p
-              className="text-gray-800 text-base sm:text-md"
+              className="text-gray-700 text-lg sm:text-md"
               dangerouslySetInnerHTML={{ __html: client.desc }}
             ></p>
           </div>

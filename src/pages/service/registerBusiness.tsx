@@ -31,7 +31,6 @@ interface PractitionerData {
 
 export default function SubmitProperty() {
   const navigate = useNavigate();
-  const [show, setShow] = useState<boolean>(false);
   const [businessName, setBusinessName] = useState("");
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [businessType, setBusinessType] = useState<string | undefined>("");
@@ -49,13 +48,16 @@ export default function SubmitProperty() {
   const [merchantState, setMerchantState] = useState("");
   const [merchantZipCode, setMerchantZipCode] = useState("");
   const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [confirmEmailError, setConfirmEmailError] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneNoError, setphoneNoError] = useState("");
   const [description, setDescription] = useState("");
   const [tabs, setTabs] = useState([{ id: 1 }]);
   const [activeTab, setActiveTab] = useState(1);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
 
   // Optional: Store data per tab if needed later
   const [tabData, setTabData] = useState<{ [key: number]: any }>({
@@ -292,6 +294,17 @@ export default function SubmitProperty() {
     }
   };
 
+  const handleConfirmEmailChange = (e: any) => {
+    const value = e.target.value;
+    setConfirmEmail(value);
+
+    if (value !== email) {
+      setConfirmEmailError("Email doesn't match");
+    }else{
+      setConfirmEmailError("")
+    }
+  };
+
   const handlePhoneNoChange = (e: any) => {
     const value = e.target.value;
     setPhone(value);
@@ -393,10 +406,10 @@ export default function SubmitProperty() {
         business_email: email,
         business_phone: phone,
         confirmationMode,
-        appointmentApprovalType,
-        selectedDays,
-        startTime,
-        endTime,
+        approval_type: appointmentApprovalType,
+        working_days: selectedDays,
+        working_hours_start: startTime,
+        working_hours_end: endTime,
         bankName,
         bankAccountNumber,
         bankTransitNumber,
@@ -464,7 +477,8 @@ export default function SubmitProperty() {
           },
         });
         setActiveTab(1);
-        navigate("/payment");
+        setCurrentStep(1)
+        setShowPaymentModal(true)
       } else {
         console.error("Unexpected status:", businessResponse.status);
       }
@@ -517,14 +531,14 @@ export default function SubmitProperty() {
                           </label>
                           <input
                             type="text"
-                            placeholder="Full Name/Business Name"
-                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            placeholder="Business Name"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                             value={businessName}
                             onChange={(e) => setBusinessName(e.target.value)}
                           />
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           {/* Business Type */}
                           <div>
                             <label className="block text-base font-medium mb-2">
@@ -554,7 +568,7 @@ export default function SubmitProperty() {
                               placeholder="Email Address"
                               value={email}
                               onChange={handleEmailChange}
-                              className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-2 focus:outline-none ${
+                              className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-1 focus:outline-none ${
                                 emailError
                                   ? "border-red-500 focus:ring-red-500"
                                   : "border-gray-300 focus:ring-indigo-500"
@@ -566,10 +580,34 @@ export default function SubmitProperty() {
                               </p>
                             )}
                           </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-base font-medium mb-2">
+                              Confirm Email Address
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Email Address"
+                              value={confirmEmail}
+                              onChange={handleConfirmEmailChange}
+                              className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-1 focus:outline-none ${
+                                emailError
+                                  ? "border-red-500 focus:ring-red-500"
+                                  : "border-gray-300 focus:ring-indigo-500"
+                              }`}
+                            />
+                            {confirmEmailError && (
+                              <p className="mt-1 text-sm text-red-600">
+                                {confirmEmailError}
+                              </p>
+                            )}
+                          </div>
 
                           {/* Phone Number */}
                           <div>
-                            <label className="block text-base font-medium mb-2">
+                            <label className="block text-base mb-2">
                               Phone Number
                             </label>
                             <input
@@ -577,7 +615,7 @@ export default function SubmitProperty() {
                               placeholder="Phone No"
                               value={phone}
                               onChange={handlePhoneNoChange}
-                              className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-2 focus:outline-none ${
+                              className={`w-full rounded-md border px-3 py-2 text-gray-900 focus:ring-1 focus:outline-none ${
                                 phoneNoError
                                   ? "border-red-500 focus:ring-red-500"
                                   : "border-gray-300 focus:ring-indigo-500"
@@ -649,7 +687,7 @@ export default function SubmitProperty() {
 
                           {/* Appointment Approval Type */}
                           <div>
-                            <label className="block text-base font-medium mb-3">
+                            <label className="block text-base font-base mb-3">
                               Appointment Approval Type?
                             </label>
                             <div className="flex gap-4">
@@ -700,7 +738,7 @@ export default function SubmitProperty() {
 
                         {/* working days */}
                         <div>
-                          <label className="block text-base font-medium mb-3">
+                          <label className="block text-base mb-3">
                             Working Days
                           </label>
                           <div className="flex gap-4 flex-wrap">
@@ -725,7 +763,7 @@ export default function SubmitProperty() {
 
                         {/* Working Hours */}
                         <div>
-                          <label className="block text-base font-medium mb-3">
+                          <label className="block text-base mb-3">
                             Working Hours
                           </label>
                           <div className="flex flex-col sm:flex-row gap-6">
@@ -733,7 +771,7 @@ export default function SubmitProperty() {
                               <span className="text-gray-700">Start</span>
                               <input
                                 type="time"
-                                className="border rounded-md px-3 py-2 cursor-pointer focus:ring-2 focus:ring-indigo-500"
+                                className="border rounded-md px-3 py-2 cursor-pointer focus:ring-1 focus:ring-indigo-500"
                                 value={startTime}
                                 onChange={(e) => setStartTime(e.target.value)}
                               />
@@ -742,7 +780,7 @@ export default function SubmitProperty() {
                               <span className="text-gray-700">End</span>
                               <input
                                 type="time"
-                                className="border rounded-md px-3 py-2 cursor-pointer focus:ring-2 focus:ring-indigo-500"
+                                className="border rounded-md px-3 py-2 cursor-pointer focus:ring-1 focus:ring-indigo-500"
                                 value={endTime}
                                 onChange={(e) => setEndTime(e.target.value)}
                               />
@@ -763,7 +801,7 @@ export default function SubmitProperty() {
                             </label>
                             <input
                               type="text"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               value={merchantAddress}
                               onChange={(e) =>
                                 setMerchantAddress(e.target.value)
@@ -777,7 +815,7 @@ export default function SubmitProperty() {
                             </label>
                             <input
                               type="text"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               value={merchantCity}
                               onChange={(e) => setMerchantCity(e.target.value)}
                             />
@@ -789,7 +827,7 @@ export default function SubmitProperty() {
                             </label>
                             <input
                               type="text"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               value={merchantState}
                               onChange={(e) => setMerchantState(e.target.value)}
                             />
@@ -801,7 +839,7 @@ export default function SubmitProperty() {
                             </label>
                             <input
                               type="text"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               value={merchantZipCode}
                               onChange={(e) =>
                                 setMerchantZipCode(e.target.value)
@@ -1001,7 +1039,7 @@ export default function SubmitProperty() {
                                 e.target.value
                               )
                             }
-                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                           />
 
                           {/* Email + Gender side by side */}
@@ -1022,7 +1060,7 @@ export default function SubmitProperty() {
                                     e.target.value
                                   )
                                 }
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               />
                             </div>
                             <div>
@@ -1108,7 +1146,7 @@ export default function SubmitProperty() {
                               <input
                                 type="text"
                                 placeholder="Enter other association name"
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                                 value={tabData[activeTab]?.customAssociation}
                                 onChange={(e) =>
                                   handleTabInputChange(
@@ -1136,7 +1174,7 @@ export default function SubmitProperty() {
                                     e.target.value
                                   )
                                 }
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               />
                             </div>
                             <div>
@@ -1154,7 +1192,7 @@ export default function SubmitProperty() {
                                     e.target.value
                                   )
                                 }
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               />
                             </div>
                           </div>
@@ -1264,7 +1302,7 @@ export default function SubmitProperty() {
                             <input
                               type="text"
                               placeholder="Bank name"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               value={bankName}
                               onChange={(e) => setBankName(e.target.value)}
                             />
@@ -1277,7 +1315,7 @@ export default function SubmitProperty() {
                             <input
                               type="number"
                               placeholder="Bank transit number"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               value={bankTransitNumber}
                               onChange={(e) =>
                                 setBankTransitNumber(
@@ -1294,7 +1332,7 @@ export default function SubmitProperty() {
                             <input
                               type="number"
                               placeholder="Bank institution number"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               value={bankInstitutionNumber}
                               onChange={(e) =>
                                 setBankInstitutionNumber(
@@ -1312,7 +1350,7 @@ export default function SubmitProperty() {
                             <input
                               type="number"
                               placeholder="Account number(7-12) digits"
-                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                               value={bankAccountNumber}
                               onChange={(e) =>
                                 setBankAccountNumber(
@@ -1357,6 +1395,48 @@ export default function SubmitProperty() {
             </div>
           </div>
         </div>
+        {showPaymentModal && (
+          <motion.div
+            className="fixed inset-0 flex items-center justify-center z-50 px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Background overlay */}
+            <motion.div
+              className="absolute inset-0 bg-black/50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowPaymentModal(false)}
+            />
+
+            {/* Modal box */}
+            <motion.div
+              className="relative bg-white w-full max-w-sm rounded-2xl shadow-lg p-6 text-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <h2 className="text-lg font-semibold text-gray-800">
+                Your Business Details has been Saved
+              </h2>
+              <p className="text-sm text-gray-600 mt-2">
+                Pay the one time non-refundable $35 fee to start your background Police verification check. After your payment is processed, you’ll receive an email with a secure link to complete your background check.
+              </p>
+
+              <div className="mt-6 flex gap-3 justify-center">
+                <button
+                  onClick={()=> navigate("/payment")}
+                  className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
+                >
+                  Continue to Pay
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </section>
     </>
   );

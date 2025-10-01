@@ -52,13 +52,13 @@ const CheckoutForm: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex flex-col">
       <section className="flex-1 flex flex-col justify-center items-center text-center px-6 py-20 bg-gradient-to-b from-white to-blue-100">
-        <h1 className="text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
+        {/* <h1 className="text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
           Checkout Securely
         </h1>
         <p className="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl">
           Make payments with confidence. Your transactions are encrypted and
           safe.
-        </p>
+        </p> */}
 
           <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-all duration-300 scale-100 hover:scale-[1.01] flex flex-col items-center text-center">
             <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-8">
@@ -74,7 +74,7 @@ const CheckoutForm: React.FC = () => {
                   Total Amount
                 </span>
                 <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">
-                  $35.00
+                  $35.00<span className="text-base mx-1">CAD</span>
                 </span>
               </div>
             </div>
@@ -122,6 +122,8 @@ const CheckoutForm: React.FC = () => {
                 )}
               </button>
             </form>
+            <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 my-3">After your payment is processed, you’ll receive an email with a secure link to complete your background check.</p>
+            <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-2">Your signup will continue once this step is completed.</p>
           </div>
       </section>
 
