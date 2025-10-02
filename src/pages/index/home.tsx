@@ -202,9 +202,9 @@ export default function Home() {
                   key={step.id}
                   className={`flex items-start transition-all duration-500 ease-in-out cursor-pointer p-4 rounded-2xl sm:rounded-3xl border ${
                     activeStep === step.id
-                      ? "bg-emerald-50 border-emerald-300 shadow-xl"
+                      ? " border-emerald-300 shadow-xl"
                       : "bg-white border-gray-100"
-                  } hover:bg-emerald-50/50 hover:border-emerald-200`}
+                  } hover: hover:border-emerald-200`}
                   onMouseEnter={() => setActiveStep(step.id)}
                 >
                   <div
@@ -241,7 +241,7 @@ export default function Home() {
                   key={step.id}
                   src={step.image}
                   alt={step.title}
-                  className={`absolute inset-0 w-full h-full object-contain sm:object-cover transition-opacity duration-700 ease-in-out ${
+                  className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${
                     activeStep === step.id ? "opacity-100" : "opacity-0"
                   }`}
                 />

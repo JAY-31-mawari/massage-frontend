@@ -10,6 +10,7 @@ import {
   getStorageItem,
   setStorageItem,
 } from "../../utils/sessionStorage";
+import BannerTop from "../banner-top";
 
 export default function Navbar() {
   const location = useLocation();
@@ -68,6 +69,7 @@ export default function Navbar() {
 
   return (
     <div className="w-full sticky top-0 bg-white text-gray-900 shadow-md z-50">
+      <BannerTop />
       <div className="w-auto mx-5">
         <nav className="h-[72px] flex items-center justify-between">
           {/* Left: Logo + Nav Links */}
@@ -127,7 +129,7 @@ export default function Navbar() {
                 </Link>
                 {showSignUpSignIn && (
                   <Link
-                    to="/practitioner-register"
+                    to="/about-service"
                     className="flex items-center gap-2 px-3 py-2 rounded-md bg-teal-500 text-white font-semibold shadow-sm hover:bg-teal-600 transition"
                   >
                     Join as a Provider
@@ -197,12 +199,12 @@ export default function Navbar() {
                       className="block px-3 py-2 rounded-md hover:bg-gray-100 transition"
                       onClick={() => setIsToggle(false)}
                     >
-                      Sign Up / Sign In
+                      Sign in
                     </Link>
                   </li>
                   <li>
                     <Link
-                      to="/practitioner-register"
+                      to="/about-service"
                       className="flex items-center gap-2 px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
                       onClick={() => setIsToggle(false)}
                     >

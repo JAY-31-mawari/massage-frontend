@@ -1,30 +1,30 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AboutSerivceBg from "../../assets/img/background/aboutService.png";
-import Testimony1 from "../../assets/img/partners/emma-make-2x.webp";
-import Testimony2 from "../../assets/img/partners/harbor-bickmore-2x.webp";
-import Testimony3 from "../../assets/img/partners/batzorig-regzen-2x.webp";
+import Home from "../../assets/img/partners/home.png";
+import Mobile from "../../assets/img/partners/mobile.png";
+import Clinic from "../../assets/img/partners/clinic.png";
 import { Check, X } from "lucide-react";
 
 export function MerchantAboutUs() {
   const testimonials = [
     {
       id: 1,
-      image: Testimony1,
+      image: Clinic,
       imageText: "Clinic based practitioner",
       header: "Get discovered by clients",
       testimony: `“Fill gaps in your schedule with new clients who are already nearby.”`,
     },
     {
       id: 2,
-      image: Testimony2,
+      image: Home,
       imageText: "Home based practitioner",
       header: "Offer great services",
       testimony: `“Turn your spare room into a steady client flow without spending on ads.”`,
     },
     {
       id: 3,
-      image: Testimony3,
+      image: Mobile,
       imageText: "Mobile practitioner",
       header: "Keep More of Your Earnings",
       testimony: `“Make the most of your travel time by getting matched with local last-minute clients.”`,
@@ -33,21 +33,153 @@ export function MerchantAboutUs() {
 
   const faqData = [
     {
-      question: "How do payments work?",
-      answer: "Practitioners receive weekly payouts directly to their account.",
+      id: 1,
+      question: "1. What is LastMinuteWellness?",
+      answer: `<p>LastMinuteWellness is a Canadian booking platform connecting clients with 
+      last-minute openings for physiotherapy, chiropractic, acupuncture 
+      and massage therapy — available at home, on the go (mobile), or in clinics.</p>`,
     },
     {
-      question: "What about cancellations?",
-      answer: "We notify clients immediately and help manage rescheduling.",
+      id: 2,
+      question: "2. Do I need to be a registered professional?",
+      answer: `<p>Yes. If your field is a regulated profession, you must provide your 
+      registration details.</p>`,
     },
     {
-      question: "Do I need insurance or licensing?",
-      answer: "Only valid, licensed practitioners can join.",
+      id: 3,
+      question: "3. What if my field is not regulated?",
+      answer: `<p>You must be affiliated with a reputable professional association 
+      relevant to your service.</p>`,
     },
     {
-      question: "How does pricing work?",
-      answer:
-        "We charge a simple [X% commission] per completed appointment. There are no setup or monthly fees—you only pay when you get clients.",
+      id: 4,
+      question: "4. Do I need insurance?",
+      answer: `<p>Yes. All practitioners must provide proof of 
+      professional liability insurance before activating their profile.</p>`,
+    },
+    {
+      id: 5,
+      question: "5. How are background checks conducted?",
+      answer: `<p>Professional background checks are handled through <strong>Triton</strong>, 
+      and you pay for them directly.</p>`,
+    },
+    {
+      id: 6,
+      question: "6. How is my payment handled?",
+      answer: `<p>You don’t need to manage client payments. Your <strong>commission for the week</strong>
+      will be deposited into your account <strong>on Wednesday of the following week.</strong></p>`,
+    },
+    {
+      id: 7,
+      question: "7. How far in advance can I schedule my availability?",
+      answer: `<p>You can upload your schedule for a <strong>maximum of 1 week at a time.</strong></p>`,
+    },
+    {
+      id: 8,
+      question: "8. How does booking approval work?",
+      answer: `<p>You can choose between:</p>
+    <ul class="list-disc ml-6 space-y-2">
+      <li><strong>Automatic approval</strong> – client appointments are confirmed instantly.</li>
+      <li><strong>Manual approval</strong> – confirm requests via email or text. Responses are expected:
+        <ul class="list-disc ml-6 mt-2">
+          <li>Within 20 minutes for same-day or near-closing requests</li>
+          <li>By the start of the next business day for other requests</li>
+        </ul>
+      </li>
+    </ul>`,
+    },
+    {
+      id: 9,
+      question: "9. What happens if I forget to confirm an appointment?",
+      answer: `<p>If you don’t confirm within your chosen timeframe, the booking will 
+      <strong>automatically expire</strong>, and the client won’t be charged.</p>`,
+    },
+    {
+      id: 10,
+      question: "10. Do I need to provide receipts for insurance purposes?",
+      answer: `<p>No. Our platform automatically provides <strong>official receipts</strong> 
+      (including your license details) that clients can use for insurance reimbursement.</p>`,
+    },
+    {
+      id: 11,
+      question: "11. What is the commission structure?",
+      answer: `
+    <div class="overflow-x-auto w-full">
+      <table class="min-w-full border border-gray-300 text-left text-sm border-collapse">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border border-gray-300 px-4 py-2">Service</th>
+            <th class="border border-gray-300 px-4 py-2">Physiotherapy</th>
+            <th class="border border-gray-300 px-4 py-2">Chiropractor</th>
+            <th class="border border-gray-300 px-4 py-2">Acupuncture</th>
+            <th class="border border-gray-300 px-4 py-2">Massage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-2 font-semibold">Clinic Based</td>
+            <td class="border border-gray-300 px-4 py-2">25%</td>
+            <td class="border border-gray-300 px-4 py-2">25%</td>
+            <td class="border border-gray-300 px-4 py-2">25%</td>
+            <td class="border border-gray-300 px-4 py-2">15%</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-2 font-semibold">Home Based</td>
+            <td class="border border-gray-300 px-4 py-2">NA</td>
+            <td class="border border-gray-300 px-4 py-2">NA</td>
+            <td class="border border-gray-300 px-4 py-2">NA</td>
+            <td class="border border-gray-300 px-4 py-2">20%</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-2 font-semibold">Mobile</td>
+            <td class="border border-gray-300 px-4 py-2">NA</td>
+            <td class="border border-gray-300 px-4 py-2">NA</td>
+            <td class="border border-gray-300 px-4 py-2">NA</td>
+            <td class="border border-gray-300 px-4 py-2">22%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-3 text-sm text-gray-600">
+        <em>* A <strong>1.3% card processing fee applies.</strong></em>
+      </p>
+  `,
+    },
+
+    {
+      id: 12,
+      question: "12. What is the cancellation and refund policy?",
+      answer: `
+    <p>High-level overview:</p>
+    <ul class="list-disc ml-6 space-y-2">
+      <li><strong>Within 24 hours</strong> of the appointment: 0% refund</li>
+      <li><strong>24–48 hours</strong> before the appointment: 50% refund</li>
+      <li><strong>More than 48 hours</strong> before the appointment: 100% refund</li>
+    </ul>
+    <p class="mt-3 text-sm text-gray-600">
+      For full details, please see our
+      <a href="${global.config.URL.url}/refund-&-cancellation" class="text-blue-600 underline">[Cancellation & Refund Policy]</a>.
+    </p>
+  `,
+    },
+    {
+      id: 13,
+      question: "13. What if I double-book?",
+      answer: `<p>[Answer to be provided by me]</p>`,
+    },
+    {
+      id: 14,
+      question: "14. Who do I contact for support?",
+      answer: `<p>For any questions or issues, reach out to the LastMinuteWellness support 
+      team via <a href='mailto:support@lastminutewellness.com' class="text-blue-600 underline">support@lastminutewellness.com</a>.</p>`,
+    },
+    {
+      id: 15,
+      question:
+        "15. What types of appointments can I offer on LastMinuteWellness?",
+      answer: `<p>At this time, we only allow <strong>initial assessments and 
+      treatment appointments</strong> for acupuncture, chiropractic, physiotherapy and massage-therapy. 
+      Follow-up appointments should be booked through your in-house system if needed.</p>`,
     },
   ];
 
@@ -92,9 +224,7 @@ export function MerchantAboutUs() {
             Getting Started is Simple
           </h1>
           <p className="text-gray-700 mt-3 text-base max-w-4xl mx-auto sm:text-lg md:text-xl lg:text-2xl sm:mx-12 md:mx-32">
-            Last minute wellness is a community of over 50 million members
-            across the world. See how they use our platform to grow their
-            careers on our blog
+            Growing community, across Canada
           </p>
         </div>
 
@@ -107,7 +237,7 @@ export function MerchantAboutUs() {
                   alt={testimoniest.imageText}
                   className="rounded-2xl w-full h-auto"
                 />
-                <div className="absolute bottom-0 left-0 w-full h-[40%] sm:h-[50%] bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 w-full h-[40%] sm:h-[50%] bg-gradient-to-t from-black/80 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3 text-white">
                   <h1 className="text-lg sm:text-xl">
                     {testimoniest.imageText}
@@ -232,7 +362,7 @@ export function MerchantAboutUs() {
         <h2 className="text-3xl font-bold text-center mb-8 my-4">
           Questions? We’ve Got You Covered
         </h2>
-        <div className="max-w-3xl lg:mx-auto py-2 px-2 lg:py-10 lg:px-4">
+        <div className="max-w-4xl lg:mx-auto py-2 px-2 lg:py-10 lg:px-4">
           <div className="space-y-4 mb-20">
             {faqData.map((item, index) => {
               const isOpen = openIndex === index;
@@ -273,9 +403,10 @@ export function MerchantAboutUs() {
                         : "max-h-0 opacity-0 py-0"
                     }`}
                   >
-                    <p className="text-gray-600 text-lg w-11/12 break-words whitespace-normal">
-                      {item.answer}
-                    </p>
+                    <div
+                      className="text-gray-600 text-lg w-11/12 break-words whitespace-normal"
+                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                    ></div>
                   </div>
                 </div>
               );
