@@ -81,7 +81,7 @@ export function ClientFAQ() {
   return (
     <div>
       <div className="max-w-4xl mx-auto">
-        <h1 className="font-bold my-6 mb-8 text-5xl text-blue-500 text-center">
+        <h1 className="font-bold my-6 mb-8 text-3xl text-gray-700 text-center underline">
           FAQs
         </h1>
         <div>

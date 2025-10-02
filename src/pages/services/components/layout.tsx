@@ -60,7 +60,7 @@ export default function ServiceMainComponent({
     <>
       <main className="flex flex-col items-center bg-background">
         {/* Hero Section */}
-        <section className="w-full bg-primary text-white py-20 px-6 lg:py-28 text-center">
+        <section className="w-full bg-blue-600 text-white py-20 px-6 lg:py-28 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h1 className="text-3xl md:text-4xl lg:text-6xl font-extrabold leading-tight">
               Embrace Wellness Through Massage Therapy
@@ -78,7 +78,7 @@ export default function ServiceMainComponent({
               </a>
               <a
                 href="/serviceList"
-                className="inline-flex items-center justify-center rounded-lg border border-white text-white px-6 py-3 text-lg font-semibold hover:bg-white hover:text-primary transition-transform hover:scale-105"
+                className="inline-flex items-center justify-center rounded-lg border border-white text-white px-6 py-3 text-lg font-semibold hover:text-primary transition-transform hover:scale-105"
               >
                 Find a Clinic Near You
               </a>
@@ -122,13 +122,13 @@ export default function ServiceMainComponent({
               {benefits.map((benefit, index) => (
                 <div
                   key={index}
-                  className="group bg-white text-gray-800 shadow-lg hover:shadow-xl rounded-xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white"
+                  className="group bg-white text-gray-800 shadow-lg hover:shadow-xl rounded-xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:scale-105"
                 >
-                  <div className="bg-primary/10 rounded-full p-4 mb-4 transition-colors duration-300 group-hover:bg-white">
+                  <div className="bg-primary/10 rounded-full p-4 mb-4 transition-colors duration-300 ">
                     <benefit.icon className="h-10 w-10 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600 group-hover:text-white">{benefit.desc}</p>
+                  <p className="text-gray-600">{benefit.desc}</p>
                 </div>
               ))}
             </div>

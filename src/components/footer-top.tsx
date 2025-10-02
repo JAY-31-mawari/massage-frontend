@@ -18,7 +18,7 @@ export default function FooterTop({ bg }: { bg: any }) {
 
           {/* Button */}
           <Link
-            to="/practitioner-register"
+            to="/about-service"
             className="bg-white text-blue-600 font-semibold px-6 py-3 rounded-xl shadow hover:bg-gray-100 transition"
           >
             Sign Up Today
