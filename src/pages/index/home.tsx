@@ -85,13 +85,13 @@ export default function Home() {
   }, [services]);
 
   return (
-    <div className="bg-white">
+    <div>
       {/* Search Section */}
       <div
         className="relative bg-no-repeat bg-cover bg-center w-full h-[600px] lg:h-[620px]"
         style={{ backgroundImage: `url(${homeBg})` }}
       >
-        <div className="absolute inset-0 bg-black/60"></div>{" "}
+        <div className="absolute inset-0 bg-black/60"></div>
         {/* Deep Teal Overlay */}
         <div className="relative max-w-8xl mx-auto px-12 sm:px-6 md:px-12 h-full flex flex-col justify-center items-start">
           <p className="text-lg sm:text-xl md:text-2xl text-white mb-3 sm:mb-4 font-light tracking-wide">
