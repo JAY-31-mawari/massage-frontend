@@ -1,6 +1,10 @@
-import { Leaf, Heart, Sun, Timer as Relax, Hand, Bone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../../../components/footer";
+import {
+  physiotherapyBenefits,
+  massageBenefits,
+  chiropracticBenefits,
+  acupunctureBenefits,
+} from "../../../data/servicesData";
 
 interface OtherServicesData {
   title: string;
@@ -23,38 +27,14 @@ export default function ServiceMainComponent({
 }: ServiceTitleProps) {
   const navigate = useNavigate();
 
-  const benefits = [
-    {
-      icon: Leaf,
-      title: "Stress Reduction",
-      desc: "Calms the nervous system, reducing anxiety and promoting deep relaxation.",
-    },
-    {
-      icon: Heart,
-      title: "Pain Relief",
-      desc: "Alleviates muscle tension, soreness, and chronic pain conditions like headaches and back pain.",
-    },
-    {
-      icon: Sun,
-      title: "Improved Sleep",
-      desc: "Helps in achieving more restful and restorative sleep by relaxing the body and mind.",
-    },
-    {
-      icon: Relax,
-      title: "Enhanced Mood",
-      desc: "Boosts endorphins, leading to feelings of well-being, happiness, and reduced depression.",
-    },
-    {
-      icon: Hand,
-      title: "Better Circulation",
-      desc: "Increases blood flow, aiding in nutrient delivery to muscles and removal of metabolic waste.",
-    },
-    {
-      icon: Bone,
-      title: "Increased Flexibility",
-      desc: "Loosens tight muscles and connective tissues, improving range of motion and joint health.",
-    },
-  ];
+  const allBenefits:any = {
+    "Physiotherapy": physiotherapyBenefits,
+    "Massage Therapy": massageBenefits,
+    "Acupuncture": acupunctureBenefits,
+    "Chiropractic Care": chiropracticBenefits,
+  };
+
+  const benefitsToRender = allBenefits[serviceTitle] || []
 
   return (
     <>
@@ -67,7 +47,8 @@ export default function ServiceMainComponent({
             </h1>
             <p className="text-lg md:text-xl lg:text-2xl text-gray-200">
               Discover a path to profound relaxation, pain relief, and holistic
-              well-being. Our expert therapists are dedicated to your comfort and health.
+              well-being. Our expert therapists are dedicated to your comfort
+              and health.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <a
@@ -119,7 +100,7 @@ export default function ServiceMainComponent({
               Key Benefits of Regular Massage
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {benefits.map((benefit, index) => (
+              {benefitsToRender.map((benefit:any, index:any) => (
                 <div
                   key={index}
                   className="group bg-white text-gray-800 shadow-lg hover:shadow-xl rounded-xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:scale-105"
@@ -127,7 +108,9 @@ export default function ServiceMainComponent({
                   <div className="bg-primary/10 rounded-full p-4 mb-4 transition-colors duration-300 ">
                     <benefit.icon className="h-10 w-10 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2">
+                    {benefit.title}
+                  </h3>
                   <p className="text-gray-600">{benefit.desc}</p>
                 </div>
               ))}
@@ -154,7 +137,9 @@ export default function ServiceMainComponent({
                     className="object-cover w-full h-48"
                   />
                   <div className="p-5 text-left">
-                    <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+                    <h3 className="text-xl font-semibold mb-2">
+                      {service.title}
+                    </h3>
                     <p className="text-muted-foreground">
                       Smooth, heated stones are placed on specific points of the
                       body to warm and relax muscles, allowing for deeper
