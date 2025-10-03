@@ -39,7 +39,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto space-y-24 mt-20">
+      <div className="max-w-7xl mx-auto space-y-28 mt-20">
         <div className="max-w-4xl text-[#333333]">
           <h3 className="text-3xl font-semibold my-4">
             At Last Minute Wellness, we make accessing wellness services in

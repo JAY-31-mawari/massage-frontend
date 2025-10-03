@@ -97,13 +97,13 @@ export default function Contact() {
       <section className="relative bg-gradient-to-br from-gray-50 via-white to-gray-100 py-8 px-4 sm:px-6 lg:px-12">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-between gap-10">
           {/* Left Section - Info */}
-          <div className="text-center my-auto lg:text-left lg:w-1/2">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+          <div className="text-center my-auto lg:text-left lg:w-1/2 text-[#333333]">
+            <h1 className="text-3xl sm:text-6xl md:text-6xl lg:text-6xl font-bold mb-6">
+              <span>
                 Contact Us
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-500 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl max-w-xl mx-auto lg:mx-0">
               Ready to book your experience, or want to share your thoughts with
               us? Drop us a message — we value your feedback just as much as
               your bookings.

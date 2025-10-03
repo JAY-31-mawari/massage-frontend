@@ -71,7 +71,7 @@ export default function Navbar() {
     <div className="w-full sticky top-0 bg-white text-gray-900 shadow-md z-50">
       <BannerTop />
       <div className="w-auto mx-5">
-        <nav className="h-[72px] flex items-center justify-between">
+        <nav className="h-[74px] flex items-center justify-between">
           {/* Left: Logo + Nav Links */}
           <div className="flex items-center gap-10 min-w-0">
             {/* Logo */}
