@@ -94,7 +94,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/60"></div>
         {/* Deep Teal Overlay */}
         <div className="relative max-w-8xl mx-auto px-12 sm:px-6 md:px-12 h-full flex flex-col justify-center items-start">
-          <p className="text-lg sm:text-xl md:text-2xl text-white mb-3 sm:mb-4 font-light tracking-wide">
+          <p className="text-lg sm:text-xl md:text-3xl text-white mb-3 sm:mb-4">
             Feel better, Even on your busiest days
           </p>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-8 sm:mb-10 leading-tight max-w-xl sm:max-w-2xl md:max-w-3xl drop-shadow-lg">
