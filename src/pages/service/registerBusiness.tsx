@@ -448,6 +448,13 @@ const expertiseListWithMassage = [
         }
         setStorageItem("business_id", businessResponse?.data?.data?.id);
         setStorageItem("business_email", email);
+        setStorageItem("business_name",businessName)
+        setStorageItem("business_address",merchantAddress)
+        setStorageItem("business_state",merchantState)
+        setStorageItem("business_city",merchantCity)
+        setStorageItem("business_zipcode",merchantZipCode)
+        
+
         setBusinessName("");
         setBusinessType("");
         setEmail("");
@@ -483,7 +490,7 @@ const expertiseListWithMassage = [
         });
         setActiveTab(1);
         setCurrentStep(1);
-        setShowPaymentModal(true);
+        navigate("/contractor-agreement")
       } else {
         console.error("Unexpected status:", businessResponse.status);
       }
