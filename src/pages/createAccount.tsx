@@ -161,7 +161,7 @@ export default function RegisterAccount() {
           toast.success(res.data.msg);
           setStorageItem("uid", userData._id);
           setStorageItem("firstName", userData.firstName);
-          setStorageItem("lastName", userData.lastName)
+          setStorageItem("lastName", userData.lastName);
           setStorageItem("email", userData.email);
           setStorageItem("phoneNo", userData.phone);
           setStorageItem("token", res.data?.token);
@@ -230,31 +230,30 @@ export default function RegisterAccount() {
 
   const loginPage = [
     {
-      id:1,
-      header:"Real-Time Wait Time Management",
-      point:"Update and display current wait times to help patients plan their visits with updated timeZones"
+      id: 1,
+      header: "Real-Time Transparency",
+      point:
+        "Know exact wait times before you arrive, so your visits are stress-free and predictable.",
     },
     {
-      id:2,
-      header:"Patient Check-in System",
-      point:"Streamline patient arrivals with digital check-in and queue management"
+      id: 2,
+      header: "Seamless Check-In",
+      point:
+        "Skip long queues and paperwork with secure, digital check-in for a smoother start.",
     },
     {
-      id:3,
-      header:"Appointment Scheduling",
-      point:"Manage bookings, availability, and patient appointments efficiently according to your timeZone"
+      id: 3,
+      header: "Convenient Scheduling",
+      point:
+        "Book, reschedule, or cancel appointments anytime — on your terms, at your pace.",
     },
     {
-      id:4,
-      header:"Analytics & Reporting",
-      point:"Track patient flow, popular services, and clinic performance metrics"
+      id: 4,
+      header: "Care Without Boundaries",
+      point:
+        "Access the same trusted experience across all locations, with your records always in sync.",
     },
-    {
-      id:5,
-      header:"Multi-Location Management",
-      point:"Manage multiple clinic location and staff from a single dashboard"
-    }
-  ]
+  ];
 
   return (
     <>
@@ -551,13 +550,15 @@ export default function RegisterAccount() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration:0.3 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
               className="text-white"
             >
-              {loginPage.map((login)=>(
-                <div className="mt-3">
-                  <li className="list-disc marker:text-xl font-semibold">{login.header}</li>
-                  <p className="text-gray-300 my-1">{login.point}</p>
+              {loginPage.map((login) => (
+                <div className="mt-3 mx-1">
+                  <li className="list-disc marker:text-xl font-semibold">
+                    {login.header}
+                  </li>
+                  <p className="text-gray-100 my-1">{login.point}</p>
                 </div>
               ))}
             </motion.div>

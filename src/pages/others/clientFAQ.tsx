@@ -76,6 +76,11 @@ export function ClientFAQ() {
       answer: `<p>Yes. We use industry-leading security standards and comply with Canadian privacy regulations 
       (PIPEDA) to protect your information.</p>`,
     },
+    {
+      id:13,
+      question:"13.  Didn’t find your question here?",
+      answer: `<p>Get in touch - Connect contact us here to get in touch <a href='mailto:info@lastminutewellness.ca' class="text-blue-600 underline">info@lastminutewellness.ca</a></p>`
+    }
   ];
 
   return (

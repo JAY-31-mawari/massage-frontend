@@ -31,7 +31,7 @@ const CheckoutForm: React.FC = () => {
         "Content-type": "application/json",
       },
       data: {
-        checkout_price: 3500,
+        checkout_price: 3195,
       },
     };
 
@@ -71,10 +71,10 @@ const CheckoutForm: React.FC = () => {
             <div className="w-full mb-8">
               <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700 p-4 rounded-xl">
                 <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                  Total Amount
+                  Total
                 </span>
-                <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">
-                  $35.00<span className="text-base mx-1">CAD</span>
+                <span className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+                  $31.95<span className="text-base mx-1">CAD + 5% tax</span>
                 </span>
               </div>
             </div>

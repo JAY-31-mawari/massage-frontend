@@ -13,21 +13,21 @@ export function MerchantAboutUs() {
       image: Clinic,
       imageText: "Clinic based practitioner",
       header: "Get discovered by clients",
-      testimony: `“Fill gaps in your schedule with new clients who are already nearby.”`,
+      testimony: `Fill gaps in your schedule with new clients who are already nearby.`,
     },
     {
       id: 2,
       image: Home,
       imageText: "Home based practitioner",
       header: "Offer great services",
-      testimony: `“Turn your spare room into a steady client flow without spending on ads.”`,
+      testimony: `Turn your spare room into a steady client flow without spending on ads.`,
     },
     {
       id: 3,
       image: Mobile,
       imageText: "Mobile practitioner",
       header: "Keep More of Your Earnings",
-      testimony: `“Make the most of your travel time by getting matched with local last-minute clients.”`,
+      testimony: `Make the most of your travel time by getting matched with local last-minute clients.`,
     },
   ];
 
@@ -171,7 +171,7 @@ export function MerchantAboutUs() {
       id: 14,
       question: "14. Who do I contact for support?",
       answer: `<p>For any questions or issues, reach out to the LastMinuteWellness support 
-      team via <a href='mailto:support@lastminutewellness.com' class="text-blue-600 underline">support@lastminutewellness.com</a>.</p>`,
+      team via <a href='mailto:info@lastminutewellness.ca' class="text-blue-600 underline">info@lastminutewellness.ca</a>.</p>`,
     },
     {
       id: 15,
@@ -181,6 +181,11 @@ export function MerchantAboutUs() {
       treatment appointments</strong> for acupuncture, chiropractic, physiotherapy and massage-therapy. 
       Follow-up appointments should be booked through your in-house system if needed.</p>`,
     },
+    {
+      id:16,
+      question:"16.  Didn’t find your question here?",
+      answer: `<p>Get in touch - Connect contact us here to get in touch <a href='mailto:info@lastminutewellness.ca' class="text-blue-600 underline">info@lastminutewellness.ca</a></p>`
+    }
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
@@ -204,7 +209,7 @@ export function MerchantAboutUs() {
           </p>
           <div className="font-bold max-w-3xl mx-auto sm:text-2xl md:text-4xl lg:text-3xl leading-tight mt-5">
             <h1>
-              We help wellness practitioners attract clients, reduce empty
+              We help wellness practitioners acquire clients, reduce empty
               slots, and focus on what matters most—providing care.
             </h1>
           </div>
@@ -343,7 +348,7 @@ export function MerchantAboutUs() {
       {/* CTA button for practitioner sign up */}
       <div className="flex justify-center">
         <div className="max-w-2xl mx-1 p-4 rounded-3xl text-lg text-center ">
-          <p className="mb-4">Ready to Grow your practice?</p>
+          <p className="mb-4">Excited to take your business to the next level?</p>
           <Link
             to="/practitioner-register"
             className="bg-blue-600 text-white py-3 px-6 rounded-lg font-medium shadow hover:bg-blue-700 transition"

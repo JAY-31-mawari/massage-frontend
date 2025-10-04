@@ -36,9 +36,8 @@ export default function Footer() {
                 </span>
               </div>
             </div>
-            <p className="text-background/80 leading-relaxed mb-8 max-w-md text-xl lg:tracking-wider">
-              Your premier destination for transformative massage therapy and
-              luxury wellness experiences.
+            <p className="text-background/80 mb-8 max-w-md text-xl">
+              Wellness made easy — book last-minute paramedical care in seconds.
             </p>
           </div>
 

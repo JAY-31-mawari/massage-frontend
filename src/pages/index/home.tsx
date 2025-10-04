@@ -310,9 +310,8 @@ export default function Home() {
       </section>
 
       {/* Customer Review */}
-      <section className="bg-gray-100 py-12 px-4 sm:px-6 md:px-12 lg:!px-28 lg:py-24 relative border-t-2 border-t-gray-200">
+      {/* <section className="bg-gray-100 py-12 px-4 sm:px-6 md:px-12 lg:!px-28 lg:py-24 relative border-t-2 border-t-gray-200">
         <div className="max-w-6xl">
-          {/* Heading */}
           <h2 className="text-4xl md:text-5xl font-bold">
             See what our community says
           </h2>
@@ -322,12 +321,10 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Carousel wrapper */}
         <div className="relative mt-4">
-          {/* Left Arrow */}
           <CustomerReviews />
         </div>
-      </section>
+      </section> */}
 
       <FooterTop bg="theme-bg" />
     </div>

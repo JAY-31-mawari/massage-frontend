@@ -57,7 +57,7 @@ export default function SubmitProperty() {
   const [tabs, setTabs] = useState([{ id: 1 }]);
   const [activeTab, setActiveTab] = useState(1);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
-  const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Optional: Store data per tab if needed later
   const [tabData, setTabData] = useState<{ [key: number]: any }>({
@@ -101,12 +101,18 @@ export default function SubmitProperty() {
     tabData[activeTab]?.areaOfExpertise?.length > 0 &&
     tabData[activeTab]?.license;
 
-  const expertiseList = [
-    { value: "Physiotherapy", label: "Physiotherapy" },
-    { value: "Chiropractic Care", label: "Chiropractic Care" },
-    { value: "Massage Therapy", label: "Massage Therapy" },
-    { value: "Acupuncture", label: "Acupuncture" },
-  ];
+  const expertiseListBase = [
+  { value: "Physiotherapy", label: "Physiotherapy" },
+  { value: "Chiropractic Care", label: "Chiropractic Care" },
+  { value: "Acupuncture", label: "Acupuncture" },
+];
+
+const expertiseListWithMassage = [
+  ...expertiseListBase,
+  { value: "Massage Therapy", label: "Massage Therapy" },
+];
+
+  
   const businessTypeList = [
     { value: "Clinic-Based Practice", label: "Clinic-Based Practice" },
     { value: "Home-Based Practice", label: "Home-Based Practice" },
@@ -116,7 +122,6 @@ export default function SubmitProperty() {
   const genderList = [
     { value: "male", label: "Male" },
     { value: "female", label: "Female" },
-    { value: "both", label: "Both" },
   ];
 
   const associationList = [
@@ -300,8 +305,8 @@ export default function SubmitProperty() {
 
     if (value !== email) {
       setConfirmEmailError("Email doesn't match");
-    }else{
-      setConfirmEmailError("")
+    } else {
+      setConfirmEmailError("");
     }
   };
 
@@ -477,8 +482,8 @@ export default function SubmitProperty() {
           },
         });
         setActiveTab(1);
-        setCurrentStep(1)
-        setShowPaymentModal(true)
+        setCurrentStep(1);
+        setShowPaymentModal(true);
       } else {
         console.error("Unexpected status:", businessResponse.status);
       }
@@ -581,7 +586,7 @@ export default function SubmitProperty() {
                             )}
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label className="block text-base font-medium mb-2">
@@ -1116,20 +1121,33 @@ export default function SubmitProperty() {
                               </label>
                               <Select
                                 isMulti
-                                options={expertiseList}
+                                options={
+                                  businessType !== "Clinic-Based Practice"
+                                    ? expertiseListWithMassage
+                                    : expertiseListBase
+                                }
                                 className="w-full"
                                 classNamePrefix="react-select"
                                 placeholder="Areas of Expertise"
-                                value={expertiseList.filter((option) =>
-                                  tabData[activeTab]?.areaOfExpertise?.includes(
-                                    option.value
-                                  )
-                                )}
+                                value={
+                                  businessType === ""
+                                    ? []
+                                    : (businessType === "wellness"
+                                        ? expertiseListWithMassage
+                                        : expertiseListBase
+                                      ).filter((option: any) =>
+                                        tabData[
+                                          activeTab
+                                        ]?.areaOfExpertise?.includes(
+                                          option.value
+                                        )
+                                      )
+                                }
                                 onChange={(selectedOptions) =>
                                   handleTabInputChange(
                                     "areaOfExpertise",
                                     selectedOptions
-                                      ? selectedOptions.map((o) => o.value)
+                                      ? selectedOptions.map((o: any) => o.value)
                                       : []
                                   )
                                 }
@@ -1423,12 +1441,15 @@ export default function SubmitProperty() {
                 Your Business Details has been Saved
               </h2>
               <p className="text-sm text-gray-600 mt-2">
-                Pay the one time non-refundable $35 fee to start your background Police verification check. After your payment is processed, you’ll receive an email with a secure link to complete your background check.
+                Pay the one time non-refundable $31.95 + 5% Tax fee to start
+                your background Police verification check. After your payment is
+                processed, you’ll receive an email with a secure link to
+                complete your background check.
               </p>
 
               <div className="mt-6 flex gap-3 justify-center">
                 <button
-                  onClick={()=> navigate("/payment")}
+                  onClick={() => navigate("/payment")}
                   className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
                 >
                   Continue to Pay

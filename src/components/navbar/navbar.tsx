@@ -31,15 +31,15 @@ export default function Navbar() {
     },
     {
       to: "/about-us",
-      name: "About",
+      name: "About us",
     },
     {
       to: "/contact",
-      name: "Contact",
+      name: "Contact us",
     },
     {
       to: "/faq",
-      name: "Faq",
+      name: "FAQ",
     },
   ];
 
