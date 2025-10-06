@@ -100,7 +100,7 @@ export function ClientFAQ() {
                       onClick={() => toggle(index)}
                       className="w-full text-left px-6 py-2 flex justify-between items-center focus:outline-none"
                     >
-                      <span className="font-medium text-black text-xl w-11/12 break-words whitespace-normal">
+                      <span className="font-medium text-[#333333] text-xl w-11/12 break-words whitespace-normal">
                         {item.question}
                       </span>
                       <div
