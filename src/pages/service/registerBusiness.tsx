@@ -26,6 +26,7 @@ interface PractitionerData {
   insurance: string;
   governmentId: string;
   qualification: string;
+  criminal: string;
   profilePicture: string;
 }
 
@@ -43,6 +44,7 @@ export default function SubmitProperty() {
   const [bankAccountNumber, setBankAccountNumber] = useState(0);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  const [businessDesc, setBusinessDesc] = useState("");
   const [merchantAddress, setMerchantAddress] = useState("");
   const [merchantCity, setMerchantCity] = useState("");
   const [merchantState, setMerchantState] = useState("");
@@ -72,6 +74,7 @@ export default function SubmitProperty() {
       insurance: "",
       governmentId: "",
       qualification: "",
+      criminal: "",
       profilePicture: "",
     },
   });
@@ -102,17 +105,16 @@ export default function SubmitProperty() {
     tabData[activeTab]?.license;
 
   const expertiseListBase = [
-  { value: "Physiotherapy", label: "Physiotherapy" },
-  { value: "Chiropractic Care", label: "Chiropractic Care" },
-  { value: "Acupuncture", label: "Acupuncture" },
-];
+    { value: "Physiotherapy", label: "Physiotherapy" },
+    { value: "Chiropractic Care", label: "Chiropractic Care" },
+    { value: "Acupuncture", label: "Acupuncture" },
+  ];
 
-const expertiseListWithMassage = [
-  ...expertiseListBase,
-  { value: "Massage Therapy", label: "Massage Therapy" },
-];
+  const expertiseListWithMassage = [
+    ...expertiseListBase,
+    { value: "Massage Therapy", label: "Massage Therapy" },
+  ];
 
-  
   const businessTypeList = [
     { value: "Clinic-Based Practice", label: "Clinic-Based Practice" },
     { value: "Home-Based Practice", label: "Home-Based Practice" },
@@ -347,6 +349,7 @@ const expertiseListWithMassage = [
         governmentId: "",
         qualification: "",
         profilePicture: "",
+        criminal: "",
       },
     }));
     setActiveTab(nextId);
@@ -415,6 +418,7 @@ const expertiseListWithMassage = [
         working_days: selectedDays,
         working_hours_start: startTime,
         working_hours_end: endTime,
+        business_desc: businessDesc,
         bankName,
         bankAccountNumber,
         bankTransitNumber,
@@ -448,12 +452,12 @@ const expertiseListWithMassage = [
         }
         setStorageItem("business_id", businessResponse?.data?.data?.id);
         setStorageItem("business_email", email);
-        setStorageItem("business_name",businessName)
-        setStorageItem("business_address",merchantAddress)
-        setStorageItem("business_state",merchantState)
-        setStorageItem("business_city",merchantCity)
-        setStorageItem("business_zipcode",merchantZipCode)
-        
+        setStorageItem("business_name", businessName);
+        setStorageItem("business_address", merchantAddress);
+        setStorageItem("business_state", merchantState);
+        setStorageItem("business_city", merchantCity);
+        setStorageItem("business_zipcode", merchantZipCode);
+        setStorageItem("business_type", businessType);
 
         setBusinessName("");
         setBusinessType("");
@@ -463,6 +467,7 @@ const expertiseListWithMassage = [
         setAppointmentApprovalType("AUTO");
         setStartTime("");
         setEndTime("");
+        setBusinessDesc("");
         setBankName("");
         setBankAccountNumber(0);
         setBankTransitNumber(0);
@@ -486,11 +491,12 @@ const expertiseListWithMassage = [
             governmentId: "",
             qualification: "",
             profilePicture: "",
+            criminal: "",
           },
         });
         setActiveTab(1);
         setCurrentStep(1);
-        navigate("/contractor-agreement")
+        navigate("/contractor-agreement");
       } else {
         console.error("Unexpected status:", businessResponse.status);
       }
@@ -619,7 +625,7 @@ const expertiseListWithMassage = [
 
                           {/* Phone Number */}
                           <div>
-                            <label className="block text-base mb-2">
+                            <label className="block text-base font-medium mb-2">
                               Phone Number
                             </label>
                             <input
@@ -644,7 +650,7 @@ const expertiseListWithMassage = [
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
                           {/* Appointment Confirmation + Duplicate */}
                           <div>
-                            <label className="block text-base font-medium mb-3">
+                            <label className="block text-base font-medium mb-2">
                               How would you like to receive appointment
                               confirmation?
                             </label>
@@ -699,7 +705,7 @@ const expertiseListWithMassage = [
 
                           {/* Appointment Approval Type */}
                           <div>
-                            <label className="block text-base font-base mb-3">
+                            <label className="block text-base font-medium mb-2">
                               Appointment Approval Type?
                             </label>
                             <div className="flex gap-4">
@@ -750,7 +756,7 @@ const expertiseListWithMassage = [
 
                         {/* working days */}
                         <div>
-                          <label className="block text-base mb-3">
+                          <label className="block text-base font-medium mb-2">
                             Working Days
                           </label>
                           <div className="flex gap-4 flex-wrap">
@@ -775,7 +781,7 @@ const expertiseListWithMassage = [
 
                         {/* Working Hours */}
                         <div>
-                          <label className="block text-base mb-3">
+                          <label className="block text-base font-medium mb-2">
                             Working Hours
                           </label>
                           <div className="flex flex-col sm:flex-row gap-6">
@@ -798,6 +804,30 @@ const expertiseListWithMassage = [
                               />
                             </div>
                           </div>
+                        </div>
+
+                        <div className="col-span-3">
+                          <label className="block text-base font-medium mb-2">
+                            Business Description
+                          </label>
+                          <textarea
+                            placeholder="Write a clear and engaging description of your business. Customers will see this."
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                            rows={5}
+                            value={businessDesc}
+                            onChange={(e) => {
+                              const words = e.target.value.trim().split(/\s+/);
+                              if (words.length <= 500) {
+                                setBusinessDesc(e.target.value);
+                              }
+                            }}
+                          />
+                          <p className="text-sm text-gray-500 mt-1 text-right">
+                            {businessDesc.trim() === ""
+                              ? 0
+                              : businessDesc.trim().split(/\s+/).length}{" "}
+                            / 500 words
+                          </p>
                         </div>
                       </div>
 
@@ -1230,6 +1260,7 @@ const expertiseListWithMassage = [
                             "insurance",
                             "governmentId",
                             "qualification",
+                            "criminal",
                           ] as (keyof PractitionerData)[]
                         ).map((field) => (
                           <div
@@ -1244,6 +1275,8 @@ const expertiseListWithMassage = [
                                 ? "Government ID"
                                 : field === "qualification"
                                 ? "Proof of Qualification"
+                                : field === "criminal"
+                                ? "Criminal background check (not older than 1 year)"
                                 : field}
                             </label>
 

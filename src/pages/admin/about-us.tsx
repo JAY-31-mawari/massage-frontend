@@ -98,28 +98,48 @@ export default function AboutUs() {
         </div>
 
         {/* Founder Section */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-10 text-[#333333]">
+        <div className="flex flex-col lg:flex-row justify-between items-center text-[#333333]">
           <div className="max-w-3xl space-y-4">
             <h3 className="text-2xl md:text-3xl font-semibold">
               Words from our Founder & CEO
             </h3>
-            <p className="text-base md:text-lg italic leading-relaxed">
-              "I started Last Minute Wellness with a simple belief — that
-              healthcare and wellness should never feel out of reach. Too often,
-              people delay their care because of busy schedules, last-minute
-              needs, or the hassle of finding the right practitioner. Our
-              mission is to change that by making wellness accessible,
-              effortless, and timely for everyone.
-              <br />
-              <br />
-              At the same time, I wanted to help practitioners fill empty slots
-              and focus on what they do best: delivering healing and care, not
-              worrying about cancellations. Together, we’re building a system
-              where patients and practitioners both win."
-            </p>
-            <div className="flex items-center gap-2 mt-2">
+            <div className="text-base italic space-y-2">
+              <p>
+              "At Last Minute Wellness, our mission began with something deeply
+              personal.
+              </p>
+              <p>
+              I’m Utkarsh Dev Kaushik. For over a decade, I’ve worked in
+              financial services, but my most important role has been at home —
+              as a father. My son was born medically complex, and caring for him
+              took a toll on my body and mind. I even developed tennis elbow
+              from the daily strain, making simple tasks painful.
+              </p>
+              <p>
+              During recovery, I struggled to access physiotherapy and wellness
+              care when I needed it most. I often had to call multiple clinics
+              or scour websites just to find a last-minute appointment. Long
+              wait times and tricky booking processes made me think: there has
+              to be a better way.
+              </p>
+              <p>
+              That’s how Last Minute Wellness was born — a platform to connect
+              people instantly with physiotherapists, chiropractors,
+              acupuncturists, and other wellness providers, just like ordering
+              food or booking a ride.
+              </p>
+              <p>
+              Our goal is simple: make wellness accessible, reduce barriers, and
+              help people get the care they need — without the stress I faced.
+              </p>
+              <p>Last Minute Wellness isn’t just a booking platform. It’s a bridge
+              between clients and practitioners, built on empathy, experience,
+              and a passion for healthier communities. Because sometimes, care
+              can’t wait."</p>
+            </div>
+            <div className="flex items-center gap-2 mt-4">
               <a
-                href="https://www.linkedin.com/in/utkarsh-kaushik" // replace with actual LinkedIn URL
+                href="https://www.linkedin.com/in/utkarsh-kaushik-3b6372106/" // replace with actual LinkedIn URL
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-blue-600 hover:underline"
@@ -130,7 +150,7 @@ export default function AboutUs() {
             </div>
           </div>
           <img
-            className="w-52 h-52 md:w-72 md:h-72 object-cover shadow-md rounded-lg"
+            className="w-52 h-52 md:w-80 md:h-80 object-cover shadow-md rounded-lg"
             src={Founder}
             alt="founder-image"
           />

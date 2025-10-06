@@ -17,7 +17,8 @@ import { ClientFAQ } from "../pages/others/clientFAQ";
 import { MerchantAboutUs } from "../pages/others/merchantLandingPage";
 import { Refund } from "../pages/others/refund";
 import { PrivacyPolicy } from "../pages/others/privacyPolicy";
-import { ContractorAgreement } from "../pages/others/contractorsAgreement";
+import { ContractorSignAgreement } from "../pages/others/contractorSignAgreement";
+import { ContractorAgreement } from "../pages/others/contractorAgreement";
 import { TermsOfService } from "../pages/others/termsOfService";
 import { WebsiteTermsOfUse } from "../pages/others/websiteTermsOfUse";
 import ConsentForm from "../pages/others/consentForm";
@@ -57,6 +58,7 @@ export function AppRoutes() {
             <Route path='/privacy-policy' element={<PrivacyPolicy />} />
             <Route path='/terms-of-use' element={<WebsiteTermsOfUse />} />
             <Route path='/consent-form' element={<ConsentForm />} />
+            <Route path='/contractor-sign-agreement' element={<ContractorSignAgreement />} />
             <Route path='/contractor-agreement' element={<ContractorAgreement />} />
             <Route path='/terms-of-service' element={<TermsOfService />} />
         </Routes>   

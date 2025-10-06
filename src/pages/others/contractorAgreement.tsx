@@ -1,37 +1,12 @@
-import React, { useRef, useState } from "react";
-import toast from "react-hot-toast";
-import SignatureCanvas from "react-signature-canvas";
 import { getStorageItem } from "../../utils/sessionStorage";
+import SignatureCanvas from "react-signature-canvas";
 
 export function ContractorAgreement() {
-  const businessId = getStorageItem("business_id")
   const businessName = getStorageItem("business_name")
-  const businessEmail = getStorageItem("business_email")
-  const businessAddress = getStorageItem("business_address")
-  const businessCity = getStorageItem("business_city")
-  const businessState = getStorageItem("business_state")
-  const businessZipCode = getStorageItem("business_zipcode")
-  const sigCanvasRef = useRef<SignatureCanvas>(null);
-  const [trimmedDataURL, setTrimmedDataURL] = useState<string | null>(null);
 
-  const clearSignature = () => {
-    sigCanvasRef.current?.clear();
-    setTrimmedDataURL(null);
-  };
-
-  const saveSignature = () => {
-    if (sigCanvasRef.current?.isEmpty()) {
-      toast.error("Please provide a signature first.");
-    } else {
-      const dataURL = sigCanvasRef.current
-        ?.getTrimmedCanvas()
-        .toDataURL("image/png");
-      setTrimmedDataURL(dataURL || null);
-    }
-  };
 
   return (
-    <div className="max-w-7xl text-base mx-auto mt-4">
+    <div className="max-w-7xl text-base mx-auto mt-4 px-6  md:px-10 lg:px-6">
       {/* Header */}
       <h1 className="text-2xl font-semibold mb-4 underline">
         Last Minute Wellness Inc. Independent Contractor Services Agreement
@@ -39,9 +14,9 @@ export function ContractorAgreement() {
 
       {/* Contractor Details */}
       <div className="mb-6">
-        <p className="font-semibold">{businessName}</p>
-        <p className="mb-2">{businessAddress}-{businessCity}-{businessState}-{businessZipCode}</p>
-        <p>Attention: {businessName}</p>
+        <p className="font-semibold">[Name of Independent Contractor]</p>
+        <p className="mb-2">[Independent Contractor’s Address]</p>
+        <p>Attention: [Name of Independent Contractor]</p>
       </div>
 
       {/* Re: */}
@@ -57,7 +32,7 @@ export function ContractorAgreement() {
         agreement (the "<strong>Agreement</strong>") made effective as of [date]
         (“<strong>Effective Date</strong>”) reached between Last Minute Wellness
         Inc. (“<strong>Last Minute Wellness</strong>“) and{" "}
-        <strong>[{businessName}]</strong> (the "
+        <strong>[Name of Independent Contractor]</strong> (the "
         <strong>Contractor</strong>", and with Last Minute Wellness, the “
         <strong>parties</strong>” and “<strong>party</strong>” means any one of
         them), the terms and conditions of which are set out below.
@@ -476,7 +451,7 @@ export function ContractorAgreement() {
       </div>
 
       <div className="mt-8">
-        <h2 className="font-semibold text-xl mb-2 underline">2. Termination</h2>
+        <h2 className="font-semibold text-xl mb-2 underline">7. Termination</h2>
         <p className="mb-4">
           Subject to the provisions of Section 3 above, either party may
           terminate the Term upon seven (7) days’ prior written notice to the
@@ -499,7 +474,7 @@ export function ContractorAgreement() {
 
       <div className="mt-8">
         <h2 className="font-semibold text-xl mb-2 underline">
-          3. Confidentiality
+          8. Confidentiality
         </h2>
         <p className="mb-4">
           In conjunction with providing the Services under this Agreement, it is
@@ -556,7 +531,7 @@ export function ContractorAgreement() {
 
       <div className="mt-8">
         <h2 className="font-semibold text-xl mb-2 underline">
-          4. Ownership of Information
+          9. Ownership of Information
         </h2>
         <p className="mb-4">
           All materials and information of any kind whatsoever generated or
@@ -570,7 +545,7 @@ export function ContractorAgreement() {
       </div>
 
       <div className="mt-8">
-        <h2 className="font-semibold text-xl mb-2 underline">5. Privacy Law</h2>
+        <h2 className="font-semibold text-xl mb-2 underline">10. Privacy Law</h2>
         <p className="mb-4">
           Contractor agrees and acknowledges that the protection of the privacy
           and dignity of Last Minute Wellness’s Customers is of the utmost
@@ -589,7 +564,7 @@ export function ContractorAgreement() {
       </div>
 
       <div className="mt-8">
-        <h2 className="font-semibold text-xl mb-2 underline">6. Indemnity</h2>
+        <h2 className="font-semibold text-xl mb-2 underline">11. Indemnity</h2>
         <p className="mb-4">
           The Contractor (the "<strong>Indemnifying Party</strong>") shall be
           liable for and shall indemnify, defend, and hold harmless Last Minute
@@ -634,7 +609,7 @@ export function ContractorAgreement() {
 
       <div className="mt-8">
         <h2 className="font-semibold text-xl mb-2 underline">
-          7. Relationship of Parties
+          12. Relationship of Parties
         </h2>
         <p className="mb-4">
           Both parties are independent contractors under this Agreement. Nothing
@@ -653,7 +628,7 @@ export function ContractorAgreement() {
 
       <div className="mt-8">
         <h2 className="font-semibold text-xl mb-2 underline">
-          8. Non-Competition and Non-Solicitation
+          13. Non-Competition and Non-Solicitation
         </h2>
         <p className="mb-4">
           During the period of the Term, and for a period of one (1) year
@@ -731,7 +706,7 @@ export function ContractorAgreement() {
 
       <div className="mt-8">
         <h2 className="font-semibold text-xl mb-2 underline">
-          9. Laws and Independent Legal Advice
+          14. Laws and Independent Legal Advice
         </h2>
         <p className="mb-4">
           This Agreement shall be interpreted, and the legal relations of the
@@ -766,7 +741,7 @@ export function ContractorAgreement() {
       </div>
 
       <div className="mt-8">
-        <h2 className="font-semibold text-xl mb-2 underline">10. Notice</h2>
+        <h2 className="font-semibold text-xl mb-2 underline">15. Notice</h2>
 
         <p className="mb-4">
           Any notice given pursuant to the terms and conditions of this
@@ -787,7 +762,7 @@ export function ContractorAgreement() {
           </p>
           <p>
             <span className="font-semibold">To the Contractor:</span>{" "}
-            [{businessAddress} and {businessEmail}]
+            [Contractor Address and Email]
           </p>
         </div>
 
@@ -798,11 +773,11 @@ export function ContractorAgreement() {
           service as set out above by notice to the other party.
         </p>
 
-        <h2 className="font-semibold text-xl mb-2 underline">11. Time</h2>
+        <h2 className="font-semibold text-xl mb-2 underline">16. Time</h2>
         <p className="mb-4">Time is of the essence in this Agreement.</p>
 
         <h2 className="font-semibold text-xl mb-2 underline">
-          12. Enurement, Assignment, Amendments and Counterpart Execution
+          17. Enurement, Assignment, Amendments and Counterpart Execution
         </h2>
         <p className="mb-2">
           Neither the Contractor nor Last Minute Wellness shall be entitled to
@@ -826,7 +801,6 @@ export function ContractorAgreement() {
 
           <div className="border border-gray-300 rounded-md mb-4">
             <SignatureCanvas
-              ref={sigCanvasRef}
               penColor="black"
               canvasProps={{ width: 500, height: 200, className: "rounded-md" }}
             />
@@ -834,29 +808,16 @@ export function ContractorAgreement() {
 
           <div className="flex gap-4 mb-4">
             <button
-              onClick={saveSignature}
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
             >
               Save Signature
             </button>
             <button
-              onClick={clearSignature}
               className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 transition"
             >
               Clear
             </button>
           </div>
-
-          {trimmedDataURL && (
-            <div>
-              <p className="mb-2 font-semibold">Saved Signature:</p>
-              <img
-                src={trimmedDataURL}
-                alt="Digital Signature"
-                className="border border-gray-300 rounded"
-              />
-            </div>
-          )}
         </p>
 
         <p className="mb-2">
@@ -883,7 +844,7 @@ export function ContractorAgreement() {
           <p className="font-semibold">
             ACCEPTED AND AGREED TO AS OF THIS [Date]
           </p>
-          <p>[{businessName}]</p>
+          <p>[Contractor’s Name]</p>
           <p>By:</p>
           <p>Name:</p>
           <p>Title:</p>
