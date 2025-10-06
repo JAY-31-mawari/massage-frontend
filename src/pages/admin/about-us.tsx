@@ -25,7 +25,8 @@ export default function AboutUs() {
   return (
     <div>
       {/* Hero Section */}
-      <div className="text-white min-h-[420px] bg-gradient-to-r from-emerald-700 via-emerald-500 to-teal-400 flex flex-col justify-center items-center px-4 text-center">
+      <div className="text-white min-h-[420px] bg-gradient-to-t from-emerald-700 via-emerald-500 to-emerald-400 flex flex-col justify-center items-center px-4 text-center">
+
         <h1 className="font-bold text-3xl md:text-4xl underline mb-6">
           About Us
         </h1>

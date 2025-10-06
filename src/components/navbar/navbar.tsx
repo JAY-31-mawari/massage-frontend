@@ -91,7 +91,7 @@ export default function Navbar() {
                   <li key={item.to}>
                     <Link
                       to={item.to}
-                      className="p-2 hover:bg-white rounded-md transition"
+                      className="p-2 hover:bg-gray-100 hover:border-1 hover:border-black hover:text-[#333333] rounded-md transition"
                     >
                       {item.name}
                     </Link>
