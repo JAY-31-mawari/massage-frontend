@@ -231,19 +231,19 @@ export default function RegisterAccount() {
   const loginPage = [
     {
       id: 1,
-      header: "Real-Time Transparency",
+      header: "Instant Booking",
       point:
-        "Know exact wait times before you arrive, so your visits are stress-free and predictable.",
+        "Find and book last-minute appointments with verified practitioners in just a few clicks.",
     },
     {
       id: 2,
-      header: "Seamless Check-In",
+      header: "Trusted Professionals",
       point:
-        "Skip long queues and paperwork with secure, digital check-in for a smoother start.",
+        "All practitioners are licensed, insured, and verified for quality and safety.",
     },
     {
       id: 3,
-      header: "Convenient Scheduling",
+      header: "Flexible Scheduling",
       point:
         "Book, reschedule, or cancel appointments anytime — on your terms, at your pace.",
     },
@@ -251,7 +251,7 @@ export default function RegisterAccount() {
       id: 4,
       header: "Care Without Boundaries",
       point:
-        "Access the same trusted experience across all locations, with your records always in sync.",
+        "Access wellness services wherever you are — at home, in clinic, or on the go.",
     },
   ];
 

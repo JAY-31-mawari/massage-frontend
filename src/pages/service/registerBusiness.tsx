@@ -708,48 +708,102 @@ export default function SubmitProperty() {
                             <label className="block text-base font-medium mb-2">
                               Appointment Approval Type?
                             </label>
-                            <div className="flex gap-4">
-                              <label
-                                className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
-                                  appointmentApprovalType === "AUTO"
-                                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                                    : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                                }`}
-                                onClick={() =>
-                                  setAppointmentApprovalType("AUTO")
-                                }
-                              >
-                                <input
-                                  type="radio"
-                                  name={`confirmation-auto`}
-                                  checked={appointmentApprovalType === "AUTO"}
-                                  onChange={() =>
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                              {/* AUTO APPROVAL OPTION */}
+                              <div className="flex items-start sm:items-center gap-2 relative">
+                                <label
+                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition w-full sm:w-auto ${
+                                    appointmentApprovalType === "AUTO"
+                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                  }`}
+                                  onClick={() =>
                                     setAppointmentApprovalType("AUTO")
                                   }
-                                />
-                                Auto-Approval
-                              </label>
+                                >
+                                  <input
+                                    type="radio"
+                                    name="confirmation"
+                                    checked={appointmentApprovalType === "AUTO"}
+                                    onChange={() =>
+                                      setAppointmentApprovalType("AUTO")
+                                    }
+                                  />
+                                  <span className="text-sm sm:text-base">
+                                    Auto-Approval
+                                  </span>
+                                </label>
 
-                              <label
-                                className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition ${
-                                  appointmentApprovalType === "MANUAL"
-                                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                                    : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                                }`}
-                                onClick={() =>
-                                  setAppointmentApprovalType("MANUAL")
-                                }
-                              >
-                                <input
-                                  type="radio"
-                                  name={`confirmation-manual`}
-                                  checked={appointmentApprovalType === "MANUAL"}
-                                  onChange={() =>
+                                {/* Info Button + Tooltip */}
+                                <div className="relative group">
+                                  <button
+                                    type="button"
+                                    className="w-5 h-5 flex items-center justify-center rounded-full border text-xs font-bold text-gray-600 border-gray-400 hover:bg-gray-200"
+                                  >
+                                    i
+                                  </button>
+                                  <span
+                                    className="absolute sm:left-1/2 sm:-translate-x-1/2 right-0 sm:right-auto top-7 
+                   w-60 sm:w-72 px-3 py-2 text-xs text-white bg-gray-800 
+                   rounded-md opacity-0 group-hover:opacity-100 
+                   transition-opacity duration-200 z-10 
+                   whitespace-normal text-center leading-snug shadow-lg"
+                                  >
+                                    Requests are auto-approved instantly based
+                                    on the schedule you provide.
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* MANUAL APPROVAL OPTION */}
+                              <div className="flex items-start sm:items-center gap-2 relative">
+                                <label
+                                  className={`flex items-center gap-2 px-4 py-2 rounded-md border cursor-pointer transition w-full sm:w-auto ${
+                                    appointmentApprovalType === "MANUAL"
+                                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                                      : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                                  }`}
+                                  onClick={() =>
                                     setAppointmentApprovalType("MANUAL")
                                   }
-                                />
-                                Manually
-                              </label>
+                                >
+                                  <input
+                                    type="radio"
+                                    name="confirmation"
+                                    checked={
+                                      appointmentApprovalType === "MANUAL"
+                                    }
+                                    onChange={() =>
+                                      setAppointmentApprovalType("MANUAL")
+                                    }
+                                  />
+                                  <span className="text-sm sm:text-base">
+                                    Manually
+                                  </span>
+                                </label>
+
+                                {/* Info Button + Tooltip */}
+                                <div className="relative group">
+                                  <button
+                                    type="button"
+                                    className="w-5 h-5 flex items-center justify-center rounded-full border text-xs font-bold text-gray-600 border-gray-400 hover:bg-gray-200"
+                                  >
+                                    i
+                                  </button>
+                                  <span
+                                    className="absolute sm:left-1/2 sm:-translate-x-1/2 right-0 sm:right-auto top-7 
+                   w-60 sm:w-72 px-3 py-2 text-xs text-white bg-gray-800 
+                   rounded-md opacity-0 group-hover:opacity-100 
+                   transition-opacity duration-200 z-10 
+                   whitespace-normal text-center leading-snug shadow-lg"
+                                  >
+                                    You’ll review and approve each request
+                                    manually. Please respond within 20 minutes
+                                    during business hours or by the first
+                                    business hour if received after hours.
+                                  </span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>

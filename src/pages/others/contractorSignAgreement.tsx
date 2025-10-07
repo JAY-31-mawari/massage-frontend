@@ -15,6 +15,7 @@ export function ContractorSignAgreement() {
   const businessCity = getStorageItem("business_city");
   const businessState = getStorageItem("business_state");
   const businessZipCode = getStorageItem("business_zipcode");
+  const [isLoading, setIsLoading] = useState(false)
   const today = new Date().toISOString().split('T')[0];
   const sigCanvasRef = useRef<SignatureCanvas>(null);
   const [trimmedDataURL, setTrimmedDataURL] = useState<string | null>(null);
@@ -25,6 +26,7 @@ export function ContractorSignAgreement() {
   };
 
   const saveSignature = async () => {
+    setIsLoading(true)
     const sig = sigCanvasRef.current;
 
     if (!sig || sig.isEmpty()) {
@@ -67,6 +69,8 @@ export function ContractorSignAgreement() {
     } catch (err) {
       console.error("Error saving signature:", err);
       toast.error("Something went wrong while saving signature");
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -891,10 +895,9 @@ export function ContractorSignAgreement() {
               onClick={saveSignature}
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
             >
-              Save{" "}
-              {businessType === "Clinic-Based Practice"
-                ? "Signature"
-                : "and proceed to payment"}
+              {isLoading ? "Saving" : businessType === "Clinic-Based Practice"
+                ? "Save Signature"
+                : "Save and proceed to payment"}
             </button>
             <button
               onClick={clearSignature}

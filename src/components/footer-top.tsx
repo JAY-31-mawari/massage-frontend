@@ -6,12 +6,12 @@ export default function FooterTop({ bg }: { bg: any }) {
       <div className="w-full">
         <div className="bg-blue-500 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 p-8">
           {/* Left Content */}
-          <div className="text-center md:text-left">
+          <div className="sm:text-center !text-left">
             <h3 className="text-2xl md:text-3xl font-bold mb-2">
               Want to Become a Practitioner?
             </h3>
             <span className="text-lg opacity-90">
-              We'll help you to grow your career and growth.
+              Grow your business, connect with new clients, and take control of your schedule.
             </span>
             
           </div>
