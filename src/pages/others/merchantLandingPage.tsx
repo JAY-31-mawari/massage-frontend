@@ -223,7 +223,7 @@ export function MerchantAboutUs() {
       </div>
 
       {/* how it works section*/}
-      <section className="bg-[#fafbff] py-8 px-4 sm:px-8 md:px-12 lg:px-24">
+      <section className="bg-[#fafbff] py-12 px-4 sm:px-8 md:px-12 lg:px-24">
         <div className="text-center">
           <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-5xl sm:mx-12 md:mx-24 lg:mx-32">
             Getting Started is Simple
@@ -249,7 +249,7 @@ export function MerchantAboutUs() {
                   </h1>
                 </div>
               </div>
-              <h1 className="font-bold my-2 text-lg sm:text-xl">
+              <h1 className="font-bold mt-4 text-lg sm:text-xl">
                 {testimoniest.header}
               </h1>
               <p className="text-base sm:text-lg">{testimoniest.testimony}</p>
@@ -346,9 +346,9 @@ export function MerchantAboutUs() {
       </section>
 
       {/* CTA button for practitioner sign up */}
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-6">
         <div className="max-w-2xl mx-1 p-4 rounded-3xl text-lg text-center ">
-          <p className="mb-4">Excited to take your business to the next level?</p>
+          <p className="mb-12">Excited to take your business to the next level?</p>
           <Link
             to="/practitioner-register"
             className="bg-blue-600 text-white py-3 px-6 rounded-lg font-medium shadow hover:bg-blue-700 transition"
