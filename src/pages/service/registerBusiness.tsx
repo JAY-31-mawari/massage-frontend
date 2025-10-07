@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { UploadButton } from "../../utils/uploadthing";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
@@ -60,6 +59,10 @@ export default function SubmitProperty() {
   const [activeTab, setActiveTab] = useState(1);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
+
+
 
   // Optional: Store data per tab if needed later
   const [tabData, setTabData] = useState<{ [key: number]: any }>({
@@ -325,6 +328,99 @@ export default function SubmitProperty() {
     }
   };
 
+  const handleBusinessPhotos = async (e: any) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (businessPhotos.length >= 3) {
+      alert("Maximum 3 photos allowed");
+      return;
+    }
+
+    const currentIndex = businessPhotos.length;
+    setUploadingIndex(currentIndex);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.post(`${global.config.ROOTURL.prod}/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.data.success && res.data.fileUrl) {
+        setBusinessPhotos((prev) => [...prev, res.data.fileUrl]);
+      } else {
+        alert("Upload failed: " + res.data.message);
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Upload error");
+    } finally {
+      setUploadingIndex(null);
+    }
+  };
+
+  const fields: (keyof PractitionerData)[] = [
+    "profilePicture",
+    "insurance",
+    "governmentId",
+    "qualification",
+    "criminal",
+  ];
+
+
+  const handleFileChange = async (e: any, field: keyof PractitionerData) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingField(field);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.post(
+        `${global.config.ROOTURL.prod}/upload`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      if (res.data.success && res.data.fileUrl) {
+        setTabData((prev) => ({
+          ...prev,
+          [activeTab]: {
+            ...prev[activeTab],
+            [field]: res.data.fileUrl,
+          },
+        }));
+      } else {
+        alert("Upload failed: " + res.data.message);
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Upload error");
+    } finally {
+      setUploadingField(null);
+    }
+  };
+
+  const getLabel = (field: keyof PractitionerData) => {
+    switch (field) {
+      case "profilePicture":
+        return "Profile Picture";
+      case "governmentId":
+        return "Government ID";
+      case "qualification":
+        return "Proof of Qualification";
+      case "criminal":
+        return "Criminal background check (not older than 1 year)";
+      default:
+        return field;
+    }
+  };
+
   const handleToggle = (day: string) => {
     setSelectedDays((prev) =>
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
@@ -496,7 +592,7 @@ export default function SubmitProperty() {
         });
         setActiveTab(1);
         setCurrentStep(1);
-        navigate("/contractor-agreement");
+        navigate("/contractor-sign-agreement");
       } else {
         console.error("Unexpected status:", businessResponse.status);
       }
@@ -960,81 +1056,72 @@ export default function SubmitProperty() {
                           </label>
 
                           {/* Dropzone */}
-                          <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-100 flex items-center justify-center p-10">
-                            <style>
-                              {`
-                                input[type="file"] {
-                                  display: none !important;
-                                }
-                              `}
-                            </style>
-
-                            <UploadButton
-                              endpoint="practitionerMedia"
-                              onClientUploadComplete={(res) => {
-                                const uploadedUrl = res?.[0]?.ufsUrl;
-                                if (uploadedUrl && businessPhotos.length < 3) {
-                                  setBusinessPhotos((prev) => [
-                                    ...prev,
-                                    uploadedUrl,
-                                  ]);
-                                }
-                              }}
-                              onUploadError={(error) =>
-                                console.error("Upload failed", error)
+                          <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-100 flex items-center justify-center p-10 cursor-pointer">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleBusinessPhotos}
+                              disabled={
+                                uploadingIndex !== null ||
+                                businessPhotos.length >= 3
                               }
-                              appearance={{
-                                button:
-                                  "bg-blue-600 text-black px-4 py-2 rounded-lg cursor-pointer",
-                                allowedContent: "hidden",
-                                container: "space-y-3",
-                              }}
                             />
-                          </div>
-                        </div>
-
-                        {/* Preview Section */}
-                        {businessPhotos.length > 0 && (
-                          <div className="w-full mt-6">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                              {businessPhotos.map((photo, index) => (
-                                <div
-                                  key={index}
-                                  className="relative rounded-lg shadow-md overflow-hidden"
-                                >
-                                  <img
-                                    src={photo}
-                                    alt={`Business Photo ${index + 1}`}
-                                    className="w-full h-44 object-cover"
-                                  />
-                                  <button
-                                    type="button"
-                                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center shadow-md hover:bg-red-600"
-                                    onClick={() =>
-                                      setBusinessPhotos((prev) =>
-                                        prev.filter((_, i) => i !== index)
-                                      )
-                                    }
-                                  >
-                                    ✕
-                                  </button>
-                                </div>
-                              ))}
-                            </div>
-
-                            {/* Remaining uploads */}
-                            {businessPhotos.length < 3 && (
-                              <div className="text-center mt-4">
-                                <p className="text-base text-gray-500">
-                                  You can upload{" "}
-                                  <strong>{3 - businessPhotos.length}</strong>{" "}
-                                  more photo
-                                  {businessPhotos.length < 2 ? "" : "s"}
-                                </p>
-                              </div>
+                            {uploadingIndex !== null && (
+                              <p className="text-blue-600">
+                                Uploading photo {uploadingIndex + 1}...
+                              </p>
                             )}
+                            {businessPhotos.length < 3 &&
+                              uploadingIndex === null && (
+                                <p className="text-gray-500">
+                                  Click here or drag & drop to upload
+                                </p>
+                              )}
                           </div>
-                        )}
+
+                          {/* Preview Section */}
+                          {businessPhotos.length > 0 && (
+                            <div className="w-full mt-6">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                {businessPhotos.map((photo, index) => (
+                                  <div
+                                    key={index}
+                                    className="relative rounded-lg shadow-md overflow-hidden"
+                                  >
+                                    <img
+                                      src={photo}
+                                      alt={`Business Photo ${index + 1}`}
+                                      className="w-full h-44 object-cover"
+                                    />
+                                    <button
+                                      type="button"
+                                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center shadow-md hover:bg-red-600"
+                                      onClick={() =>
+                                        setBusinessPhotos((prev) =>
+                                          prev.filter((_, i) => i !== index)
+                                        )
+                                      }
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+
+                              {/* Remaining uploads */}
+                              {businessPhotos.length < 3 && (
+                                <div className="text-center mt-4">
+                                  <p className="text-base text-gray-500">
+                                    You can upload{" "}
+                                    <strong>{3 - businessPhotos.length}</strong>{" "}
+                                    more photo
+                                    {businessPhotos.length < 2 ? "" : "s"}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </motion.div>
                   )}
@@ -1308,69 +1395,33 @@ export default function SubmitProperty() {
                         </div>
 
                         {/* Upload Sections */}
-                        {(
-                          [
-                            "profilePicture",
-                            "insurance",
-                            "governmentId",
-                            "qualification",
-                            "criminal",
-                          ] as (keyof PractitionerData)[]
-                        ).map((field) => (
-                          <div
-                            key={field}
-                            className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6"
-                          >
-                            {/* Label */}
-                            <label className="text-base font-medium text-gray-700 min-w-[180px] capitalize">
-                              {field === "profilePicture"
-                                ? "Profile Picture"
-                                : field === "governmentId"
-                                ? "Government ID"
-                                : field === "qualification"
-                                ? "Proof of Qualification"
-                                : field === "criminal"
-                                ? "Criminal background check (not older than 1 year)"
-                                : field}
-                            </label>
+                        <div className="space-y-6">
+                          {fields.map((field) => (
+                            <div
+                              key={field}
+                              className="flex flex-col md:flex-row items-start md:items-center gap-4"
+                            >
+                              {/* Label */}
+                              <label className="text-base font-medium text-gray-700 min-w-[180px]">
+                                {getLabel(field)}
+                              </label>
 
-                            {/* Dropzone */}
-                            <div className="w-full min-h-[200px] rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center transition hover:bg-gray-100 cursor-pointer p-10">
-                              <style>
-                                {`
-                                input[type="file"] {
-                                  display: none !important;
-                                }
-                              `}
-                              </style>
+                              {/* File Input */}
+                              <div className="flex flex-col items-start gap-2">
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleFileChange(e, field)}
+                                  disabled={uploadingField === field}
+                                />
+                                {uploadingField === field && (
+                                  <p className="text-sm text-blue-600">
+                                    Uploading...
+                                  </p>
+                                )}
+                              </div>
 
-                              <UploadButton
-                                endpoint="practitionerMedia"
-                                onClientUploadComplete={(res) => {
-                                  const uploadedUrl = res?.[0]?.ufsUrl;
-                                  if (uploadedUrl) {
-                                    setTabData((prev) => ({
-                                      ...prev,
-                                      [activeTab]: {
-                                        ...prev[activeTab],
-                                        [field]: uploadedUrl,
-                                      },
-                                    }));
-                                  }
-                                }}
-                                onUploadError={(error) =>
-                                  console.error("Upload failed", error)
-                                }
-                                appearance={{
-                                  button:
-                                    "bg-blue-600 text-black px-4 py-2 rounded-lg cursor-pointer",
-                                  allowedContent: "hidden",
-                                  container: "space-y-3",
-                                }}
-                              />
-                            </div>
-
-                            <>
+                              {/* Preview */}
                               {tabData[activeTab]?.[field] && (
                                 <div className="text-center z-10">
                                   <div className="w-[160px] h-[160px] rounded-xl border border-gray-300 overflow-hidden flex items-center justify-center">
@@ -1385,9 +1436,9 @@ export default function SubmitProperty() {
                                   </p>
                                 </div>
                               )}
-                            </>
-                          </div>
-                        ))}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </motion.div>
                   )}
