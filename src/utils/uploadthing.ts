@@ -6,3 +6,5 @@
 //   url: global.ROOTURL.prod + "/api/uploadthing", // or your deployed server
 // });
 // // 
+
+export {}
