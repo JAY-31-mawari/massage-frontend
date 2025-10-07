@@ -47,7 +47,7 @@ export default function Footer() {
               {services.map((service) => (
                 <li
                   onClick={() => navigate(service.path)}
-                  className="hover:text-background transition-colors cursor-pointer font-medium hover:underline hover:decoration-[#94A3B8] hover:decoration-2"
+                  className="hover:text-background transition-colors cursor-pointer hover:underline hover:decoration-[#94A3B8] hover:decoration-2"
                 >
                   {service.name}
                 </li>
@@ -61,7 +61,7 @@ export default function Footer() {
               {connects.map((type) => (
                 <li
                   onClick={() => navigate(type.path)}
-                  className="hover:text-background transition-colors cursor-pointer font-medium hover:underline hover:decoration-[#94A3B8] hover:decoration-2"
+                  className="hover:text-background transition-colors cursor-pointer hover:underline hover:decoration-[#94A3B8] hover:decoration-2"
                 >
                   {type.name}
                 </li>
@@ -75,7 +75,7 @@ export default function Footer() {
               {getToKnowUs.map((type) => (
                 <li
                   onClick={() => navigate(type.path)}
-                  className="hover:text-background transition-colors cursor-pointer font-medium hover:underline hover:decoration-[#94A3B8] hover:decoration-2"
+                  className="hover:text-background transition-colors cursor-pointer hover:underline hover:decoration-[#94A3B8] hover:decoration-2"
                 >
                   {type.name}
                 </li>

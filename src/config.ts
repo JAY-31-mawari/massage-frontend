@@ -22,8 +22,8 @@ declare global {
 
 global.config = {
   ROOTURL: {
-    // prod: 'http://localhost:3002',
-    prod: 'https://message-booking.onrender.com',
+    prod: 'http://localhost:3002',
+    // prod: 'https://message-booking.onrender.com',
   },
   URL:{
     // url:"http://localhost:3000",

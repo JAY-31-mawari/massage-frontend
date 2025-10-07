@@ -146,9 +146,9 @@ export default function Home() {
       </div>
 
       {/* Service Details startpoint */}
-      <div className="p-6 sm:p-10   mx-auto relative z-10">
+      <div className="p-10 sm:p-10   mx-auto relative z-10">
         {/* Main Title */}
-        <div className="text-center mb-6 md:mb-16 pt-6 md:pt-12">
+        <div className="text-center mb-6 md:mb-16 pt-9 md:pt-24">
           <h2 className="text-2xl lg:text-5xl font-bold text-gray-700 mb-3">
             Our <span className="text-white-600">Premium</span> Wellness
             Services
@@ -159,9 +159,9 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex flex-col mb-10 md:flex-row items-center justify-center">
+        <div className="flex flex-col mb-16 md:flex-row items-center justify-center px-16">
           {/* Service Grid - Modern Card Design */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
             {servicesData.map((service, index) => (
               <div
                 onClick={() => navigate(`/service/${service.url}`)}
@@ -183,9 +183,9 @@ export default function Home() {
       </div>
 
       {/* Steps for users */}
-      <div className="bg-[#fafbff] min-h-screen font-sans text-gray-800 antialiased py-10 lg:py-16 border-t-2 border-t-gray-100">
+      <div className="bg-[#fafbff] min-h-screen font-sans text-gray-800 antialiased py-10 lg:py-20 border-t-2 border-t-gray-100">
         <div className="lg:mx-20 px-4 sm:px-6 md:px-12 lg:px-20 xl:px-24">
-          <div className="text-center mb-8">
+          <div className="text-center mb-20">
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-700">
               Our <span>Simple</span> Process
             </h1>
@@ -254,7 +254,7 @@ export default function Home() {
       </div>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-gradient-to-r bg-[#f5fcfc] border-t-2 border-t-gray-100">
+      <section id="about" className="py-36">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
