@@ -26,7 +26,7 @@ export default function Payment() {
       setIsPaymentLoading(true);
       try {
         const paymentRes = await axios.get(
-          process.env.REACT_APP_PROD + "/payment/default",
+          global.config.ROOTURL.prod + "/payment/default",
           {
             headers: {
               Authorization: "Bearer " + accessToken,

@@ -69,7 +69,7 @@ export default function ServiceBookingDetail({
     setIsLoading(true);
     const bookingPayload = {
       method: "POST",
-      url: process.env.REACT_APP_PROD + `/appointment`,
+      url: global.config.ROOTURL.prod + `/appointment`,
       headers: {
         Authorization: "Bearer " + accessToken,
         "Content-type": "application/json",
@@ -123,7 +123,7 @@ export default function ServiceBookingDetail({
     const getBookingPayload = {
       method: "GET",
       url:
-        process.env.REACT_APP_PROD +
+        global.config.ROOTURL.prod +
         `/appointment/business/${merchant.id}?appointmentDate=${appointmentDateTime}`,
     };
     try {

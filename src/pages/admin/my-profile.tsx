@@ -24,7 +24,7 @@ const MyProfile = () => {
     }
     const userUpdatedData = {
       method: "PATCH",
-      url: process.env.REACT_APP_PROD + `/user/${user?.id}`,
+      url: global.config.ROOTURL.prod + `/user/${user?.id}`,
       data: {
         firstName: userData?.firstName,
         lastName: userData?.lastName,

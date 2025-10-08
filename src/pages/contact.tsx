@@ -60,7 +60,7 @@ export default function Contact() {
     try {
       const contactPayload = {
         method: "POST",
-        url: process.env.REACT_APP_PROD + `/contact/`,
+        url: global.config.ROOTURL.prod + `/contact/`,
         data: {
           fullName,
           email,

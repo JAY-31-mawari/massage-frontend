@@ -22,7 +22,7 @@ const PaymentFailed = () => {
 
       const saveStripeSessionBody = {
         method: "POST",
-        url: process.env.REACT_APP_PROD + "/stripe/session-details",
+        url: global.config.ROOTURL.prod + "/stripe/session-details",
         headers: {
           "Content-Type": "application/json",
         },

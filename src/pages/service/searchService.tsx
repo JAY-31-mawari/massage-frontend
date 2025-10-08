@@ -134,7 +134,7 @@ export default function ClassicalProperty() {
       return;
     }
     const searchBusinessData = await axios.get(
-      process.env.REACT_APP_PROD +
+      global.config.ROOTURL.prod +
         `/business/search?q=${searchLocation.current}&latitude=${latitudeRef.current}&longitude=${longitudeRef.current}&radius=${radius}&liveLocation=${liveLocation.current}&service=${userSelectedService}`
     );
     setservicesData(searchBusinessData.data.businesses);
@@ -152,7 +152,7 @@ export default function ClassicalProperty() {
 
   async function getDefaultBusinesses() {
     const businessData = await axios.get(
-      process.env.REACT_APP_PROD + "/business"
+      global.config.ROOTURL.prod + "/business"
     );
     setservicesData(businessData.data.businesses);
   }

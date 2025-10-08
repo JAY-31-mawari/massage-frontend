@@ -158,7 +158,7 @@ export function MerchantAboutUs() {
     </ul>
     <p class="mt-3 text-sm text-gray-600">
       For full details, please see our
-      <a href="${process.env.URL}/refund-&-cancellation" class="text-blue-600 underline">[Cancellation & Refund Policy]</a>.
+      <a href="/refund-&-cancellation" class="text-blue-600 underline">[Cancellation & Refund Policy]</a>.
     </p>
   `,
     },

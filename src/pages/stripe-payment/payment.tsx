@@ -26,7 +26,7 @@ const CheckoutForm: React.FC = () => {
 
     const paymentBody = {
       method: "POST",
-      url: process.env.REACT_APP_PROD + "/stripe/create-checkout-session",
+      url: global.config.ROOTURL.prod + "/stripe/create-checkout-session",
       headers: {
         "Content-type": "application/json",
       },
