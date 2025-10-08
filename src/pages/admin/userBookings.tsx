@@ -62,7 +62,7 @@ export default function UserBookings() {
     setIsAppointmentLoading(true);
     const appointmentPayload = {
       method: "GET",
-      url: global.config.ROOTURL.prod + `/appointment/user/${user.id}`,
+      url: process.env.REACT_APP_PROD + `/appointment/user/${user.id}`,
       headers: {
         Authorization: "Bearer " + accessToken,
         "Content-type": "application/json",

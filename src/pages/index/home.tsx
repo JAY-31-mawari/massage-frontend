@@ -72,7 +72,7 @@ export default function Home() {
   useEffect(() => {
     async function getDefultBusinesses() {
       const businessData = await axios.get(
-        global.config.ROOTURL.prod + "/business"
+        process.env.REACT_APP_PROD + "/business"
       );
       if (businessData.data.businesses.length === 0) {
         return;

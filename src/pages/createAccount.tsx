@@ -85,7 +85,7 @@ export default function RegisterAccount() {
       };
 
       const res = await axios.post(
-        global.config.ROOTURL.prod + "/user",
+        process.env.REACT_APP_PROD + "/user",
         userPayload
       );
 
@@ -119,7 +119,7 @@ export default function RegisterAccount() {
         return;
       }
 
-      const res = await axios.post(global.config.ROOTURL.prod + "/user/login", {
+      const res = await axios.post(process.env.REACT_APP_PROD + "/user/login", {
         email,
       });
       if (res.status === 200) {
@@ -146,7 +146,7 @@ export default function RegisterAccount() {
       let OTPPayload = {
         method: "POST",
         url:
-          global.config.ROOTURL.prod +
+          process.env.REACT_APP_PROD +
           `/user/${
             isLogin ? "verify-otp-for-signin" : "verify-otp-for-signup"
           }`,
@@ -198,7 +198,7 @@ export default function RegisterAccount() {
   const handleResendOTP = async () => {
     try {
       const res = await axios.post(
-        global.config.ROOTURL.prod + "/user/resendOTP",
+        process.env.REACT_APP_PROD + "/user/resendOTP",
         {
           email,
         }

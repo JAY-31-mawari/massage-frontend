@@ -62,7 +62,7 @@ export function ClientFAQ() {
       id: 10,
       question: "10. Can I cancel or reschedule my appointment?",
       answer: `<p>Yes. Cancellations and reschedules are handled according to our 
-      <a href="${global.config.URL.url}/refund-&-cancellation" class="text-blue-600 underline">[Cancellation Policy]</a>. 
+      <a href="${process.env.URL}/refund-&-cancellation" class="text-blue-600 underline">[Cancellation Policy]</a>. 
       Please review it before booking.</p>`,
     },
     {

@@ -22,7 +22,7 @@ export default function Success() {
 
       const saveStripeSessionBody = {
         method: "POST",
-        url: global.config.ROOTURL.prod + "/stripe/session-details",
+        url: process.env.REACT_APP_PROD + "/stripe/session-details",
         headers: {
           "Content-Type": "application/json",
         },

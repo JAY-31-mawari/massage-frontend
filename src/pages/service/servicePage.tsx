@@ -20,7 +20,7 @@ export default function SinglePropertyOne() {
   const getSpecificBusinessById = async () => {
     const payload = {
       method: "GET",
-      url: global.config.ROOTURL.prod + `/business/${id}`,
+      url: process.env.REACT_APP_PROD + `/business/${id}`,
     };
 
     await axios(payload)

@@ -52,7 +52,7 @@ export function ContractorSignAgreement() {
     try {
       // Send to backend
       const res = await axios.post(
-        `${global.config.ROOTURL.prod}/business/save-signature`,
+        `${process.env.REACT_APP_PROD}/business/save-signature`,
         signatureBody
       );
 

@@ -59,7 +59,7 @@ export default function Navbar() {
 
     const diffInMs = now.getTime() - lastLoginTime.getTime();
     const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
-    if (diffInDays > global.config.DAYS) {
+    if (diffInDays > 7) {
       deleteStorageItem("token");
     } else {
       setStorageItem("lastLoggedIn", todayLoggedInTime);

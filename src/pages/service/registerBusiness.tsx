@@ -343,7 +343,7 @@ export default function SubmitProperty() {
     formData.append("file", file);
 
     try {
-      const res = await axios.post(`${global.config.ROOTURL.prod}/upload`, formData, {
+      const res = await axios.post(`${process.env.REACT_APP_PROD}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -382,7 +382,7 @@ export default function SubmitProperty() {
 
     try {
       const res = await axios.post(
-        `${global.config.ROOTURL.prod}/upload`,
+        `${process.env.REACT_APP_PROD}/upload`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -534,7 +534,7 @@ export default function SubmitProperty() {
       }
 
       const businessResponse = await axios.post(
-        global.config.ROOTURL.prod + "/business",
+        process.env.REACT_APP_PROD + "/business",
         businessPayload
       );
       if (businessResponse.status === 201 || businessResponse.status === 200) {
@@ -544,7 +544,7 @@ export default function SubmitProperty() {
           const practitioner = tabData[Number(key)];
 
           const response = await axios.post(
-            global.config.ROOTURL.prod + "/practitioner",
+            process.env.REACT_APP_PROD + "/practitioner",
             { ...practitioner, businessId: businessResponse?.data?.data?.id }
           );
         }
