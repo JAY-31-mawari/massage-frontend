@@ -104,7 +104,7 @@ export default function AboutUs() {
             <h3 className="text-2xl md:text-3xl font-semibold">
               Words from our Founder & CEO
             </h3>
-            <div className="text-base italic space-y-2">
+            <div className="text-lg space-y-2">
               <p>
               "At Last Minute Wellness, our mission began with something deeply
               personal.

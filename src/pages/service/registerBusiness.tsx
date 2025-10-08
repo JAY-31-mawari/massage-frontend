@@ -360,12 +360,14 @@ export default function SubmitProperty() {
     }
   };
 
+  const includeCriminal = businessType === "Clinic-Based Practice"
+
   const fields: (keyof PractitionerData)[] = [
     "profilePicture",
     "insurance",
     "governmentId",
     "qualification",
-    "criminal",
+    ...(includeCriminal ? ["criminal"] as (keyof PractitionerData)[] : []),
   ];
 
 
