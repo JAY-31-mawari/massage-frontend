@@ -54,17 +54,14 @@ export default function SubmitProperty() {
   const [confirmEmailError, setConfirmEmailError] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneNoError, setphoneNoError] = useState("");
-  const [description, setDescription] = useState("");
   const [tabs, setTabs] = useState([{ id: 1 }]);
   const [activeTab, setActiveTab] = useState(1);
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [businessPhotos, setBusinessPhotos] = useState<string[]>([]);
 
-
-
-  // Optional: Store data per tab if needed later
   const [tabData, setTabData] = useState<{ [key: number]: any }>({
     1: {
       practitionerName: "",
@@ -82,30 +79,7 @@ export default function SubmitProperty() {
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [businessPhotos, setBusinessPhotos] = useState<string[]>([]);
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-  // validations AFTER all state is declared
-  const isBasicInfoValid =
-    businessName &&
-    businessType &&
-    email &&
-    !emailError &&
-    phone &&
-    !phoneNoError &&
-    bankName &&
-    (businessType !== "Other" || description);
-
-  const isBusinessAddressValid =
-    merchantAddress && merchantCity && merchantState && merchantZipCode;
-
-  const isBusinessPhotosValid = businessPhotos.length > 0;
-
-  const isPractitionerDetailsValid =
-    tabData[activeTab]?.practitionerName &&
-    tabData[activeTab]?.areaOfExpertise?.length > 0 &&
-    tabData[activeTab]?.license;
 
   const expertiseListBase = [
     { value: "Physiotherapy", label: "Physiotherapy" },
@@ -114,7 +88,9 @@ export default function SubmitProperty() {
   ];
 
   const expertiseListWithMassage = [
-    ...expertiseListBase,
+    { value: "Physiotherapy", label: "Physiotherapy" },
+    { value: "Chiropractic Care", label: "Chiropractic Care" },
+    { value: "Acupuncture", label: "Acupuncture" },
     { value: "Massage Therapy", label: "Massage Therapy" },
   ];
 
@@ -228,28 +204,27 @@ export default function SubmitProperty() {
   ];
 
   const [location, setLocation] = useState<LocationState>({ lat: 0, lng: 0 });
-  const [error, setError] = useState<string | null>(null);
 
-  const checkPermission = () => {
-    if (!navigator.permissions) {
-      toast.error("Permissions API not supported in this browser.");
-      return;
-    }
+  // const checkPermission = () => {
+  //   if (!navigator.permissions) {
+  //     toast.error("Permissions API not supported in this browser.");
+  //     return;
+  //   }
 
-    navigator.permissions.query({ name: "geolocation" }).then((status) => {
-      if (status.state === "granted") {
-        getLocation();
-        // You can directly call getLocation()
-      } else if (status.state === "prompt") {
-        getLocation();
-        // Next getLocation() will show prompt
-      } else if (status.state === "denied") {
-        toast.success(
-          "Allow location access to help customers find your service location easily. Click the 🔒 icon in the URL → Reset Permissions → Reload"
-        );
-      }
-    });
-  };
+  //   navigator.permissions.query({ name: "geolocation" }).then((status) => {
+  //     if (status.state === "granted") {
+  //       getLocation();
+  //       // You can directly call getLocation()
+  //     } else if (status.state === "prompt") {
+  //       getLocation();
+  //       // Next getLocation() will show prompt
+  //     } else if (status.state === "denied") {
+  //       toast.success(
+  //         "Allow location access to help customers find your service location easily. Click the 🔒 icon in the URL → Reset Permissions → Reload"
+  //       );
+  //     }
+  //   });
+  // };
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -266,11 +241,9 @@ export default function SubmitProperty() {
             lat: latitude,
             lng: longitude,
           });
-          setError(null);
         }
       },
       (err: GeolocationPositionError) => {
-        setError(err.message);
         toast.error(err.message);
       },
       {
@@ -279,6 +252,37 @@ export default function SubmitProperty() {
         maximumAge: 0,
       }
     );
+  };
+
+  const validateBusinessForm = () => {
+    const errors: string[] = [];
+
+    if (!businessName?.trim()) errors.push("Business name is required.");
+    if (!businessType) errors.push("Business type is required.");
+    if (!email?.trim()) errors.push("Email address is required.");
+    if (emailError) errors.push("Invalid email format.");
+    if (phoneNoError) errors.push("Invalid phone number format.");
+    if (email !== confirmEmail) errors.push("Emails do not match.");
+    if (!phone?.trim()) errors.push("Phone number is required.");
+
+    // Address validation
+    if (!merchantAddress?.trim()) errors.push("Street address is required.");
+    if (!merchantCity?.trim()) errors.push("City is required.");
+    if (!merchantState?.trim()) errors.push("State/Province is required.");
+    if (!merchantZipCode?.trim()) errors.push("Postal/Zip code is required.");
+
+    return errors;
+  };
+
+  const handleNext = () => {
+    const errors = validateBusinessForm();
+    if (errors.length > 0) {
+      toast.error(errors[0]); // or display all errors
+      return;
+    }
+
+    // proceed to next step or submit form
+    setCurrentStep(currentStep + 1);
   };
 
   const validateEmail = (email: string) => {
@@ -343,9 +347,13 @@ export default function SubmitProperty() {
     formData.append("file", file);
 
     try {
-      const res = await axios.post(`${global.config.ROOTURL.prod}/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post(
+        `${global.config.ROOTURL.prod}/upload`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       if (res.data.success && res.data.fileUrl) {
         setBusinessPhotos((prev) => [...prev, res.data.fileUrl]);
@@ -360,16 +368,15 @@ export default function SubmitProperty() {
     }
   };
 
-  const includeCriminal = businessType === "Clinic-Based Practice"
+  const includeCriminal = businessType === "Clinic-Based Practice";
 
   const fields: (keyof PractitionerData)[] = [
     "profilePicture",
     "insurance",
     "governmentId",
     "qualification",
-    ...(includeCriminal ? ["criminal"] as (keyof PractitionerData)[] : []),
+    ...(includeCriminal ? (["criminal"] as (keyof PractitionerData)[]) : []),
   ];
-
 
   const handleFileChange = async (e: any, field: keyof PractitionerData) => {
     const file = e.target.files?.[0];
@@ -604,6 +611,10 @@ export default function SubmitProperty() {
   };
 
   useEffect(() => {
+    getLocation();
+  }, []);
+
+  useEffect(() => {
     window.scrollTo({ top: 30, behavior: "smooth" });
   }, [currentStep]);
 
@@ -643,7 +654,7 @@ export default function SubmitProperty() {
                         {/* Business Name (full width) */}
                         <div className="col-span-3">
                           <label className="block text-base font-medium mb-2">
-                            Business Name
+                            Business Name *
                           </label>
                           <input
                             type="text"
@@ -658,7 +669,7 @@ export default function SubmitProperty() {
                           {/* Business Type */}
                           <div>
                             <label className="block text-base font-medium mb-2">
-                              Business Type
+                              Business Type *
                             </label>
                             <Select
                               options={businessTypeList}
@@ -677,7 +688,7 @@ export default function SubmitProperty() {
                           {/* Email */}
                           <div>
                             <label className="block text-base font-medium mb-2">
-                              Email Address
+                              Email Address *
                             </label>
                             <input
                               type="text"
@@ -701,7 +712,7 @@ export default function SubmitProperty() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label className="block text-base font-medium mb-2">
-                              Confirm Email Address
+                              Confirm Email Address *
                             </label>
                             <input
                               type="text"
@@ -724,7 +735,7 @@ export default function SubmitProperty() {
                           {/* Phone Number */}
                           <div>
                             <label className="block text-base font-medium mb-2">
-                              Phone Number
+                              Phone Number *
                             </label>
                             <input
                               type="text"
@@ -991,7 +1002,7 @@ export default function SubmitProperty() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label className="block text-base font-medium mb-2">
-                              Street Address
+                              Street Address *
                             </label>
                             <input
                               type="text"
@@ -1005,7 +1016,7 @@ export default function SubmitProperty() {
 
                           <div>
                             <label className="block text-base font-medium mb-2">
-                              City
+                              City *
                             </label>
                             <input
                               type="text"
@@ -1017,7 +1028,7 @@ export default function SubmitProperty() {
 
                           <div>
                             <label className="block text-base font-medium mb-2">
-                              Province/State
+                              Province/State *
                             </label>
                             <input
                               type="text"
@@ -1029,7 +1040,7 @@ export default function SubmitProperty() {
 
                           <div>
                             <label className="block text-base font-medium mb-2">
-                              Postal Code / Zip Code
+                              Postal Code / Zip Code *
                             </label>
                             <input
                               type="text"
@@ -1309,28 +1320,23 @@ export default function SubmitProperty() {
                                 className="w-full"
                                 classNamePrefix="react-select"
                                 placeholder="Areas of Expertise"
-                                value={
-                                  businessType === ""
-                                    ? []
-                                    : (businessType === "wellness"
-                                        ? expertiseListWithMassage
-                                        : expertiseListBase
-                                      ).filter((option: any) =>
-                                        tabData[
-                                          activeTab
-                                        ]?.areaOfExpertise?.includes(
-                                          option.value
-                                        )
-                                      )
-                                }
-                                onChange={(selectedOptions) =>
+                                value={(businessType !== "Clinic-Based Practice"
+                                  ? expertiseListWithMassage
+                                  : expertiseListBase
+                                ).filter((option: any) =>
+                                  tabData[activeTab]?.areaOfExpertise?.includes(
+                                    option.value
+                                  )
+                                )}
+                                onChange={(selectedOptions) => {
+                                  const selectedValues = selectedOptions
+                                    ? selectedOptions.map((o) => o.value)
+                                    : [];
                                   handleTabInputChange(
                                     "areaOfExpertise",
-                                    selectedOptions
-                                      ? selectedOptions.map((o: any) => o.value)
-                                      : []
-                                  )
-                                }
+                                    selectedValues
+                                  );
+                                }}
                               />
                             </div>
                           </div>
@@ -1550,7 +1556,7 @@ export default function SubmitProperty() {
                     onClick={() => {
                       currentStep === 4
                         ? handleMerchantFormSubmit()
-                        : setCurrentStep(currentStep + 1);
+                        : handleNext();
                     }}
                   >
                     {currentStep === 4 ? "Preview & Submit" : "Next"}
@@ -1560,14 +1566,13 @@ export default function SubmitProperty() {
             </div>
           </div>
         </div>
-        {showPaymentModal && (
+        {/* {showPaymentModal && (
           <motion.div
             className="fixed inset-0 flex items-center justify-center z-50 px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Background overlay */}
             <motion.div
               className="absolute inset-0 bg-black/50"
               initial={{ opacity: 0 }}
@@ -1576,7 +1581,6 @@ export default function SubmitProperty() {
               onClick={() => setShowPaymentModal(false)}
             />
 
-            {/* Modal box */}
             <motion.div
               className="relative bg-white w-full max-w-sm rounded-2xl shadow-lg p-6 text-center"
               initial={{ opacity: 0, scale: 0.9 }}
@@ -1604,7 +1608,7 @@ export default function SubmitProperty() {
               </div>
             </motion.div>
           </motion.div>
-        )}
+        )} */}
       </section>
     </>
   );

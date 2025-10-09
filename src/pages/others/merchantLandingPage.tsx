@@ -265,12 +265,16 @@ export function MerchantAboutUs() {
             <div className="text-center lg:text-left">
               {/* Tagline */}
               <p className="text-[#0057FF] text-lg sm:text-xl md:text-2xl font-semibold">
-                Get Discovered
+                💡 The Difference Between Marketing Agencies and Last Minute
+                Wellness
               </p>
 
               {/* Heading */}
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-snug sm:leading-tight mt-3 mb-5">
-                Why Practitioners Love Last Minute Wellness
+              <h1 className="text-base md:text-2xl font-bold sm:leading-tight mt-3 mb-5 md:mx-20">
+                "You’ve probably seen countless ads promising “20 new clients a
+                month” for your clinic. Most of those are marketing agencies —
+                and what they offer is very different from what we do at Last
+                Minute Wellness."
               </h1>
 
               {/* Table Section */}
@@ -293,7 +297,7 @@ export function MerchantAboutUs() {
                               </th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-gray-100 text-gray-700 text-sm sm:text-base">
+                          <tbody className="divide-y divide-gray-100 text-gray-700 text-sm sm:text-base font-semibold">
                             <tr>
                               <td className="p-3 sm:p-4 font-medium text-gray-800">
                                 Business Model
