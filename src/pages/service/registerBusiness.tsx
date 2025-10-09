@@ -35,6 +35,7 @@ export default function SubmitProperty() {
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [businessType, setBusinessType] = useState<string | undefined>("");
   const [confirmationMode, setConfirmationMode] = useState("business_email");
+  const [isLoading, setIsloading] = useState(false)
   const [appointmentApprovalType, setAppointmentApprovalType] =
     useState("AUTO");
   const [bankName, setBankName] = useState("");
@@ -512,6 +513,11 @@ export default function SubmitProperty() {
   };
 
   const handleMerchantFormSubmit = async () => {
+    if(email === confirmEmail){
+      toast.error("Email and confirm email doesn't match")
+      return;
+    }
+    setIsloading(true)
     try {
       const businessPayload: any = {
         businessName,
@@ -607,6 +613,8 @@ export default function SubmitProperty() {
       }
     } catch (error) {
       console.error("Error submitting data:", error);
+    }finally{
+      setIsloading(false)
     }
   };
 
@@ -1559,7 +1567,7 @@ export default function SubmitProperty() {
                         : handleNext();
                     }}
                   >
-                    {currentStep === 4 ? "Preview & Submit" : "Next"}
+                    {isLoading ? "Saving Data..." : currentStep === 4 ? "Preview & Submit" : "Next"}
                   </button>
                 </div>
               </div>
