@@ -182,10 +182,10 @@ export function MerchantAboutUs() {
       Follow-up appointments should be booked through your in-house system if needed.</p>`,
     },
     {
-      id:16,
-      question:"16.  Didn’t find your question here?",
-      answer: `<p>Get in touch - Connect contact us here to get in touch <a href='mailto:info@lastminutewellness.ca' class="text-blue-600 underline">info@lastminutewellness.ca</a></p>`
-    }
+      id: 16,
+      question: "16.  Didn’t find your question here?",
+      answer: `<p>Get in touch - Connect contact us here to get in touch <a href='mailto:info@lastminutewellness.ca' class="text-blue-600 underline">info@lastminutewellness.ca</a></p>`,
+    },
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
@@ -283,10 +283,10 @@ export function MerchantAboutUs() {
                           <thead className="bg-gray-50 text-gray-800 text-sm sm:text-base">
                             <tr>
                               <th className="p-3 sm:p-4 font-semibold">
-                                Features
+                                The Difference
                               </th>
                               <th className="p-3 sm:p-4 font-semibold">
-                                Traditional Marketing
+                                Marketing Agencies
                               </th>
                               <th className="p-3 sm:p-4 font-semibold text-blue-700">
                                 Last Minute Wellness
@@ -296,41 +296,65 @@ export function MerchantAboutUs() {
                           <tbody className="divide-y divide-gray-100 text-gray-700 text-sm sm:text-base">
                             <tr>
                               <td className="p-3 sm:p-4 font-medium text-gray-800">
-                                Monthly Fees
-                              </td>
-                              <td className="p-3 sm:p-4">$500–$2,000</td>
-                              <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
-                                <Check size={18} /> $0
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="p-3 sm:p-4 font-medium text-gray-800">
-                                Contracts
+                                Business Model
                               </td>
                               <td className="p-3 sm:p-4">
-                                Long-term commitments
+                                Service-based — they run ads for individual
+                                clinics.
                               </td>
                               <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
-                                <Check size={18} /> None
+                                Marketplace platform connecting clients with
+                                available practitioners in real time.
                               </td>
                             </tr>
                             <tr>
                               <td className="p-3 sm:p-4 font-medium text-gray-800">
-                                Payment Model
+                                How Clients Find You
                               </td>
-                              <td className="p-3 sm:p-4">Upfront costs</td>
+                              <td className="p-3 sm:p-4">
+                                Through paid ads and lead forms — not always
+                                ready to book.{" "}
+                              </td>
                               <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
-                                <Check size={18} /> Only when booked
+                                Clients come to us actively looking for same-day
+                                or next-day care.
                               </td>
                             </tr>
                             <tr>
                               <td className="p-3 sm:p-4 font-medium text-gray-800">
-                                Flexibility
+                                Cost Structure
                               </td>
-                              <td className="p-3 sm:p-4">Limited</td>
+                              <td className="p-3 sm:p-4">
+                                Monthly retainer or ad spend (often
+                                $1,000–$5,000/month).
+                              </td>
                               <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
-                                <Check size={18} /> Set your own rates & pause
-                                anytime
+                                No upfront cost — we only earn a small
+                                commission when you get booked.
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="p-3 sm:p-4 font-medium text-gray-800">
+                                Risk to You{" "}
+                              </td>
+                              <td className="p-3 sm:p-4">
+                                You pay even if the campaign doesn’t bring real
+                                clients.
+                              </td>
+                              <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                                We only succeed when you do — zero risk.
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="p-3 sm:p-4 font-medium text-gray-800">
+                                Value Delivered{" "}
+                              </td>
+                              <td className="p-3 sm:p-4">
+                                Exposure and unqualified leads.
+                              </td>
+                              <td className="p-3 sm:p-4 flex items-center gap-2 text-green-600 font-semibold">
+                                Confirmed, paying clients filling your open time
+                                slots.
                               </td>
                             </tr>
                           </tbody>
@@ -348,7 +372,9 @@ export function MerchantAboutUs() {
       {/* CTA button for practitioner sign up */}
       <div className="flex justify-center mt-6">
         <div className="max-w-2xl mx-1 p-4 rounded-3xl text-lg text-center ">
-          <p className="mb-12">Excited to take your business to the next level?</p>
+          <p className="mb-12">
+            Excited to take your business to the next level?
+          </p>
           <Link
             to="/practitioner-register"
             className="bg-blue-600 text-white py-3 px-6 rounded-lg font-medium shadow hover:bg-blue-700 transition"
